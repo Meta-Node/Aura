@@ -8,17 +8,22 @@
 html {
   height: 100vh;
   height: var(--vh);
-  overflow: hidden;
   font-size: 1rem;
 }
 
 body {
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white);
+  @include reg;
   font-size: 1rem;
-  // @include reg;
   position: relative;
   overscroll-behavior-y: none;
-  @include smooth-font;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
 }
 
 .e-fixed {

@@ -38,4 +38,20 @@ export const fi = [
     crossorigin: 'anonymous',
     as: 'font',
   },
+
+  {
+    rel: 'preload',
+    type: 'font/woff2',
+    href: '/fonts/SpaceMono-Bold.woff2',
+    crossorigin: 'anonymous',
+    as: 'font',
+  },
+
+  {
+    rel: 'preload',
+    type: 'font/woff2',
+    href: '/fonts/SpaceMono-Regular.woff2',
+    crossorigin: 'anonymous',
+    as: 'font',
+  },
 ]
