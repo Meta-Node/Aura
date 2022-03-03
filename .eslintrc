@@ -1,0 +1,36 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "extends": [
+    "@nuxtjs",
+    "plugin:prettier/recommended",
+    "plugin:nuxt/recommended"
+  ],
+  "plugins": [],
+  // add your custom rules here
+  "rules": {
+    "arrow-parens": [1, "as-needed", { "requireForBlockBody": false }],
+    "comma-dangle": "off",
+    "no-console": "off",
+    "vue/require-default-prop": "off",
+    "vue/no-v-html": "off",
+    "unicorn/prefer-text-content": "off",
+    "no-new": "off",
+    "no-unused-vars": "warn",
+    "prefer-const": "warn",
+    "vue/script-setup-uses-vars": "off",
+    "import/no-named-as-default": "off",
+    "prettier/prettier": [
+      "off",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  }
+}

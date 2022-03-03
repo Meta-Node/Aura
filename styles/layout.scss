@@ -1,0 +1,31 @@
+.container {
+  width: 100%;
+  position: relative;
+  padding-left: $g-offset;
+  padding-right: $g-offset;
+}
+
+.container--fh {
+  height: 100%;
+}
+
+.container--nm {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.grid {
+  display: grid;
+  width: 100%;
+  grid-auto-flow: column;
+  column-gap: 30px;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+@mixin col($start, $end) {
+  grid-column: #{$start}/#{$end + 1};
+}
+
+@mixin row($start, $end) {
+  grid-row: #{$start}/#{$end + 1};
+}

@@ -1,0 +1,14 @@
+.app-grid {
+  position: fixed;
+  @include coverdiv(fixed);
+  z-index: 10000;
+  pointer-events: none;
+  display: none;
+}
+.app-grid--visible {
+  display: grid;
+}
+.app-grid__col {
+  height: 100%;
+  background-color: rgba(#b8b8b8, 0.1);
+}

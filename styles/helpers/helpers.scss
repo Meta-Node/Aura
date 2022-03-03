@@ -1,0 +1,20 @@
+@use 'sass:math';
+
+@mixin smooth-font {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@function size($pcSize, $mobSize) {
+  $addSize: $pcSize - $mobSize;
+  $maxWidth: $maxWidth - $minWidth;
+  @return calc(
+    #{$mobSize + px} + #{$addSize} *
+      ((100vw - #{$minWidth + px}) / #{$maxWidth})
+  );
+}
+
+@function toimg($width, $height) {
+  $resolution: (math.div($height, $width)) * 100;
+  @return #{$resolution + '%'};
+}
