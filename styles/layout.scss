@@ -1,5 +1,7 @@
 .container {
-  width: 460px;
+  max-width: 460px;
+  width: 100%;
+  margin: 0 auto;
   position: relative;
   padding-left: $g-offset;
   padding-right: $g-offset;
