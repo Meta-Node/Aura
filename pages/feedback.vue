@@ -1,24 +1,24 @@
 <template>
-  <section class="profile">
-    <div class="container profile__wrapper">
-      <div class="grid profile__card">
-        <div class="profile__card-img">
+  <section class="feedback">
+    <div class="container feedback__wrapper">
+      <div class="grid feedback__card">
+        <div class="feedback__card-img">
           <img
-            class="img profile__avatar"
+            class="img feedback__avatar"
             src="/images/card-img.jpg"
             alt="Avatar"
           />
         </div>
-        <div class="profile__user-info">
-          <div class="profile__username">
-            <div class="profile__block-left">
-              <h3 class="profile__name">
+        <div class="feedback__user-info">
+          <div class="feedback__username">
+            <div class="feedback__block-left">
+              <h3 class="feedback__name">
                 User<br />
                 Name
               </h3>
             </div>
-            <div class="profile__block-right">
-              <p class="profile__lower-text">Low</p>
+            <div class="feedback__block-right">
+              <p class="feedback__lower-text">Low</p>
               <nuxt-link to="/">
                 <svg
                   class="profile__share"
@@ -39,61 +39,66 @@
               </nuxt-link>
             </div>
           </div>
-          <div class="profile__about">
-            <p class="profile__info">
+          <div class="feedback__about">
+            <p class="feedback__info">
               4 months<br />
               116 Connections
             </p>
           </div>
         </div>
       </div>
-      <div class="profile__sphere"></div>
-      <div class="profile__users">
-        <h3 class="profile__title">Yet To Be Rated</h3>
-        <ul class="profile__humans">
-          <li class="profile__item">
+      <div class="feedback__questions">
+        <button class="text-button feedback__question-btn">Rate Chair?</button>
+        <button class="text-button feedback__question-btn">
+          Explore Energy?
+        </button>
+      </div>
+      <div class="feedback__users">
+        <h3 class="feedback__title">Yet To Be Rated</h3>
+        <ul class="feedback__humans">
+          <li class="feedback__item">
             <nuxt-link to="/">
               <img
                 src="/images/card-img.jpg"
                 alt="Avatar"
-                class="profile__image"
+                class="feedback__image"
               />
-              <p class="profile__tag">User Name</p>
+              <p class="feedback__tag">User Name</p>
             </nuxt-link>
           </li>
-          <li class="profile__item">
+          <li class="feedback__item">
             <nuxt-link to="/">
               <img
                 src="/images/card-img.jpg"
                 alt="Avatar"
-                class="profile__image"
+                class="feedback__image"
               />
-              <p class="profile__tag">User Name</p>
+              <p class="feedback__tag">User Name</p>
             </nuxt-link>
           </li>
-          <li class="profile__item">
+          <li class="feedback__item">
             <nuxt-link to="/">
               <img
                 src="/images/card-img.jpg"
                 alt="Avatar"
-                class="profile__image"
+                class="feedback__image"
               />
-              <p class="profile__tag">User Name</p>
+              <p class="feedback__tag">User Name</p>
             </nuxt-link>
           </li>
-          <li class="profile__item">
+          <li class="feedback__item">
             <nuxt-link to="/">
               <img
                 src="/images/card-img.jpg"
                 alt="Avatar"
-                class="profile__image"
+                class="feedback__image"
               />
-              <p class="profile__tag">User Name</p>
+              <p class="feedback__tag">User Name</p>
             </nuxt-link>
           </li>
         </ul>
         <div class="btn__wrapper">
-          <button class="text-button profile__btn">Load More...</button>
+          <button class="text-button feedback__btn">Load More...</button>
         </div>
       </div>
     </div>

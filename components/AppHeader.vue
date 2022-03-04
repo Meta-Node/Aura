@@ -35,7 +35,7 @@
             <nuxt-link to="/profile/" class="header__text"> Profile </nuxt-link>
           </li>
           <li class="nav-item header__item">
-            <nuxt-link to="/" class="header__text"> Feedback </nuxt-link>
+            <nuxt-link to="/feedback/" class="header__text"> Feedback </nuxt-link>
           </li>
           <li class="nav-item header__item">
             <nuxt-link to="/" class="header__text"> Community </nuxt-link>
