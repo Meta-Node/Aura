@@ -5,7 +5,6 @@
 .profile__card-img {
   @include col(1, 4);
   margin: 0 auto;
-
 }
 
 .profile__avatar {
@@ -47,6 +46,9 @@
 
 .profile__share {
   margin-top: 10px;
+  path {
+    stroke: var(--b-grey);
+  }
 }
 
 .profile__info {
@@ -75,7 +77,8 @@
   background-color: var(--white);
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  box-shadow: 0px 0px 96px 96px rgba(255, 255, 255, 0.8), 0px 4px 4px rgba(0, 0, 0, 0.25), inset 48px 0px 48px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 0px 96px 96px rgba(255, 255, 255, 0.8),
+    0px 4px 4px rgba(0, 0, 0, 0.25), inset 48px 0px 48px rgba(0, 0, 0, 0.8);
 }
 
 .profile__users {
