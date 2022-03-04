@@ -13,6 +13,18 @@
   padding-bottom: 28px;
 }
 
+.header__img-wrapper {
+  @media screen and (max-width: 330px) {
+    width: 40px;
+
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .header__info {
   align-self: flex-end;
 }
@@ -29,4 +41,27 @@
   @include semi;
   color: var(--white);
   letter-spacing: 0;
+}
+
+.nav-menu {
+  display: flex;
+}
+
+.header__item {
+  margin-right: 10px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+.header__text {
+  @include semi;
+  color: var(--s-grey);
+  font-size: 12px;
+  line-height: 125%;
+}
+
+.nuxt-link-exact-active {
+  color: var(--white);
 }

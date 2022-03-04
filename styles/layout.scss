@@ -27,7 +27,7 @@
   display: grid;
   width: 100%;
   grid-auto-flow: column;
-  column-gap: 30px;
+  column-gap: 16px;
   grid-template-columns: repeat(8, 1fr);
 }
 

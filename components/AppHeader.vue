@@ -29,7 +29,22 @@
           </a>
         </p>
       </div>
-      <div v-else></div>
+      <div v-else>
+        <ul class="nav-menu header__menu">
+          <li class="nav-item header__item">
+            <nuxt-link to="/profile/" class="header__text"> Profile </nuxt-link>
+          </li>
+          <li class="nav-item header__item">
+            <nuxt-link to="/" class="header__text"> Feedback </nuxt-link>
+          </li>
+          <li class="nav-item header__item">
+            <nuxt-link to="/" class="header__text"> Community </nuxt-link>
+          </li>
+          <li class="nav-item header__item">
+            <nuxt-link to="/" class="header__text"> Energy </nuxt-link>
+          </li>
+        </ul>
+      </div>
     </nav>
   </header>
 </template>
@@ -39,7 +54,7 @@ export default {
   props: {
     isAuth: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
 }

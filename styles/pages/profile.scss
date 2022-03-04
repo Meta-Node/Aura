@@ -1,0 +1,138 @@
+.profile {
+  margin-top: 108px;
+}
+
+.profile__card-img {
+  @include col(1, 4);
+  margin: 0 auto;
+
+}
+
+.profile__avatar {
+  border-radius: 90px;
+  border: 2px solid var(--white);
+  box-shadow: 0px 1px 50px var(--white), inset 0px 75px 50px rgba(0, 0, 0, 0.25);
+}
+
+.profile__user-info {
+  @include col(5, 8);
+}
+
+.profile__username {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile__name {
+  @include semi;
+  font-size: 24px;
+  line-height: 115%;
+  letter-spacing: -0.03em;
+}
+
+.profile__block-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile__lower-text {
+  @include mono-bold;
+  font-size: 16px;
+  line-height: 125%;
+  letter-spacing: -0.03em;
+  color: var(--b-grey);
+}
+
+.profile__share {
+  margin-top: 10px;
+}
+
+.profile__info {
+  @include mono-bold;
+  color: var(--b-grey);
+  font-size: 16px;
+  line-height: 125%;
+  letter-spacing: -0.03em;
+  margin-top: 6px;
+
+  @media screen and (max-width: 330px) {
+    font-size: 14px;
+  }
+}
+
+.profile__sphere {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  margin-top: 128px;
+  width: 192px;
+  height: 192px;
+  border-radius: 50%;
+  background-color: var(--white);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: 0px 0px 96px 96px rgba(255, 255, 255, 0.8), 0px 4px 4px rgba(0, 0, 0, 0.25), inset 48px 0px 48px rgba(0, 0, 0, 0.8);
+}
+
+.profile__users {
+  margin-top: 160px;
+}
+
+.profile__title {
+  @include semi;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--b-grey);
+}
+
+.profile__humans {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 64px;
+  column-gap: 105px;
+  row-gap: 48px;
+}
+
+.profile__image {
+  border-radius: 90px;
+  width: 74px;
+  height: 74px;
+}
+
+.profile__tag {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  @include semi;
+  margin-top: 22px;
+  letter-spacing: -0.03em;
+  font-size: 16px;
+  line-height: 175%;
+  color: var(--b-grey);
+}
+
+.btn__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.profile__btn {
+  @include semi;
+  display: block;
+  border: none;
+  background-color: transparent;
+  margin-top: 70px;
+  margin-bottom: 108px;
+  color: var(--white);
+  padding: 0;
+  font-size: 16px;
+  line-height: 175%;
+  letter-spacing: -0.03em;
+}
