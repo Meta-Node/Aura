@@ -48,10 +48,24 @@
         </div>
       </div>
       <div class="feedback__questions">
-        <button class="text-button feedback__question-btn">Rate Chair?</button>
-        <button class="text-button feedback__question-btn">
+        <button
+          class="text-button feedback__question-btn"
+          @click="onFeedbackClick"
+        >
+          Rate Chair?
+        </button>
+        <div v-if="isFeedbackSliderVisible" class="feedback__slider">
+          Feedback slider
+        </div>
+        <button
+          class="text-button feedback__question-btn"
+          @click="onEnergyClick"
+        >
           Explore Energy?
         </button>
+        <div v-if="isEnergySliderVisible" class="energy__slider">
+          Energy slider
+        </div>
       </div>
       <div class="feedback__users">
         <h3 class="feedback__title">Yet To Be Rated</h3>
@@ -104,3 +118,22 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      isFeedbackSliderVisible: false,
+      isEnergySliderVisible: false,
+    }
+  },
+  methods: {
+    onFeedbackClick() {
+      this.isFeedbackSliderVisible = !this.isFeedbackSliderVisible
+    },
+    onEnergyClick() {
+      this.isEnergySliderVisible = !this.isEnergySliderVisible
+    },
+  },
+}
+</script>
