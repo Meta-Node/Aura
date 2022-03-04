@@ -16,7 +16,7 @@
           />
         </svg>
       </div>
-      <div class="header__info">
+      <div v-if="!isAuth" class="header__info">
         <p class="header__title">
           Powered By:
           <a
@@ -29,6 +29,18 @@
           </a>
         </p>
       </div>
+      <div v-else></div>
     </nav>
   </header>
 </template>
+
+<script>
+export default {
+  props: {
+    isAuth: {
+      type: Boolean,
+      default: false,
+    },
+  },
+}
+</script>
