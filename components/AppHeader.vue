@@ -19,7 +19,12 @@
       <div class="header__info">
         <p class="header__title">
           Powered By:
-          <a href="https://www.brightid.org/" class="header__title-link">
+          <a
+            target="_blank"
+            rel="noreferer noopener"
+            href="https://www.brightid.org/"
+            class="header__title-link"
+          >
             Bright ID
           </a>
         </p>
