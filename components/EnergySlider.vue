@@ -17,7 +17,7 @@
       ></div>
     </div>
     <p>
-      <!-- <span id="percents" class="feedback__percents">{{ percents }}%</span> -->
+      <span id="percents" class="feedback__percents">{{ percents }}%</span>
     </p>
   </div>
 </template>

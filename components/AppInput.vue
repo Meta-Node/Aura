@@ -50,7 +50,7 @@ export default {
     },
     isSearch: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
 }
