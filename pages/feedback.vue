@@ -54,7 +54,7 @@
         >
           Rate Chair?
         </button>
-        <div v-if="isFeedbackSliderVisible" class="feedback__slider">
+        <div v-if="isFeedbackSliderVisible" class="feedback__quality-slider">
           <h3 class="feedback__quality-title">Honesty</h3>
           <feedback-slider
             id="quality"
@@ -71,8 +71,16 @@
         >
           Explore Energy?
         </button>
-        <div v-if="isEnergySliderVisible" class="feedback__energy">
-          Energy Transfer
+        <div v-if="isEnergySliderVisible" class="feedback__energy-slider">
+          <h3 class="feedback__energy-title">Energy Transfer</h3>
+          <energy-slider
+            id="quality"
+            type="range"
+            :min="0"
+            :max="100"
+            :step="25"
+            :value="0"
+          />
         </div>
       </div>
       <div class="feedback__users">

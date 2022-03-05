@@ -7,9 +7,10 @@
       :min="min"
       :max="max"
       :step="step"
+      :value="percents"
       @input="onRange"
     />
-    <p><span id="percents">{{percents}}</span></p>
+    <p><span id="percents" class="feedback__percents">{{percents}}</span></p>
   </div>
 </template>
 
@@ -50,7 +51,7 @@ export default {
 
   methods: {
     onRange (e) {
-      this.percents = e.value
+      this.percents = +e.target.value
     }
   },
 }
