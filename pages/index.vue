@@ -21,20 +21,20 @@
       <div class="landing__input-form">
         <h3 class="landing__input-name">Early Access</h3>
         <form class="form" novalidate>
-          <div class="form__inputs">
-            <app-input
-              id="explorer"
-              type="text"
-              placeholder="Explorer Code"
-              :required="true"
-            />
-            <app-input
-              id="password"
-              type="password"
-              placeholder="Password"
-              :required="true"
-            />
-          </div>
+          <app-input
+            id="explorer"
+            class="form__input-wrapper"
+            type="text"
+            placeholder="Explorer Code"
+            :required="true"
+          />
+          <app-input
+            id="password"
+            class="form__input-wrapper"
+            type="password"
+            placeholder="Password"
+            :required="true"
+          />
           <button type="submit" class="text-button form__btn">
             <p class="form__btn-text">Sign In</p>
           </button>

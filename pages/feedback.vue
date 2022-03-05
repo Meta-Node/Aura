@@ -55,7 +55,15 @@
           Rate Chair?
         </button>
         <div v-if="isFeedbackSliderVisible" class="feedback__slider">
-          Feedback slider
+          <h3 class="feedback__quality-title">Honesty</h3>
+          <feedback-slider
+            id="quality"
+            type="range"
+            :min="-4"
+            :max="4"
+            :step="1"
+            :value="0"
+          />
         </div>
         <button
           class="text-button feedback__question-btn"
@@ -63,8 +71,8 @@
         >
           Explore Energy?
         </button>
-        <div v-if="isEnergySliderVisible" class="energy__slider">
-          Energy slider
+        <div v-if="isEnergySliderVisible" class="feedback__energy">
+          Energy Transfer
         </div>
       </div>
       <div class="feedback__users">
@@ -120,7 +128,11 @@
 </template>
 
 <script>
+import FeedbackSlider from '~/components/FeedbackSlider.vue'
+
 export default {
+  components: { FeedbackSlider },
+
   data() {
     return {
       isFeedbackSliderVisible: false,
