@@ -4,6 +4,8 @@
       <div class="grid feedback__card">
         <div class="feedback__card-img">
           <img
+            width="106"
+            height="106"
             class="img feedback__avatar"
             src="/images/card-img.jpg"
             alt="Avatar"

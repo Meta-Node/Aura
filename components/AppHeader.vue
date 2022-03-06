@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <nav class="container header__nav">
-      <div class="header__img-wrapper">
+      <nuxt-link to="/" class="header__img-wrapper" aria-label="logo">
         <svg
           class="img header__img"
           width="52"
@@ -15,7 +15,7 @@
             fill="white"
           />
         </svg>
-      </div>
+      </nuxt-link>
       <div v-if="!isAuth" class="header__info">
         <p class="header__title">
           Powered By:
@@ -35,10 +35,14 @@
             <nuxt-link to="/profile/" class="header__text"> Profile </nuxt-link>
           </li>
           <li class="nav-item header__item">
-            <nuxt-link to="/feedback/" class="header__text"> Feedback </nuxt-link>
+            <nuxt-link to="/feedback/" class="header__text">
+              Feedback
+            </nuxt-link>
           </li>
           <li class="nav-item header__item">
-            <nuxt-link to="/community/" class="header__text"> Community </nuxt-link>
+            <nuxt-link to="/community/" class="header__text">
+              Community
+            </nuxt-link>
           </li>
           <li class="nav-item header__item">
             <nuxt-link to="/energy/" class="header__text"> Energy </nuxt-link>

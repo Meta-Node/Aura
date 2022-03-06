@@ -5,7 +5,13 @@
         <filter-button name="Sparks" />
         <filter-button name="Composite" />
       </div>
-      <img src="/images/chart.png" alt="Diagram" class="overview__chart" />
+      <img
+        src="/images/chart.png"
+        alt="Diagram"
+        class="overview__chart"
+        width="291"
+        height="276"
+      />
       <div class="overview__filter">
         <filter-button name="Name V" />
         <filter-button name="Amount V" />

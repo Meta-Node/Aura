@@ -4,6 +4,8 @@
       <div class="grid profile__card">
         <div class="profile__card-img">
           <img
+            width="106"
+            height="106"
             class="img profile__avatar"
             src="/images/card-img.jpg"
             alt="Avatar"

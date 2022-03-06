@@ -2,6 +2,8 @@
   <li class="user-v1__item">
     <nuxt-link :to="url">
       <img
+        width="74"
+        height="74"
         :src="img"
         :alt="name"
         class="user-v1__image"
