@@ -1,0 +1,22 @@
+.switch-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filter-button {
+  @include mono-bold;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  background-color: transparent;
+  border: 2px solid var(--b-grey);
+  border-radius: 70px;
+  color: var(--white);
+  padding: 4px 15px;
+  margin-right: 10px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

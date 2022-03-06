@@ -43,26 +43,6 @@
   margin-bottom: 44px;
 }
 
-.community__switch-button {
-  margin-right: 10px;
-
-  &:last-child {
-    margin-right: 0;
-  }
-}
-
-.community__button {
-  @include mono-bold;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: -0.03em;
-  background-color: transparent;
-  border: 2px solid var(--b-grey);
-  border-radius: 70px;
-  color: var(--white);
-  padding: 4px 15px;
-}
-
 .community__humans {
   display: flex;
   flex-wrap: wrap;
@@ -88,12 +68,6 @@
   font-size: 16px;
   line-height: 175%;
   color: var(--b-grey);
-}
-
-.community__switch-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .btn__wrapper {

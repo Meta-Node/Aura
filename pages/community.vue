@@ -14,16 +14,10 @@
       </div>
       <div class="community__users">
         <h3 class="community__humans-title">Your Connections</h3>
-        <div class="community__switch-wrapper">
-          <div class="community__switch-button">
-            <button class="community__button">Name V</button>
-          </div>
-          <div class="community__switch-button">
-            <button class="community__button">Rating V</button>
-          </div>
-          <div class="community__switch-button">
-            <button class="community__button">Unrated</button>
-          </div>
+        <div class="switch-wrapper">
+          <filter-button name="Name V" />
+          <filter-button name="Rating V" />
+          <filter-button name="Unrated" />
         </div>
         <ul class="community__humans">
           <user-v-1
@@ -47,7 +41,8 @@
 <script>
 import AppInput from '~/components/AppInput.vue'
 import UserV1 from '~/components/UserV1.vue'
+import FilterButton from '~/components/FilterButton.vue'
 export default {
-  components: { AppInput, UserV1 },
+  components: { AppInput, UserV1, FilterButton },
 }
 </script>

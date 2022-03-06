@@ -1,0 +1,74 @@
+.flow__input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .input {
+    padding-right: 40px;
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  max-width: 100%;
+  width: 254px;
+}
+
+.flow__statistic {
+  margin-top: 60px;
+}
+
+.flow__stat-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+  margin-bottom: 38px;
+}
+
+.flow__stat-button {
+  @include semi;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  color: var(--b-grey);
+  display: block;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin-right: 16px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.flow__switch-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flow__humans-stat {
+  margin-top: 42px;
+}
+
+.btn__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.flow__btn {
+  @include semi;
+  display: block;
+  border: none;
+  background-color: transparent;
+  margin-top: 70px;
+  margin-bottom: 108px;
+  color: var(--white);
+  padding: 0;
+  font-size: 16px;
+  line-height: 175%;
+  letter-spacing: -0.03em;
+}
