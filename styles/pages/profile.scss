@@ -46,6 +46,7 @@
 
 .profile__share {
   margin-top: 10px;
+
   path {
     stroke: var(--b-grey);
   }
@@ -91,45 +92,6 @@
   line-height: 130%;
   letter-spacing: -0.03em;
   text-align: center;
-  color: var(--b-grey);
-}
-
-.profile__humans {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 64px;
-  row-gap: 40px;
-}
-
-.profile__item {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.profile__image {
-  border-radius: 90px;
-  width: 74px;
-  height: 74px;
-}
-
-.profile__image--brightness {
-  box-shadow: 0px 1px 20px var(--brightness) var(--white),
-    inset 0px 75px 50px rgba(0, 0, 0, 0.25);
-}
-
-.profile__tag {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  @include semi;
-  margin-top: 22px;
-  letter-spacing: -0.03em;
-  font-size: 16px;
-  line-height: 175%;
   color: var(--b-grey);
 }
 

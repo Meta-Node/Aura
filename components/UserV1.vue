@@ -1,14 +1,14 @@
 <template>
-  <li class="profile__item">
+  <li class="user-v1__item">
     <nuxt-link :to="url">
       <img
         :src="img"
         :alt="name"
-        class="profile__image"
-        :class="[brightness && 'profile__image--brightness']"
+        class="user-v1__image"
+        :class="[brightness && 'user-v1__image--brightness']"
         :style="`--brightness: ${brightness}px`"
       />
-      <p class="profile__tag">{{ name }}</p>
+      <p class="user-v1__tag">{{ name }}</p>
     </nuxt-link>
   </li>
 </template>

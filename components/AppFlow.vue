@@ -25,146 +25,15 @@
       </div>
       <div class="energy__humans-stat">
         <ul class="energy__humans">
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">190.7%</p>
-              <p class="energy__num energy__num-outbound">148.6%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">4,721.2%</p>
-              <p class="energy__num energy__num-outbound">3,226.8%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">316.4%</p>
-              <p class="energy__num energy__num-outbound">357.1%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">1,297.6%</p>
-              <p class="energy__num energy__num-outbound">1,492.4%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">48.3%</p>
-              <p class="energy__num energy__num-outbound">39.4%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">190.7%</p>
-              <p class="energy__num energy__num-outbound">148.6%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">4,721.2%</p>
-              <p class="energy__num energy__num-outbound">3,226.8%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">316.4%</p>
-              <p class="energy__num energy__num-outbound">357.1%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">1,297.6%</p>
-              <p class="energy__num energy__num-outbound">1,492.4%</p>
-            </div>
-          </li>
-          <li class="energy__humans-list">
-            <nuxt-link to="/" class="energy__username">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="energy__image"
-              />
-              <p class="energy__tag">User Name</p>
-            </nuxt-link>
-            <div class="energy__numbers">
-              <p class="energy__num energy__num-inbound">48.3%</p>
-              <p class="energy__num energy__num-outbound">39.4%</p>
-            </div>
-          </li>
+          <user-v-2
+            v-for="(user, idx) in 10"
+            :key="idx"
+            img="/images/card-img.jpg"
+            name="User Name"
+            url="/"
+            inbound="190.7%"
+            outbound="148.6%"
+          />
         </ul>
       </div>
       <div class="btn__wrapper">
@@ -176,7 +45,8 @@
 
 <script>
 import AppInput from '~/components/AppInput.vue'
+import UserV2 from '~/components/UserV2.vue'
 export default {
-  components: { AppInput },
+  components: { UserV2, AppInput },
 }
 </script>
