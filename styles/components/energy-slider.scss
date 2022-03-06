@@ -49,14 +49,24 @@
 
 .feedback__energy-block {
   background-color: #666666;
+  width: 71px;
   position: absolute;
   border-radius: 80px;
   top: 2px;
   bottom: 2px;
   left: 0;
-  margin-right: 2px;
   margin-left: 2px;
   z-index: 1;
+}
+
+.feedback__energy-division {
+  background-color: var(--grey);
+  height: 14px;
+  width: 2px;
+  position: absolute;
+  left: 57px;
+  z-index: 1;
+  top: 1px;
 }
 
 .feedback__percents {

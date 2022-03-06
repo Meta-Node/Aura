@@ -11,10 +11,8 @@
         :value="percents"
         @input="onRange"
       />
-      <div
-        class="feedback__energy-block"
-        v-bind:style="{ right: percentsReversed() + '%' }"
-      ></div>
+      <div class="feedback__energy-block"></div>
+      <div class="feedback__energy-division"></div>
     </div>
     <p>
       <span id="percents" class="feedback__percents">{{ percents }}%</span>
@@ -60,10 +58,6 @@ export default {
   methods: {
     onRange(e) {
       this.percents = +e.target.value
-    },
-
-    percentsReversed() {
-      return 100 - this.percents
     },
   },
 }
