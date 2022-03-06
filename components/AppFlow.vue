@@ -1,5 +1,5 @@
 <template>
-  <div class="app-flow">
+  <div class="flow">
     <div class="flow__input-wrapper">
       <app-input
         id="search"

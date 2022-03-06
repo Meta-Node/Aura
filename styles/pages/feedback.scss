@@ -5,7 +5,6 @@
 .feedback__card-img {
   @include col(1, 4);
   margin: 0 auto;
-
 }
 
 .feedback__avatar {
@@ -63,28 +62,28 @@
 }
 
 .feedback__questions {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .feedback__question-btn {
-    @include semi;
-    display: block;
-    border: none;
-    background-color: transparent;
-    margin-top: 60px;
-    color: var(--white);
-    padding: 0;
-    font-size: 24px;
-    line-height: 115%;
-    letter-spacing: -0.03em;
-    width: 180px;
+  @include semi;
+  display: block;
+  border: none;
+  background-color: transparent;
+  margin-top: 60px;
+  color: var(--white);
+  padding: 0;
+  font-size: 24px;
+  line-height: 115%;
+  letter-spacing: -0.03em;
+  width: 180px;
 
-    &:first-of-type {
-        margin-top: 108px;
-    }
+  &:first-of-type {
+    margin-top: 108px;
+  }
 }
 
 .feedback__users {
@@ -98,15 +97,6 @@
   letter-spacing: -0.03em;
   text-align: center;
   color: var(--b-grey);
-}
-
-.feedback__humans {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 64px;
-  column-gap: 105px;
-  row-gap: 40px;
 }
 
 .feedback__image {

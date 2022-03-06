@@ -1,21 +1,16 @@
 <template>
-  <div class="overview__main">
+  <div class="overview">
     <div class="overview__wrapper">
       <div class="overview__filter-wrapper">
         <filter-button name="Sparks" />
         <filter-button name="Composite" />
       </div>
-      <img
-        src="../static/images/chart.png"
-        alt="Diagram"
-        class="overview__chart"
-      />
+      <img src="/images/chart.png" alt="Diagram" class="overview__chart" />
       <div class="overview__filter">
         <filter-button name="Name V" />
         <filter-button name="Amount V" />
       </div>
     </div>
-
 
     <div class="overview__results">
       <ul class="overview__chart-results">

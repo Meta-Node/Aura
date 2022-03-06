@@ -1,11 +1,11 @@
-.user-v1__humans {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 64px;
-    row-gap: 40px;
-  }
+.user-v1-ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 64px;
+  row-gap: 40px;
+}
 
 .user-v1__item {
   display: flex;

@@ -50,7 +50,7 @@
       <div class="profile__sphere"></div>
       <div class="profile__users">
         <h3 class="profile__title">Yet To Be Rated</h3>
-        <ul class="user-v1__humans">
+        <ul class="user-v1-ul">
           <user-v-1
             v-for="(user, idx) in 3"
             :key="idx"

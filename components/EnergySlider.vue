@@ -14,9 +14,7 @@
       <div class="feedback__energy-block"></div>
       <div class="feedback__energy-division"></div>
     </div>
-    <p>
-      <span id="percents" class="feedback__percents">{{ percents }}%</span>
-    </p>
+    <small id="percents" class="feedback__percents">{{ percents }}%</small>
   </div>
 </template>
 

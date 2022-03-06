@@ -85,47 +85,14 @@
       </div>
       <div class="feedback__users">
         <h3 class="feedback__title">Yet To Be Rated</h3>
-        <ul class="feedback__humans">
-          <li class="feedback__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="feedback__image"
-              />
-              <p class="feedback__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="feedback__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="feedback__image"
-              />
-              <p class="feedback__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="feedback__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="feedback__image"
-              />
-              <p class="feedback__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="feedback__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="feedback__image"
-              />
-              <p class="feedback__tag">User Name</p>
-            </nuxt-link>
-          </li>
+        <ul class="user-v1-ul">
+          <user-v-1
+            v-for="(user, idx) in 4"
+            :key="idx"
+            img="/images/card-img.jpg"
+            name="User Name"
+            url="/"
+          />
         </ul>
         <div class="btn__wrapper">
           <button class="text-button feedback__btn">Load More...</button>

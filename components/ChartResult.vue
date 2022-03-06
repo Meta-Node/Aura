@@ -1,5 +1,5 @@
 <template>
-  <li class="result__data-list">
+  <li class="result">
     <div class="result__circle"></div>
     <p class="result__tag">{{ name }}</p>
     <p class="result__num result__num-name">{{ dataName }}</p>
