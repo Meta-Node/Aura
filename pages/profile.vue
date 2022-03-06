@@ -51,46 +51,13 @@
       <div class="profile__users">
         <h3 class="profile__title">Yet To Be Rated</h3>
         <ul class="profile__humans">
-          <li class="profile__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="profile__image"
-              />
-              <p class="profile__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="profile__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="profile__image"
-              />
-              <p class="profile__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="profile__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="profile__image"
-              />
-              <p class="profile__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="profile__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="profile__image"
-              />
-              <p class="profile__tag">User Name</p>
-            </nuxt-link>
-          </li>
+          <user-v-1
+            v-for="(user, idx) in 3"
+            :key="idx"
+            img="/images/card-img.jpg"
+            name="User Name"
+            url="/"
+          />
         </ul>
         <div class="btn__wrapper">
           <button class="text-button profile__btn">Load More...</button>
@@ -99,3 +66,10 @@
     </div>
   </section>
 </template>
+
+<script>
+import UserV1 from '~/components/UserV1.vue'
+export default {
+  components: { UserV1 },
+}
+</script>

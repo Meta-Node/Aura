@@ -26,86 +26,15 @@
           </div>
         </div>
         <ul class="community__humans">
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
-          <li class="community__item">
-            <nuxt-link to="/">
-              <img
-                src="/images/card-img.jpg"
-                alt="Avatar"
-                class="community__image"
-              />
-              <p class="community__tag">User Name</p>
-            </nuxt-link>
-          </li>
+          <user-v-1
+            v-for="(user, idx) in 10"
+            :key="idx"
+            :is-brightness="true"
+            :brightness="Math.round(20 * Math.random())"
+            img="/images/card-img.jpg"
+            name="User Name"
+            url="/"
+          />
         </ul>
         <div class="btn__wrapper">
           <button class="text-button community__btn">Load More...</button>
@@ -117,7 +46,8 @@
 
 <script>
 import AppInput from '~/components/AppInput.vue'
+import UserV1 from '~/components/UserV1.vue'
 export default {
-  components: { AppInput },
+  components: { AppInput, UserV1 },
 }
 </script>
