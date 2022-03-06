@@ -1,0 +1,170 @@
+.energy {
+  margin-top: 112px;
+}
+
+.energy__main-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.energy__main-button {
+  @include semi;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  color: var(--b-grey);
+  display: block;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 44px;
+  margin-right: 102px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.energy__input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.energy__statistic {
+  margin-top: 60px;
+}
+
+.energy__stat-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+  margin-bottom: 38px;
+}
+
+.energy__stat-button {
+  @include semi;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  color: var(--b-grey);
+  display: block;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin-right: 16px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.energy__switch-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.energy__switch-button {
+  margin-right: 16px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.energy__button {
+  @include mono-bold;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  background-color: transparent;
+  border: 2px solid var(--b-grey);
+  border-radius: 70px;
+  color: var(--white);
+  padding: 4px 15px;
+}
+
+.energy__humans-stat {
+  margin-top: 42px;
+}
+
+.energy__humans-list {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  margin-right: 30px;
+  margin-left: 30px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.energy__username {
+  display: flex;
+  align-items: center;
+}
+
+.energy__image {
+  display: block;
+  width: 48px;
+  height: 48px;
+  border-radius: 90px;
+  margin-right: 30px;
+}
+
+.energy__tag {
+  @include semi;
+  font-size: 16px;
+  line-height: 175%;
+  color: var(--b-grey);
+  letter-spacing: -0.03em;
+}
+
+.energy__numbers {
+  display: flex;
+  align-items: center;
+}
+
+.energy__num {
+  @include med;
+  font-size: 14px;
+  line-height: 200%;
+  letter-spacing: -0.03em;
+}
+
+.energy__num-inbound {
+  color: var(--b-grey);
+  margin-right: 6px;
+}
+
+.energy__num-outbound {
+  color: var(--s-grey);
+}
+
+.btn__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.energy__btn {
+  @include semi;
+  display: block;
+  border: none;
+  background-color: transparent;
+  margin-top: 70px;
+  margin-bottom: 108px;
+  color: var(--white);
+  padding: 0;
+  font-size: 16px;
+  line-height: 175%;
+  letter-spacing: -0.03em;
+}

@@ -41,7 +41,7 @@
             <nuxt-link to="/community/" class="header__text"> Community </nuxt-link>
           </li>
           <li class="nav-item header__item">
-            <nuxt-link to="/" class="header__text"> Energy </nuxt-link>
+            <nuxt-link to="/energy/" class="header__text"> Energy </nuxt-link>
           </li>
         </ul>
       </div>
