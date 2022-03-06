@@ -9,6 +9,7 @@
           type="text"
           placeholder="Search..."
           :required="true"
+          :is-search="true"
         />
       </div>
       <div class="community__users">

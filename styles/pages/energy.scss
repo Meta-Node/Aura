@@ -99,9 +99,8 @@
 .energy__humans-list {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
-  margin-right: 30px;
-  margin-left: 30px;
 
   &:last-child {
     margin-bottom: 0;
@@ -111,6 +110,8 @@
 .energy__username {
   display: flex;
   align-items: center;
+  overflow: hidden;
+  max-width: 70%;
 }
 
 .energy__image {
@@ -127,17 +128,25 @@
   line-height: 175%;
   color: var(--b-grey);
   letter-spacing: -0.03em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 10px;
 }
 
 .energy__numbers {
   display: flex;
   align-items: center;
+  @media (max-width: '330px') {
+    flex-direction: column;
+    gap: 6px;
+  }
 }
 
 .energy__num {
   @include med;
   font-size: 14px;
-  line-height: 200%;
+  line-height: 100%;
   letter-spacing: -0.03em;
 }
 

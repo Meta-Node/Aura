@@ -8,6 +8,7 @@
       <div class="energy__input-wrapper">
         <app-input
           id="search"
+          :is-search="true"
           class="input-wrapper"
           type="text"
           placeholder="Search..."
