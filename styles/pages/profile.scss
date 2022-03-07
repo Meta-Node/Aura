@@ -7,10 +7,8 @@
   margin: 0 auto;
 }
 
-.profile__avatar {
-  border-radius: 90px;
-  border: 2px solid var(--white);
-  box-shadow: 0px 1px 50px var(--white), inset 0px 75px 50px rgba(0, 0, 0, 0.25);
+.profile__block-left {
+  width: 100%;
 }
 
 .profile__user-info {
@@ -27,6 +25,9 @@
   font-size: 24px;
   line-height: 115%;
   letter-spacing: -0.03em;
+  overflow: hidden;
+  max-width: 94%;
+  text-overflow: ellipsis;
 }
 
 .profile__block-right {
@@ -36,7 +37,7 @@
   align-items: center;
 }
 
-.profile__lower-text {
+.profile__rating {
   @include mono-bold;
   font-size: 16px;
   line-height: 125%;
