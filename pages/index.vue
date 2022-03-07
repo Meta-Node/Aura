@@ -36,7 +36,7 @@
             :required="true"
           />
           <button type="submit" class="text-button form__btn">
-            <p class="form__btn-text">Sign In</p>
+            <span class="form__btn-text">Sign In</span>
           </button>
         </form>
       </div>
