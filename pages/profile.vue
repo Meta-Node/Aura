@@ -3,7 +3,7 @@
     <div class="container profile__wrapper">
       <profile-info
         img="/images/card-img.jpg"
-        name="Leonid Kostetskyi"
+        name="User Name"
         rating="Low"
         date="4 months"
         :connections="116"
