@@ -2,15 +2,7 @@
   <section class="feedback">
     <div class="container feedback__wrapper">
       <div class="grid feedback__card">
-        <div class="feedback__card-img">
-          <img
-            width="106"
-            height="106"
-            class="img feedback__avatar"
-            src="/images/card-img.jpg"
-            alt="Avatar"
-          />
-        </div>
+        <profile-avatar img="/images/card-img.jpg" alt="Avatar" />
         <div class="feedback__user-info">
           <div class="feedback__username">
             <div class="feedback__block-left">
@@ -106,9 +98,11 @@
 
 <script>
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
+import ProfileAvatar from '~/components/ProfileAvatar.vue'
+import ProfileInfo from '~/components/ProfileInfo.vue'
 
 export default {
-  components: { FeedbackSlider },
+  components: { FeedbackSlider, ProfileAvatar, ProfileInfo },
 
   data() {
     return {
