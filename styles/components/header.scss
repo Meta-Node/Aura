@@ -2,8 +2,9 @@
   position: fixed;
   z-index: 100;
   width: 100%;
-  max-width: 460px;
+  // max-width: 460px;
   top: 0;
+  left: 0;
   transition: opacity 0.25s ease, transform 0.25s ease,
     background-color 0.25s ease;
   &.add-bg {
