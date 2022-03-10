@@ -18,8 +18,10 @@
         </button>
       </div>
       <div class="enegry__screens">
-        <app-flow v-if="isFlow" />
-        <app-overview v-else />
+        <transition name="fade" mode="out-in">
+          <app-flow v-if="isFlow" />
+          <app-overview v-else />
+        </transition>
       </div>
     </div>
   </section>

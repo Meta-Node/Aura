@@ -2,7 +2,7 @@
   <div class="overview">
     <div class="overview__wrapper">
       <div class="overview__filter-wrapper">
-        <filter-button name="Sparks" />
+        <filter-button name="Sparks" :active="true" />
         <filter-button name="Composite" />
       </div>
       <img
@@ -13,7 +13,7 @@
         height="276"
       />
       <div class="overview__filter">
-        <filter-button name="Name V" />
+        <filter-button name="Name V" :active="true" />
         <filter-button name="Amount V" />
       </div>
     </div>

@@ -12,7 +12,9 @@
     </div>
     <div class="flow__statistic">
       <div class="flow__stat-filter">
-        <button class="flow__stat-button">Inbound</button>
+        <button class="flow__stat-button flow__stat-button--active">
+          Inbound
+        </button>
         <button class="flow__stat-button">Outbound</button>
       </div>
       <div class="flow__switch-wrapper">

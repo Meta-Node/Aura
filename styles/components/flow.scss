@@ -32,7 +32,7 @@
   font-size: 24px;
   line-height: 130%;
   letter-spacing: -0.03em;
-  color: var(--b-grey);
+  color: var(--grey);
   display: block;
   border: none;
   background-color: transparent;
@@ -41,6 +41,9 @@
 
   &:last-child {
     margin-right: 0;
+  }
+  &--active {
+    color: var(--b-grey);
   }
 }
 
