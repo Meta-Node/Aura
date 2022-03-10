@@ -10,13 +10,19 @@
   line-height: 100%;
   letter-spacing: -0.03em;
   background-color: transparent;
-  border: 2px solid var(--b-grey);
+  border: 2px solid var(--s-grey);
   border-radius: 70px;
-  color: var(--white);
+  color: var(--s-grey);
   padding: 4px 15px;
   margin-right: 10px;
+  opacity: 0.5;
 
   &:last-child {
     margin-right: 0;
+  }
+  &--active {
+    color: var(--white);
+    border: 2px solid var(--b-grey);
+    opacity: 1;
   }
 }

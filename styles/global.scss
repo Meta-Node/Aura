@@ -29,3 +29,12 @@ svg {
 .e-fixed {
   overflow: hidden !important;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}

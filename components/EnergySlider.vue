@@ -10,6 +10,8 @@
         :step="step"
         :value="percents"
         @input="onRange"
+        @mouseup="onAfterChange"
+        @touchend="onAfterChange"
       />
       <div class="feedback__energy-block"></div>
       <div class="feedback__energy-division"></div>
@@ -50,12 +52,16 @@ export default {
   data() {
     return {
       percents: 0,
+      updatedPercent: 0,
     }
   },
 
   methods: {
     onRange(e) {
       this.percents = +e.target.value
+    },
+    onAfterChange() {
+      this.updatedPercent = this.percents
     },
   },
 }

@@ -9,22 +9,25 @@
   align-items: center;
 }
 
+.feedback__energy-wrapper {
+  margin-top: 60px;
+}
+
+.feedback__quality-wrapper {
+  margin-top: 108px;
+}
+
 .feedback__question-btn {
   @include semi;
   display: block;
   border: none;
   background-color: transparent;
-  margin-top: 60px;
   color: var(--white);
   padding: 0;
   font-size: 24px;
-  line-height: 115%;
+  line-height: 130%;
   letter-spacing: -0.03em;
   width: 180px;
-
-  &:first-of-type {
-    margin-top: 108px;
-  }
 }
 
 .feedback__users {

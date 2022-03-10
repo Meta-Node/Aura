@@ -28,8 +28,11 @@
 <script>
 import AppFlow from '~/components/AppFlow.vue'
 import AppOverview from '~/components/AppOverview.vue'
+import transition from '~/mixins/transition'
 export default {
   components: { AppFlow, AppOverview },
+  mixins: [transition],
+
   data() {
     return {
       isFlow: true,

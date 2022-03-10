@@ -15,7 +15,7 @@
       <div class="community__users">
         <h3 class="community__humans-title">Your Connections</h3>
         <div class="switch-wrapper">
-          <filter-button name="Name V" />
+          <filter-button name="Name V" :active="true" />
           <filter-button name="Rating V" />
           <filter-button name="Unrated" />
         </div>
@@ -42,7 +42,9 @@
 import AppInput from '~/components/AppInput.vue'
 import UserV1 from '~/components/UserV1.vue'
 import FilterButton from '~/components/FilterButton.vue'
+import transition from '~/mixins/transition'
 export default {
   components: { AppInput, UserV1, FilterButton },
+  mixins: [transition],
 }
 </script>

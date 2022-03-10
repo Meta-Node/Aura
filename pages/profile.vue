@@ -7,7 +7,7 @@
         rating="Low"
         date="4 months"
         :connections="116"
-        :brightness="Math.round(10 * Math.random())"
+        :brightness="brightness"
       />
       <div class="profile__sphere"></div>
       <div class="profile__users">
@@ -32,7 +32,15 @@
 <script>
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import UserV1 from '~/components/UserV1.vue'
+import transition from '~/mixins/transition'
 export default {
   components: { UserV1, ProfileInfo },
+  mixins: [transition],
+
+  computed: {
+    brightness() {
+      return Math.round(10 * Math.random())
+    },
+  },
 }
 </script>

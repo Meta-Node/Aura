@@ -9,8 +9,12 @@
       :step="step"
       :value="percents"
       @input="onRange"
+      @mouseup="onAfterChange"
+      @touchend="onAfterChange"
     />
-    <p><span id="percents" class="feedback__percents">{{percents}}</span></p>
+    <p>
+      <span id="percents" class="feedback__percents">{{ percents }}</span>
+    </p>
   </div>
 </template>
 
@@ -46,13 +50,17 @@ export default {
   data() {
     return {
       percents: 0,
+      updatedPercent: 0,
     }
   },
 
   methods: {
-    onRange (e) {
+    onRange(e) {
       this.percents = +e.target.value
-    }
+    },
+    onAfterChange() {
+      this.updatedPercent = this.percents
+    },
   },
 }
 </script>

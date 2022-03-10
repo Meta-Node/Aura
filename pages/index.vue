@@ -46,7 +46,9 @@
 
 <script>
 import AppInput from '~/components/AppInput.vue'
+import transition from '~/mixins/transition'
 export default {
   components: { AppInput },
+  mixins: [transition],
 }
 </script>

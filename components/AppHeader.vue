@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header navbar">
     <nav class="container header__nav">
       <nuxt-link to="/" class="header__img-wrapper" aria-label="logo">
         <svg
@@ -60,6 +60,12 @@ export default {
       type: Boolean,
       default: true,
     },
+  },
+  async mounted() {
+    const { default: NavbarPos } = await import('~/scripts/utils/navbarPos')
+
+    this.navbarPos = new NavbarPos()
+    this.navbarPos.init()
   },
 }
 </script>
