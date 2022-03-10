@@ -1,0 +1,52 @@
+.profile {
+  margin-top: 108px;
+}
+
+.profile__sphere {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  margin-top: 128px;
+  width: 192px;
+  height: 192px;
+  border-radius: 50%;
+  background-color: var(--white);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: 0px 0px 96px 96px rgba(255, 255, 255, 0.8),
+    0px 4px 4px rgba(0, 0, 0, 0.25), inset 48px 0px 48px rgba(0, 0, 0, 0.8);
+}
+
+.profile__users {
+  margin-top: 160px;
+}
+
+.profile__title {
+  @include semi;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--b-grey);
+}
+
+.btn__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.profile__btn {
+  @include semi;
+  display: block;
+  border: none;
+  background-color: transparent;
+  margin-top: 70px;
+  margin-bottom: 108px;
+  color: var(--white);
+  padding: 0;
+  font-size: 16px;
+  line-height: 175%;
+  letter-spacing: -0.03em;
+}

@@ -1,0 +1,31 @@
+.energy {
+  margin-top: 112px;
+}
+
+.energy__main-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.energy__main-button {
+  @include semi;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  color: var(--grey);
+  display: block;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 44px;
+  margin-right: 102px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.energy__main-button--active {
+  color: var(--b-grey);
+}

@@ -1,5 +1,14 @@
-.container {
+#app {
+  max-width: 460px;
   width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.container {
+  max-width: 460px;
+  width: 100%;
+  margin: 0 auto;
   position: relative;
   padding-left: $g-offset;
   padding-right: $g-offset;
@@ -18,7 +27,7 @@
   display: grid;
   width: 100%;
   grid-auto-flow: column;
-  column-gap: 30px;
+  column-gap: 16px;
   grid-template-columns: repeat(8, 1fr);
 }
 

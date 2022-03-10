@@ -1,0 +1,20 @@
+.overview__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.overview__filter-wrapper {
+  margin-bottom: 50px;
+}
+
+.overview__filter {
+  margin-top: 45px;
+  margin-bottom: 42px;
+}
+
+.overview__chart-results {
+  display: flex;
+  flex-direction: column;
+}

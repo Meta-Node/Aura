@@ -1,3 +1,54 @@
 <template>
-  <h1>Hello</h1>
+  <main class="landing">
+    <div class="container landing__wrapper">
+      <div class="landing__sphere"></div>
+      <div class="landing__sphere-wrapper">
+        <h1 class="landing__h1">Discover & grow your Aura...</h1>
+      </div>
+      <div class="landing__text-wrapper">
+        <h3 class="landing__title">
+          Your Aura represents power & influence upon the Auracle.
+        </h3>
+        <p class="landing__text">
+          Smartly connect to and rate others to grow your Aura. Help those
+          around you grow theirs.
+        </p>
+        <p class="landing__text">
+          But take care, for making poor decisions will drain your power and
+          harm those around you.
+        </p>
+      </div>
+      <div class="landing__input-form">
+        <h3 class="landing__input-name">Early Access</h3>
+        <form class="form" novalidate>
+          <app-input
+            id="explorer"
+            class="form__input-wrapper"
+            type="text"
+            placeholder="Explorer Code"
+            :required="true"
+          />
+          <app-input
+            id="password"
+            class="form__input-wrapper"
+            type="password"
+            placeholder="Password"
+            :required="true"
+          />
+          <button type="submit" class="text-button form__btn">
+            <span class="form__btn-text">Sign In</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
 </template>
+
+<script>
+import AppInput from '~/components/AppInput.vue'
+import transition from '~/mixins/transition'
+export default {
+  components: { AppInput },
+  mixins: [transition],
+}
+</script>
