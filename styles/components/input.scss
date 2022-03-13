@@ -1,0 +1,36 @@
+.input-wrapper {
+  position: relative;
+  max-width: 100%;
+  width: 344px;
+}
+
+.form__input-wrapper {
+  position: relative;
+  color: var(--black);
+  font-size: 16px;
+  line-height: 150%;
+
+  + .form__input-wrapper {
+    margin-top: 20px;
+  }
+}
+
+.input {
+  @include reg;
+  border-radius: 10px;
+  background-color: rgba(118, 118, 128, 0.32);
+  color: rgba(241, 241, 241, 0.6);
+  width: 100%;
+  padding: 6px 8px 6px;
+  line-height: 150%;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+
+  &:valid {
+    background-color: rgba(118, 118, 128, 0.4);
+  }
+
+  &::placeholder {
+    color: rgba(241, 241, 241, 0.6);
+  }
+}

@@ -1,7 +1,7 @@
 <template>
   <section class="energy">
     <div class="container energy__wrapper">
-      <div class="energy__main-filter">
+      <!-- <div class="energy__main-filter">
         <button
           class="energy__main-button"
           :class="[isFlow && 'energy__main-button--active']"
@@ -16,7 +16,7 @@
         >
           Overview
         </button>
-      </div>
+      </div> -->
       <div class="enegry__screens">
         <transition name="fade" mode="out-in">
           <app-flow v-if="isFlow" />
