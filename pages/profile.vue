@@ -9,7 +9,7 @@
         :connections="116"
         :brightness="brightness"
       />
-      <div class="profile__sphere"></div>
+      <aura-sphere class="profile__sphere" :rating="100" />
       <div class="profile__users">
         <h3 class="profile__title">Yet To Be Rated</h3>
         <ul class="user-v1-ul">
@@ -31,10 +31,11 @@
 
 <script>
 import ProfileInfo from '~/components/ProfileInfo.vue'
+import AuraSphere from '~/components/AuraSphere.vue'
 import UserV1 from '~/components/UserV1.vue'
 import transition from '~/mixins/transition'
 export default {
-  components: { UserV1, ProfileInfo },
+  components: { UserV1, ProfileInfo, AuraSphere },
   mixins: [transition],
 
   computed: {

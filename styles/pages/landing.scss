@@ -46,6 +46,14 @@
   margin-top: 30px;
   font-size: 16px;
   line-height: 150%;
+  background: linear-gradient(
+    90deg,
+    #ffffff 0.53%,
+    rgba(255, 255, 255, 0.5) 145.92%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .landing__input-form {
@@ -70,62 +78,23 @@
   margin-top: 22px;
 }
 
-.form__input-wrapper {
-  position: relative;
-  width: 254px;
-  color: var(--black);
-  font-size: 16px;
-  line-height: 150%;
-
-  + .form__input-wrapper {
-    margin-top: 20px;
-  }
-}
-
-.input {
-  @include med;
-  border-radius: 28px;
-  background-color: var(--silver);
-  color: var(--black);
-  width: 100%;
-  padding: 4px 0 4px 30px;
-  line-height: 150%;
-  font-size: 16px;
-  letter-spacing: -0.03em;
-
-  &:valid {
-    background-color: var(--b-grey);
-  }
-
-  &::placeholder {
-    color: var(--black);
-  }
-}
-
 .form__btn {
   @include semi;
   display: block;
-  margin-top: 20px;
+  margin-top: 32px;
   border: none;
-  background-color: transparent;
-  color: var(--s-grey);
-  padding: 0;
+  background-color: rgba(#767680, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 57px;
+  color: var(--b-grey);
+  border-radius: 14px;
   font-size: 16px;
-  line-height: 150%;
+  line-height: 100%;
   letter-spacing: -0.03em;
-}
-
-//Reset autofill styles
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--black);
-  box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.01) inset;
-  transition: background-color 5000s ease-in-out 0s;
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--s-grey);
+  }
 }

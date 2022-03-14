@@ -20,35 +20,17 @@
       </div>
       <div class="landing__input-form">
         <h3 class="landing__input-name">Early Access</h3>
-        <form class="form" novalidate>
-          <app-input
-            id="explorer"
-            class="form__input-wrapper"
-            type="text"
-            placeholder="Explorer Code"
-            :required="true"
-          />
-          <app-input
-            id="password"
-            class="form__input-wrapper"
-            type="password"
-            placeholder="Password"
-            :required="true"
-          />
-          <button type="submit" class="text-button form__btn">
-            <span class="form__btn-text">Sign In</span>
-          </button>
-        </form>
+        <login-form />
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import AppInput from '~/components/AppInput.vue'
+import LoginForm from '~/components/LoginForm.vue'
 import transition from '~/mixins/transition'
 export default {
-  components: { AppInput },
+  components: { LoginForm },
   mixins: [transition],
 }
 </script>

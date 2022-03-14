@@ -19,16 +19,6 @@
   margin-bottom: 42px;
 }
 
-.community__input-wrapper {
-  position: relative;
-  width: 254px;
-  max-width: 100%;
-  
-  .input {
-    padding-right: 40px;
-  }
-}
-
 .community__users {
   margin-top: 60px;
 }
@@ -64,4 +54,11 @@
   font-size: 16px;
   line-height: 175%;
   letter-spacing: -0.03em;
+}
+
+.users-not-found {
+  display: block;
+  margin: 0 auto;
+  margin-top: 40px;
+  width: fit-content;
 }
