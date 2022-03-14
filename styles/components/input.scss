@@ -26,8 +26,12 @@
   line-height: 150%;
   font-size: 16px;
   letter-spacing: -0.03em;
+  &::selection {
+    background-color: var(--black);
+    color: var(--white);
+  }
 
-  &:valid {
+  &:focus {
     background-color: rgba(118, 118, 128, 0.4);
   }
 
@@ -44,4 +48,24 @@
   position: absolute;
   top: 10px;
   left: 8px;
+}
+
+.form__input-error {
+  color: var(--red);
+  font-size: 12px;
+}
+
+//Reset autofill styles
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--white);
+  box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.01) inset;
+  transition: background-color 5000s ease-in-out 0s;
 }

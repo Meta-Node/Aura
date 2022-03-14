@@ -55,10 +55,9 @@
 
 <script>
 export default {
-  props: {
-    isAuth: {
-      type: Boolean,
-      default: true,
+  computed: {
+    isAuth() {
+      return this.$store.state.app.isAuth
     },
   },
   async mounted() {
