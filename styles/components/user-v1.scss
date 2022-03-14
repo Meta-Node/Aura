@@ -8,10 +8,11 @@
 }
 
 .user-v1__item {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .user-v1__image {

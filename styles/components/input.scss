@@ -50,6 +50,13 @@
   left: 8px;
 }
 
+.reset-search {
+  position: absolute;
+  top: 9px;
+  right: 8px;
+  background-color: transparent;
+}
+
 .form__input-error {
   color: var(--red);
   font-size: 12px;

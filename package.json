@@ -15,10 +15,12 @@
   "dependencies": {
     "@emotionagency/utils": "latest",
     "@nuxtjs/pwa": "^3.3.5",
+    "axios": "^0.26.1",
     "core-js": "^3.9.1",
     "gsap": "latest",
     "nuxt": "^2.15.3",
-    "supports-webp": "^2.0.1"
+    "supports-webp": "^2.0.1",
+    "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^6.0.0",
