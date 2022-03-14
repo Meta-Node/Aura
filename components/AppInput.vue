@@ -3,12 +3,13 @@
     <input
       :id="id"
       class="input form__input"
+      :class="[isSearch && 'form__input--search']"
       :type="type"
       :placeholder="placeholder"
       :required="required"
       data-validation="required"
     />
-    <div v-if="isSearch" class="search-input">
+    <div v-if="isSearch" class="search-icon">
       <svg
         width="15.6"
         height="15.6"

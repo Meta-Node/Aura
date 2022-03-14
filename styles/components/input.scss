@@ -2,6 +2,7 @@
   position: relative;
   max-width: 100%;
   width: 344px;
+  margin: 0 auto;
 }
 
 .form__input-wrapper {
@@ -33,4 +34,14 @@
   &::placeholder {
     color: rgba(241, 241, 241, 0.6);
   }
+}
+
+.form__input--search {
+  padding-left: 30px;
+}
+
+.search-icon {
+  position: absolute;
+  top: 10px;
+  left: 8px;
 }

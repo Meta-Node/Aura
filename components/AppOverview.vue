@@ -13,8 +13,8 @@
         height="276"
       />
       <div class="overview__filter">
-        <filter-button name="Name V" :active="true" />
-        <filter-button name="Amount V" />
+        <filter-button name="Name" :active="true" />
+        <filter-button name="Amount" />
       </div>
     </div>
 

@@ -18,8 +18,8 @@
         <button class="flow__stat-button">Outbound</button>
       </div>
       <div class="flow__switch-wrapper">
-        <filter-button name="Name V" :active="true" />
-        <filter-button name="Amount V" />
+        <filter-button name="Name" :active="true" />
+        <filter-button name="Amount" />
       </div>
       <div class="flow__humans-stat">
         <ul class="flow__humans">

@@ -24,9 +24,9 @@
               <feedback-slider
                 id="quality"
                 type="range"
-                :min="-4"
-                :max="4"
-                :step="1"
+                :min="-100"
+                :max="100"
+                :step="25"
                 :value="0"
               />
             </div>

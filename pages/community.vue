@@ -15,9 +15,9 @@
       <div class="community__users">
         <h3 class="community__humans-title">Your Connections</h3>
         <div class="switch-wrapper">
-          <filter-button name="Name V" :active="true" />
-          <filter-button name="Rating V" />
-          <filter-button name="Unrated" />
+          <filter-button name="Name" :active="true" />
+          <filter-button name="Rating" />
+          <filter-button name="Unrated" :is-icon="false" />
         </div>
         <ul class="community__humans">
           <user-v-1

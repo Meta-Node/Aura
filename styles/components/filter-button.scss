@@ -16,6 +16,9 @@
   padding: 4px 15px;
   margin-right: 10px;
   opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:last-child {
     margin-right: 0;
@@ -25,4 +28,11 @@
     border: 2px solid var(--b-grey);
     opacity: 1;
   }
+}
+
+.filter-button__icon {
+  display: block;
+  margin-left: 4px;
+  position: relative;
+  top: 1.5px;
 }
