@@ -23,15 +23,13 @@ export default {
       const PERCENT_STEPS = getRange(100, -100, STEPS_COUNT)
       const STEPS = getRange(MAX_DIAMETER, MIN_DIAMETER, STEPS_COUNT)
 
-      let currentValue = 0
+      let diameter = 0
 
       PERCENT_STEPS.forEach((val, idx) => {
         if (val === this.rating) {
-          currentValue = STEPS[idx]
+          diameter = STEPS[idx]
         }
       })
-
-      const diameter = currentValue
 
       return diameter
     },

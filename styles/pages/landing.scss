@@ -46,6 +46,14 @@
   margin-top: 30px;
   font-size: 16px;
   line-height: 150%;
+  background: linear-gradient(
+    90deg,
+    #ffffff 0.53%,
+    rgba(255, 255, 255, 0.5) 145.92%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .landing__input-form {
@@ -73,13 +81,17 @@
 .form__btn {
   @include semi;
   display: block;
-  margin-top: 20px;
+  margin-top: 32px;
   border: none;
-  background-color: transparent;
+  background-color: rgba(#767680, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 57px;
   color: var(--b-grey);
-  padding: 0;
+  border-radius: 14px;
   font-size: 16px;
-  line-height: 150%;
+  line-height: 100%;
   letter-spacing: -0.03em;
   &:disabled {
     cursor: not-allowed;
