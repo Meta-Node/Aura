@@ -22,6 +22,22 @@
       :required="true"
       @inputValue="onInputValue"
     />
+
+    <div class="checkbox-wrapper">
+      <input
+        class="input-checkbox"
+        type="checkbox"
+        style="display: none"
+        checked="checked"
+      />
+      <label class="checkbox" for="input-checkbox"
+        ><span>
+          <svg width="12px" height="10px" viewbox="0 0 12 10">
+            <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+        ><span>Remember my details</span></label
+      >
+    </div>
+
     <button type="submit" class="text-button form__btn" :disabled="hasErrors">
       <span class="form__btn-text">Sign In</span>
     </button>
