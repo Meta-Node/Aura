@@ -9,7 +9,12 @@ export class Sphere {
   constructor($wrapper) {
     this.$wrapper = $wrapper
     this.bounds()
-    this.init()
+    this.texture = new THREE.TextureLoader().load(
+      '/images/bg-cubemap.jpg',
+      () => {
+        this.init()
+      }
+    )
   }
 
   bounds() {
@@ -48,7 +53,6 @@ export class Sphere {
 
     this.camera.position.z = 1.9
 
-    // gsap.to(this.camera.position, { duration: 1, z: 1.9 })
     gsap.to(this.$wrapper, {
       duration: 1,
       scale: 1,
@@ -57,8 +61,6 @@ export class Sphere {
   }
 
   createMesh() {
-    this.texture = new THREE.TextureLoader().load('/images/bg-cubemap.jpg')
-
     this.geometry = new THREE.SphereGeometry(1, 64, 64)
 
     this.glowMaterial = new THREE.ShaderMaterial({
