@@ -7,7 +7,12 @@
           <h3 class="profile__name" :title="name" v-html="separatedName" />
         </div>
         <div class="profile__block-right">
-          <p class="profile__rating">{{ rating }}</p>
+          <p
+            class="profile__rating"
+            :class="`profile__rating--${rating.toLowerCase()}`"
+          >
+            {{ rating }}
+          </p>
           <nuxt-link to="/">
             <svg
               class="profile__share"

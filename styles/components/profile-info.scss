@@ -34,6 +34,18 @@
   line-height: 125%;
   letter-spacing: -0.03em;
   color: var(--b-grey);
+
+  &--low {
+    color: var(--red);
+  }
+
+  &--medium {
+    color: var(--amber);
+  }
+
+  &--high {
+    color: var(--green);
+  }
 }
 
 .profile__share {
