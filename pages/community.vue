@@ -17,7 +17,7 @@
             v-for="(user, idx) in users"
             :key="idx"
             :is-brightness="true"
-            :brightness="Math.round(20 * Math.random())"
+            :brightness="brightness"
             img="/images/card-img.jpg"
             :name="user.name"
             url="/"
@@ -41,5 +41,10 @@ import users from '~/mixins/users'
 export default {
   components: { UserV1, FilterButton, AppSearch },
   mixins: [transition, users],
+  computed: {
+    brightness() {
+      return Math.round(20 * Math.random())
+    },
+  },
 }
 </script>
