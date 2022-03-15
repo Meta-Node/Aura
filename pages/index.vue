@@ -1,7 +1,7 @@
 <template>
   <main class="landing">
     <div class="container landing__wrapper">
-      <div class="landing__sphere"></div>
+      <landing-sphere />
       <div class="landing__sphere-wrapper">
         <h1 class="landing__h1">Discover & grow your Aura...</h1>
       </div>
@@ -27,10 +27,11 @@
 </template>
 
 <script>
+import LandingSphere from '~/components/LandingSphere.vue'
 import LoginForm from '~/components/LoginForm.vue'
 import transition from '~/mixins/transition'
 export default {
-  components: { LoginForm },
+  components: { LoginForm, LandingSphere },
   mixins: [transition],
 }
 </script>

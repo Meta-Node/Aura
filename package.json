@@ -20,6 +20,7 @@
     "gsap": "latest",
     "nuxt": "^2.15.3",
     "supports-webp": "^2.0.1",
+    "three": "^0.138.3",
     "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
@@ -38,6 +39,7 @@
     "gulp-webp": "^4.0.1",
     "prettier": "^2.2.1",
     "sass": "^1.43.4",
-    "sass-loader": "^10.1.1"
+    "sass-loader": "^10.1.1",
+    "webpack-glsl-loader": "^1.0.1"
   }
 }
