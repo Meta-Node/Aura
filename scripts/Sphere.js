@@ -48,7 +48,6 @@ export class Sphere {
 
     this.camera.position.z = 1.9
 
-    // gsap.to(this.camera.position, { duration: 1, z: 1.9 })
     gsap.to(this.$wrapper, {
       duration: 1,
       scale: 1,
