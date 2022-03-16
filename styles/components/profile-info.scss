@@ -25,7 +25,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .profile__rating {
@@ -50,10 +50,6 @@
 
 .profile__share {
   margin-top: 10px;
-
-  path {
-    stroke: var(--b-grey);
-  }
 }
 
 .profile__info {

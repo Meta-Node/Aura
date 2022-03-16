@@ -2,7 +2,7 @@
   <main class="landing">
     <div class="container landing__wrapper">
       <landing-sphere />
-      <div class="landing__sphere-wrapper">
+      <div class="landing__h1-wrapper">
         <h1 class="landing__h1">Discover & grow your Aura...</h1>
       </div>
       <div class="landing__text-wrapper">

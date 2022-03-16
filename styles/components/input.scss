@@ -19,7 +19,7 @@
 .input {
   @include reg;
   border-radius: 10px;
-  background-color: rgba(118, 118, 128, 0.32);
+  background-color: var(--grey);
   color: rgba(241, 241, 241, 0.6);
   width: 100%;
   padding: 6px 8px 6px;
