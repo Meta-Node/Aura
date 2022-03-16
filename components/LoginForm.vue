@@ -24,6 +24,7 @@
     />
     <div class="checkbox-wrapper">
       <input
+        id="input-checkbox"
         class="input-checkbox"
         type="checkbox"
         style="display: none"

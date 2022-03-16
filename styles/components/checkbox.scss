@@ -1,6 +1,7 @@
 .checkbox-wrapper {
-  align-self: start;
-  margin-left: 42px;
+  max-width: 344px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .checkbox {
@@ -26,8 +27,8 @@
   border-radius: 3px;
   transform: scale(1);
   vertical-align: middle;
-  border: 1px solid #89888A;
-  transition: border .5s ease;
+  border: 1px solid #89888a;
+  transition: border 0.5s ease;
 }
 
 .checkbox span:first-child svg {
@@ -41,13 +42,13 @@
   stroke-linejoin: round;
   stroke-dasharray: 16px;
   stroke-dashoffset: 16px;
-  transition: all .3s ease;
-  transition-delay: .1s;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
   transform: translate3d(0, 0, 0);
 }
 
 .checkbox span:first-child:before {
-  content: "";
+  content: '';
   width: 100%;
   height: 100%;
   background: var(--silver);
@@ -70,17 +71,17 @@
   border-color: var(--silver);
 }
 
-.input-checkbox:checked+.checkbox span:first-child {
+.input-checkbox:checked + .checkbox span:first-child {
   background: transparent;
-  animation: wave .4s ease;
+  animation: wave 0.4s ease;
 }
 
-.input-checkbox:checked+.checkbox span:first-child svg {
+.input-checkbox:checked + .checkbox span:first-child svg {
   stroke-dashoffset: 0;
 }
 
-.input-checkbox:checked+.checkbox span:first-child:before {
+.input-checkbox:checked + .checkbox span:first-child:before {
   transform: scale(3.5);
   opacity: 0;
-  transition: all .6s ease;
+  transition: all 0.6s ease;
 }
