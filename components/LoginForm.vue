@@ -22,7 +22,6 @@
       :required="true"
       @inputValue="onInputValue"
     />
-
     <div class="checkbox-wrapper">
       <input
         class="input-checkbox"
@@ -37,7 +36,6 @@
         ><span>Remember my details</span></label
       >
     </div>
-
     <button type="submit" class="text-button form__btn" :disabled="hasErrors">
       <span class="form__btn-text">Sign In</span>
     </button>
