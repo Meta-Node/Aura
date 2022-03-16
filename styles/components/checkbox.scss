@@ -21,12 +21,13 @@
   border-radius: 3px;
   transform: scale(1);
   vertical-align: middle;
-  border: 1px solid #89888a;
+  background-color: var(--grey);
   transition: border 0.5s ease;
 }
 
 .checkbox span:first-child svg {
   position: absolute;
+  z-index: 2;
   top: 3px;
   left: 2px;
   fill: none;
@@ -66,7 +67,7 @@
 }
 
 .input-checkbox:checked + .checkbox span:first-child {
-  background: transparent;
+  background: rgba(#333333, 0.8);
   animation: wave 0.4s ease;
 }
 
