@@ -29,25 +29,47 @@
           </a>
         </p>
       </div>
-      <div v-else>
+      <div v-else class="header__right">
         <ul class="nav-menu header__menu">
           <li class="nav-item header__item">
-            <nuxt-link to="/profile/" class="header__text"> Profile </nuxt-link>
+            <nuxt-link to="/profile/" class="menu-text header__text">
+              Profile
+            </nuxt-link>
           </li>
           <li class="nav-item header__item">
-            <nuxt-link to="/feedback/" class="header__text">
+            <nuxt-link to="/feedback/" class="menu-text header__text">
               Feedback
             </nuxt-link>
           </li>
-          <li class="nav-item header__item">
-            <nuxt-link to="/community/" class="header__text">
-              Community
-            </nuxt-link>
-          </li>
-          <li class="nav-item header__item">
-            <nuxt-link to="/energy/" class="header__text"> Energy </nuxt-link>
-          </li>
         </ul>
+        <button
+          class="nav-button"
+          aria-label="Navigation button"
+          @click.stop="togglePopup"
+        >
+          <span class="nav-button__dot"></span>
+          <span class="nav-button__dot"></span>
+          <span class="nav-button__dot"></span>
+        </button>
+        <div class="popup-menu" :class="[isPopupOpen && 'popup-menu--open']">
+          <ul class="popup-menu__reduce">
+            <li class="popup-menu__list">
+              <nuxt-link to="/community/" class="menu-text popup-menu__text">
+                Community
+              </nuxt-link>
+            </li>
+            <li class="popup-menu__list">
+              <nuxt-link to="/energy/" class="menu-text popup-menu__text">
+                Energy
+              </nuxt-link>
+            </li>
+            <li class="popup-menu__list">
+              <nuxt-link to="/activity/" class="menu-text popup-menu__text">
+                Activity
+              </nuxt-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </header>
@@ -55,16 +77,36 @@
 
 <script>
 export default {
+  data() {
+    return {
+      isPopupOpen: false,
+    }
+  },
   computed: {
     isAuth() {
       return this.$store.state.app.isAuth
     },
   },
+
   async mounted() {
     const { default: NavbarPos } = await import('~/scripts/utils/navbarPos')
 
     this.navbarPos = new NavbarPos()
     this.navbarPos.init()
+
+    document.body.addEventListener('click', this.closePopup)
+  },
+
+  methods: {
+    openPopup() {
+      this.isPopupOpen = true
+    },
+    closePopup() {
+      this.isPopupOpen = false
+    },
+    togglePopup() {
+      this.isPopupOpen ? this.closePopup() : this.openPopup()
+    },
   },
 }
 </script>
