@@ -50,7 +50,32 @@
         >
           <span class="nav-button__dot nav-button__dot--1"></span>
           <span class="nav-button__dot nav-button__dot--2">
-            <span class="nav-button__close-icon"></span>
+            <span class="nav-button__close-icon">
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.934143"
+                  y="0.830566"
+                  width="12"
+                  height="1"
+                  transform="rotate(45 0.934143 0.830566)"
+                  fill="#333333"
+                />
+                <rect
+                  x="0.580597"
+                  y="9.31586"
+                  width="12"
+                  height="1"
+                  transform="rotate(-45 0.580597 9.31586)"
+                  fill="#333333"
+                />
+              </svg>
+            </span>
           </span>
           <span class="nav-button__dot nav-button__dot--3"></span>
         </button>
