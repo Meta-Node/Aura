@@ -44,12 +44,15 @@
         </ul>
         <button
           class="nav-button"
+          :class="[isPopupOpen && 'nav-button--open']"
           aria-label="Navigation button"
           @click.stop="togglePopup"
         >
-          <span class="nav-button__dot"></span>
-          <span class="nav-button__dot"></span>
-          <span class="nav-button__dot"></span>
+          <span class="nav-button__dot nav-button__dot--1"></span>
+          <span class="nav-button__dot nav-button__dot--2">
+            <span class="nav-button__close-icon"></span>
+          </span>
+          <span class="nav-button__dot nav-button__dot--3"></span>
         </button>
         <div class="popup-menu" :class="[isPopupOpen && 'popup-menu--open']">
           <ul class="popup-menu__reduce">
