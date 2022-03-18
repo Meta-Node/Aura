@@ -6,6 +6,7 @@
   left: 0;
   transition: opacity 0.25s ease, transform 0.25s ease,
     background-color 0.25s ease;
+
   &.add-bg {
     background-color: var(--black);
   }
@@ -54,6 +55,11 @@
   letter-spacing: 0;
 }
 
+.header__right {
+  display: flex;
+  position: relative;
+}
+
 .nav-menu {
   display: flex;
 }
@@ -66,7 +72,7 @@
   }
 }
 
-.header__text {
+.menu-text {
   @include semi;
   color: var(--s-grey);
   font-size: 12px;
@@ -75,4 +81,39 @@
 
 .nuxt-link-exact-active {
   color: var(--white);
+}
+
+.nav-button__dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 20px;
+  background-color: var(--b-grey);
+}
+
+.nav-button {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 4px;
+  background-color: transparent;
+  margin-left: 24px;
+  top: 1px;
+}
+
+.popup-menu {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  width: 90px;
+  height: 85px;
+  background-color: var(--b-grey);
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.popup-menu__text {
+  &.nuxt-link-exact-active {
+    color: var(--black);
+  }
 }
