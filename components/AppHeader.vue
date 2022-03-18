@@ -42,12 +42,16 @@
             </nuxt-link>
           </li>
         </ul>
-        <button class="nav-button" aria-label="Navigation button">
+        <button
+          class="nav-button"
+          aria-label="Navigation button"
+          @click.stop="togglePopup"
+        >
           <span class="nav-button__dot"></span>
           <span class="nav-button__dot"></span>
           <span class="nav-button__dot"></span>
         </button>
-        <div class="popup-menu">
+        <div class="popup-menu" :class="[isPopupOpen && 'popup-menu--open']">
           <ul class="popup-menu__reduce">
             <li class="popup-menu__list">
               <nuxt-link to="/community/" class="menu-text popup-menu__text">
@@ -73,16 +77,36 @@
 
 <script>
 export default {
+  data() {
+    return {
+      isPopupOpen: false,
+    }
+  },
   computed: {
     isAuth() {
       return this.$store.state.app.isAuth
     },
   },
+
   async mounted() {
     const { default: NavbarPos } = await import('~/scripts/utils/navbarPos')
 
     this.navbarPos = new NavbarPos()
     this.navbarPos.init()
+
+    document.body.addEventListener('click', this.closePopup)
+  },
+
+  methods: {
+    openPopup() {
+      this.isPopupOpen = true
+    },
+    closePopup() {
+      this.isPopupOpen = false
+    },
+    togglePopup() {
+      this.isPopupOpen ? this.closePopup() : this.openPopup()
+    },
   },
 }
 </script>
