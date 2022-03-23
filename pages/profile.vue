@@ -8,6 +8,7 @@
         date="4 months"
         :connections="116"
         :brightness="brightness"
+        :is-own-profile="true"
       />
       <aura-sphere class="profile__sphere" :rating="100" />
       <div class="profile__users">

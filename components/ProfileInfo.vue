@@ -69,6 +69,10 @@ export default {
       type: Number,
       default: 0,
     },
+    isOwnProfile: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     separatedName() {

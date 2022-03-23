@@ -78,3 +78,11 @@
     color: var(--s-grey);
   }
 }
+
+.brightid__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+}
