@@ -8,7 +8,7 @@ import qrcode from 'qrcode-terminal'
 let qrString
 let intervalID
 
-const baseURL = 'http://test.brightid.org/profile'
+const baseURL = 'https://test.brightid.org/profile'
 const api = create({
   baseURL,
   headers: { 'Cache-Control': 'no-cache' },
