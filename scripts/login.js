@@ -55,8 +55,12 @@ const createImportQR = async () => {
   }
   const data = JSON.stringify(dataObj)
   const body = JSON.stringify({ data, uuid: 'data' })
-  const res = await api.post(`/upload/${channelId}`, body)
-  assert.ok(res.ok, 'failed to post data to the channel')
+  try {
+    const res = await api.post(`/upload/${channelId}`, body)
+    assert.ok(res.ok, 'failed to post data to the channel')
+  } catch (error) {
+    console.log(error)
+  }
 
   qrString = `${baseURL}?aes=${aesKey}&t=3`
   console.log(`QR string: ${qrString}`)
@@ -102,6 +106,7 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
 const readChannel = async data => {
   const { channelId, aesKey, signingKey } = data
   let res = await api.get(`/list/${channelId}`)
+  console.log(res)
   const dataIds = res.data.profileIds
 
   const uploader = id => id.replace('completed_', '').split(':')[1]
@@ -135,8 +140,8 @@ const readChannel = async data => {
 export const importBrightID = async () => {
   try {
     const data = await createImportQR()
-    intervalID = setInterval(() => readChannel(data), 3000)
     console.log(data)
+    intervalID = setInterval(() => readChannel(data), 3000)
   } catch (error) {
     console.log(error)
   }
