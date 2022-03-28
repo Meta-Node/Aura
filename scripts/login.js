@@ -8,7 +8,7 @@ import qrcode from 'qrcode-terminal'
 let qrString
 let intervalID
 
-const baseURL = 'https://test.brightid.org/profile'
+const baseURL = 'https://node.brightid.org/profile'
 const api = create({
   baseURL,
   headers: { 'Cache-Control': 'no-cache' },
@@ -141,7 +141,7 @@ export const importBrightID = async () => {
   try {
     const data = await createImportQR()
     console.log(data)
-    intervalID = setInterval(() => readChannel(data), 3000)
+    // intervalID = setInterval(() => readChannel(data), 3000)
   } catch (error) {
     console.log(error)
   }

@@ -10,7 +10,7 @@
         :brightness="brightness"
         :is-own-profile="true"
       />
-      <aura-sphere class="profile__sphere" :rating="100" />
+      <aura-sphere class="profile__sphere" :rating="75" />
       <div class="profile__users">
         <h3 class="profile__title">Yet To Be Rated</h3>
         <ul class="user-v1-ul">
