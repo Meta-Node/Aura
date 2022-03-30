@@ -35,15 +35,15 @@
   letter-spacing: -0.03em;
   color: var(--b-grey);
 
-  &--low {
+  &--bronze {
     color: var(--red);
   }
 
-  &--medium {
+  &--silver {
     color: var(--amber);
   }
 
-  &--high {
+  &--gold {
     color: var(--green);
   }
 }

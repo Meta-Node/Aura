@@ -4,7 +4,7 @@
       <profile-info
         img="/images/card-img.jpg"
         name="User Name"
-        rating="Low"
+        rating="Silver"
         date="4 months"
         :connections="116"
         :brightness="brightness"
