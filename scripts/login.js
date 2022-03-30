@@ -8,7 +8,7 @@ import qrcode from 'qrcode-terminal'
 let qrString
 let intervalID
 
-const baseURL = 'https://app.brightid.org'
+const baseURL = 'http://184.72.224.75'
 const api = create({
   baseURL,
   headers: { 'Cache-Control': 'no-cache' },
@@ -56,7 +56,7 @@ const createImportQR = async () => {
   const data = JSON.stringify(dataObj)
   const body = JSON.stringify({ data, uuid: 'data' })
   try {
-    const res = await api.post(`/upload/${channelId}`, body)
+    const res = await api.post(`profile/upload/${channelId}`, body)
     assert.ok(res.ok, 'failed to post data to the channel')
   } catch (error) {
     console.log(error)
