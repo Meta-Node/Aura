@@ -8,7 +8,8 @@ import qrcode from 'qrcode-terminal'
 let qrString
 let intervalID
 
-const baseURL = 'http://184.72.224.75'
+const baseURL = "http://184.72.224.75"
+const mobileBaseURL = "brightid://"
 const api = create({
   baseURL,
   headers: { 'Cache-Control': 'no-cache' },
@@ -62,14 +63,14 @@ const createImportQR = async () => {
     console.log(error)
   }
 
-  qrString = `${baseURL}?aes=${aesKey}&t=3`
+  qrString = `${baseURL}/profile?aes=${aesKey}&t=3`
+  const deeplink = `brightid://connection-code/${encodeURIComponent(qrString)}`
+
   console.log(`QR string: ${qrString}`)
   console.log(
-    `Deep link: https://app.brightid.org/connection-code/${encodeURIComponent(
-      qrString
-    )}`
+    `Deep link: ${deeplink}`
   )
-  qrcode.generate(qrString, { small: true })
+  qrcode.generate(deeplink, { small: true })
   return { channelId, aesKey, signingKey: b64PublicKey }
 }
 
@@ -95,7 +96,7 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   qrString = `${baseURL}?aes=${aesKey}&t=4`
   console.log(`QR string: ${qrString}`)
   console.log(
-    `Deep link: https://app.brightid.org/connection-code/${encodeURIComponent(
+    `Deep link: https://brightid://brightid.org/connection-code/${encodeURIComponent(
       qrString
     )}`
   )
