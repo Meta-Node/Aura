@@ -1,20 +1,23 @@
 <template>
-  <div class="range-slider feedback__quality-slider">
-    <input
-      :id="id"
-      class="feedback__quality-input"
-      :type="type"
-      :min="min"
-      :max="max"
-      :step="step"
-      :value="percents"
-      @input="onRange"
-      @mouseup="onAfterChange"
-      @touchend="onAfterChange"
-    />
-    <p>
-      <span id="percents" class="feedback__percents">{{ percents }}</span>
-    </p>
+  <div class="feedback__quality-slider">
+    <h3 class="feedback__quality-title">{{ qualityValue }}</h3>
+    <div class="range-slider feedback__quality-slider">
+      <input
+        :id="id"
+        class="feedback__quality-input"
+        :type="type"
+        :min="min"
+        :max="max"
+        :step="step"
+        :value="newValue"
+        @change="onRange"
+        @mouseup="onAfterChange"
+        @touchend="onAfterChange"
+      />
+      <p>
+        <span id="percents" class="feedback__percents">{{ percents }}</span>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -37,10 +40,6 @@ export default {
       type: Number,
       default: 0,
     },
-    step: {
-      type: Number,
-      default: 0,
-    },
     value: {
       type: Number,
       default: 0,
@@ -49,14 +48,46 @@ export default {
 
   data() {
     return {
+      step: 1,
       percents: 0,
+      newValue: 0,
       updatedPercent: 0,
+      qualityValue: 'Neutral',
     }
   },
 
   methods: {
     onRange(e) {
-      this.percents = +e.target.value
+      e.preventDefault()
+      const stepsNames = {
+        Sybil: [-4],
+        Suspicious: [-3, -2, -1],
+        'Bad Vibes': [-0.5],
+        Neutral: [0],
+        'Good Vibes': [0.5],
+        Human: [1, 2, 3],
+        Honest: [4],
+      }
+
+      const stepsValues = {
+        '-5': -4,
+        '-4': -3,
+        '-3': -2,
+        '-2': -1,
+        '-1': -0.5,
+        0: 0,
+        1: 0.5,
+        2: 1,
+        3: 2,
+        4: 3,
+        5: 4,
+      }
+      this.newValue = e.target.value
+      this.percents = +stepsValues[e.target.value]
+
+      this.qualityValue = Object.keys(stepsNames).find(key =>
+        stepsNames[key].includes(this.percents)
+      )
     },
     onAfterChange() {
       this.updatedPercent = this.percents

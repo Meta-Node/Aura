@@ -19,17 +19,15 @@
             >
               Rate User?
             </button>
-            <div v-else class="feedback__quality-slider">
-              <h3 class="feedback__quality-title">Honesty</h3>
-              <feedback-slider
-                id="quality"
-                type="range"
-                :min="-4"
-                :max="4"
-                :step="1"
-                :value="0"
-              />
-            </div>
+            <feedback-slider
+              v-else
+              id="quality"
+              type="range"
+              :min="-5"
+              :max="5"
+              :step="1"
+              :value="0"
+            />
           </transition>
         </div>
         <div class="feedback__energy-wrapper">
