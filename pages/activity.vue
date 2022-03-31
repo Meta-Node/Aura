@@ -12,9 +12,7 @@
           time="04:25 p.m."
         />
       </ul>
-      <div class="btn__wrapper">
-        <button class="text-button activity__btn">Load More...</button>
-      </div>
+      <text-button text="Load More..." />
     </div>
   </section>
 </template>

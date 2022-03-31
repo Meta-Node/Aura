@@ -19,15 +19,17 @@
             >
               Rate User?
             </button>
-            <feedback-slider
-              v-else
-              id="quality"
-              type="range"
-              :min="-5"
-              :max="5"
-              :step="1"
-              :value="0"
-            />
+            <div v-else class="feedback__transition">
+              <feedback-slider
+                id="quality"
+                type="range"
+                :min="-5"
+                :max="5"
+                :step="1"
+                :value="0"
+              />
+              <plate-button text="Confirm" />
+            </div>
           </transition>
         </div>
         <div class="feedback__energy-wrapper">
@@ -64,9 +66,7 @@
             url="/"
           />
         </ul>
-        <div class="btn__wrapper">
-          <button class="text-button feedback__btn">Load More...</button>
-        </div>
+        <text-button text="Load More..." />
       </div>
     </div>
   </section>

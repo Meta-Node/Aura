@@ -28,9 +28,25 @@
         </ul>
         <span v-else class="users-not-found">Users not found</span>
       </div>
-      <div class="btn__wrapper">
-        <button class="text-button flow__btn">Load More...</button>
-      </div>
+      <text-button text="Load More..." />
+      <button class="flow__circle-button">
+        <span class="flow__check-mark"
+          ><svg
+            width="14"
+            height="10"
+            viewBox="0 0 14 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.66699 5L5.66699 9L12.3337 1"
+              stroke="#EEEEEE"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            /></svg
+        ></span>
+      </button>
     </div>
   </div>
 </template>

@@ -18,22 +18,3 @@
   text-align: center;
   color: var(--b-grey);
 }
-
-.btn__wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.profile__btn {
-  @include semi;
-  display: block;
-  border: none;
-  background-color: transparent;
-  margin-top: 70px;
-  margin-bottom: 108px;
-  color: var(--white);
-  padding: 0;
-  font-size: 16px;
-  line-height: 175%;
-  letter-spacing: -0.03em;
-}

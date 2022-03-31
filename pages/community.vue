@@ -24,9 +24,7 @@
           />
         </ul>
         <span v-else class="users-not-found">Users not found</span>
-        <div class="btn__wrapper">
-          <button class="text-button community__btn">Load More...</button>
-        </div>
+        <text-button text="Load More..." />
       </div>
     </div>
   </section>

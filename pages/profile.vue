@@ -22,9 +22,7 @@
             url="/"
           />
         </ul>
-        <div class="btn__wrapper">
-          <button class="text-button profile__btn">Load More...</button>
-        </div>
+        <text-button text="Load More..." />
       </div>
     </div>
   </section>
