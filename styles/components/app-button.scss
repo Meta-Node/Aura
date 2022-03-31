@@ -1,11 +1,4 @@
-.plate__btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 28px;
-}
-
-.plate__button {
+.btn {
   display: block;
   border: none;
   background-color: var(--grey);
@@ -14,17 +7,14 @@
   align-items: center;
   padding: 14px 52px;
   border-radius: 14px;
-
-  &:disabled {
-    cursor: not-allowed;
-    color: var(--s-grey);
-  }
-}
-
-.plate__btn-text {
   @include semi;
   font-size: 16px;
   line-height: 100%;
   letter-spacing: -0.03em;
   color: var(--b-grey);
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--s-grey);
+  }
 }

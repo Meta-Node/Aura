@@ -38,12 +38,16 @@
       >
     </div>
     <div class="form__btn-wrapper">
-      <button type="submit" class="text-button form__btn" :disabled="hasErrors">
+      <app-button
+        type="submit"
+        class="text-button form__btn"
+        :disabled="hasErrors"
+      >
         <span class="form__btn-text">Sign In</span>
-      </button>
-      <button
+      </app-button>
+      <app-button
         class="text-button form__btn brightid__btn"
-        @click="onBrightIdClick"
+        @click.native="onBrightIdClick"
       >
         <span class="form__btn-icon"
           ><svg
@@ -65,7 +69,7 @@
           </svg>
         </span>
         <span class="form__btn-text">Sign In with BrightID</span>
-      </button>
+      </app-button>
     </div>
   </form>
 </template>

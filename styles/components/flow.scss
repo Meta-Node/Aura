@@ -41,10 +41,15 @@
   margin-top: 42px;
 }
 
+.flow__circle-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .flow__circle-button {
   display: block;
   position: fixed;
-  top: 0;
+  bottom: 60px;
   width: 40px;
   height: 40px;
   background-color: var(--grey);

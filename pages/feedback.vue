@@ -28,7 +28,7 @@
                 :step="1"
                 :value="0"
               />
-              <plate-button text="Confirm" />
+              <app-button class="feedback__btn">Confirm </app-button>
             </div>
           </transition>
         </div>
