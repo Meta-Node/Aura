@@ -11,8 +11,16 @@
       <p class="user-v2__tag">{{ name }}</p>
     </nuxt-link>
     <div class="user-v2__numbers">
-      <p class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
-      <p class="user-v2__num user-v2__num-outbound">{{ outbound }}</p>
+      <user-slider
+        id="quality"
+        type="range"
+        :min="0"
+        :max="100"
+        :step="25"
+        :value="0"
+      />
+      <!-- <p class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
+      <p class="user-v2__num user-v2__num-outbound">{{ outbound }}</p> -->
     </div>
   </li>
 </template>
