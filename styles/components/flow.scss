@@ -1,12 +1,52 @@
-.flow__statistic {
-  margin-top: 60px;
+.flow__indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.flow__indicator-text {
+  @include semi;
+  font-size: 24px;
+  line-height: 135%;
+  letter-spacing: -0.03em;
+  color: var(--white);
+}
+
+.flow__indicator-wrapper {
+  display: block;
+  max-width: 342px;
+  width: 100%;
+  height: 16px;
+  background-color: var(--grey);
+  border-radius: 80px;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.flow__indicator-line {
+  position: absolute;
+  width: 180px;
+  height: 16px;
+  background-color: var(--b-grey);
+  border-radius: 80px;
+  box-shadow: 0px 0px 40px #FFFFFF;
+}
+
+.flow__indicator-percents {
+  @include mono-bold;
+  font-size: 16px;
+  line-height: 125%;
+  letter-spacing: -0.03em;
+  color: var(--grey);
 }
 
 .flow__stat-filter {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 70px;
   margin-bottom: 38px;
 }
 
@@ -20,7 +60,7 @@
   border: none;
   background-color: transparent;
   padding: 0;
-  margin-right: 16px;
+  margin-right: 32px;
 
   &:last-child {
     margin-right: 0;
@@ -49,7 +89,7 @@
 .flow__circle-button {
   display: block;
   position: fixed;
-  bottom: 60px;
+  bottom: 64px;
   width: 40px;
   height: 40px;
   background-color: var(--grey);

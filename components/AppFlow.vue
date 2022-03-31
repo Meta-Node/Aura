@@ -3,12 +3,19 @@
     <div class="flow__input-wrapper">
       <app-search @searchValue="onSearchValue" />
     </div>
+    <div class="flow__indicator">
+      <h3 class="flow__indicator-text">Your energy</h3>
+      <div class="flow__indicator-wrapper">
+        <div class="flow__indicator-line"></div>
+      </div>
+      <div class="flow__indicator-percents">60%</div>
+    </div>
     <div class="flow__statistic">
       <div class="flow__stat-filter">
         <button class="flow__stat-button flow__stat-button--active">
-          Inbound
+          Explorer
         </button>
-        <button class="flow__stat-button">Outbound</button>
+        <button class="flow__stat-button">Energy</button>
       </div>
       <div class="flow__switch-wrapper">
         <filter-button name="Name" :active="true" />
