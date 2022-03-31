@@ -65,12 +65,15 @@
       </span>
       <span class="form__btn-text">Sign In with BrightID</span>
     </button>
+    <button @click="readChanelClick" class="text-button form__btn">
+      Confirm
+    </button>
   </form>
 </template>
 
 <script>
 import AppInput from '~/components/AppInput.vue'
-import { importBrightID } from '~/scripts/login'
+import { importBrightID, readChannel } from '~/scripts/login'
 export default {
   components: { AppInput },
 
@@ -85,6 +88,7 @@ export default {
         value: '',
         error: true,
       },
+      brightIDData: {},
     }
   },
 
@@ -104,8 +108,13 @@ export default {
         this.$refs.password.reset()
       }
     },
-    onBrightIdClick() {
-      importBrightID()
+    async onBrightIdClick() {
+      const data = await importBrightID()
+      this.brightIDData = data
+    },
+
+    async readChanelClick() {
+      await readChannel(this.brightIDData)
     },
   },
 }

@@ -8,8 +8,8 @@ import qrcode from 'qrcode-terminal'
 let qrString
 let intervalID
 
-const baseURL = "http://184.72.224.75"
-const mobileBaseURL = "brightid://"
+const baseURL = 'http://184.72.224.75'
+const mobileBaseURL = 'brightid://'
 const api = create({
   baseURL,
   headers: { 'Cache-Control': 'no-cache' },
@@ -67,9 +67,7 @@ const createImportQR = async () => {
   const deeplink = `brightid://connection-code/${encodeURIComponent(qrString)}`
 
   console.log(`QR string: ${qrString}`)
-  console.log(
-    `Deep link: ${deeplink}`
-  )
+  console.log(`Deep link: ${deeplink}`)
   qrcode.generate(deeplink, { small: true })
   return { channelId, aesKey, signingKey: b64PublicKey }
 }
@@ -104,10 +102,10 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   return { channelId, aesKey, signingKey }
 }
 
-const readChannel = async data => {
+export const readChannel = async data => {
   const { channelId, aesKey, signingKey } = data
-  let res = await api.get(`/list/${channelId}`)
-  console.log(res)
+  let res = await api.get(`/profile/list/${channelId}`)
+
   const dataIds = res.data.profileIds
 
   const uploader = id => id.replace('completed_', '').split(':')[1]
@@ -116,6 +114,7 @@ const readChannel = async data => {
       dataId.startsWith('completed_') &&
       uploader(dataId) !== b64ToUrlSafeB64(signingKey)
   )
+  console.log(completed)
   if (!completed) {
     return
   }
@@ -135,14 +134,14 @@ const readChannel = async data => {
     }
   }
 
-  clearInterval(intervalID)
+  // clearInterval(intervalID)
 }
 
 export const importBrightID = async () => {
   try {
     const data = await createImportQR()
     console.log(data)
-    // intervalID = setInterval(() => readChannel(data), 3000)
+    return data
   } catch (error) {
     console.log(error)
   }
