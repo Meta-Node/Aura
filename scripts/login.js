@@ -108,10 +108,12 @@ export const readChannel = async data => {
 
   const dataIds = res.data.profileIds
 
+  console.log(dataIds)
+
   const uploader = id => id.replace('completed_', '').split(':')[1]
   const completed = dataIds.find(
     dataId =>
-      dataId.startsWith('completed_') &&
+      dataId.startsWith('sig_completed_') &&
       uploader(dataId) !== b64ToUrlSafeB64(signingKey)
   )
   console.log(completed)
@@ -120,14 +122,14 @@ export const readChannel = async data => {
   }
 
   for (const dataId of dataIds) {
-    if (dataId.startsWith('userinfo_')) {
-      res = await api.get(`/download/${channelId}/${dataId}`)
+    if (dataId.startsWith('sig_userinfo_')) {
+      res = await api.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'user info')
     }
     if (dataId.startsWith('connection_')) {
-      res = await api.get(`/download/${channelId}/${dataId}`)
+      res = await api.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'connection')
