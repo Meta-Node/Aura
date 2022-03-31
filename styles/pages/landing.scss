@@ -26,11 +26,9 @@
   margin-top: 30px;
   font-size: 16px;
   line-height: 150%;
-  background: linear-gradient(
-    90deg,
-    #ffffff 0.53%,
-    rgba(255, 255, 255, 0.5) 145.92%
-  );
+  background: linear-gradient(90deg,
+      #ffffff 0.53%,
+      rgba(255, 255, 255, 0.5) 145.92%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -58,8 +56,11 @@
   margin-top: 22px;
 }
 
+.form__btn-wrapper {
+  max-width: 220px;
+}
+
 .form__btn {
-  @include semi;
   display: block;
   margin-top: 32px;
   border: none;
@@ -68,15 +69,21 @@
   justify-content: center;
   align-items: center;
   padding: 14px 57px;
-  color: var(--b-grey);
   border-radius: 14px;
-  font-size: 16px;
-  line-height: 100%;
-  letter-spacing: -0.03em;
+  width: 100%;
+
   &:disabled {
     cursor: not-allowed;
     color: var(--s-grey);
   }
+}
+
+.form__btn-text {
+  @include semi;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.03em;
+  color: var(--b-grey);
 }
 
 .brightid__btn {
@@ -85,4 +92,5 @@
   align-items: center;
   gap: 8px;
   margin-top: 20px;
+  padding: 14px 20px;
 }

@@ -10,7 +10,7 @@
         :max="max"
         :step="step"
         :value="newValue"
-        @change="onRange"
+        @input="onRange"
         @mouseup="onAfterChange"
         @touchend="onAfterChange"
       />
