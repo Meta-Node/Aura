@@ -10,6 +10,7 @@
   justify-content: center;
   pointer-events: none;
   opacity: 0;
+  transition: opacity 0.3s ease;
 
   &--open {
     opacity: 1;
@@ -45,8 +46,6 @@
   transition-timing-function: ease;
   transition-duration: 0.3s;
 }
-
-.popup__qr {}
 
 .popup__qr-popup {
   position: relative;
@@ -106,4 +105,9 @@
   color: var(--grey);
   margin-top: 28px;
   margin-bottom: 44px;
+}
+
+.popup__qr-img {
+  border-radius: 10px;
+  overflow: hidden;
 }

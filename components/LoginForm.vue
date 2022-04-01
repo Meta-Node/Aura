@@ -71,14 +71,16 @@
         <span class="form__btn-text">Sign In with BrightID</span>
       </app-button>
     </div>
+    <qr-popup ref="popup" :bright-id-data="brightIDData" />
   </form>
 </template>
 
 <script>
+import QrPopup from './QrPopup.vue'
 import AppInput from '~/components/AppInput.vue'
-import { importBrightID, readChannel } from '~/scripts/login'
+import { importBrightID } from '~/scripts/login'
 export default {
-  components: { AppInput },
+  components: { AppInput, QrPopup },
 
   data() {
     return {
@@ -91,6 +93,7 @@ export default {
         value: '',
         error: true,
       },
+      brightIDData: {},
     }
   },
 
@@ -114,17 +117,8 @@ export default {
       const data = await importBrightID()
       this.brightIDData = data
       console.log(this.brightIDData)
-      const { default: QRious } = await import('qrious')
-      new QRious({
-        element: document.getElementById('qr'),
-        value: this.brightIDData.qrString,
-        background: '#1f1f1f',
-        foreground: '#ffffff',
-      })
-    },
 
-    async readChanelClick() {
-      await readChannel(this.brightIDData)
+      this.$refs.popup.openPopup()
     },
   },
 }

@@ -2,8 +2,8 @@
   <section class="profile">
     <div class="container profile__wrapper">
       <profile-info
-        img="/images/card-img.jpg"
-        name="User Name"
+        :img="profile.photo"
+        :name="profile.name"
         rating="Bronze"
         date="4 months"
         :connections="116"
@@ -40,6 +40,9 @@ export default {
   computed: {
     brightness() {
       return Math.round(10 * Math.random())
+    },
+    profile() {
+      return this.$store.state.profile.profile
     },
   },
 }

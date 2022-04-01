@@ -103,6 +103,8 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
 }
 
 export const readChannel = async data => {
+  let profile
+  const connections = []
   const { channelId, aesKey, signingKey } = data
   let res = await api.get(`/profile/list/${channelId}`)
 
@@ -127,16 +129,19 @@ export const readChannel = async data => {
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'user info')
+      profile = data
     }
     if (dataId.startsWith('connection_')) {
       res = await api.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'connection')
+      connections.push(data)
     }
   }
 
   // clearInterval(intervalID)
+  return { profile, connections }
 }
 
 export const importBrightID = async () => {
