@@ -1,4 +1,4 @@
-.flow__indicator {
+.explorer__indicator {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +7,7 @@
   margin-bottom: 40px;
 }
 
-.flow__indicator-text {
+.explorer__indicator-text {
   @include semi;
   font-size: 24px;
   line-height: 135%;
@@ -15,7 +15,7 @@
   color: var(--white);
 }
 
-.flow__indicator-wrapper {
+.explorer__indicator-wrapper {
   display: block;
   position: relative;
   max-width: 342px;
@@ -27,7 +27,7 @@
   margin-bottom: 12px;
 }
 
-.flow__indicator-line {
+.explorer__indicator-line {
   position: absolute;
   width: 60%;
   height: 16px;
@@ -36,7 +36,7 @@
   box-shadow: 0px 0px 40px #FFFFFF;
 }
 
-.flow__indicator-percents {
+.explorer__indicator-percents {
   @include mono-bold;
   font-size: 16px;
   line-height: 125%;
@@ -44,14 +44,14 @@
   color: var(--grey);
 }
 
-.flow__stat-filter {
+.explorer__stat-filter {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 38px;
 }
 
-.flow__stat-button {
+.explorer__stat-button {
   @include semi;
   font-size: 24px;
   line-height: 130%;
@@ -72,22 +72,22 @@
   }
 }
 
-.flow__switch-wrapper {
+.explorer__switch-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.flow__humans-stat {
+.explorer__humans-stat {
   margin-top: 42px;
 }
 
-.flow__circle-wrapper {
+.explorer__circle-wrapper {
   display: flex;
   justify-content: flex-end;
 }
 
-.flow__circle-button {
+.explorer__circle-button {
   display: block;
   position: fixed;
   bottom: 64px;
@@ -98,7 +98,7 @@
   box-shadow: 0px -1px 14px 2px rgba(255, 252, 252, 0.5);
 }
 
-.flow__check-mark {
+.explorer__check-mark {
   display: flex;
   align-items: center;
   justify-content: center;

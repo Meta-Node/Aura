@@ -4,14 +4,14 @@
       <!-- <div class="energy__main-filter">
         <button
           class="energy__main-button"
-          :class="[isFlow && 'energy__main-button--active']"
+          :class="[isExplorer && 'energy__main-button--active']"
           @click="onFlowClick"
         >
           Flow
         </button>
         <button
           class="energy__main-button"
-          :class="[!isFlow && 'energy__main-button--active']"
+          :class="[!isExplorer && 'energy__main-button--active']"
           @click="onOverviewClick"
         >
           Overview
@@ -19,7 +19,7 @@
       </div> -->
       <div class="enegry__screens">
         <transition name="fade" mode="out-in">
-          <app-flow v-if="isFlow" />
+          <app-explorer v-if="isExplorer" />
           <app-overview v-else />
         </transition>
       </div>
@@ -28,24 +28,24 @@
 </template>
 
 <script>
-import AppFlow from '~/components/AppFlow.vue'
+import AppExplorer from '~/components/AppExplorer.vue'
 import AppOverview from '~/components/AppOverview.vue'
 import transition from '~/mixins/transition'
 export default {
-  components: { AppFlow, AppOverview },
+  components: { AppExplorer, AppOverview },
   mixins: [transition],
 
   data() {
     return {
-      isFlow: true,
+      isExplorer: true,
     }
   },
   methods: {
     onFlowClick() {
-      this.isFlow = true
+      this.isExplorer = true
     },
     onOverviewClick() {
-      this.isFlow = false
+      this.isExplorer = false
     },
   },
 }

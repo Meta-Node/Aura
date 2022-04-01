@@ -1,28 +1,28 @@
 <template>
-  <div class="flow">
-    <div class="flow__input-wrapper">
+  <div class="explorer">
+    <div class="explorer__input-wrapper">
       <app-search @searchValue="onSearchValue" />
     </div>
-    <div class="flow__indicator">
-      <h3 class="flow__indicator-text">Your energy</h3>
-      <div class="flow__indicator-wrapper">
-        <div class="flow__indicator-line"></div>
+    <div class="explorer__indicator">
+      <h3 class="explorer__indicator-text">Your energy</h3>
+      <div class="explorer__indicator-wrapper">
+        <div class="explorer__indicator-line"></div>
       </div>
-      <div class="flow__indicator-percents">60%</div>
+      <div class="explorer__indicator-percents">60%</div>
     </div>
-    <div class="flow__statistic">
-      <div class="flow__stat-filter">
-        <button class="flow__stat-button flow__stat-button--active">
+    <div class="explorer__statistic">
+      <div class="explorer__stat-filter">
+        <button class="explorer__stat-button explorer__stat-button--active">
           Explorer
         </button>
-        <button class="flow__stat-button">Energy</button>
+        <button class="explorer__stat-button">Energy</button>
       </div>
-      <div class="flow__switch-wrapper">
+      <div class="explorer__switch-wrapper">
         <filter-button name="Name" :active="true" />
         <filter-button name="Amount" />
       </div>
-      <div class="flow__humans-stat">
-        <ul v-if="users.length" class="flow__humans">
+      <div class="explorer__humans-stat">
+        <ul v-if="users.length" class="explorer__humans">
           <user-v-2
             v-for="(user, idx) in users"
             :key="idx"
@@ -36,9 +36,9 @@
         <span v-else class="users-not-found">Users not found</span>
       </div>
       <text-button text="Load More..." />
-      <div class="flow__circle-wrapper">
-        <button class="flow__circle-button">
-          <span class="flow__check-mark"
+      <div class="explorer__circle-wrapper">
+        <button class="explorer__circle-button">
+          <span class="explorer__check-mark"
             ><svg
               width="14"
               height="10"
