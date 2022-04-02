@@ -32,9 +32,16 @@
   position: relative;
 }
 
+.user {
+  position: relative;
+}
+
 .user__percents {
   @include mono-bold;
   display: flex;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
   justify-content: center;
   align-items: center;
   font-size: 14px;

@@ -9,6 +9,7 @@ let qrString
 let intervalID
 
 const baseURL = 'http://184.72.224.75'
+// const mobileBaseURL = 'brightid://'
 const api = create({
   baseURL,
   headers: { 'Cache-Control': 'no-cache' },
@@ -62,15 +63,13 @@ const createImportQR = async () => {
     console.log(error)
   }
 
-  qrString = `${baseURL}?aes=${aesKey}&t=3`
+  qrString = `${baseURL}/profile?aes=${aesKey}&t=3`
+  const deeplink = `brightid://connection-code/${encodeURIComponent(qrString)}`
+
   console.log(`QR string: ${qrString}`)
-  console.log(
-    `Deep link: https://app.brightid.org/connection-code/${encodeURIComponent(
-      qrString
-    )}`
-  )
-  qrcode.generate(qrString, { small: true })
-  return { channelId, aesKey, signingKey: b64PublicKey }
+  console.log(`Deep link: ${deeplink}`)
+  qrcode.generate(deeplink, { small: true })
+  return { channelId, aesKey, signingKey: b64PublicKey, qrString }
 }
 
 const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
@@ -95,7 +94,7 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   qrString = `${baseURL}?aes=${aesKey}&t=4`
   console.log(`QR string: ${qrString}`)
   console.log(
-    `Deep link: https://app.brightid.org/connection-code/${encodeURIComponent(
+    `Deep link: https://brightid://brightid.org/connection-code/${encodeURIComponent(
       qrString
     )}`
   )
@@ -103,45 +102,53 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   return { channelId, aesKey, signingKey }
 }
 
-const readChannel = async data => {
+export const readChannel = async data => {
+  let profile
+  const connections = []
   const { channelId, aesKey, signingKey } = data
-  let res = await api.get(`/list/${channelId}`)
-  console.log(res)
+  let res = await api.get(`/profile/list/${channelId}`)
+
   const dataIds = res.data.profileIds
+
+  console.log(dataIds)
 
   const uploader = id => id.replace('completed_', '').split(':')[1]
   const completed = dataIds.find(
     dataId =>
-      dataId.startsWith('completed_') &&
+      dataId.startsWith('sig_completed_') &&
       uploader(dataId) !== b64ToUrlSafeB64(signingKey)
   )
+  console.log(completed)
   if (!completed) {
     return
   }
 
   for (const dataId of dataIds) {
-    if (dataId.startsWith('userinfo_')) {
-      res = await api.get(`/download/${channelId}/${dataId}`)
+    if (dataId.startsWith('sig_userinfo_')) {
+      res = await api.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'user info')
+      profile = data
     }
     if (dataId.startsWith('connection_')) {
-      res = await api.get(`/download/${channelId}/${dataId}`)
+      res = await api.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'connection')
+      connections.push(data)
     }
   }
 
-  clearInterval(intervalID)
+  // clearInterval(intervalID)
+  return { profile, connections }
 }
 
 export const importBrightID = async () => {
   try {
     const data = await createImportQR()
     console.log(data)
-    // intervalID = setInterval(() => readChannel(data), 3000)
+    return data
   } catch (error) {
     console.log(error)
   }

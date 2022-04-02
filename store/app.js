@@ -1,7 +1,7 @@
 export const state = () => ({
   loading: false,
   isWebp: false,
-  isAuth: true,
+  isAuth: false,
 })
 
 export const mutations = {
