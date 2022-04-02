@@ -1,8 +1,15 @@
+.toggle-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.5px;
+}
+
 .toggle-switch__label {
   position: relative;
   display: inline-block;
-  width: 22.21px;
-  height: 13.5px;
+  width: 22px;
+  height: 14px;
 
   .toggle-switch__checkbox {
     opacity: 0;
@@ -19,26 +26,28 @@
   right: 0;
   bottom: 0;
   background-color: var(--grey);
-  transition: .4s;
+  transition: 0.4s;
 
   &:before {
     position: absolute;
-    content: "";
-    height: 11.76px;
-    width: 11.76px;
+    content: '';
+    height: 12px;
+    width: 12px;
     left: 1px;
     bottom: 1px;
-    background-color: var(--white);
-    transition: .4s;
+    background-color: var(--s-grey);
+    transition: 0.4s;
+    transform: translateX(1px);
   }
 }
 
-.toggle-switch__checkbox:checked+.toggle-switch__round {
+.toggle-switch__checkbox:checked + .toggle-switch__round {
   background-color: var(--grey);
 }
 
-.toggle-switch__checkbox:checked+.toggle-switch__round:before {
-  transform: translateX(9px);
+.toggle-switch__checkbox:checked + .toggle-switch__round:before {
+  transform: translateX(7px);
+  background-color: var(--white);
 }
 
 .toggle-switch__round {

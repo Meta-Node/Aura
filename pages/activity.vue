@@ -5,6 +5,7 @@
       <ul class="activity__info">
         <activity-info
           v-for="(user, idx) in 9"
+          :id="idx"
           :key="idx"
           :from-user="activityData.fromUser"
           :action="activityData.action"
