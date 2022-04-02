@@ -2,6 +2,7 @@
   <li class="activity__list">
     <div class="activity__info-block">
       <div class="activity__text">
+        <toggle-switch />
         <span class="activity__from-user"
           ><nuxt-link :to="fromUser.url">{{ fromUser.name }}</nuxt-link></span
         >
@@ -17,7 +18,11 @@
 </template>
 
 <script>
+import ToggleSwitch from '~/components/ToggleSwitch.vue'
+
 export default {
+  components: { ToggleSwitch },
+  
   props: {
     action: {
       type: String,
