@@ -134,7 +134,7 @@ export default {
           this.$refs.deeplinkBtn.click()
         }, 500)
         await this.$store.dispatch('login/getProfileData')
-        const profile = this.$store.state.login.profileData
+        const profile = this.$store.state.login.profileData.profile
 
         this.$store.commit('profile/setProfile', profile)
         this.$store.commit('app/setIsAuth', true)
@@ -146,7 +146,7 @@ export default {
       this.$refs.popup.openPopup()
 
       await this.$store.dispatch('login/getProfileData')
-      const profile = this.$store.state.login.profileData
+      const profile = this.$store.state.login.profileData.profile
 
       this.$store.commit('profile/setProfile', profile)
       this.$refs.popup.closePopup()
