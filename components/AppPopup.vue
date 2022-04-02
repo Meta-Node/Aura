@@ -20,9 +20,14 @@ export default {
   },
   methods: {
     openPopup() {
+      document.documentElement.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden'
       this.isOpen = true
     },
     closePopup() {
+      document.documentElement.style.overflow = 'auto'
+      document.body.style.overflow = 'auto'
+
       this.isOpen = false
     },
   },

@@ -29,6 +29,9 @@ export const actions = {
       const res = await readChannelPromise(state.brightIdData)
       console.log(res)
       commit('setProfileData', res)
+      localStorage.setItem('brightID', state.profileData.profile.id)
+      localStorage.setItem('publicKey', state.brightIdData.signingKey)
+      localStorage.setItem('timestamp', Date.now())
     } catch (error) {
       console.log(error)
     }

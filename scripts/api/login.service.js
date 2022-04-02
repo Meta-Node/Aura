@@ -159,7 +159,7 @@ export const readChannelPromise = data => {
 export const importBrightID = async () => {
   try {
     const data = await createImportQR()
-    console.log(data)
+
     return data
   } catch (error) {
     console.log(error)
@@ -167,10 +167,15 @@ export const importBrightID = async () => {
 }
 
 export const syncBrightID = async () => {
-  const brightID = '5cvu9DUZyzPUclHHcgNhs0S71Z2nAOwAYAljYgisGgA' // the brightid of the user
-  const signingKey = 'WPL5WOLMbJ9M2wKbx9QaGOlJcXcIwQ7o8FfdoP+EX5g=' // use b64PublicKey created in import step
+  const brightID =
+    localStorage.getItem('brightID') ||
+    '5cvu9DUZyzPUclHHcgNhs0S71Z2nAOwAYAljYgisGgA'
+  const signingKey =
+    localStorage.getItem('publicKey') ||
+    'WPL5WOLMbJ9M2wKbx9QaGOlJcXcIwQ7o8FfdoP+EX5g='
+
   try {
-    const lastSyncTime = 1645509278250 // last sync (or import) timestamp in milliseconds
+    const lastSyncTime = localStorage.getItem('timestamp') || 1645509278250
     const data = await createSyncQR(brightID, signingKey, lastSyncTime)
     console.log(data)
     // const intervalID = setInterval(() => readChannel(data), 3000)
