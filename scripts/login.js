@@ -8,7 +8,9 @@ import qrcode from 'qrcode-terminal'
 let qrString
 let intervalID
 
-const baseURL = 'http://184.72.224.75'
+const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+
+const baseURL = protocol + '://184.72.224.75'
 // const mobileBaseURL = 'brightid://'
 const api = create({
   baseURL,
