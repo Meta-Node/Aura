@@ -3,14 +3,13 @@ import CryptoJS from 'crypto-js'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 import { create } from 'apisauce'
-import qrcode from 'qrcode-terminal'
 
 let qrString
 let intervalID
 
-const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+// const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
 
-const baseURL = protocol + '://184.72.224.75'
+const baseURL = 'http://184.72.224.75'
 // const mobileBaseURL = 'brightid://'
 const api = create({
   baseURL,
@@ -70,8 +69,15 @@ const createImportQR = async () => {
 
   console.log(`QR string: ${qrString}`)
   console.log(`Deep link: ${deeplink}`)
-  qrcode.generate(deeplink, { small: true })
-  return { channelId, aesKey, signingKey: b64PublicKey, qrString }
+
+  return {
+    channelId,
+    aesKey,
+    signingKey: b64PublicKey,
+    qrString,
+    deeplink,
+    b64SecretKey,
+  }
 }
 
 const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
@@ -100,11 +106,11 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
       qrString
     )}`
   )
-  qrcode.generate(qrString, { small: true })
+
   return { channelId, aesKey, signingKey }
 }
 
-export const readChannel = async data => {
+export const readChannel = async (data, resolve) => {
   let profile
   const connections = []
   const { channelId, aesKey, signingKey } = data
@@ -112,15 +118,13 @@ export const readChannel = async data => {
 
   const dataIds = res.data.profileIds
 
-  console.log(dataIds)
-
   const uploader = id => id.replace('completed_', '').split(':')[1]
   const completed = dataIds.find(
     dataId =>
       dataId.startsWith('sig_completed_') &&
       uploader(dataId) !== b64ToUrlSafeB64(signingKey)
   )
-  console.log(completed)
+
   if (!completed) {
     return
   }
@@ -142,8 +146,14 @@ export const readChannel = async data => {
     }
   }
 
-  // clearInterval(intervalID)
-  return { profile, connections }
+  clearInterval(intervalID)
+  resolve({ profile, connections })
+}
+
+export const readChannelPromise = data => {
+  return new Promise((resolve, reject) => {
+    intervalID = setInterval(() => readChannel(data, resolve), 3000)
+  })
 }
 
 export const importBrightID = async () => {
@@ -163,7 +173,7 @@ export const syncBrightID = async () => {
     const lastSyncTime = 1645509278250 // last sync (or import) timestamp in milliseconds
     const data = await createSyncQR(brightID, signingKey, lastSyncTime)
     console.log(data)
-    intervalID = setInterval(() => readChannel(data), 3000)
+    // const intervalID = setInterval(() => readChannel(data), 3000)
   } catch (error) {
     console.log(error)
   }

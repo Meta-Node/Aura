@@ -48,6 +48,8 @@
 }
 
 .popup__qr-popup {
+  padding-top: 44px;
+  padding-bottom: 44px;
   position: relative;
   display: flex;
   align-items: center;
@@ -94,18 +96,18 @@
   line-height: 135%;
   letter-spacing: -0.03em;
   color: var(--white);
-  margin-top: 45px;
+
   margin-bottom: 18px;
   max-width: 300px;
 }
 
-.popup__qr-btn {
-  max-width: 100px;
-  background-color: var(--b-grey);
-  color: var(--grey);
-  margin-top: 28px;
-  margin-bottom: 44px;
-}
+// .popup__qr-btn {
+//   max-width: 100px;
+//   background-color: var(--b-grey);
+//   color: var(--grey);
+//   margin-top: 28px;
+//   margin-bottom: 44px;
+// }
 
 .popup__qr-img {
   border-radius: 10px;

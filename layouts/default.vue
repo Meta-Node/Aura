@@ -13,7 +13,7 @@ import UiLoader from '~/components/UiLoader.vue'
 import AppHeader from '~/components/AppHeader.vue'
 
 export default {
-  components: { AppGrid, UiLoader , AppHeader},
+  components: { AppGrid, UiLoader, AppHeader },
 
   async mounted() {
     const { default: supportsWebP } = await import('supports-webp')

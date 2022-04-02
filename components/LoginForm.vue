@@ -70,6 +70,13 @@
         </span>
         <span class="form__btn-text">Sign In with BrightID</span>
       </app-button>
+      <a
+        ref="deeplinkBtn"
+        aria-disabled="true"
+        style="display: none"
+        :href="brightIDData.deeplink"
+        >{{ brightIDData.deeplink }}</a
+      >
     </div>
     <qr-popup ref="popup" :bright-id-data="brightIDData" />
   </form>
@@ -78,7 +85,7 @@
 <script>
 import QrPopup from './QrPopup.vue'
 import AppInput from '~/components/AppInput.vue'
-import { importBrightID } from '~/scripts/login'
+
 export default {
   components: { AppInput, QrPopup },
 
@@ -114,11 +121,37 @@ export default {
       }
     },
     async onBrightIdClick() {
-      const data = await importBrightID()
+      const { detectMob } = await import('~/scripts/utils/detectMobile')
+
+      await this.$store.dispatch('login/getBrightIdData')
+      const data = this.$store.state.login.brightIdData
       this.brightIDData = data
-      console.log(this.brightIDData)
+
+      if (detectMob()) {
+        // window.open(this.brightIDData.deeplink, '_blank')
+        // this.$refs.deeplinkBtn.href = this.brightIDData.deeplink
+        setTimeout(() => {
+          this.$refs.deeplinkBtn.click()
+        }, 500)
+        await this.$store.dispatch('login/getProfileData')
+        const profile = this.$store.state.login.profileData
+
+        this.$store.commit('profile/setProfile', profile)
+        this.$store.commit('app/setIsAuth', true)
+        this.$router.push('/profile')
+
+        return
+      }
 
       this.$refs.popup.openPopup()
+
+      await this.$store.dispatch('login/getProfileData')
+      const profile = this.$store.state.login.profileData
+
+      this.$store.commit('profile/setProfile', profile)
+      this.$refs.popup.closePopup()
+      this.$store.commit('app/setIsAuth', true)
+      this.$router.push('/profile')
     },
   },
 }

@@ -23,7 +23,6 @@
         <login-form />
       </div>
     </div>
-    <qr-popup />
   </main>
 </template>
 
@@ -31,9 +30,9 @@
 import LandingSphere from '~/components/LandingSphere.vue'
 import LoginForm from '~/components/LoginForm.vue'
 import transition from '~/mixins/transition'
-import QrPopup from '~/components/QrPopup.vue'
+
 export default {
-  components: { LoginForm, LandingSphere, QrPopup },
+  components: { LoginForm, LandingSphere },
   mixins: [transition],
 }
 </script>

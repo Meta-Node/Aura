@@ -6,9 +6,6 @@
         <div class="popup__qr-img">
           <canvas id="qr"></canvas>
         </div>
-        <app-button class="popup__qr-btn" @click.native="readChanelClick"
-          >Confirm
-        </app-button>
       </div>
     </div>
   </app-popup>
@@ -16,7 +13,7 @@
 
 <script>
 import AppPopup from './AppPopup.vue'
-import { readChannel } from '~/scripts/login'
+
 export default {
   components: {
     AppPopup,
@@ -42,15 +39,8 @@ export default {
         size: 200,
       })
     },
-
-    async readChanelClick() {
-      const { profile } = await readChannel(this.brightIdData)
-      if (profile) {
-        this.$store.commit('profile/setProfile', profile)
-      }
+    closePopup() {
       this.$refs.popup.closePopup()
-      this.$store.commit('app/setIsAuth', true)
-      this.$router.push('/profile')
     },
   },
 }
