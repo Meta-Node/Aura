@@ -18,8 +18,8 @@
     </div>
     <div class="enegry__screens">
       <transition name="fade" mode="out-in">
-        <app-explorer v-if="isExplorer" />
-        <app-energy v-else />
+        <app-explorer v-if="isExplorer" :users="users" />
+        <app-energy v-else :users="users" />
       </transition>
     </div>
   </div>
@@ -33,6 +33,12 @@ export default {
   components: { AppEnergy, AppExplorer },
   mixins: [transition],
 
+  props: {
+    users: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       isExplorer: true,

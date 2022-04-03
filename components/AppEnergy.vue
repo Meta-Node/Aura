@@ -47,10 +47,14 @@
 <script>
 import UserV3 from '~/components/UserV3.vue'
 import FilterButton from '~/components/FilterButton.vue'
-import users from '~/mixins/users'
 
 export default {
   components: { UserV3, FilterButton },
-  mixins: [users],
+  props: {
+    users: {
+      type: Array,
+      default: () => [],
+    },
+  },
 }
 </script>

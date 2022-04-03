@@ -36,13 +36,24 @@ import transition from '~/mixins/transition'
 export default {
   components: { UserV1, ProfileInfo, AuraSphere },
   mixins: [transition],
-
+  data() {
+    return {
+      profileMock: {
+        photo: '/images/card-img.jpg',
+        name: 'User Name',
+      },
+    }
+  },
   computed: {
     brightness() {
       return Math.round(10 * Math.random())
     },
     profile() {
-      return this.$store.state.profile.profile
+      if (Object.keys(this.$store.state?.profile?.profile).length) {
+        return this.$store.state.profile.profile
+      } else {
+        return this.profileMock
+      }
     },
   },
 }

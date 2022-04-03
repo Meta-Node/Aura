@@ -11,18 +11,21 @@
         :step="step"
         :value="newValue"
         @input="onRange"
-        @mouseup="onAfterChange"
-        @touchend="onAfterChange"
       />
       <p>
         <span id="percents" class="feedback__percents">{{ percents }}</span>
       </p>
     </div>
+    <app-button class="feedback__btn" @click.native="onAfterChange">
+      Confirm
+    </app-button>
   </div>
 </template>
 
 <script>
+import AppButton from './AppButton.vue'
 export default {
+  components: { AppButton },
   props: {
     id: {
       type: String,
@@ -91,6 +94,9 @@ export default {
     },
     onAfterChange() {
       this.updatedPercent = this.percents
+      if (+this.updatedPercent > 0) {
+        this.$emit('changed')
+      }
     },
   },
 }

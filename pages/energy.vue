@@ -11,18 +11,19 @@
         </div>
         <div class="explorer__indicator-percents">60%</div>
       </div>
-      <switch-page />
+      <switch-page :users="users" />
     </div>
   </section>
 </template>
 
 <script>
 import AppSearch from '~/components/AppSearch.vue'
+import SwitchPage from '~/components/SwitchPage.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 
 export default {
-  components: { AppSearch },
+  components: { AppSearch, SwitchPage },
   mixins: [transition, users],
 
   data() {

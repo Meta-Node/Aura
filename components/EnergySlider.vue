@@ -10,13 +10,14 @@
         :step="step"
         :value="percents"
         @input="onRange"
-        @mouseup="onAfterChange"
-        @touchend="onAfterChange"
       />
       <div class="feedback__energy-block"></div>
       <div class="feedback__energy-division"></div>
     </div>
     <small id="percents" class="feedback__percents">{{ percents }}%</small>
+    <app-button class="feedback__btn" @click.native="onAfterChange">
+      Confirm
+    </app-button>
   </div>
 </template>
 

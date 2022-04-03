@@ -27,21 +27,17 @@
                 :max="5"
                 :step="1"
                 :value="0"
+                @changed="onFeedbackChanged"
               />
-              <app-button class="feedback__btn">Confirm </app-button>
             </div>
           </transition>
         </div>
-        <div class="feedback__energy-wrapper">
-          <transition name="fade" mode="out-in">
-            <button
-              v-if="!isEnergySliderVisible"
-              class="text-button feedback__question-btn"
-              @click="onEnergyClick"
-            >
+        <transition name="fade" mode="out-in">
+          <div v-if="isEnergyWindowVisible" class="feedback__energy-wrapper">
+            <!-- <button class="text-button feedback__question-btn">
               Explore Energy?
-            </button>
-            <div v-else class="feedback__energy-slider">
+            </button> -->
+            <div class="feedback__energy-slider">
               <h3 class="feedback__energy-title">Energy Transfer</h3>
               <energy-slider
                 id="quality"
@@ -52,8 +48,8 @@
                 :value="0"
               />
             </div>
-          </transition>
-        </div>
+          </div>
+        </transition>
       </div>
       <div class="feedback__users">
         <h3 class="feedback__title">Yet To Be Rated</h3>
@@ -84,7 +80,7 @@ export default {
   data() {
     return {
       isFeedbackSliderVisible: false,
-      isEnergySliderVisible: false,
+      isEnergyWindowVisible: false,
     }
   },
   computed: {
@@ -98,6 +94,10 @@ export default {
     },
     onEnergyClick() {
       this.isEnergySliderVisible = true
+    },
+    onFeedbackChanged() {
+      console.log('test')
+      this.isEnergyWindowVisible = true
     },
   },
 }

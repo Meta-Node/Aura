@@ -27,10 +27,14 @@
 <script>
 import UserV2 from '~/components/UserV2.vue'
 import FilterButton from '~/components/FilterButton.vue'
-import users from '~/mixins/users'
 
 export default {
   components: { UserV2, FilterButton },
-  mixins: [users],
+  props: {
+    users: {
+      type: Array,
+      default: () => [],
+    },
+  },
 }
 </script>
