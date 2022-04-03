@@ -4,17 +4,13 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 10001;
-  width: 80px;
-  height: 80px;
+  width: 46px;
+  height: 46px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--white);
   border-radius: 50%;
-  @media (max-width: $br1) {
-    width: 46px;
-    height: 46px;
-  }
 }
 
 .circular {

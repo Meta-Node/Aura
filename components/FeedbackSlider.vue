@@ -94,6 +94,10 @@ export default {
     },
     onAfterChange() {
       this.updatedPercent = this.percents
+      this.$store.commit('toast/addToast', {
+        text: 'Successfully updated',
+        color: 'success',
+      })
       if (+this.updatedPercent > 0) {
         this.$emit('changed')
       }

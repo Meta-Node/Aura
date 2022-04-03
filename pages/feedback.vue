@@ -96,7 +96,6 @@ export default {
       this.isEnergySliderVisible = true
     },
     onFeedbackChanged() {
-      console.log('test')
       this.isEnergyWindowVisible = true
     },
   },
