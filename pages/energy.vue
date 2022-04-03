@@ -1,39 +1,29 @@
 <template>
   <section class="energy">
     <div class="container energy__wrapper">
-      <!-- <div class="energy__main-filter">
-        <button
-          class="energy__main-button"
-          :class="[isExplorer && 'energy__main-button--active']"
-          @click="onFlowClick"
-        >
-          Flow
-        </button>
-        <button
-          class="energy__main-button"
-          :class="[!isExplorer && 'energy__main-button--active']"
-          @click="onOverviewClick"
-        >
-          Overview
-        </button>
-      </div> -->
-      <div class="enegry__screens">
-        <transition name="fade" mode="out-in">
-          <app-explorer v-if="isExplorer" />
-          <app-overview v-else />
-        </transition>
+      <div class="explorer__input-wrapper">
+        <app-search @searchValue="onSearchValue" />
       </div>
+      <div class="explorer__indicator">
+        <h3 class="explorer__indicator-text">Your energy</h3>
+        <div class="explorer__indicator-wrapper">
+          <div class="explorer__indicator-line"></div>
+        </div>
+        <div class="explorer__indicator-percents">60%</div>
+      </div>
+      <switch-page />
     </div>
   </section>
 </template>
 
 <script>
-import AppExplorer from '~/components/AppExplorer.vue'
-import AppOverview from '~/components/AppOverview.vue'
+import AppSearch from '~/components/AppSearch.vue'
 import transition from '~/mixins/transition'
+import users from '~/mixins/users'
+
 export default {
-  components: { AppExplorer, AppOverview },
-  mixins: [transition],
+  components: { AppSearch },
+  mixins: [transition, users],
 
   data() {
     return {

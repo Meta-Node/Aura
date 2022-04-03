@@ -1,0 +1,24 @@
+.energy-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.energy-switch__filter-button {
+  @include semi;
+  font-size: 24px;
+  line-height: 135%;
+  letter-spacing: -0.03em;
+  color: var(--grey);
+  background-color: transparent;
+  margin-right: 32px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &--active {
+    color: var(--white)
+  }
+}

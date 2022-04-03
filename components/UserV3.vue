@@ -1,18 +1,24 @@
 <template>
-  <li class="user-v2__humans-list">
-    <nuxt-link :to="url" class="user-v2__username">
+  <li class="user-v3__humans-list">
+    <nuxt-link :to="url" class="user-v3__username">
       <img
         :src="img"
         :alt="name"
-        class="user-v2__image"
+        class="user-v3__image"
         width="48"
         height="48"
       />
-      <p class="user-v2__tag">{{ name }}</p>
+      <p class="user-v3__tag">{{ name }}</p>
     </nuxt-link>
-    <div class="user-v2__numbers">
-      <p class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
-      <p class="user-v2__num user-v2__num-outbound">{{ outbound }}</p>
+    <div class="user-v3__numbers">
+      <user-slider
+        id="quality"
+        type="range"
+        :min="0"
+        :max="100"
+        :step="25"
+        :value="0"
+      />
     </div>
   </li>
 </template>

@@ -1,0 +1,50 @@
+<template>
+  <div class="asdsadas">
+    <div class="energy-switch">
+      <button
+        class="energy-switch__filter-button"
+        :class="[isExplorer && 'energy-switch__filter-button--active']"
+        @click="onExplorerClick"
+      >
+        Explorer
+      </button>
+      <button
+        class="energy-switch__filter-button"
+        :class="[!isExplorer && 'energy-switch__filter-button--active']"
+        @click="onEnergyClick"
+      >
+        Energy
+      </button>
+    </div>
+    <div class="enegry__screens">
+      <transition name="fade" mode="out-in">
+        <app-explorer v-if="isExplorer" />
+        <app-energy v-else />
+      </transition>
+    </div>
+  </div>
+</template>
+<script>
+import transition from '~/mixins/transition'
+import AppEnergy from '~/components/AppEnergy'
+import AppExplorer from '~/components/AppExplorer'
+
+export default {
+  components: { AppEnergy, AppExplorer },
+  mixins: [transition],
+
+  data() {
+    return {
+      isExplorer: true,
+    }
+  },
+  methods: {
+    onExplorerClick() {
+      this.isExplorer = true
+    },
+    onEnergyClick() {
+      this.isExplorer = false
+    },
+  },
+}
+</script>
