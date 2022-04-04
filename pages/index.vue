@@ -43,7 +43,7 @@ export default {
   mixins: [transition],
   methods: {
     async onSearch() {
-      const res = await backendApi.get('/v1/connection/search', {
+      const res = await backendApi.get('/v1/connections/search', {
         fromBrightId: localStorage.getItem('brightId'),
         seed: 5,
       })
