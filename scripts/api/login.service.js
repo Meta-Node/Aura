@@ -17,7 +17,7 @@ const api = create({
   headers: { 'Cache-Control': 'no-cache' },
 })
 
-const backendApi = create({
+export const backendApi = create({
   baseURL: 'https://aura-be-staging.herokuapp.com',
   headers: { 'Cache-Control': 'no-cache' },
 })
