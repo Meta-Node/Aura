@@ -137,10 +137,10 @@ export default {
         const profile = this.$store.state.login.profileData.profile
 
         this.$store.commit('profile/setProfile', profile)
+        await this.$store.dispatch('login/connectToBackend')
+
         this.$store.commit('app/setIsAuth', true)
         this.$router.push('/profile')
-
-        await this.$store.dispatch('login/connectToBackend')
 
         return
       }
@@ -151,6 +151,8 @@ export default {
       const profile = this.$store.state.login.profileData.profile
 
       this.$store.commit('profile/setProfile', profile)
+      await this.$store.dispatch('login/connectToBackend')
+
       this.$refs.popup.closePopup()
       this.$store.commit('app/setIsAuth', true)
       this.$router.push('/profile')

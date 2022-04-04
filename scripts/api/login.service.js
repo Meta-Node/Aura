@@ -10,7 +10,7 @@ let intervalID
 // const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
 
 const baseURL = 'http://184.72.224.75'
-const utf8Encode = new TextEncoder();
+// const utf8Encode = new TextEncoder()
 // const mobileBaseURL = 'brightid://'
 const api = create({
   baseURL,
@@ -194,27 +194,26 @@ export const syncBrightID = async () => {
 }
 
 export const commitToBackend = async () => {
-  const brightID =
-    localStorage.getItem('brightID') ||
-    '5cvu9DUZyzPUclHHcgNhs0S71Z2nAOwAYAljYgisGgA'
-  const signingKey =
-    localStorage.getItem('publicKey') ||
-    'WPL5WOLMbJ9M2wKbx9QaGOlJcXcIwQ7o8FfdoP+EX5g='
-  const privateKey =
-    localStorage.getItem('secretKey') ||
-    throw new Error("need secret key stored")
+  const brightId = localStorage.getItem('brightId')
+  const publicKey = localStorage.getItem('publicKey')
+  const privateKey = localStorage.getItem('privateKey')
 
-  const utf8Encode = new TextEncoder();
-  const encryptedTimestamp = nacl.sign(utf8Encode.encode(Date.now().toString()), B64.toByteArray(privateKey))
+  if (!privateKey) {
+    throw new Error('need secret key stored')
+  }
 
-  // ensure this is a 200 :-)
-  backendApi.post(
-    '/v1/connect',
-    {
-      brightID,
-      signingKey,
-      encryptedTimestamp
-    }
+  const utf8Encode = new TextEncoder()
+  const encryptedTimestamp = nacl.sign(
+    utf8Encode.encode(Date.now().toString()),
+    B64.toByteArray(privateKey)
   )
 
+  // ensure this is a 200 :-)
+  const res = await backendApi.post('/v1/connect', {
+    brightId,
+    publicKey,
+    encryptedTimestamp,
+  })
+
+  return res
 }

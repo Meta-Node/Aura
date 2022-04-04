@@ -1,4 +1,8 @@
-import { importBrightID, readChannelPromise } from '~/scripts/api/login.service'
+import {
+  commitToBackend,
+  importBrightID,
+  readChannelPromise,
+} from '~/scripts/api/login.service'
 
 export const state = () => ({
   isAuth: false,
@@ -29,10 +33,18 @@ export const actions = {
       const res = await readChannelPromise(state.brightIdData)
       console.log(res)
       commit('setProfileData', res)
-      localStorage.setItem('brightID', state.profileData.profile.id)
+      localStorage.setItem('brightId', state.profileData.profile.id)
       localStorage.setItem('publicKey', state.brightIdData.signingKey)
       localStorage.setItem('privateKey', state.brightIdData.privateKey)
       localStorage.setItem('timestamp', state.brightIdData.timestamp)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async connectToBackend({ commit, state, rootState }) {
+    try {
+      const res = await commitToBackend()
+      console.log(res)
     } catch (error) {
       console.log(error)
     }
