@@ -2,25 +2,11 @@ import assert from 'assert'
 import CryptoJS from 'crypto-js'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
-import { create } from 'apisauce'
+
+import { backendApi, brightIdApi, brightIdBaseURL } from '.'
 
 let qrString
 let intervalID
-
-// const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
-
-const baseURL = 'http://184.72.224.75'
-// const utf8Encode = new TextEncoder()
-// const mobileBaseURL = 'brightid://'
-const api = create({
-  baseURL,
-  headers: { 'Cache-Control': 'no-cache' },
-})
-
-export const backendApi = create({
-  baseURL: 'https://aura-be-staging.herokuapp.com',
-  headers: { 'Cache-Control': 'no-cache' },
-})
 
 const decryptData = (data, aesKey) => {
   const decrypted = CryptoJS.AES.decrypt(data, aesKey).toString(
@@ -65,13 +51,13 @@ const createImportQR = async () => {
   const data = JSON.stringify(dataObj)
   const body = JSON.stringify({ data, uuid: 'data' })
   try {
-    const res = await api.post(`profile/upload/${channelId}`, body)
+    const res = await brightIdApi.post(`profile/upload/${channelId}`, body)
     assert.ok(res.ok, 'failed to post data to the channel')
   } catch (error) {
     console.log(error)
   }
 
-  qrString = `${baseURL}/profile?aes=${aesKey}&t=3`
+  qrString = `${brightIdBaseURL}/profile?aes=${aesKey}&t=3`
   const deeplink = `brightid://connection-code/${encodeURIComponent(qrString)}`
 
   console.log(`QR string: ${qrString}`)
@@ -98,17 +84,17 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   const dataObj = { signingKey, lastSyncTime, isPrimaryDevice: false }
   const data = JSON.stringify(dataObj)
   let body = JSON.stringify({ data, uuid: 'data' })
-  let res = await api.post(`/upload/${channelId}`, body)
+  let res = await brightIdApi.post(`/upload/${channelId}`, body)
   assert.ok(res.ok, 'failed to post data to the channel')
 
   // although the device has nothing to send for the primary device,
   // it's required to send the completed flag to the channel
   const uuid = `completed_${brightID}:${b64ToUrlSafeB64(signingKey)}`
   body = JSON.stringify({ data: 'completed', uuid })
-  res = await api.post(`/upload/${channelId}`, body)
+  res = await brightIdApi.post(`/upload/${channelId}`, body)
   assert.ok(res.ok, 'failed to post completed flag to the channel')
 
-  qrString = `${baseURL}?aes=${aesKey}&t=4`
+  qrString = `${brightIdBaseURL}?aes=${aesKey}&t=4`
   console.log(`QR string: ${qrString}`)
   console.log(
     `Deep link: https://brightid://brightid.org/connection-code/${encodeURIComponent(
@@ -123,7 +109,7 @@ export const readChannel = async (data, resolve) => {
   let profile
   const connections = []
   const { channelId, aesKey, signingKey } = data
-  let res = await api.get(`/profile/list/${channelId}`)
+  let res = await brightIdApi.get(`/profile/list/${channelId}`)
 
   const dataIds = res.data.profileIds
 
@@ -140,14 +126,14 @@ export const readChannel = async (data, resolve) => {
 
   for (const dataId of dataIds) {
     if (dataId.startsWith('sig_userinfo_')) {
-      res = await api.get(`profile/download/${channelId}/${dataId}`)
+      res = await brightIdApi.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'user info')
       profile = data
     }
     if (dataId.startsWith('connection_')) {
-      res = await api.get(`profile/download/${channelId}/${dataId}`)
+      res = await brightIdApi.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'connection')

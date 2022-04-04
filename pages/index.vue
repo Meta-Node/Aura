@@ -36,7 +36,7 @@ import AppButton from '~/components/AppButton.vue'
 import LandingSphere from '~/components/LandingSphere.vue'
 import LoginForm from '~/components/LoginForm.vue'
 import transition from '~/mixins/transition'
-import { backendApi } from '~/scripts/api/login.service'
+import { backendApi } from '~/scripts/api/'
 
 export default {
   components: { LoginForm, LandingSphere, AppButton },
