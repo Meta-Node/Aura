@@ -10,9 +10,15 @@ let intervalID
 // const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
 
 const baseURL = 'http://184.72.224.75'
+const utf8Encode = new TextEncoder();
 // const mobileBaseURL = 'brightid://'
 const api = create({
   baseURL,
+  headers: { 'Cache-Control': 'no-cache' },
+})
+
+const backendApi = create({
+  baseURL: 'https://aura-be-staging.herokuapp.com',
   headers: { 'Cache-Control': 'no-cache' },
 })
 
@@ -51,9 +57,10 @@ const createImportQR = async () => {
   const b64SecretKey = B64.fromByteArray(secretKey)
   console.log(`b64SecretKey: ${b64SecretKey}`)
 
+  const timestamp = Date.now()
   const dataObj = {
     signingKey: b64PublicKey,
-    timestamp: Date.now(),
+    timestamp,
   }
   const data = JSON.stringify(dataObj)
   const body = JSON.stringify({ data, uuid: 'data' })
@@ -74,6 +81,8 @@ const createImportQR = async () => {
     channelId,
     aesKey,
     signingKey: b64PublicKey,
+    privateKey: b64SecretKey,
+    timestamp,
     qrString,
     deeplink,
     b64SecretKey,
@@ -182,4 +191,30 @@ export const syncBrightID = async () => {
   } catch (error) {
     console.log(error)
   }
+}
+
+export const commitToBackend = async () => {
+  const brightID =
+    localStorage.getItem('brightID') ||
+    '5cvu9DUZyzPUclHHcgNhs0S71Z2nAOwAYAljYgisGgA'
+  const signingKey =
+    localStorage.getItem('publicKey') ||
+    'WPL5WOLMbJ9M2wKbx9QaGOlJcXcIwQ7o8FfdoP+EX5g='
+  const privateKey =
+    localStorage.getItem('secretKey') ||
+    throw new Error("need secret key stored")
+
+  const utf8Encode = new TextEncoder();
+  const encryptedTimestamp = nacl.sign(utf8Encode.encode(Date.now().toString()), B64.toByteArray(privateKey))
+
+  // ensure this is a 200 :-)
+  backendApi.post(
+    '/v1/connect',
+    {
+      brightID,
+      signingKey,
+      encryptedTimestamp
+    }
+  )
+
 }
