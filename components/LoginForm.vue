@@ -140,6 +140,8 @@ export default {
         this.$store.commit('app/setIsAuth', true)
         this.$router.push('/profile')
 
+        await this.$store.dispatch('login/connectToBackend')
+
         return
       }
 

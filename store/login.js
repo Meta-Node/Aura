@@ -31,7 +31,8 @@ export const actions = {
       commit('setProfileData', res)
       localStorage.setItem('brightID', state.profileData.profile.id)
       localStorage.setItem('publicKey', state.brightIdData.signingKey)
-      localStorage.setItem('timestamp', Date.now())
+      localStorage.setItem('privateKey', state.brightIdData.privateKey)
+      localStorage.setItem('timestamp', state.brightIdData.timestamp)
     } catch (error) {
       console.log(error)
     }
