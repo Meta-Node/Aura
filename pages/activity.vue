@@ -13,7 +13,7 @@
           time="04:25 p.m."
         />
       </ul>
-      <text-button text="Load More..." />
+      <load-more text="Load More..." />
     </div>
   </section>
 </template>

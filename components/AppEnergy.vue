@@ -19,7 +19,7 @@
         </ul>
         <span v-else class="users-not-found">Users not found</span>
       </div>
-      <text-button text="Load More..." />
+      <load-more text="Load More..." />
       <div class="app-energy__circle-wrapper">
         <button class="app-energy__circle-button">
           <span class="app-energy__check-mark"
