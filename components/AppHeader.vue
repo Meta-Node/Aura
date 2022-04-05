@@ -30,18 +30,6 @@
         </p>
       </div>
       <div v-else class="header__right">
-        <ul class="nav-menu header__menu">
-          <li class="nav-item header__item">
-            <nuxt-link to="/profile/" class="menu-text header__text">
-              Profile
-            </nuxt-link>
-          </li>
-          <li class="nav-item header__item">
-            <nuxt-link to="/feedback/" class="menu-text header__text">
-              Feedback
-            </nuxt-link>
-          </li>
-        </ul>
         <button
           class="nav-button"
           :class="[isPopupOpen && 'nav-button--open']"
@@ -81,6 +69,11 @@
         </button>
         <div class="popup-menu" :class="[isPopupOpen && 'popup-menu--open']">
           <ul class="popup-menu__reduce">
+            <li class="popup-menu__list">
+              <nuxt-link to="/profile/" class="menu-text popup-menu__text">
+                Profile
+              </nuxt-link>
+            </li>
             <li class="popup-menu__list">
               <nuxt-link to="/community/" class="menu-text popup-menu__text">
                 Community

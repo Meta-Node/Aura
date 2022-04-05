@@ -113,7 +113,7 @@ export default {
       this.isEnergySliderVisible = true
     },
     onFeedbackChanged() {
-      this.isEnergyWindowVisible = true
+      this.isEnergyWindowVisible = false
     },
     getDate() {
       const today = new Date()
