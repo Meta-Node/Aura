@@ -21,25 +21,24 @@
       <div class="landing__input-form">
         <h3 class="landing__input-name">Early Access</h3>
         <login-form />
-        <app-button
+        <!-- <app-button
           style="margin: 0 auto; margin-top: 20px"
           @click.native="onSearch"
           >Search</app-button
-        >
+        > -->
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import AppButton from '~/components/AppButton.vue'
 import LandingSphere from '~/components/LandingSphere.vue'
 import LoginForm from '~/components/LoginForm.vue'
 import transition from '~/mixins/transition'
 import { backendApi } from '~/scripts/api/'
 
 export default {
-  components: { LoginForm, LandingSphere, AppButton },
+  components: { LoginForm, LandingSphere },
   mixins: [transition],
   methods: {
     async onSearch() {

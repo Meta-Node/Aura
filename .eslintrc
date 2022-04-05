@@ -17,6 +17,7 @@
   "rules": {
     "arrow-parens": [1, "as-needed", { "requireForBlockBody": false }],
     "comma-dangle": "off",
+    "no-useless-catch": "off",
     "no-console": "off",
     "vue/require-default-prop": "off",
     "vue/no-v-html": "off",

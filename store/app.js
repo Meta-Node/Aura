@@ -1,7 +1,7 @@
 export const state = () => ({
   loading: false,
   isWebp: false,
-  isAuth: true,
+  isAuth: false,
 })
 
 export const mutations = {
@@ -13,5 +13,6 @@ export const mutations = {
   },
   setIsAuth(state, value) {
     state.isAuth = value
+    localStorage.setItem('isAuth', JSON.stringify({ value }))
   },
 }

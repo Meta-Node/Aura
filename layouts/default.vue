@@ -29,6 +29,17 @@ export default {
     const { winSizes } = await import('~/scripts/utils/winSizes')
     const { resize } = await import('@emotionagency/utils')
     resize.on(winSizes)
+
+    const isAuth = JSON.parse(localStorage.getItem('isAuth') || '[]')
+
+    if (isAuth.value) {
+      this.$store.commit('app/setIsAuth', true)
+      this.$router.push('/profile')
+      await this.$store.dispatch('connections/getConnectionsData')
+    } else {
+      this.$store.commit('app/setIsAuth', false)
+      this.$router.push('/')
+    }
   },
 }
 </script>

@@ -8,6 +8,9 @@ import { backendApi, brightIdBaseURL } from '.'
 let qrString
 let intervalID
 
+// Authorize in BrightID => Authorize in Backend (Add data about user in DB)
+// If we do some request after auth we go to DB and get data about user
+
 const decryptData = (data, aesKey) => {
   const decrypted = CryptoJS.AES.decrypt(data, aesKey).toString(
     CryptoJS.enc.Utf8
@@ -174,38 +177,37 @@ export const syncBrightID = async () => {
     const lastSyncTime = localStorage.getItem('timestamp') || 1645509278250
     const data = await createSyncQR(brightID, signingKey, lastSyncTime)
     console.log(data)
-    // const intervalID = setInterval(() => readChannel(data), 3000)
   } catch (error) {
     console.log(error)
   }
 }
 
 export const commitToBackend = async () => {
-  const brightId = localStorage.getItem('brightId')
-  const publicKey = localStorage.getItem('publicKey')
-  const privateKey = localStorage.getItem('privateKey')
+  try {
+    const brightId = localStorage.getItem('brightId')
+    const publicKey = localStorage.getItem('publicKey')
+    const privateKey = localStorage.getItem('privateKey')
 
-  if (!privateKey) {
-    throw new Error('need secret key stored')
+    if (!privateKey) {
+      throw new Error('need secret key stored')
+    }
+
+    const encryptedData = {
+      timestamp: Date.now(),
+    }
+    const utf8Encode = new TextEncoder()
+    const encryptedTimestamp = nacl.sign(
+      utf8Encode.encode(JSON.stringify(encryptedData)),
+      B64.toByteArray(privateKey)
+    )
+
+    await backendApi.post('/v1/connect', {
+      brightId,
+      publicKey,
+      encryptedTimestamp,
+    })
+  } catch (error) {
+    console.log(error)
+    throw error
   }
-
-  const encryptedData = {
-    timestamp: Date.now()
-  }
-  const utf8Encode = new TextEncoder()
-  const encryptedTimestamp = nacl.sign(
-    utf8Encode.encode(JSON.stringify(encryptedData)),
-    B64.toByteArray(privateKey)
-  )
-
-  console.log(encryptedTimestamp)
-
-  // ensure this is a 200 :-)
-  const res = await backendApi.post('/v1/connect', {
-    brightId,
-    publicKey,
-    encryptedTimestamp,
-  })
-
-  return res
 }

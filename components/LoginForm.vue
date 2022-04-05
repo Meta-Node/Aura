@@ -134,28 +134,31 @@ export default {
           this.$refs.deeplinkBtn.click()
         }, 500)
         await this.$store.dispatch('login/getProfileData')
-        const profile = this.$store.state.login.profileData.profile
+        this.$store.commit('app/setLoading', true)
 
-        this.$store.commit('profile/setProfile', profile)
         await this.$store.dispatch('login/connectToBackend')
+        this.$store.commit('app/setLoading', false)
 
         this.$store.commit('app/setIsAuth', true)
         this.$router.push('/profile')
+        await this.$store.dispatch('connections/getConnectionsData')
 
         return
       }
 
       this.$refs.popup.openPopup()
 
+      this.$store.commit('app/setLoading', true)
       await this.$store.dispatch('login/getProfileData')
-      const profile = this.$store.state.login.profileData.profile
-
-      this.$store.commit('profile/setProfile', profile)
-      await this.$store.dispatch('login/connectToBackend')
 
       this.$refs.popup.closePopup()
+
+      await this.$store.dispatch('login/connectToBackend')
+      this.$store.commit('app/setLoading', false)
+
       this.$store.commit('app/setIsAuth', true)
       this.$router.push('/profile')
+      await this.$store.dispatch('connections/getConnectionsData')
     },
   },
 }

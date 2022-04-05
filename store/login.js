@@ -16,6 +16,7 @@ export const mutations = {
   },
   setProfileData(state, value) {
     state.profileData = value
+    localStorage.setItem('profileData', JSON.stringify(value))
   },
 }
 
@@ -26,6 +27,7 @@ export const actions = {
       commit('setBrightIdData', data)
     } catch (error) {
       console.log(error)
+      throw error
     }
   },
   async getProfileData({ commit, state, rootState }) {
@@ -39,6 +41,7 @@ export const actions = {
       localStorage.setItem('timestamp', state.brightIdData.timestamp)
     } catch (error) {
       console.log(error)
+      throw error
     }
   },
   async connectToBackend({ commit, state, rootState }) {
@@ -47,6 +50,7 @@ export const actions = {
       console.log(res)
     } catch (error) {
       console.log(error)
+      throw error
     }
   },
 }
