@@ -3,7 +3,7 @@ import CryptoJS from 'crypto-js'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 
-import { backendApi, brightIdApi, brightIdBaseURL } from '.'
+import { backendApi, brightIdBaseURL } from '.'
 
 let qrString
 let intervalID
@@ -51,7 +51,7 @@ const createImportQR = async () => {
   const data = JSON.stringify(dataObj)
   const body = JSON.stringify({ data, uuid: 'data' })
   try {
-    const res = await brightIdApi.post(`profile/upload/${channelId}`, body)
+    const res = await backendApi.post(`profile/upload/${channelId}`, body)
     assert.ok(res.ok, 'failed to post data to the channel')
   } catch (error) {
     console.log(error)
@@ -59,6 +59,7 @@ const createImportQR = async () => {
 
   qrString = `${brightIdBaseURL}/profile?aes=${aesKey}&t=3`
   const deeplink = `brightid://connection-code/${encodeURIComponent(qrString)}`
+  qrString = deeplink
 
   console.log(`QR string: ${qrString}`)
   console.log(`Deep link: ${deeplink}`)
@@ -84,14 +85,14 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   const dataObj = { signingKey, lastSyncTime, isPrimaryDevice: false }
   const data = JSON.stringify(dataObj)
   let body = JSON.stringify({ data, uuid: 'data' })
-  let res = await brightIdApi.post(`/upload/${channelId}`, body)
+  let res = await backendApi.post(`/upload/${channelId}`, body)
   assert.ok(res.ok, 'failed to post data to the channel')
 
   // although the device has nothing to send for the primary device,
   // it's required to send the completed flag to the channel
   const uuid = `completed_${brightID}:${b64ToUrlSafeB64(signingKey)}`
   body = JSON.stringify({ data: 'completed', uuid })
-  res = await brightIdApi.post(`/upload/${channelId}`, body)
+  res = await backendApi.post(`/upload/${channelId}`, body)
   assert.ok(res.ok, 'failed to post completed flag to the channel')
 
   qrString = `${brightIdBaseURL}?aes=${aesKey}&t=4`
@@ -109,7 +110,7 @@ export const readChannel = async (data, resolve) => {
   let profile
   const connections = []
   const { channelId, aesKey, signingKey } = data
-  let res = await brightIdApi.get(`/profile/list/${channelId}`)
+  let res = await backendApi.get(`/profile/list/${channelId}`)
 
   const dataIds = res.data.profileIds
 
@@ -126,14 +127,14 @@ export const readChannel = async (data, resolve) => {
 
   for (const dataId of dataIds) {
     if (dataId.startsWith('sig_userinfo_')) {
-      res = await brightIdApi.get(`profile/download/${channelId}/${dataId}`)
+      res = await backendApi.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'user info')
       profile = data
     }
     if (dataId.startsWith('connection_')) {
-      res = await brightIdApi.get(`profile/download/${channelId}/${dataId}`)
+      res = await backendApi.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
       console.log(data, 'connection')
@@ -188,11 +189,16 @@ export const commitToBackend = async () => {
     throw new Error('need secret key stored')
   }
 
+  const encryptedData = {
+    timestamp: Date.now()
+  }
   const utf8Encode = new TextEncoder()
   const encryptedTimestamp = nacl.sign(
-    utf8Encode.encode(Date.now().toString()),
+    utf8Encode.encode(JSON.stringify(encryptedData)),
     B64.toByteArray(privateKey)
   )
+
+  console.log(encryptedTimestamp)
 
   // ensure this is a 200 :-)
   const res = await backendApi.post('/v1/connect', {
