@@ -8,6 +8,7 @@
         :date="difDate.value"
         :connections="userInfo.numOfConnections"
         :brightness="brightness"
+        @share="onShare"
       />
       <div class="feedback__questions">
         <div class="feedback__quality-wrapper">
@@ -148,6 +149,16 @@ export default {
       }
 
       this.difDate.value = '< 1 month'
+    },
+    async onShare() {
+      const { copyToClipboard } = await import(
+        '~/scripts/utils/copyToClipboard'
+      )
+      copyToClipboard(location.href)
+      this.$store.commit('toast/addToast', {
+        text: 'Link was coppied to your clipboard',
+        color: 'primary',
+      })
     },
   },
 }

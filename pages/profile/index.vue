@@ -9,6 +9,7 @@
         :connections="profile.numOfConnections"
         :brightness="brightness"
         :is-own-profile="true"
+        @share="onShare"
       />
       <aura-sphere class="profile__sphere" :rating="75" />
       <div class="profile__users">
@@ -95,6 +96,16 @@ export default {
       }
 
       this.difDate.value = '< 1 month'
+    },
+    async onShare() {
+      const { copyToClipboard } = await import(
+        '~/scripts/utils/copyToClipboard'
+      )
+      copyToClipboard(location.href + '/' + this.profile.id)
+      this.$store.commit('toast/addToast', {
+        text: 'Link was coppied to your clipboard',
+        color: 'primary',
+      })
     },
   },
 }

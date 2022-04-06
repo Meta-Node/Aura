@@ -14,7 +14,7 @@
             {{ rating }}
           </p>
           <div class="profile__functions">
-            <button class="profile__edit">
+            <button class="profile__edit" aria-label="Edit Profile">
               <svg
                 width="17"
                 height="17"
@@ -28,7 +28,11 @@
                 />
               </svg>
             </button>
-            <button class="profile__share">
+            <button
+              class="profile__share"
+              aria-label="Share Profile"
+              @click="onShareClick"
+            >
               <svg
                 width="16"
                 height="20"
@@ -100,6 +104,11 @@ export default {
   computed: {
     separatedName() {
       return this.name.replace(' ', '<br />')
+    },
+  },
+  methods: {
+    onShareClick() {
+      this.$emit('share')
     },
   },
 }

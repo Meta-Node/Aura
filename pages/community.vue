@@ -20,7 +20,7 @@
             :brightness="brightness"
             :img="user.photo"
             :name="user.name"
-            url="/"
+            :url="`/profile/${user.id}`"
           />
         </ul>
         <span v-else class="users-not-found">Users not found</span>
