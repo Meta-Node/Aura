@@ -11,9 +11,6 @@ export const rateUser = async ({ fromBrightId, toBrightId, rating }) => {
     const endpoint = '/v1/ratings/'
     const URL = `${endpoint}${fromBrightId}/${toBrightId}`
 
-    console.log('rating: ', rating)
-    console.log('encryptedRating: ', encryptedRating)
-
     await backendApi.post(URL, {
       encryptedRating,
     })

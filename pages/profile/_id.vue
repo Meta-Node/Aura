@@ -96,6 +96,11 @@ export default {
   },
   async mounted() {
     const brightId = this.$route.params.id
+    if (this.$route.params.id === localStorage.getItem('brightId')) {
+      this.$router.push('/profile/')
+      return
+    }
+
     const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
 
     const connections = profileData.connections
