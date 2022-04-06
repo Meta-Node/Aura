@@ -4,7 +4,7 @@
       <profile-info
         :img="userInfo.photo"
         :name="userInfo.name"
-        rating="Silver"
+        :rating="userInfo.rating"
         :date="difDate.value"
         :connections="userInfo.numOfConnections"
         :brightness="brightness"
@@ -18,7 +18,7 @@
               class="text-button feedback__question-btn"
               @click="onFeedbackClick"
             >
-              Rate User?
+              Rate {{ userInfo.name.split(' ')[0] }}?
             </button>
             <div v-else class="feedback__transition">
               <feedback-slider
@@ -75,6 +75,7 @@ import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
 import { getProfile } from '~/scripts/api/connections.service'
+import { rateUser } from '~/scripts/api/rate.service'
 
 export default {
   components: { FeedbackSlider, ProfileInfo },
@@ -90,7 +91,7 @@ export default {
   },
   computed: {
     brightness() {
-      return Math.round(10 * Math.random())
+      return this.userInfo.rating / 10
     },
   },
   async mounted() {
@@ -114,8 +115,16 @@ export default {
     onEnergyClick() {
       this.isEnergySliderVisible = true
     },
-    onFeedbackChanged() {
-      this.isEnergyWindowVisible = false
+    async onFeedbackChanged(rating) {
+      await rateUser({
+        rating,
+        fromBrightId: localStorage.getItem('brightId'),
+        toBrightId: this.userInfo.id,
+      })
+      this.$store.commit('toast/addToast', {
+        text: 'Successfully updated',
+        color: 'success',
+      })
     },
     getDate() {
       const today = new Date()

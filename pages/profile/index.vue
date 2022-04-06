@@ -4,17 +4,17 @@
       <profile-info
         :img="profile.photo"
         :name="profile.name"
-        rating="Bronze"
+        :rating="profile.rating"
         :date="difDate.value"
         :connections="profile.numOfConnections"
         :brightness="brightness"
         :is-own-profile="true"
         @share="onShare"
       />
-      <aura-sphere class="profile__sphere" :rating="75" />
+      <aura-sphere class="profile__sphere" :rating="profile.rating" />
       <div class="profile__users">
         <h3 class="profile__title">Yet To Be Rated</h3>
-        <ul class="user-v1-ul">
+        <ul v-if="connections.length" class="user-v1-ul">
           <user-v-1
             v-for="user in connections"
             :key="user.id"
@@ -49,14 +49,14 @@ export default {
   },
   computed: {
     brightness() {
-      return Math.round(10 * Math.random())
+      return this.profile.rating / 10
     },
   },
   async mounted() {
     const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
-    this.profile = profileData.profile
+    this.profile = profileData?.profile
 
-    this.connections = profileData.connections
+    this.connections = profileData?.connections
 
     const res = await getProfile(profileData.profile.id)
     this.profile = { ...this.profile, ...res.data }

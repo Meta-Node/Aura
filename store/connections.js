@@ -18,7 +18,11 @@ export const actions = {
         throw new Error('you need a bright ID')
       }
       const res = await getConnections(brightId)
-      commit('setConnectionsData', res.data.connections)
+      if (res?.data?.connections) {
+        commit('setConnectionsData', res.data.connections)
+      } else {
+        throw new Error('We have no data in connections')
+      }
     } catch (error) {
       console.log(error)
       throw error

@@ -37,7 +37,12 @@ export default {
       if (this.$route.name === 'index') {
         this.$router.push('/profile')
       }
-      await this.$store.dispatch('connections/getConnectionsData')
+      try {
+        await this.$store.dispatch('connections/getConnectionsData')
+      } catch (error) {
+        console.log(error)
+        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+      }
     } else {
       this.$store.commit('app/setIsAuth', false)
       this.$router.push('/')

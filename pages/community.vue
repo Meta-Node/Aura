@@ -17,7 +17,7 @@
             v-for="user in users"
             :key="user.id"
             :is-brightness="true"
-            :brightness="brightness"
+            :brightness="user.rating / 10"
             :img="user.photo"
             :name="user.name"
             :url="`/profile/${user.id}`"
@@ -39,10 +39,5 @@ import users from '~/mixins/users'
 export default {
   components: { UserV1, FilterButton, AppSearch },
   mixins: [transition, users],
-  computed: {
-    brightness() {
-      return Math.round(20 * Math.random())
-    },
-  },
 }
 </script>

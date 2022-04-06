@@ -9,9 +9,9 @@
         <div class="profile__block-right">
           <p
             class="profile__rating"
-            :class="`profile__rating--${rating.toLowerCase()}`"
+            :class="`profile__rating--${ratingText.toLowerCase()}`"
           >
-            {{ rating }}
+            {{ ratingText }}
           </p>
           <div class="profile__functions">
             <button class="profile__edit" aria-label="Edit Profile">
@@ -81,8 +81,8 @@ export default {
       default: 'Name',
     },
     rating: {
-      type: String,
-      default: 'Low',
+      type: Number,
+      default: 0,
     },
     date: {
       type: String,
@@ -104,6 +104,17 @@ export default {
   computed: {
     separatedName() {
       return this.name.replace(' ', '<br />')
+    },
+    ratingText() {
+      if (this.rating <= 33) {
+        return 'Bronze'
+      }
+
+      if (this.rating <= 66 && this.rating > 33) {
+        return 'Silver'
+      }
+
+      return 'Gold'
     },
   },
   methods: {
