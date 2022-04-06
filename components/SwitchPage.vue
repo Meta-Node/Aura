@@ -1,6 +1,6 @@
 <template>
-  <div class="asdsadas">
-    <div class="energy-switch">
+  <div class="energy-switch">
+    <div class="energy-switch__wrapper">
       <button
         class="energy-switch__filter-button"
         :class="[isExplorer && 'energy-switch__filter-button--active']"
