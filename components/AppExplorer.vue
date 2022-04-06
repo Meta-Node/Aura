@@ -8,11 +8,11 @@
       <div class="explorer__humans-stat">
         <ul v-if="users.length" class="explorer__humans">
           <user-v-2
-            v-for="(user, idx) in users"
-            :key="idx"
-            img="/images/card-img.jpg"
+            v-for="user in users"
+            :key="user.id"
+            :img="user.photo"
             :name="user.name"
-            url="/"
+            :url="`/profile/${user.id}`"
             inbound="190.7%"
             outbound="148.6%"
           />
