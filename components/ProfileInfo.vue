@@ -14,7 +14,7 @@
             {{ rating }}
           </p>
           <div class="profile__functions">
-            <button v-if="isOwnProfile" class="profile__edit">
+            <button class="profile__edit">
               <svg
                 width="17"
                 height="17"
