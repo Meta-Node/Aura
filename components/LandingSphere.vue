@@ -14,7 +14,11 @@ export default {
   },
 
   beforeDestroy() {
-    this.scene && this.scene.destroy()
+    try {
+      this.scene && this.scene.destroy()
+    } catch (error) {
+      console.log(error)
+    }
   },
 }
 </script>

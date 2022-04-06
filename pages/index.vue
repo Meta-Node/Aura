@@ -21,11 +21,6 @@
       <div class="landing__input-form">
         <h3 class="landing__input-name">Early Access</h3>
         <login-form />
-        <!-- <app-button
-          style="margin: 0 auto; margin-top: 20px"
-          @click.native="onSearch"
-          >Search</app-button
-        > -->
       </div>
     </div>
   </main>

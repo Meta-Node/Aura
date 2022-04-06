@@ -1,7 +1,11 @@
 <template>
   <header class="header navbar">
     <nav class="container header__nav">
-      <nuxt-link to="/" class="header__img-wrapper" aria-label="logo">
+      <nuxt-link
+        :to="!isAuth ? '/' : '/profile'"
+        class="header__img-wrapper"
+        aria-label="logo"
+      >
         <svg
           class="img header__img"
           width="52"

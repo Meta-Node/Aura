@@ -34,7 +34,9 @@ export default {
 
     if (isAuth.value) {
       this.$store.commit('app/setIsAuth', true)
-      this.$router.push('/profile')
+      if (this.$route.name === 'index') {
+        this.$router.push('/profile')
+      }
       await this.$store.dispatch('connections/getConnectionsData')
     } else {
       this.$store.commit('app/setIsAuth', false)

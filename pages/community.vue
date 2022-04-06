@@ -14,11 +14,11 @@
         </div>
         <ul v-if="users.length" class="user-v1-ul">
           <user-v-1
-            v-for="(user, idx) in users"
-            :key="idx"
+            v-for="user in users"
+            :key="user.id"
             :is-brightness="true"
             :brightness="brightness"
-            img="/images/card-img.jpg"
+            :img="user.photo"
             :name="user.name"
             url="/"
           />

@@ -65,7 +65,7 @@ export default {
   methods: {
     getDate() {
       const today = new Date()
-      const reg = new Date(this.profile.brightIdDate)
+      const reg = new Date(this.profile.timestamp)
 
       const todayDate = {
         year: today.getFullYear(),

@@ -2,16 +2,14 @@ export default {
   data() {
     return {
       foundUsers: [],
+      startUsers: [],
       users: [],
     }
   },
-  computed: {
-    startUsers() {
-      return this.$store.state.users.users
-    },
-  },
-  async mounted() {
-    await this.$store.dispatch('users/getUsers')
+
+  mounted() {
+    const connections = JSON.parse(localStorage.getItem('profileData') || '[]')
+    this.startUsers = connections.connections
     this.users = this.startUsers
   },
   methods: {
