@@ -23,7 +23,6 @@
             :url="`/profile/${user.id}`"
           />
         </ul>
-        <load-more text="Load More..." />
       </div>
     </div>
     <div v-else class="container">User not found</div>
