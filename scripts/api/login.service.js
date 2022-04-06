@@ -8,9 +8,6 @@ import { backendApi, brightIdBaseURL, encryptData } from '.'
 let qrString
 let intervalID
 
-// Authorize in BrightID => Authorize in Backend (Add data about user in DB)
-// If we do some request after auth we go to DB and get data about user
-
 const decryptData = (data, aesKey) => {
   const decrypted = CryptoJS.AES.decrypt(data, aesKey).toString(
     CryptoJS.enc.Utf8
