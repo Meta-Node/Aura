@@ -1,6 +1,6 @@
 <template>
   <section class="feedback">
-    <div class="container feedback__wrapper">
+    <div v-if="userInfo.name" class="container feedback__wrapper">
       <profile-info
         :img="userInfo.photo"
         :name="userInfo.name"
@@ -65,6 +65,7 @@
         <load-more text="Load More..." />
       </div>
     </div>
+    <div v-else class="container">User not found</div>
   </section>
 </template>
 

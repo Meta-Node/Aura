@@ -1,6 +1,6 @@
 <template>
   <section class="profile">
-    <div class="container profile__wrapper">
+    <div v-if="profile.name" class="container profile__wrapper">
       <profile-info
         :img="profile.photo"
         :name="profile.name"
@@ -25,6 +25,7 @@
         <load-more text="Load More..." />
       </div>
     </div>
+    <div v-else class="container">User not found</div>
   </section>
 </template>
 
