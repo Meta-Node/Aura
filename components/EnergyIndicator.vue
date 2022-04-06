@@ -1,13 +1,13 @@
 <template>
-  <div class="explorer__indicator">
-    <h3 class="explorer__indicator-text">Your energy</h3>
-    <div class="explorer__indicator-wrapper">
+  <div class="explorer-energy">
+    <h3 class="explorer-energy__indicator-text">Your energy</h3>
+    <div class="explorer-energy__indicator-wrapper">
       <div
-        class="explorer__indicator-line"
+        class="explorer-energy__indicator-line"
         :style="{ width: percent + '%' }"
       ></div>
     </div>
-    <div class="explorer__indicator-percents">{{ percent }}%</div>
+    <div class="explorer-energy__indicator-percents">{{ percent }}%</div>
   </div>
 </template>
 

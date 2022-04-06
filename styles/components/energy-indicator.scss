@@ -1,0 +1,45 @@
+.explorer-energy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.explorer-energy__indicator-text {
+  @include semi;
+  font-size: 24px;
+  line-height: 135%;
+  letter-spacing: -0.03em;
+  color: var(--white);
+}
+
+.explorer-energy__indicator-wrapper {
+  display: block;
+  position: relative;
+  max-width: 342px;
+  width: 100%;
+  height: 16px;
+  background-color: var(--grey);
+  border-radius: 80px;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.explorer-energy__indicator-line {
+  position: absolute;
+  width: 60%;
+  height: 16px;
+  background-color: var(--b-grey);
+  border-radius: 80px;
+  box-shadow: 0px 0px 40px #ffffff;
+}
+
+.explorer-energy__indicator-percents {
+  @include mono-bold;
+  font-size: 16px;
+  line-height: 125%;
+  letter-spacing: -0.03em;
+  color: var(--grey);
+}

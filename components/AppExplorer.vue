@@ -1,12 +1,12 @@
 <template>
-  <div class="explorer">
-    <div class="explorer__statistic">
-      <div class="explorer__switch-wrapper">
+  <div class="app-explorer">
+    <div class="app-explorer__statistic">
+      <div class="app-explorer__switch-wrapper">
         <filter-button name="Name" :active="true" />
         <filter-button name="Amount" />
       </div>
-      <div class="explorer__humans-stat">
-        <ul v-if="users.length" class="explorer__humans">
+      <div class="app-explorer__humans-stat">
+        <ul v-if="users.length" class="app-explorer__humans">
           <user-v-2
             v-for="user in users"
             :key="user.id"

@@ -1,9 +1,9 @@
 <template>
-  <div class="range-slider feedback__energy-slider">
-    <div class="feeback__energy-wrapper">
+  <div class="range-slider energy-slider">
+    <div class="energy-slider__wrapper">
       <input
         :id="id"
-        class="feedback__energy-input"
+        class="energy-slider__energy-input"
         :type="type"
         :min="min"
         :max="max"
@@ -11,11 +11,11 @@
         :value="percents"
         @input="onRange"
       />
-      <div class="feedback__energy-block"></div>
-      <div class="feedback__energy-division"></div>
+      <div class="energy-slider__block"></div>
+      <div class="energy-slider__division"></div>
     </div>
-    <small id="percents" class="feedback__percents">{{ percents }}%</small>
-    <app-button class="feedback__btn" @click.native="onAfterChange">
+    <small id="percents" class="energy-slider__percents">{{ percents }}%</small>
+    <app-button class="energy-slider__btn" @click.native="onAfterChange">
       Confirm
     </app-button>
   </div>
