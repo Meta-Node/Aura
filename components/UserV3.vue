@@ -18,6 +18,7 @@
         :max="100"
         :step="1"
         :value="0"
+        :quota="Math.round(Math.random() * 100)"
       />
     </div>
   </li>

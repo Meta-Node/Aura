@@ -56,11 +56,11 @@
         <h3 class="feedback__title">Yet To Be Rated</h3>
         <ul class="user-v1-ul">
           <user-v-1
-            v-for="(user, idx) in 4"
-            :key="idx"
-            img="/images/card-img.jpg"
-            name="User Name"
-            url="/"
+            v-for="user in connections"
+            :key="user.id"
+            :img="user.photo"
+            :name="user.name"
+            :url="`/profile/${user.id}`"
           />
         </ul>
       </div>
@@ -85,6 +85,7 @@ export default {
       isFeedbackSliderVisible: false,
       isEnergyWindowVisible: false,
       userInfo: {},
+      connections: [],
       difDate: {},
     }
   },
@@ -101,7 +102,9 @@ export default {
 
     this.userInfo = connections.find(con => con.id === brightId)
 
-    this.connections = profileData.connections
+    this.connections = profileData.connections.filter(
+      con => con.id !== brightId
+    )
 
     const res = await getProfile(brightId)
     this.userInfo = { ...this.userInfo, ...res.data }
@@ -115,11 +118,14 @@ export default {
       this.isEnergySliderVisible = true
     },
     async onFeedbackChanged(rating) {
+      this.$store.commit('app/setLoading', true)
       await rateUser({
         rating,
         fromBrightId: localStorage.getItem('brightId'),
         toBrightId: this.userInfo.id,
       })
+      this.$store.commit('app/setLoading', false)
+
       this.$store.commit('toast/addToast', {
         text: 'Successfully updated',
         color: 'success',

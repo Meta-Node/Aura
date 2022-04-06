@@ -1,18 +1,20 @@
 <template>
   <div class="user">
     <div class="user__slider">
-      <input
-        :id="id"
-        class="user__input-slider"
-        :type="type"
-        :min="min"
-        :max="max"
-        :step="step"
-        :value="percents"
-        @input="onRange"
-        @mouseup="onAfterChange"
-        @touchend="onAfterChange"
-      />
+      <label :for="id" class="user__input-label" :style="`--quota: ${quota}%`">
+        <input
+          :id="id"
+          class="user__input-slider"
+          :type="type"
+          :min="min"
+          :max="max"
+          :step="step"
+          :value="percents"
+          @input="onRange"
+          @mouseup="onAfterChange"
+          @touchend="onAfterChange"
+        />
+      </label>
     </div>
     <small id="percents" class="user__percents">{{ percents }}%</small>
   </div>
@@ -45,6 +47,10 @@ export default {
       type: Number,
       default: 0,
     },
+    quota: {
+      type: Number,
+      default: 100,
+    },
   },
 
   data() {
@@ -56,6 +62,9 @@ export default {
 
   methods: {
     onRange(e) {
+      if (e.target.value > this.quota) {
+        e.target.value = this.quota
+      }
       this.percents = +e.target.value
     },
     onAfterChange() {
