@@ -66,7 +66,7 @@ export default {
   methods: {
     getDate() {
       const today = new Date()
-      const reg = new Date(this.profile.timestamp)
+      const reg = new Date(this.profile.updateTimestamps.name)
 
       const todayDate = {
         year: today.getFullYear(),

@@ -118,7 +118,7 @@ export default {
     },
     getDate() {
       const today = new Date()
-      console.log(this.userInfo)
+
       const reg = new Date(this.userInfo.timestamp)
 
       const todayDate = {
