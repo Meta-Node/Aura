@@ -3,7 +3,7 @@ import CryptoJS from 'crypto-js'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 
-import { backendApi, brightIdBaseURL } from '.'
+import { backendApi, brightIdBaseURL, encryptData } from '.'
 
 let qrString
 let intervalID
@@ -186,20 +186,12 @@ export const commitToBackend = async () => {
   try {
     const brightId = localStorage.getItem('brightId')
     const publicKey = localStorage.getItem('publicKey')
-    const privateKey = localStorage.getItem('privateKey')
-
-    if (!privateKey) {
-      throw new Error('need secret key stored')
-    }
 
     const encryptedData = {
       timestamp: Date.now(),
     }
-    const utf8Encode = new TextEncoder()
-    const encryptedTimestamp = nacl.sign(
-      utf8Encode.encode(JSON.stringify(encryptedData)),
-      B64.toByteArray(privateKey)
-    )
+
+    const encryptedTimestamp = encryptData(encryptedData)
 
     await backendApi.post('/v1/connect', {
       brightId,
