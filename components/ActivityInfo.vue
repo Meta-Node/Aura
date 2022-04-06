@@ -3,15 +3,21 @@
     <div class="activity__info-block">
       <toggle-switch :id="id" />
       <div class="activity__text">
-        <span class="activity__from-user"
-          ><nuxt-link :to="fromUser.url">{{ fromUser.name }}</nuxt-link></span
+        <span v-if="fromUser" class="activity__from-user"
+          ><nuxt-link :to="'/profile/' + fromUser.id">{{
+            fromUser.name
+          }}</nuxt-link></span
         >
-        <span class="activity__action">{{ action }}</span>
-        <span class="activity__to-user"
-          ><nuxt-link :to="toUser.url">{{ toUser.name }}</nuxt-link></span
+        <span class="activity__action">{{
+          action.action + ' ' + action.amount
+        }}</span>
+        <span v-if="toUser" class="activity__to-user"
+          ><nuxt-link :to="'/profile/' + toUser.id">{{
+            toUser.name
+          }}</nuxt-link></span
         >
       </div>
-      <p class="activity__time">{{ time }}</p>
+      <p class="activity__time">{{ computeDate(time) }}</p>
     </div>
     <div class="activity__stripe"></div>
   </li>
@@ -25,8 +31,8 @@ export default {
 
   props: {
     action: {
-      type: String,
-      default: '',
+      type: Object,
+      default: () => {},
     },
     fromUser: {
       type: Object,
@@ -43,7 +49,17 @@ export default {
     id: {
       type: Number,
       default: 0,
-      },
+    },
+  },
+
+  methods: {
+    computeDate(date) {
+      const curDate = new Date(date)
+      const hours = curDate.getHours()
+      const minutes = curDate.getMinutes()
+
+      return `${hours}:${minutes}`
+    },
   },
 }
 </script>

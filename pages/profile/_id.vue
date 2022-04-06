@@ -135,6 +135,10 @@ export default {
         text: 'Successfully updated',
         color: 'success',
       })
+
+      if (rating > 0.5) {
+        this.$router.push('/energy/')
+      }
     },
     getDate() {
       const today = new Date()
