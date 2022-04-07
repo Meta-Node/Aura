@@ -18,7 +18,7 @@
         @share="onShare"
       />
       <aura-sphere class="profile__sphere" :rating="profile.rating" />
-      <div v-if="fourUnrated.length" class="profile__users">
+      <div v-if="fourUnrated && fourUnrated.length" class="profile__users">
         <h3 class="profile__title">Yet To Be Rated</h3>
         <ul class="user-v1-ul">
           <user-v-1
