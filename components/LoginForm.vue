@@ -185,11 +185,11 @@ export default {
 
       this.$refs.popup.openPopup()
 
-      this.$store.commit('app/setLoading', true)
       await this.$store.dispatch('login/getProfileData')
 
       this.$refs.popup.closePopup()
 
+      this.$store.commit('app/setLoading', true)
       await this.$store.dispatch('login/connectToBackend')
       this.$store.commit('app/setLoading', false)
 
