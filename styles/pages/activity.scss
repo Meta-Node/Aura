@@ -23,10 +23,17 @@
   }
 }
 
-.activity__info-block {
+.activity__main {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+}
+
+.activity__right-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 24px;
+  width: 100%;
 }
 
 .activity__text {
@@ -35,7 +42,7 @@
   line-height: 140%;
   letter-spacing: -0.03em;
   color: var(--b-grey);
-  margin-right: 18px;
+  margin-right: 12px;
 }
 
 .activity__action {
