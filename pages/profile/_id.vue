@@ -82,7 +82,7 @@ import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import NicknamePopup from '~/components/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
-import { getProfile } from '~/scripts/api/connections.service'
+import { getConnection, getProfile } from '~/scripts/api/connections.service'
 import { rateUser } from '~/scripts/api/rate.service'
 
 export default {
@@ -125,6 +125,8 @@ export default {
     const res = await getProfile(brightId)
     this.userInfo = { ...this.userInfo, ...res.data }
     this.getDate()
+    const connectionRes = await getConnection(brightId)
+    console.log(connectionRes)
     this.isLoading = false
   },
   methods: {

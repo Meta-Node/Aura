@@ -9,6 +9,19 @@ export const getConnections = async fromBrightId => {
   return res
 }
 
+export const getConnection = async toBrightId => {
+  const fromBrightId = localStorage.getItem('brightId')
+  if (!fromBrightId) {
+    return
+  }
+
+  const res = await backendApi.get(
+    '/v1/connections/' + fromBrightId + '/' + toBrightId
+  )
+
+  return res
+}
+
 export const getProfile = async fromBrightId => {
   const res = await backendApi.get('/v1/profile/' + fromBrightId)
   return res
