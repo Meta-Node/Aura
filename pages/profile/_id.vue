@@ -15,6 +15,7 @@
         :connections="userInfo.numOfConnections"
         :brightness="brightness"
         @share="onShare"
+        @edit="onEdit"
       />
       <div class="feedback__questions">
         <div class="feedback__quality-wrapper">
@@ -71,19 +72,21 @@
         </ul>
       </div>
     </div>
+    <nickname-popup ref="popup" :to-bright-id="userInfo.id" />
   </section>
 </template>
 
 <script>
 import AppSpinner from '~/components/AppSpinner.vue'
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
+import NicknamePopup from '~/components/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
 import { getProfile } from '~/scripts/api/connections.service'
 import { rateUser } from '~/scripts/api/rate.service'
 
 export default {
-  components: { FeedbackSlider, ProfileInfo, AppSpinner },
+  components: { FeedbackSlider, ProfileInfo, AppSpinner, NicknamePopup },
   mixins: [transition],
 
   data() {
@@ -191,6 +194,9 @@ export default {
         text: 'Link was coppied to your clipboard',
         color: 'primary',
       })
+    },
+    onEdit() {
+      this.$refs.popup.openPopup()
     },
   },
 }

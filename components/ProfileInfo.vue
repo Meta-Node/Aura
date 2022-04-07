@@ -18,6 +18,7 @@
               v-if="!isOwnProfile"
               class="profile__edit"
               aria-label="Edit Profile"
+              @click="onEditClick"
             >
               <svg
                 width="17"
@@ -124,6 +125,9 @@ export default {
   methods: {
     onShareClick() {
       this.$emit('share')
+    },
+    onEditClick() {
+      this.$emit('edit')
     },
   },
 }

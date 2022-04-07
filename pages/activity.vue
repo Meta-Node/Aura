@@ -43,7 +43,11 @@ export default {
     }
 
     const res = await getProfileActivity(brightId)
-    const events = res.data.events
+    const events = res?.data?.events
+
+    if (!events) {
+      return
+    }
 
     this.activityData = events
       .map(event => {

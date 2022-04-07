@@ -2,7 +2,7 @@
   <app-popup ref="popup">
     <div class="popup__qr">
       <div class="popup__qr-popup">
-        <h4 class="popup__qr-text">Scan this QR with your BrightID app</h4>
+        <h4 class="popup__text">Scan this QR with your BrightID app</h4>
         <div class="popup__qr-img">
           <canvas id="qr"></canvas>
         </div>

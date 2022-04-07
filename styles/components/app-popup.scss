@@ -41,6 +41,8 @@
   z-index: 2;
   opacity: 0;
   transform: translateY(60px);
+  border-radius: 20px;
+  overflow: hidden;
   pointer-events: none;
   transition: opacity, transform;
   transition-timing-function: ease;
@@ -51,15 +53,14 @@
   padding-top: 44px;
   padding-bottom: 44px;
   position: relative;
+  width: 100%;
+  max-width: 344px;
+  background-color: var(--grey);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   flex-direction: column;
-  max-width: 344px;
-  width: 100%;
-  background-color: var(--grey);
-  border-radius: 20px;
 }
 
 .popup__close {
@@ -90,7 +91,7 @@
   }
 }
 
-.popup__qr-text {
+.popup__text {
   @include semi;
   font-size: 24px;
   line-height: 135%;
@@ -101,13 +102,36 @@
   max-width: 300px;
 }
 
-// .popup__qr-btn {
-//   max-width: 100px;
-//   background-color: var(--b-grey);
-//   color: var(--grey);
-//   margin-top: 28px;
-//   margin-bottom: 44px;
-// }
+.nickname-popup {
+  background-color: var(--black);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  padding-top: 44px;
+  padding-bottom: 44px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;
+  max-width: 344px;
+  .input-wrapper {
+    width: 100%;
+  }
+}
+
+.nickname-form {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+}
+
+.nickname-form__btn {
+  margin: 0 auto;
+  margin-top: 12px;
+  width: 100%;
+}
 
 .popup__qr-img {
   border-radius: 10px;
