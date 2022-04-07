@@ -4,13 +4,18 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 10001;
+}
+
+.e-loader {
   width: 46px;
+  position: relative;
   height: 46px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--white);
   border-radius: 50%;
+  margin: 0 auto;
 }
 
 .circular {

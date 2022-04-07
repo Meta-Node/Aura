@@ -1,6 +1,12 @@
 <template>
   <section class="feedback">
-    <div v-if="userInfo.name" class="container feedback__wrapper">
+    <div v-if="isLoading" style="margin-top: 40px">
+      <app-spinner :is-visible="true" />
+    </div>
+    <div v-else-if="!isLoading && !userInfo.name" class="container">
+      User not found
+    </div>
+    <div v-else class="container feedback__wrapper">
       <profile-info
         :img="userInfo.photo"
         :name="userInfo.name"
@@ -65,11 +71,11 @@
         </ul>
       </div>
     </div>
-    <div v-else class="container">User not found</div>
   </section>
 </template>
 
 <script>
+import AppSpinner from '~/components/AppSpinner.vue'
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
@@ -77,13 +83,14 @@ import { getProfile } from '~/scripts/api/connections.service'
 import { rateUser } from '~/scripts/api/rate.service'
 
 export default {
-  components: { FeedbackSlider, ProfileInfo },
+  components: { FeedbackSlider, ProfileInfo, AppSpinner },
   mixins: [transition],
 
   data() {
     return {
       isFeedbackSliderVisible: false,
       isEnergyWindowVisible: false,
+      isLoading: true,
       userInfo: {},
       connections: [],
       difDate: {},
@@ -100,6 +107,7 @@ export default {
       this.$router.push('/profile/')
       return
     }
+    this.isLoading = true
 
     const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
 
@@ -114,6 +122,7 @@ export default {
     const res = await getProfile(brightId)
     this.userInfo = { ...this.userInfo, ...res.data }
     this.getDate()
+    this.isLoading = false
   },
   methods: {
     onFeedbackClick() {

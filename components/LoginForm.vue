@@ -165,8 +165,6 @@ export default {
       this.brightIDData = data
 
       if (detectMob()) {
-        // window.open(this.brightIDData.deeplink, '_blank')
-        // this.$refs.deeplinkBtn.href = this.brightIDData.deeplink
         setTimeout(() => {
           this.$refs.deeplinkBtn.click()
         }, 500)

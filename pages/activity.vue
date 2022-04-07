@@ -16,17 +16,20 @@
         </ul>
         <load-more text="Load More..." />
       </div>
-      <div v-else>Loading...</div>
+      <div v-else style="margin-top: 40px">
+        <app-spinner :is-visible="true" />
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import ActivityInfo from '~/components/ActivityInfo.vue'
+import AppSpinner from '~/components/AppSpinner.vue'
 import { getProfileActivity } from '~/scripts/api/activity.service'
 
 export default {
-  components: { ActivityInfo },
+  components: { ActivityInfo, AppSpinner },
   data() {
     return {
       activityData: [],

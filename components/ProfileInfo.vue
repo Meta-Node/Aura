@@ -14,7 +14,11 @@
             {{ ratingText }}
           </p>
           <div class="profile__functions">
-            <button class="profile__edit" aria-label="Edit Profile">
+            <button
+              v-if="!isOwnProfile"
+              class="profile__edit"
+              aria-label="Edit Profile"
+            >
               <svg
                 width="17"
                 height="17"

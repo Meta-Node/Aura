@@ -1,6 +1,12 @@
 <template>
   <section class="profile">
-    <div v-if="profile.name" class="container profile__wrapper">
+    <div v-if="isLoading" style="margin-top: 40px">
+      <app-spinner :is-visible="true" />
+    </div>
+    <div v-else-if="!isLoading && !profile.name" class="container">
+      User not found
+    </div>
+    <div v-else class="container profile__wrapper">
       <profile-info
         :img="profile.photo"
         :name="profile.name"
@@ -25,7 +31,6 @@
         </ul>
       </div>
     </div>
-    <div v-else class="container">User not found</div>
   </section>
 </template>
 
@@ -44,6 +49,7 @@ export default {
       profile: {},
       connections: [],
       difDate: {},
+      isLoading: true,
     }
   },
   computed: {
@@ -52,6 +58,7 @@ export default {
     },
   },
   async mounted() {
+    this.isLoading = true
     const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
     this.profile = profileData?.profile
 
@@ -61,6 +68,7 @@ export default {
     this.profile = { ...this.profile, ...res.data }
 
     this.getDate()
+    this.isLoading = false
   },
 
   methods: {
