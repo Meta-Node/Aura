@@ -13,8 +13,8 @@
             :img="user.photo"
             :name="user.name"
             :url="`/profile/${user.id}`"
-            inbound="190.7%"
-            outbound="148.6%"
+            inbound="0%"
+            outbound="0%"
           />
         </ul>
         <span v-else class="users-not-found">Users not found</span>

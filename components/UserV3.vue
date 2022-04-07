@@ -18,7 +18,7 @@
         :max="100"
         :step="1"
         :value="0"
-        :quota="Math.round(Math.random() * 100)"
+        :quota="getQuota"
       />
     </div>
   </li>
@@ -39,13 +39,14 @@ export default {
       type: String,
       default: 'Name',
     },
-    inbound: {
-      type: String,
-      default: '',
+    rating: {
+      type: Number,
+      default: 0,
     },
-    outbound: {
-      type: String,
-      default: '',
+  },
+  computed: {
+    getQuota() {
+      return this.rating * 25
     },
   },
 }

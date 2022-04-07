@@ -12,9 +12,8 @@
             :key="user.id"
             :img="user.photo"
             :name="user.name"
+            :rating="user.rating"
             :url="`/profile/${user.id}`"
-            inbound="190.7%"
-            outbound="148.6%"
           />
         </ul>
         <span v-else class="users-not-found">Users not found</span>

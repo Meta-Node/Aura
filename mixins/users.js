@@ -1,3 +1,5 @@
+import { getRatedUsers } from '~/scripts/api/rate.service'
+
 export default {
   data() {
     return {
@@ -7,9 +9,22 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     const connections = JSON.parse(localStorage.getItem('profileData') || '[]')
-    this.startUsers = connections.connections
+    try {
+      const ratedUsers = await getRatedUsers()
+      const moreThanZero = ratedUsers.filter(user => +user.rating > 0.5)
+      const finalUsers = moreThanZero.map(user => {
+        return {
+          rating: +user.rating,
+          ...connections.connections.find(conn => conn.id === user.toBrightId),
+        }
+      })
+
+      this.startUsers = finalUsers
+    } catch (error) {
+      console.log(error)
+    }
     this.users = this.startUsers
   },
   methods: {

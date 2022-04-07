@@ -18,11 +18,11 @@
         @share="onShare"
       />
       <aura-sphere class="profile__sphere" :rating="profile.rating" />
-      <div class="profile__users">
+      <div v-if="fourUnrated.length" class="profile__users">
         <h3 class="profile__title">Yet To Be Rated</h3>
-        <ul v-if="connections.length" class="user-v1-ul">
+        <ul class="user-v1-ul">
           <user-v-1
-            v-for="user in connections"
+            v-for="user in fourUnrated"
             :key="user.id"
             :img="user.photo"
             :name="user.name"
@@ -55,6 +55,21 @@ export default {
   computed: {
     brightness() {
       return this.profile.rating / 10
+    },
+    fourUnrated() {
+      let fourUnrated = this.profile.fourUnrated
+      fourUnrated = fourUnrated.map(profile => {
+        const brightId = profile.conn._to.replace('users/', '')
+        const connectionInfo = this.connections.find(
+          conn => conn.id === brightId
+        )
+        console.log(brightId)
+        const obj = {
+          ...connectionInfo,
+        }
+        return obj
+      })
+      return fourUnrated
     },
   },
   async mounted() {
