@@ -11,6 +11,13 @@ export default {
 
   async mounted() {
     const connections = JSON.parse(localStorage.getItem('profileData') || '[]')
+
+    if (this.$route.name === 'community') {
+      this.startUsers = connections.connections
+      this.users = this.startUsers
+      return
+    }
+
     try {
       const ratedUsers = await getRatedUsers()
       const moreThanZero = ratedUsers.filter(user => +user.rating > 0.5)
