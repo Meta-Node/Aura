@@ -117,6 +117,8 @@
   width: 100%;
   max-width: 344px;
   .input-wrapper {
+    display: flex;
+    flex-direction: column;
     width: 100%;
   }
 }
