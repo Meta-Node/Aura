@@ -12,7 +12,7 @@
             }}</nuxt-link></span
           >
           <span class="activity__action">{{
-            action.action + ' ' + action.amount
+            computeActivityAction(action.action, action.amount)
           }}</span>
           <span v-if="toUser" class="activity__to-user"
             ><nuxt-link :to="'/profile/' + toUser.id">{{
@@ -58,11 +58,27 @@ export default {
 
   methods: {
     computeDate(date) {
-      const curDate = new Date(date)
-      const hours = curDate.getHours()
-      const minutes = curDate.getMinutes()
+      const activityDate = new Date(date)
+      const todayDate = new Date(Date.now())
+      const todayDay = todayDate.getDay()
+
+      const day = activityDate.getDay()
+      const hours = activityDate.getHours()
+
+      let minutes = activityDate.getMinutes()
+      minutes = +minutes <= 9 ? `0${minutes}` : minutes
+
+      if (todayDay - day >= 1) {
+        return todayDay - day + ' day(s) ago'
+      }
 
       return `${hours}:${minutes}`
+    },
+    computeActivityAction(action, amount) {
+      if (action === 'RATED_CONNECTION') {
+        return 'rated ' + `(${amount})`
+      }
+      return action + ' ' + amount
     },
   },
 }
