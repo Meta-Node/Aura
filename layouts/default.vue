@@ -39,6 +39,7 @@ export default {
       }
       try {
         await this.$store.dispatch('connections/getConnectionsData')
+        await this.$store.dispatch('profile/getProfileData')
       } catch (error) {
         console.log(error)
         this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })

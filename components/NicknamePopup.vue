@@ -58,6 +58,11 @@ export default {
           })
           this.$refs.nickname.reset()
           this.closePopup()
+          this.$store.commit('toast/addToast', {
+            text: 'Succesfully updated',
+            color: 'success',
+          })
+          this.$emit('updateNickname', this.nickname.value)
         } catch (error) {
           console.log(error)
           this.$store.commit('toast/addToast', {

@@ -9,18 +9,20 @@
         <ul v-if="users.length" class="app-energy__humans">
           <user-v-3
             v-for="user in users"
+            :id="user.id"
             :key="user.id"
             :img="user.photo"
             :name="user.name"
             :rating="user.rating"
             :url="`/profile/${user.id}`"
+            @changeEnergy="onChangeEnergy"
           />
         </ul>
         <span v-else class="users-not-found">Users not found</span>
       </div>
       <load-more text="Load More..." />
       <div class="app-energy__circle-wrapper">
-        <button class="app-energy__circle-button">
+        <button class="app-energy__circle-button" @click="updateEnergy">
           <span class="app-energy__check-mark"
             ><svg
               width="14"
@@ -46,6 +48,7 @@
 <script>
 import UserV3 from '~/components/UserV3.vue'
 import FilterButton from '~/components/FilterButton.vue'
+import { transferEnergy } from '~/scripts/api/energy.service'
 
 export default {
   components: { UserV3, FilterButton },
@@ -53,6 +56,27 @@ export default {
     users: {
       type: Array,
       default: () => [],
+    },
+  },
+  data() {
+    return {
+      energyData: [],
+    }
+  },
+  mounted() {
+    this.energyData = this.users.map(user => ({ amount: 0, brightId: user.id }))
+  },
+  methods: {
+    async updateEnergy() {
+      const res = await transferEnergy(this.energyData)
+      console.log(res)
+    },
+    onChangeEnergy(data) {
+      const updatedEnergy = this.energyData.filter(
+        en => en.brightId !== data.brightId
+      )
+      updatedEnergy.push(data)
+      this.energyData = updatedEnergy
     },
   },
 }

@@ -19,7 +19,11 @@ export const getConnection = async toBrightId => {
     '/v1/connections/' + fromBrightId + '/' + toBrightId
   )
 
-  return res
+  if (!res.data) {
+    throw new Error('data is not defined')
+  }
+
+  return res.data
 }
 
 export const getProfile = async fromBrightId => {

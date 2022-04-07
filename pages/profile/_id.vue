@@ -34,7 +34,7 @@
                 :min="-5"
                 :max="5"
                 :step="1"
-                :value="0"
+                :value="+userInfo.previousRating || 0"
                 @changed="onFeedbackChanged"
               />
             </div>
@@ -59,11 +59,11 @@
           </div>
         </transition>
       </div>
-      <div class="feedback__users">
+      <div v-if="fourUnrated && fourUnrated.length" class="feedback__users">
         <h3 class="feedback__title">Yet To Be Rated</h3>
         <ul class="user-v1-ul">
           <user-v-1
-            v-for="user in connections"
+            v-for="user in fourUnrated"
             :key="user.id"
             :img="user.photo"
             :name="user.name"
@@ -72,7 +72,11 @@
         </ul>
       </div>
     </div>
-    <nickname-popup ref="popup" :to-bright-id="userInfo.id" />
+    <nickname-popup
+      ref="popup"
+      :to-bright-id="userInfo.id"
+      @updateNickname="updateNickname"
+    />
   </section>
 </template>
 
@@ -93,6 +97,7 @@ export default {
     return {
       isFeedbackSliderVisible: false,
       isEnergyWindowVisible: false,
+      isAlreadyRated: false,
       isLoading: true,
       userInfo: {},
       connections: [],
@@ -102,6 +107,27 @@ export default {
   computed: {
     brightness() {
       return this.userInfo.rating / 10
+    },
+    fourUnrated() {
+      return this.$store.getters['profile/fourUnrated']?.filter(
+        user => user.id !== this.$route.params.id
+      )
+    },
+    nickname() {
+      const ownerProfile = this.$store.getters['profile/profileData']
+      const nicknames = ownerProfile?.nicknames
+      const currentUserNickname = nicknames?.find(
+        nickname => nickname.toBrightId === this.$route.params.id
+      )
+      if (currentUserNickname) {
+        return currentUserNickname.nickName
+      }
+      return this.userInfo.name
+    },
+  },
+  watch: {
+    nickname() {
+      this.userInfo.name = this.nickname
     },
   },
   async mounted() {
@@ -124,9 +150,14 @@ export default {
 
     const res = await getProfile(brightId)
     this.userInfo = { ...this.userInfo, ...res.data }
+    this.userInfo.name = this.nickname
     this.getDate()
     const connectionRes = await getConnection(brightId)
-    console.log(connectionRes)
+    if (connectionRes.previousRating) {
+      this.isAlreadyRated = true
+      this.isFeedbackSliderVisible = true
+      this.userInfo.previousRating = connectionRes.previousRating.rating
+    }
     this.isLoading = false
   },
   methods: {
@@ -199,6 +230,9 @@ export default {
     },
     onEdit() {
       this.$refs.popup.openPopup()
+    },
+    updateNickname(value) {
+      this.userInfo.name = value
     },
   },
 }

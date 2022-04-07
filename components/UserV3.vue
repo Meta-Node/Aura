@@ -19,6 +19,7 @@
         :step="1"
         :value="0"
         :quota="getQuota"
+        @changeEnergy="changeEnergy"
       />
     </div>
   </li>
@@ -27,6 +28,10 @@
 <script>
 export default {
   props: {
+    id: {
+      type: String,
+      default: '',
+    },
     url: {
       type: String,
       default: '/',
@@ -47,6 +52,11 @@ export default {
   computed: {
     getQuota() {
       return this.rating * 25
+    },
+  },
+  methods: {
+    changeEnergy(value) {
+      this.$emit('changeEnergy', { amount: value, brightId: this.id })
     },
   },
 }

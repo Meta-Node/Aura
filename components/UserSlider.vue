@@ -69,6 +69,7 @@ export default {
     },
     onAfterChange() {
       this.updatedPercent = this.percents
+      this.$emit('changeEnergy', this.updatedPercent)
     },
   },
 }

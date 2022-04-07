@@ -39,7 +39,6 @@ import ProfileInfo from '~/components/ProfileInfo.vue'
 import AuraSphere from '~/components/AuraSphere.vue'
 import UserV1 from '~/components/UserV1.vue'
 import transition from '~/mixins/transition'
-import { getProfile } from '~/scripts/api/connections.service'
 
 export default {
   components: { UserV1, ProfileInfo, AuraSphere },
@@ -54,33 +53,19 @@ export default {
   },
   computed: {
     brightness() {
-      return this.profile.rating / 10
+      return this.profile?.rating / 10
     },
     fourUnrated() {
-      let fourUnrated = this.profile.fourUnrated
-      fourUnrated = fourUnrated.map(profile => {
-        const brightId = profile.conn._to.replace('users/', '')
-        const connectionInfo = this.connections.find(
-          conn => conn.id === brightId
-        )
-        console.log(brightId)
-        const obj = {
-          ...connectionInfo,
-        }
-        return obj
-      })
-      return fourUnrated
+      return this.$store.getters['profile/fourUnrated']
     },
   },
   async mounted() {
     this.isLoading = true
-    const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
-    this.profile = profileData?.profile
+    await this.$store.dispatch('profile/getProfileData')
 
-    this.connections = profileData?.connections
+    this.profile = this.$store.getters['profile/profileData']
 
-    const res = await getProfile(profileData.profile.id)
-    this.profile = { ...this.profile, ...res.data }
+    this.connections = this.$store.getters['profile/connections']
 
     this.getDate()
     this.isLoading = false
