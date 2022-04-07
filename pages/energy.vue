@@ -4,7 +4,7 @@
       <div class="explorer__input-wrapper">
         <app-search @searchValue="onSearchValue" />
       </div>
-      <energy-indicator :percent="40" />
+      <energy-indicator :percent="100" />
       <switch-page :users="users" />
     </div>
   </section>
