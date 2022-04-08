@@ -10,21 +10,21 @@ export default {
   },
 
   async mounted() {
-    const connections = JSON.parse(localStorage.getItem('profileData') || '[]')
+    const connections = this.$store.getters['profile/connections']
 
     if (this.$route.name === 'community') {
-      this.startUsers = connections.connections
+      this.startUsers = connections
       this.users = this.startUsers
       return
     }
 
     try {
       const ratedUsers = await getRatedUsers()
-      const moreThanZero = ratedUsers.filter(user => +user.rating > 0.5)
+      const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
       const finalUsers = moreThanZero.map(user => {
         return {
           rating: +user.rating,
-          ...connections.connections.find(conn => conn.id === user.toBrightId),
+          ...connections.find(conn => conn.id === user.toBrightId),
         }
       })
 

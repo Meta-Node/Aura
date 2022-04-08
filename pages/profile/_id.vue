@@ -4,7 +4,7 @@
       <app-spinner :is-visible="true" />
     </div>
     <div v-else-if="!isLoading && !userInfo.name" class="container">
-      User not found
+      <p style="margin: 0 auto; text-align: center">User not found</p>
     </div>
     <div v-else class="container feedback__wrapper">
       <profile-info
@@ -59,18 +59,7 @@
           </div>
         </transition>
       </div>
-      <div v-if="fourUnrated && fourUnrated.length" class="feedback__users">
-        <h3 class="feedback__title">Yet To Be Rated</h3>
-        <ul class="user-v1-ul">
-          <user-v-1
-            v-for="user in fourUnrated"
-            :key="user.id"
-            :img="user.photo"
-            :name="user.name"
-            :url="`/profile/${user.id}`"
-          />
-        </ul>
-      </div>
+      <four-unrated :users="fourUnrated" />
     </div>
     <nickname-popup
       ref="popup"
@@ -82,13 +71,14 @@
 
 <script>
 import AppSpinner from '~/components/AppSpinner.vue'
-import UserV1 from '~/components/users/UserV1.vue'
+
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import NicknamePopup from '~/components/popup/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
 import { getConnection, getProfile } from '~/scripts/api/connections.service'
 import { rateUser } from '~/scripts/api/rate.service'
+import FourUnrated from '~/components/FourUnrated.vue'
 
 export default {
   components: {
@@ -96,7 +86,8 @@ export default {
     ProfileInfo,
     AppSpinner,
     NicknamePopup,
-    UserV1,
+
+    FourUnrated,
   },
   mixins: [transition],
 
@@ -145,27 +136,28 @@ export default {
     }
     this.isLoading = true
 
-    const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
+    try {
+      const connections = this.$store.getters['profile/connections']
 
-    const connections = profileData.connections
+      this.userInfo = connections.find(con => con.id === brightId)
+      this.connections = connections.filter(con => con.id !== brightId)
 
-    this.userInfo = connections.find(con => con.id === brightId)
-
-    this.connections = profileData.connections.filter(
-      con => con.id !== brightId
-    )
-
-    const res = await getProfile(brightId)
-    this.userInfo = { ...this.userInfo, ...res.data }
-    this.userInfo.name = this.nickname
-    this.getDate()
-    const connectionRes = await getConnection(brightId)
-    if (connectionRes.previousRating) {
-      this.isAlreadyRated = true
-      this.isFeedbackSliderVisible = true
-      this.userInfo.previousRating = connectionRes.previousRating.rating
+      const res = await getProfile(brightId)
+      this.userInfo = { ...this.userInfo, ...res.data }
+      this.userInfo.name = this.nickname
+      this.getDate()
+      const connectionRes = await getConnection(brightId)
+      if (connectionRes.previousRating) {
+        this.isAlreadyRated = true
+        this.isFeedbackSliderVisible = true
+        this.userInfo.previousRating = connectionRes.previousRating.rating
+      }
+    } catch (error) {
+      console.log(error)
+      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+    } finally {
+      this.isLoading = false
     }
-    this.isLoading = false
   },
   methods: {
     onFeedbackClick() {

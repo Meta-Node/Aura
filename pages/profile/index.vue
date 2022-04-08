@@ -18,18 +18,7 @@
         @share="onShare"
       />
       <aura-sphere class="profile__sphere" :rating="profile.rating" />
-      <div v-if="fourUnrated && fourUnrated.length" class="profile__users">
-        <h3 class="profile__title">Yet To Be Rated</h3>
-        <ul class="user-v1-ul">
-          <user-v-1
-            v-for="user in fourUnrated"
-            :key="user.id"
-            :img="user.photo"
-            :name="user.name"
-            :url="`/profile/${user.id}`"
-          />
-        </ul>
-      </div>
+      <four-unrated :users="fourUnrated" />
     </div>
   </section>
 </template>
@@ -37,11 +26,12 @@
 <script>
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import AuraSphere from '~/components/AuraSphere.vue'
-import UserV1 from '~/components/users/UserV1.vue'
+
 import transition from '~/mixins/transition'
+import FourUnrated from '~/components/FourUnrated.vue'
 
 export default {
-  components: { UserV1, ProfileInfo, AuraSphere },
+  components: { ProfileInfo, AuraSphere, FourUnrated },
   mixins: [transition],
   data() {
     return {
@@ -64,7 +54,6 @@ export default {
     await this.$store.dispatch('profile/getProfileData')
 
     this.profile = this.$store.getters['profile/profileData']
-
     this.connections = this.$store.getters['profile/connections']
 
     this.getDate()

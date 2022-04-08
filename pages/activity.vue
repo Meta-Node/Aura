@@ -36,7 +36,7 @@ export default {
     }
   },
   async mounted() {
-    const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
+    const profileData = this.$store.getters['profile/connections']
     const brightId = profileData?.profile?.id
     if (!brightId) {
       return
