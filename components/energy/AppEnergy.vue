@@ -48,7 +48,6 @@
 <script>
 import UserV3 from '~/components/users/UserV3.vue'
 import FilterButton from '~/components/FilterButton.vue'
-import { transferEnergy } from '~/scripts/api/energy.service'
 
 export default {
   components: { UserV3, FilterButton },
@@ -64,12 +63,11 @@ export default {
     }
   },
   mounted() {
-    this.energyData = this.users.map(user => ({ amount: 0, brightId: user.id }))
+    this.energyData = this.$store.state.energy.transferedEnergy
   },
   methods: {
     async updateEnergy() {
-      const res = await transferEnergy(this.energyData)
-      console.log(res)
+      await this.$store.dispatch('energy/updateEnergy')
     },
     onChangeEnergy(data) {
       const updatedEnergy = this.energyData.filter(
@@ -77,6 +75,7 @@ export default {
       )
       updatedEnergy.push(data)
       this.energyData = updatedEnergy
+      this.$store.commit('energy/setEnergyToTransfer')
     },
   },
 }

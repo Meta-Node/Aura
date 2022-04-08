@@ -1,4 +1,4 @@
-import { getEnergy } from '~/scripts/api/energy.service'
+import { getEnergy, transferEnergy } from '~/scripts/api/energy.service'
 
 export const state = () => ({
   transferedEnergy: {},
@@ -30,5 +30,8 @@ export const actions = {
       console.log(error)
       throw error
     }
+  },
+  async updateEnergy({ commit, state }) {
+    await transferEnergy(state.energyToTransfer)
   },
 }
