@@ -82,6 +82,7 @@
 
 <script>
 import AppSpinner from '~/components/AppSpinner.vue'
+import UserV1 from '~/components/users/UserV1.vue'
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import NicknamePopup from '~/components/popup/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
@@ -90,7 +91,13 @@ import { getConnection, getProfile } from '~/scripts/api/connections.service'
 import { rateUser } from '~/scripts/api/rate.service'
 
 export default {
-  components: { FeedbackSlider, ProfileInfo, AppSpinner, NicknamePopup },
+  components: {
+    FeedbackSlider,
+    ProfileInfo,
+    AppSpinner,
+    NicknamePopup,
+    UserV1,
+  },
   mixins: [transition],
 
   data() {
