@@ -53,7 +53,6 @@ export default {
   data() {
     return {
       percents: 0,
-      isAvailable: true,
     }
   },
   computed: {
@@ -71,11 +70,10 @@ export default {
       if (this.availableEnergy <= 0) {
         if (current > prev) {
           this.percents = prev
-          this.isAvailable = false
         }
       }
 
-      this.$emit('changeEnergy', this.percents)
+      this.$emit('changeEnergy', +this.percents)
     },
   },
 
