@@ -4,7 +4,7 @@
       <div class="explorer__input-wrapper">
         <app-search @searchValue="onSearchValue" />
       </div>
-      <energy-indicator :percent="100" />
+      <energy-indicator :percent="energy" />
       <switch-page :users="users" />
     </div>
   </section>
@@ -20,5 +20,10 @@ import users from '~/mixins/users'
 export default {
   components: { AppSearch, SwitchPage, EnergyIndicator },
   mixins: [transition, users],
+  data() {
+    return {
+      energy: 100,
+    }
+  },
 }
 </script>

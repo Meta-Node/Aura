@@ -19,3 +19,18 @@ export const transferEnergy = async transfers => {
     throw error
   }
 }
+
+export const getEnergy = async transfers => {
+  try {
+    const brightId = localStorage.getItem('brightId')
+
+    const res = await backendApi.get('/v1/energy/' + brightId)
+    if (!res.data) {
+      throw new Error('data in not defined')
+    }
+    return res.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
