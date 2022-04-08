@@ -19,7 +19,7 @@
         </ul>
         <span v-else class="users-not-found">Users not found</span>
       </div>
-      <load-more text="Load More..." />
+      <!-- <load-more text="Load More..." /> -->
     </div>
   </div>
 </template>

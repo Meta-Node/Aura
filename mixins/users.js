@@ -6,6 +6,7 @@ export default {
       foundUsers: [],
       startUsers: [],
       users: [],
+      isLoading: false,
     }
   },
 
@@ -13,40 +14,49 @@ export default {
     transferedEnergy() {
       return this.$store.state.energy.transferedEnergy
     },
+    connections() {
+      return this.$store.getters['profile/connections']
+    },
   },
 
   async mounted() {
-    await this.$store.dispatch('connections/getConnectionsData')
-    await this.$store.dispatch('profile/getProfileData')
-    const connections = this.$store.getters['profile/connections']
-
-    if (this.$route.name === 'community') {
-      this.startUsers = connections
-      this.users = this.startUsers
-      return
-    }
-
     try {
-      const ratedUsers = await getRatedUsers()
-      await this.$store.dispatch('energy/getTransferedEnergy')
+      this.isLoading = true
+      await this.$store.dispatch('connections/getConnectionsData')
+      await this.$store.dispatch('profile/getProfileData')
 
-      const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
+      if (this.$route.name === 'community') {
+        this.startUsers = this.connections
+        this.users = this.startUsers
+        return
+      }
 
-      const finalUsers = moreThanZero.map(user => {
-        return {
-          rating: +user.rating,
-          transferedEnergy: this.transferedEnergy.find(
-            en => en.toBrightId === user.toBrightId
-          ).amount,
-          ...connections.find(conn => conn.id === user.toBrightId),
-        }
-      })
+      try {
+        const ratedUsers = await getRatedUsers()
+        await this.$store.dispatch('energy/getTransferedEnergy')
 
-      this.startUsers = finalUsers
+        const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
+
+        const finalUsers = moreThanZero.map(user => {
+          return {
+            rating: +user.rating,
+            transferedEnergy: this.transferedEnergy.find(
+              en => en.toBrightId === user.toBrightId
+            ).amount,
+            ...this.connections.find(conn => conn.id === user.toBrightId),
+          }
+        })
+
+        this.startUsers = finalUsers
+      } catch (error) {
+        console.log(error)
+      }
+      this.users = this.startUsers
     } catch (error) {
       console.log(error)
+    } finally {
+      this.isLoading = false
     }
-    this.users = this.startUsers
   },
   methods: {
     onSearchValue(value) {

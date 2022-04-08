@@ -21,7 +21,7 @@
         </ul>
         <span v-else class="users-not-found">Users not found</span>
       </div>
-      <load-more text="Load More..." />
+      <!-- <load-more text="Load More..." /> -->
       <div class="app-energy__circle-wrapper">
         <button class="app-energy__circle-button" @click="updateEnergy">
           <span class="app-energy__check-mark"
@@ -68,7 +68,15 @@ export default {
   },
   methods: {
     async updateEnergy() {
-      await this.$store.dispatch('energy/updateEnergy')
+      try {
+        await this.$store.dispatch('energy/updateEnergy')
+        this.$store.commit('toast/addToast', {
+          text: 'Energy successfully updated',
+          color: 'success',
+        })
+      } catch (error) {
+        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+      }
     },
     onChangeEnergy(data) {
       const updatedEnergy = this.energyData.filter(
@@ -76,7 +84,7 @@ export default {
       )
       updatedEnergy.push(data)
       this.energyData = updatedEnergy
-      this.$store.commit('energy/setEnergyToTransfer', this.energyData)
+      this.$store.commit('energy/setTransferedEnergy', this.energyData)
       // console.log(this.energyData)
     },
   },

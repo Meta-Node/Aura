@@ -63,7 +63,7 @@ export default {
   methods: {
     getDate() {
       const today = new Date()
-      const reg = new Date(localStorage.getItem('timestamp'))
+      const reg = new Date(this.profile.brightIdDate)
 
       const todayDate = {
         year: today.getFullYear(),

@@ -173,7 +173,7 @@ export default {
     getDate() {
       const today = new Date()
 
-      const reg = new Date(this.userInfo.timestamp)
+      const reg = new Date(this.userInfo.brightIdDate)
 
       const todayDate = {
         year: today.getFullYear(),

@@ -67,12 +67,15 @@ export default {
         this.percents = this.quota
       }
 
-      if (this.availableEnergy <= 0) {
-        if (current > prev) {
-          this.percents = prev
+      this.$nextTick(() => {
+        if (this.availableEnergy < 0) {
+          if (current > prev) {
+            this.percents = +prev
+            this.$emit('changeEnergy', +this.percents)
+            this.$forceUpdate()
+          }
         }
-      }
-
+      })
       this.$emit('changeEnergy', +this.percents)
     },
   },

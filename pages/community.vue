@@ -5,7 +5,10 @@
         <h3 class="community__search-title">Find A Connection</h3>
         <app-search @searchValue="onSearchValue" />
       </div>
-      <div class="community__users">
+      <div v-if="isLoading" style="margin-top: 40px">
+        <app-spinner :is-visible="true" />
+      </div>
+      <div v-else class="community__users">
         <h3 class="community__humans-title">Your Connections</h3>
         <div class="switch-wrapper">
           <filter-button name="Name" :active="true" />

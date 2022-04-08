@@ -3,7 +3,6 @@ import { getRatedUsers } from '~/scripts/api/rate.service'
 
 export const state = () => ({
   transferedEnergy: [],
-  energyToTransfer: [],
   availableEnergy: 100,
 })
 
@@ -13,11 +12,8 @@ export const mutations = {
   },
   setTransferedEnergy(state, value) {
     state.transferedEnergy = value
-  },
-  setEnergyToTransfer(state, value) {
-    state.energyToTransfer = value
 
-    const totalAmount = state.energyToTransfer.map(user => user.amount)
+    const totalAmount = state.transferedEnergy.map(user => user.amount)
 
     const availableEnergy =
       100 - totalAmount.reduce((prev, cur) => prev + cur, 0)
@@ -53,7 +49,7 @@ export const actions = {
   },
   async updateEnergy({ commit, state }) {
     try {
-      await transferEnergy(state.energyToTransfer)
+      await transferEnergy(state.transferedEnergy)
     } catch (error) {
       console.log(error)
       throw error

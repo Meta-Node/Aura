@@ -7,7 +7,9 @@
         :style="{ width: percent + '%' }"
       ></div>
     </div>
-    <div class="explorer-energy__indicator-percents">{{ percent }}%</div>
+    <div class="explorer-energy__indicator-percents">
+      {{ percent >= 0 ? percent : 0 }}%
+    </div>
   </div>
 </template>
 
