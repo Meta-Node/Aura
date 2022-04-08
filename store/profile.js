@@ -16,20 +16,30 @@ export const mutations = {
 
 export const actions = {
   async getProfileData({ commit, state, rootState }) {
-    const profileData = JSON.parse(localStorage.getItem('profileData') || '[]')
-    const profile = profileData?.profile
-    const connections = profileData?.connections
+    try {
+      const profileData = JSON.parse(
+        localStorage.getItem('profileData') || '[]'
+      )
+      const profile = profileData?.profile
+      const connections = profileData?.connections
 
-    const res = await getProfile(profileData.profile.id)
-    const nicknames = res.data.nicknames
+      const res = await getProfile(profileData.profile.id)
+      const nicknames = res?.data?.nicknames
 
-    const connectionsWithNicknames = connections.map(conn => ({
-      ...conn,
-      nickname: nicknames.find(nn => nn.toBrightId === conn.id)?.nickName,
-    }))
+      if (!nicknames) {
+        return
+      }
 
-    commit('setProfileData', { ...profile, ...res.data })
-    commit('setConnections', connectionsWithNicknames)
+      const connectionsWithNicknames = connections.map(conn => ({
+        ...conn,
+        nickname: nicknames.find(nn => nn.toBrightId === conn.id)?.nickName,
+      }))
+
+      commit('setProfileData', { ...profile, ...res.data })
+      commit('setConnections', connectionsWithNicknames)
+    } catch (error) {
+      throw error
+    }
   },
 }
 

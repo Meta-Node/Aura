@@ -4,15 +4,12 @@
       <label :for="id" class="user__input-label" :style="`--quota: ${quota}%`">
         <input
           :id="id"
+          v-model="percents"
           class="user__input-slider"
           :type="type"
           :min="min"
           :max="max"
           :step="step"
-          :value="percents"
-          @input="onRange"
-          @mouseup="onAfterChange"
-          @touchend="onAfterChange"
         />
       </label>
     </div>
@@ -65,34 +62,28 @@ export default {
     },
   },
 
-  // watch: {
-  //   percents(current, prev) {
-  //     if (this.availableEnergy <= 0) {
-  //       if (current > prev) {
-  //         this.percents = prev
-  //         this.isAvailable = false
-  //       }
-  //     }
-  //   },
-  // },
+  watch: {
+    percents(current, prev) {
+      if (current > this.quota) {
+        this.percents = this.quota
+      }
+
+      if (this.availableEnergy <= 0) {
+        if (current > prev) {
+          this.percents = prev
+          this.isAvailable = false
+        }
+      }
+
+      this.$emit('changeEnergy', this.percents)
+    },
+  },
 
   mounted() {
     this.percents = this.value
   },
 
   methods: {
-    onRange(e) {
-      if (e.target.value > this.quota) {
-        e.target.value = this.quota
-      }
-
-      if (this.availableEnergy <= 0) {
-        e.target.value = this.percents
-      }
-
-      this.percents = +e.target.value
-      this.$emit('changeEnergy', this.percents)
-    },
     onAfterChange() {},
   },
 }
