@@ -56,8 +56,28 @@ export default {
   data() {
     return {
       percents: 0,
-      updatedPercent: 0,
+      isAvailable: true,
     }
+  },
+  computed: {
+    availableEnergy() {
+      return this.$store.state.energy.availableEnergy
+    },
+  },
+
+  // watch: {
+  //   percents(current, prev) {
+  //     if (this.availableEnergy <= 0) {
+  //       if (current > prev) {
+  //         this.percents = prev
+  //         this.isAvailable = false
+  //       }
+  //     }
+  //   },
+  // },
+
+  mounted() {
+    this.percents = this.value
   },
 
   methods: {
@@ -65,12 +85,15 @@ export default {
       if (e.target.value > this.quota) {
         e.target.value = this.quota
       }
+
+      if (this.availableEnergy <= 0) {
+        e.target.value = this.percents
+      }
+
       this.percents = +e.target.value
+      this.$emit('changeEnergy', this.percents)
     },
-    onAfterChange() {
-      this.updatedPercent = this.percents
-      this.$emit('changeEnergy', this.updatedPercent)
-    },
+    onAfterChange() {},
   },
 }
 </script>

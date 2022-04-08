@@ -21,9 +21,15 @@ export const actions = {
     const connections = profileData?.connections
 
     const res = await getProfile(profileData.profile.id)
+    const nicknames = res.data.nicknames
+
+    const connectionsWithNicknames = connections.map(conn => ({
+      ...conn,
+      nickname: nicknames.find(nn => nn.toBrightId === conn.id)?.nickName,
+    }))
 
     commit('setProfileData', { ...profile, ...res.data })
-    commit('setConnections', connections)
+    commit('setConnections', connectionsWithNicknames)
   },
 }
 

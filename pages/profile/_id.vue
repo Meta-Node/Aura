@@ -9,7 +9,7 @@
     <div v-else class="container feedback__wrapper">
       <profile-info
         :img="userInfo.photo"
-        :name="userInfo.name"
+        :name="userInfo.nickname || userInfo.name"
         :rating="userInfo.rating"
         :date="difDate.value"
         :connections="userInfo.numOfConnections"
@@ -111,22 +111,6 @@ export default {
         user => user.id !== this.$route.params.id
       )
     },
-    nickname() {
-      const ownerProfile = this.$store.getters['profile/profileData']
-      const nicknames = ownerProfile?.nicknames
-      const currentUserNickname = nicknames?.find(
-        nickname => nickname.toBrightId === this.$route.params.id
-      )
-      if (currentUserNickname) {
-        return currentUserNickname.nickName
-      }
-      return this.userInfo.name
-    },
-  },
-  watch: {
-    nickname() {
-      this.userInfo.name = this.nickname
-    },
   },
   async mounted() {
     const brightId = this.$route.params.id
@@ -137,6 +121,8 @@ export default {
     this.isLoading = true
 
     try {
+      await this.$store.dispatch('connections/getConnectionsData')
+      await this.$store.dispatch('profile/getProfileData')
       const connections = this.$store.getters['profile/connections']
 
       this.userInfo = connections.find(con => con.id === brightId)
@@ -144,7 +130,7 @@ export default {
 
       const res = await getProfile(brightId)
       this.userInfo = { ...this.userInfo, ...res.data }
-      this.userInfo.name = this.nickname
+
       this.getDate()
       const connectionRes = await getConnection(brightId)
       if (connectionRes.previousRating) {
@@ -231,7 +217,7 @@ export default {
       this.$refs.popup.openPopup()
     },
     updateNickname(value) {
-      this.userInfo.name = value
+      this.userInfo.nickname = value
     },
   },
 }

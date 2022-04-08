@@ -12,8 +12,9 @@
             :id="user.id"
             :key="user.id"
             :img="user.photo"
-            :name="user.name"
+            :name="user.nickname || user.name"
             :rating="user.rating"
+            :energy="user.transferedEnergy"
             :url="`/profile/${user.id}`"
             @changeEnergy="onChangeEnergy"
           />
@@ -71,11 +72,12 @@ export default {
     },
     onChangeEnergy(data) {
       const updatedEnergy = this.energyData.filter(
-        en => en.brightId !== data.brightId
+        en => en.toBrightId !== data.toBrightId
       )
       updatedEnergy.push(data)
       this.energyData = updatedEnergy
-      this.$store.commit('energy/setEnergyToTransfer')
+      this.$store.commit('energy/setEnergyToTransfer', this.energyData)
+      // console.log(this.energyData)
     },
   },
 }

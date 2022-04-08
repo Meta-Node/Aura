@@ -36,8 +36,12 @@ export default {
     }
   },
   async mounted() {
-    const profileData = this.$store.getters['profile/connections']
-    const brightId = profileData?.profile?.id
+    await this.$store.dispatch('connections/getConnectionsData')
+    await this.$store.dispatch('profile/getProfileData')
+    const connections = this.$store.getters['profile/connections']
+    const profile = this.$store.getters['profile/profileData']
+    const brightId = profile?.id
+
     if (!brightId) {
       return
     }
@@ -53,10 +57,8 @@ export default {
       .map(event => {
         event = {
           ...event,
-          fromProfile: profileData.profile,
-          toProfile: profileData.connections.find(
-            con => con.id === event.toBrightId
-          ),
+          fromProfile: profile,
+          toProfile: connections.find(con => con.id === event.toBrightId),
         }
         return event
       })

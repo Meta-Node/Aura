@@ -17,7 +17,7 @@
         :min="0"
         :max="100"
         :step="1"
-        :value="0"
+        :value="energy"
         :quota="getQuota"
         @changeEnergy="changeEnergy"
       />
@@ -48,6 +48,10 @@ export default {
       type: Number,
       default: 0,
     },
+    energy: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
     getQuota() {
@@ -56,7 +60,7 @@ export default {
   },
   methods: {
     changeEnergy(value) {
-      this.$emit('changeEnergy', { amount: value, brightId: this.id })
+      this.$emit('changeEnergy', { amount: value, toBrightId: this.id })
     },
   },
 }

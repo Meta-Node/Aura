@@ -16,7 +16,7 @@
           }}</span>
           <span v-if="toUser" class="activity__to-user"
             ><nuxt-link :to="'/profile/' + toUser.id">{{
-              toUser.name
+              toUser.nickname || toUser.name
             }}</nuxt-link></span
           >
         </div>

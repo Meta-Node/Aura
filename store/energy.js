@@ -15,10 +15,14 @@ export const mutations = {
     state.transferedEnergy = value
   },
   setEnergyToTransfer(state, value) {
-    state.energyToTransfer = state.energyToTransfer.map(el => ({
-      ...state.transferedEnergy.find(en => en.toBrightId === el.toBrightId),
-      ...el,
-    }))
+    state.energyToTransfer = value
+
+    const totalAmount = state.energyToTransfer.map(user => user.amount)
+
+    const availableEnergy =
+      100 - totalAmount.reduce((prev, cur) => prev + cur, 0)
+
+    state.availableEnergy = availableEnergy
   },
 }
 
@@ -35,13 +39,10 @@ export const actions = {
           energy.find(en => en.toBrightId === user.toBrightId)?.amount || 0,
       }))
 
+      const totalAmount = allUsers.map(user => user.amount)
+
       const availableEnergy =
-        100 -
-        allUsers.reduce(
-          (previousValue, currentValue) =>
-            previousValue.amount + currentValue.amount,
-          0
-        )
+        100 - totalAmount.reduce((prev, cur) => prev + cur, 0)
 
       commit('setAvailableEnergy', availableEnergy)
       commit('setTransferedEnergy', allUsers)
@@ -52,7 +53,6 @@ export const actions = {
   },
   async updateEnergy({ commit, state }) {
     try {
-      console.log(state.energyToTransfer)
       await transferEnergy(state.energyToTransfer)
     } catch (error) {
       console.log(error)

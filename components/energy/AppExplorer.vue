@@ -11,10 +11,10 @@
             v-for="user in users"
             :key="user.id"
             :img="user.photo"
-            :name="user.name"
+            :name="user.nickname || user.name"
             :url="`/profile/${user.id}`"
             inbound="0%"
-            outbound="0%"
+            :outbound="user.transferedEnergy + '%'"
           />
         </ul>
         <span v-else class="users-not-found">Users not found</span>

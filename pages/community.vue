@@ -19,7 +19,7 @@
             :is-brightness="true"
             :brightness="user.rating / 10"
             :img="user.photo"
-            :name="user.name"
+            :name="user.nickname || user.name"
             :url="`/profile/${user.id}`"
           />
         </ul>
