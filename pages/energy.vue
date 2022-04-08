@@ -28,8 +28,18 @@
           </div>
           <div class="enegry__screens">
             <transition name="fade" mode="out-in">
-              <app-explorer v-if="isExplorer" :users="users" />
-              <app-energy v-else :users="users" />
+              <app-explorer
+                v-if="isExplorer"
+                :users="users"
+                :filters="filters"
+                @filtered="onFiltered"
+              />
+              <app-energy
+                v-else
+                :users="users"
+                :filters="filters"
+                @filtered="onFiltered"
+              />
             </transition>
           </div>
         </div>
@@ -59,6 +69,27 @@ export default {
   data() {
     return {
       isExplorer: true,
+
+      filters: [
+        {
+          name: 'All',
+          isIcon: false,
+          active: true,
+          reverse: false,
+        },
+        {
+          name: 'Name',
+          isIcon: true,
+          active: false,
+          reverse: false,
+        },
+        {
+          name: 'Amount',
+          isIcon: true,
+          active: false,
+          reverse: false,
+        },
+      ],
     }
   },
   computed: {

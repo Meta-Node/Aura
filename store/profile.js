@@ -1,8 +1,10 @@
 import { getProfile } from '~/scripts/api/connections.service'
+import { getRatedUsers } from '~/scripts/api/rate.service'
 
 export const state = () => ({
   profileData: {},
-  connections: {},
+  connections: [],
+  ratedUsers: [],
 })
 
 export const mutations = {
@@ -11,6 +13,9 @@ export const mutations = {
   },
   setConnections(state, value) {
     state.connections = value
+  },
+  setRatedUsers(state, value) {
+    state.ratedUsers = value
   },
 }
 
@@ -24,6 +29,8 @@ export const actions = {
       const connections = profileData?.connections
 
       const res = await getProfile(profileData.profile.id)
+      const ratedUsers = await getRatedUsers()
+
       const nicknames = res?.data?.nicknames
 
       if (!nicknames) {
@@ -33,10 +40,12 @@ export const actions = {
       const connectionsWithNicknames = connections.map(conn => ({
         ...conn,
         nickname: nicknames.find(nn => nn.toBrightId === conn.id)?.nickName,
+        rating: ratedUsers.find(ru => ru.toBrightId === conn.id)?.rating,
       }))
 
       commit('setProfileData', { ...profile, ...res.data })
       commit('setConnections', connectionsWithNicknames)
+      commit('setRatedUsers', ratedUsers)
     } catch (error) {
       throw error
     }
@@ -46,6 +55,7 @@ export const actions = {
 export const getters = {
   profileData: state => state.profileData,
   connections: state => state.connections,
+  ratedUsers: state => state.ratedUsers,
   fourUnrated: state => {
     let fourUnrated = state.profileData.fourUnrated
     fourUnrated = fourUnrated?.map(profile => {

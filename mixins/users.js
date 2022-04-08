@@ -5,6 +5,7 @@ export default {
     return {
       foundUsers: [],
       startUsers: [],
+      filteredUsers: [],
       users: [],
       isLoading: false,
     }
@@ -59,9 +60,48 @@ export default {
     }
   },
   methods: {
+    onFiltered(name) {
+      this.filters = this.filters.map(filter => {
+        if (filter.name === name) {
+          filter.active = filter.isIcon ? true : !filter.active
+          if (filter.isIcon) {
+            filter.reverse = !filter.active ? false : !filter.reverse
+          }
+        } else {
+          filter.active = false
+        }
+        return filter
+      })
+
+      if (name === 'All') {
+        this.getAll()
+      }
+      if (name === 'Unrated') {
+        this.getUnrated()
+      }
+
+      if (name === 'Name') {
+        const fromA = !this.filters.find(f => f.name === name).reverse
+        this.getByName(fromA)
+      }
+
+      if (name === 'Rating') {
+        const fromLess = !this.filters.find(f => f.name === name).reverse
+        this.getByRating(fromLess)
+      }
+
+      if (name === 'Amount') {
+        const fromLess = !this.filters.find(f => f.name === name).reverse
+        this.getByAmount(fromLess)
+      }
+    },
     onSearchValue(value) {
       const trimmedValue = this.trim(value)
-      this.foundUsers = this.startUsers.filter(el => {
+      const users = this.filteredUsers.length
+        ? this.filteredUsers
+        : this.startUsers
+
+      this.foundUsers = users.filter(el => {
         if (el.nickname && this.trim(el.nickname).includes(trimmedValue)) {
           return true
         }
@@ -73,11 +113,63 @@ export default {
       if (trimmedValue.length) {
         this.users = this.foundUsers
       } else {
-        this.users = this.startUsers
+        this.users = users
       }
     },
     trim(str) {
       return str.trim().toLowerCase()
+    },
+    getUnrated() {
+      const unratedUsers = this.startUsers.filter(user => !user.rating)
+
+      this.filteredUsers = unratedUsers
+      this.users = this.filteredUsers
+    },
+
+    getAll() {
+      this.filteredUsers = this.startUsers
+
+      this.users = this.filteredUsers
+    },
+
+    getByRating(fromLess) {
+      this.filteredUsers = [...this.startUsers.filter(su => su.rating)].sort(
+        (a, b) => +a.rating - b.rating
+      )
+      if (fromLess) {
+        this.users = this.filteredUsers
+      } else {
+        this.users = this.filteredUsers.reverse()
+      }
+    },
+    getByAmount(fromLess) {
+      this.filteredUsers = [
+        ...this.startUsers.filter(su => su.transferedEnergy),
+      ].sort((a, b) => +a.transferedEnergy - b.transferedEnergy)
+      if (fromLess) {
+        this.users = this.filteredUsers
+      } else {
+        this.users = this.filteredUsers.reverse()
+      }
+    },
+    getByName(fromA) {
+      this.filteredUsers = [...this.startUsers].sort(function (a, b) {
+        const aName = a.nickname || a.name
+        const bName = b.nickname || b.name
+        if (aName > bName) {
+          return 1
+        }
+        if (bName > aName) {
+          return -1
+        }
+        return 0
+      })
+
+      if (fromA) {
+        this.users = this.filteredUsers
+      } else {
+        this.users = this.filteredUsers.reverse()
+      }
     },
   },
 }

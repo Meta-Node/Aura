@@ -14,7 +14,7 @@
             :time="activity.timestamp"
           />
         </ul>
-        <load-more text="Load More..." />
+        <!-- <load-more text="Load More..." /> -->
       </div>
       <div v-else style="margin-top: 40px">
         <app-spinner :is-visible="true" />
@@ -36,33 +36,37 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('connections/getConnectionsData')
-    await this.$store.dispatch('profile/getProfileData')
-    const connections = this.$store.getters['profile/connections']
-    const profile = this.$store.getters['profile/profileData']
-    const brightId = profile?.id
+    try {
+      await this.$store.dispatch('connections/getConnectionsData')
+      await this.$store.dispatch('profile/getProfileData')
+      const connections = this.$store.getters['profile/connections']
+      const profile = this.$store.getters['profile/profileData']
+      const brightId = profile?.id
 
-    if (!brightId) {
-      return
+      if (!brightId) {
+        return
+      }
+
+      const res = await getProfileActivity(brightId)
+      const events = res?.data?.events
+
+      if (!events) {
+        return
+      }
+
+      this.activityData = events
+        .map(event => {
+          event = {
+            ...event,
+            fromProfile: profile,
+            toProfile: connections.find(con => con.id === event.toBrightId),
+          }
+          return event
+        })
+        .reverse()
+    } catch (error) {
+      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
     }
-
-    const res = await getProfileActivity(brightId)
-    const events = res?.data?.events
-
-    if (!events) {
-      return
-    }
-
-    this.activityData = events
-      .map(event => {
-        event = {
-          ...event,
-          fromProfile: profile,
-          toProfile: connections.find(con => con.id === event.toBrightId),
-        }
-        return event
-      })
-      .reverse()
   },
 }
 </script>

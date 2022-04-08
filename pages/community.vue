@@ -10,11 +10,8 @@
       </div>
       <div v-else class="community__users">
         <h3 class="community__humans-title">Your Connections</h3>
-        <div class="switch-wrapper">
-          <filter-button name="Name" :active="true" />
-          <filter-button name="Rating" />
-          <filter-button name="Unrated" :is-icon="false" />
-        </div>
+
+        <app-filter :filters="filters" @filtered="onFiltered" />
         <ul v-if="users.length" class="user-v1-ul">
           <user-v-1
             v-for="user in users"
@@ -35,12 +32,43 @@
 
 <script>
 import UserV1 from '~/components/users/UserV1.vue'
-import FilterButton from '~/components/FilterButton.vue'
+
 import AppSearch from '~/components/AppSearch.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
+import AppFilter from '~/components/filters/AppFilter.vue'
 export default {
-  components: { UserV1, FilterButton, AppSearch },
+  components: { UserV1, AppSearch, AppFilter },
   mixins: [transition, users],
+  data() {
+    return {
+      filters: [
+        {
+          name: 'All',
+          isIcon: false,
+          active: true,
+          reverse: false,
+        },
+        {
+          name: 'Name',
+          isIcon: true,
+          active: false,
+          reverse: false,
+        },
+        {
+          name: 'Rating',
+          isIcon: true,
+          active: false,
+          reverse: false,
+        },
+        {
+          name: 'Unrated',
+          isIcon: false,
+          active: false,
+          reverse: false,
+        },
+      ],
+    }
+  },
 }
 </script>

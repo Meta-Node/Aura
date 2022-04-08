@@ -2,8 +2,7 @@
   <div class="app-energy">
     <div class="app-energy__statistic">
       <div class="app-energy__switch-wrapper">
-        <filter-button name="Name" :active="true" />
-        <filter-button name="Amount" />
+        <app-filter :filters="filters" @filtered="onFiltered" />
       </div>
       <div class="app-energy__humans-stat">
         <ul v-if="users.length" class="app-energy__humans">
@@ -13,7 +12,7 @@
             :key="user.id"
             :img="user.photo"
             :name="user.nickname || user.name"
-            :rating="user.rating"
+            :rating="+user.rating"
             :energy="user.transferedEnergy"
             :url="`/profile/${user.id}`"
             @changeEnergy="onChangeEnergy"
@@ -47,13 +46,17 @@
 </template>
 
 <script>
+import AppFilter from '../filters/AppFilter.vue'
 import UserV3 from '~/components/users/UserV3.vue'
-import FilterButton from '~/components/FilterButton.vue'
 
 export default {
-  components: { UserV3, FilterButton },
+  components: { UserV3, AppFilter },
   props: {
     users: {
+      type: Array,
+      default: () => [],
+    },
+    filters: {
       type: Array,
       default: () => [],
     },
@@ -86,6 +89,9 @@ export default {
       this.energyData = updatedEnergy
       this.$store.commit('energy/setTransferedEnergy', this.energyData)
       // console.log(this.energyData)
+    },
+    onFiltered(name) {
+      this.$emit('filtered', name)
     },
   },
 }

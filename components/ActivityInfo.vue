@@ -6,19 +6,20 @@
       </div>
       <div class="activity__right-block">
         <div class="activity__text">
-          <span v-if="fromUser" class="activity__from-user"
-            ><nuxt-link :to="'/profile/' + fromUser.id">{{
-              fromUser.name
-            }}</nuxt-link></span
-          >
-          <span class="activity__action">{{
-            computeActivityAction(action.action, action.amount)
-          }}</span>
-          <span v-if="toUser" class="activity__to-user"
-            ><nuxt-link :to="'/profile/' + toUser.id">{{
-              toUser.nickname || toUser.name
-            }}</nuxt-link></span
-          >
+          <span v-if="fromUser" class="activity__from-user">
+            <nuxt-link :to="'/profile/' + fromUser.id">
+              {{ fromUser.name }}
+            </nuxt-link>
+          </span>
+          <span class="activity__action">
+            {{ computeActivityAction(action.action) }}
+          </span>
+          <span v-if="toUser" class="activity__to-user">
+            <nuxt-link :to="'/profile/' + toUser.id">
+              {{ toUser.nickname || toUser.name }}
+            </nuxt-link>
+          </span>
+          <span>{{ `(${action.amount})` }}</span>
         </div>
         <p class="activity__time">{{ computeDate(time) }}</p>
       </div>
@@ -74,11 +75,14 @@ export default {
 
       return `${hours}:${minutes}`
     },
-    computeActivityAction(action, amount) {
+    computeActivityAction(action) {
       if (action === 'RATED_CONNECTION') {
-        return 'rated ' + `(${amount})`
+        return 'rated'
       }
-      return action + ' ' + amount
+      if (action === 'ENERGY_TRANSFER') {
+        return 'transfered energy'
+      }
+      return action
     },
   },
 }

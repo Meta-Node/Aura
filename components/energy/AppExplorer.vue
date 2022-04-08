@@ -2,8 +2,7 @@
   <div class="app-explorer">
     <div class="app-explorer__statistic">
       <div class="app-explorer__switch-wrapper">
-        <filter-button name="Name" :active="true" />
-        <filter-button name="Amount" />
+        <app-filter :filters="filters" @filtered="onFiltered" />
       </div>
       <div class="app-explorer__humans-stat">
         <ul v-if="users.length" class="app-explorer__humans">
@@ -25,15 +24,25 @@
 </template>
 
 <script>
+import AppFilter from '../filters/AppFilter.vue'
 import UserV2 from '~/components/users/UserV2.vue'
-import FilterButton from '~/components/FilterButton.vue'
 
 export default {
-  components: { UserV2, FilterButton },
+  components: { UserV2, AppFilter },
   props: {
     users: {
       type: Array,
       default: () => [],
+    },
+    filters: {
+      type: Array,
+      default: () => [],
+    },
+  },
+
+  methods: {
+    onFiltered(name) {
+      this.$emit('filtered', name)
     },
   },
 }

@@ -1,7 +1,15 @@
 <template>
-  <button class="filter-button" :class="[active && 'filter-button--active']">
+  <button
+    class="filter-button"
+    :class="[active && 'filter-button--active']"
+    @click="onClick"
+  >
     {{ name }}
-    <span v-if="isIcon" class="filter-button__icon">
+    <span
+      v-if="isIcon"
+      class="filter-button__icon"
+      :style="{ transform: reverse ? 'rotate(180deg)' : 'rotate(0deg)' }"
+    >
       <svg
         width="8"
         height="4"
@@ -29,6 +37,16 @@ export default {
     isIcon: {
       type: Boolean,
       default: true,
+    },
+    reverse: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  methods: {
+    onClick() {
+      this.$emit('clicked', this.name)
     },
   },
 }
