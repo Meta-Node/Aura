@@ -83,7 +83,7 @@
 <script>
 import AppSpinner from '~/components/AppSpinner.vue'
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
-import NicknamePopup from '~/components/NicknamePopup.vue'
+import NicknamePopup from '~/components/popup/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
 import { getConnection, getProfile } from '~/scripts/api/connections.service'

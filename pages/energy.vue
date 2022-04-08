@@ -35,8 +35,8 @@
 
 <script>
 import AppSearch from '~/components/AppSearch.vue'
-import AppEnergy from '~/components/AppEnergy'
-import AppExplorer from '~/components/AppExplorer'
+import AppEnergy from '~/components/energy/AppEnergy'
+import AppExplorer from '~/components/energy/AppExplorer'
 import EnergyIndicator from '~/components/EnergyIndicator.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'

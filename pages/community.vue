@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import UserV1 from '~/components/UserV1.vue'
+import UserV1 from '~/components/users/UserV1.vue'
 import FilterButton from '~/components/FilterButton.vue'
 import AppSearch from '~/components/AppSearch.vue'
 import transition from '~/mixins/transition'

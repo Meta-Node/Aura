@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import UserV3 from '~/components/UserV3.vue'
+import UserV3 from '~/components/users/UserV3.vue'
 import FilterButton from '~/components/FilterButton.vue'
 import { transferEnergy } from '~/scripts/api/energy.service'
 

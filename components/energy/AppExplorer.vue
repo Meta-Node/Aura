@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import UserV2 from '~/components/UserV2.vue'
+import UserV2 from '~/components/users/UserV2.vue'
 import FilterButton from '~/components/FilterButton.vue'
 
 export default {

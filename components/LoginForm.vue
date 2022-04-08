@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import QrPopup from './QrPopup.vue'
+import QrPopup from './popup/QrPopup.vue'
 // import AppInput from '~/components/AppInput.vue'
 
 export default {

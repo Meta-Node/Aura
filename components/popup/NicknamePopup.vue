@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import AppButton from './AppButton.vue'
-import AppInput from './AppInput.vue'
 import AppPopup from './AppPopup.vue'
+import AppInput from '~/components/AppInput.vue'
+import AppButton from '~/components/AppButton.vue'
 import { setNickname } from '~/scripts/api/connections.service'
 export default {
   components: { AppPopup, AppInput, AppButton },

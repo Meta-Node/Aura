@@ -37,7 +37,7 @@
 <script>
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import AuraSphere from '~/components/AuraSphere.vue'
-import UserV1 from '~/components/UserV1.vue'
+import UserV1 from '~/components/users/UserV1.vue'
 import transition from '~/mixins/transition'
 
 export default {
