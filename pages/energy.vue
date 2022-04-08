@@ -5,25 +5,58 @@
         <app-search @searchValue="onSearchValue" />
       </div>
       <energy-indicator :percent="energy" />
-      <switch-page :users="users" />
+      <div class="energy-switch">
+        <div class="energy-switch__wrapper">
+          <button
+            class="energy-switch__filter-button"
+            :class="[isExplorer && 'energy-switch__filter-button--active']"
+            @click="onExplorerClick"
+          >
+            Explorer
+          </button>
+          <button
+            class="energy-switch__filter-button"
+            :class="[!isExplorer && 'energy-switch__filter-button--active']"
+            @click="onEnergyClick"
+          >
+            Energy
+          </button>
+        </div>
+        <div class="enegry__screens">
+          <transition name="fade" mode="out-in">
+            <app-explorer v-if="isExplorer" :users="users" />
+            <app-energy v-else :users="users" />
+          </transition>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import AppSearch from '~/components/AppSearch.vue'
-import SwitchPage from '~/components/SwitchPage.vue'
+import AppEnergy from '~/components/AppEnergy'
+import AppExplorer from '~/components/AppExplorer'
 import EnergyIndicator from '~/components/EnergyIndicator.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 
 export default {
-  components: { AppSearch, SwitchPage, EnergyIndicator },
+  components: { AppSearch, EnergyIndicator, AppEnergy, AppExplorer },
   mixins: [transition, users],
   data() {
     return {
       energy: 100,
+      isExplorer: true,
     }
+  },
+  methods: {
+    onExplorerClick() {
+      this.isExplorer = true
+    },
+    onEnergyClick() {
+      this.isExplorer = false
+    },
   },
 }
 </script>
