@@ -25,7 +25,7 @@ export const actions = {
   async getTransferedEnergy({ commit, state }) {
     try {
       const res = await getEnergy()
-      commit('setTransferedEnergy', res)
+      commit('setTransferedEnergy', res.energy)
     } catch (error) {
       console.log(error)
       throw error

@@ -4,7 +4,7 @@
       <div class="explorer__input-wrapper">
         <app-search @searchValue="onSearchValue" />
       </div>
-      <energy-indicator :percent="energy" />
+      <energy-indicator :percent="100" />
       <div class="energy-switch">
         <div class="energy-switch__wrapper">
           <button
@@ -46,9 +46,16 @@ export default {
   mixins: [transition, users],
   data() {
     return {
-      energy: 100,
       isExplorer: true,
     }
+  },
+  computed: {
+    transferedEnergy() {
+      return this.$store.state.energy.transferedEnergy
+    },
+  },
+  async mounted() {
+    await this.$store.dispatch('energy/getTransferedEnergy')
   },
   methods: {
     onExplorerClick() {
