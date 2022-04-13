@@ -6,6 +6,9 @@
         <div class="popup__qr-img">
           <canvas id="qr"></canvas>
         </div>
+        <small class="qr-wait"
+          >Please allow time for the app to sync with BrightID</small
+        >
       </div>
     </div>
   </app-popup>

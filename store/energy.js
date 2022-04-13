@@ -14,9 +14,12 @@ export const mutations = {
     state.transferedEnergy = value
 
     const totalAmount = state.transferedEnergy.map(user => user.amount)
+    const transferedEnergyAmount = totalAmount.reduce(
+      (prev, cur) => prev + cur,
+      0
+    )
 
-    const availableEnergy =
-      100 - totalAmount.reduce((prev, cur) => prev + cur, 0)
+    const availableEnergy = +(100 - transferedEnergyAmount).toFixed(2)
 
     state.availableEnergy = availableEnergy
   },

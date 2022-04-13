@@ -9,9 +9,10 @@
 .profile__username {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
-.profile__name {
+.profile__nickname {
   @include semi;
   font-size: 24px;
   line-height: 115%;
@@ -19,6 +20,11 @@
   overflow: hidden;
   max-width: 94%;
   text-overflow: ellipsis;
+}
+
+.profile__name {
+  color: var(--s-grey);
+  margin-top: 4px;
 }
 
 .profile__block-right {

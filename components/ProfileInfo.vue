@@ -4,7 +4,12 @@
     <div class="profile__user-info">
       <div class="profile__username">
         <div class="profile__block-left">
-          <h3 class="profile__name" :title="name" v-html="separatedName" />
+          <h3
+            class="profile__nickname"
+            :title="nickname || name"
+            v-html="separatedName"
+          />
+          <small v-if="nickname" class="profile__name">({{ name }})</small>
         </div>
         <div class="profile__block-right">
           <p
@@ -85,6 +90,10 @@ export default {
       type: String,
       default: 'Name',
     },
+    nickname: {
+      type: String,
+      default: '',
+    },
     rating: {
       type: Number,
       default: 0,
@@ -108,7 +117,8 @@ export default {
   },
   computed: {
     separatedName() {
-      return this.name.replace(' ', '<br />')
+      const name = this.nickname ? this.nickname : this.name
+      return name.replace(' ', '<br />')
     },
     ratingText() {
       if (this.rating <= 33) {

@@ -20,15 +20,16 @@ export const mutations = {
 }
 
 export const actions = {
-  async getProfileData({ commit, state, rootState }) {
+  async getProfileData({ commit, state, rootState }, isPublic) {
     try {
       const profileData = JSON.parse(
         localStorage.getItem('profileData') || '[]'
       )
+
       const profile = profileData?.profile
       const connections = profileData?.connections
 
-      const res = await getProfile(profileData.profile.id)
+      const res = await getProfile(profileData.profile.id, isPublic)
       const ratedUsers = await getRatedUsers()
 
       const nicknames = res?.data?.nicknames

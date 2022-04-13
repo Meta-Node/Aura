@@ -54,7 +54,7 @@
   box-shadow: 0px 4px 4px 0px var(--black);
   box-shadow: 0px 0px 20px 0px var(--white);
   z-index: 2;
-  position: relative;
+  transform: translateY(0.5px);
 }
 
 .user {

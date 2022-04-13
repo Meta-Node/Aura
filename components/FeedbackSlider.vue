@@ -93,8 +93,7 @@ export default {
         'Bad Vibes': [-0.5],
         Neutral: [0],
         'Good Vibes': [0.5],
-        Human: [1, 2, 3],
-        Honest: [4],
+        Honest: [1, 2, 3, 4],
       }
 
       const stepsValues = {

@@ -2,7 +2,10 @@
   <section class="activity">
     <div class="container activity__wrapper">
       <h3 class="activity__title">Activity</h3>
-      <div v-if="activityData.length">
+      <div v-if="isLoading" style="margin-top: 40px">
+        <app-spinner :is-visible="true" />
+      </div>
+      <div v-else-if="activityData.length">
         <ul class="activity__info">
           <activity-info
             v-for="activity in activityData"
@@ -16,8 +19,8 @@
         </ul>
         <!-- <load-more text="Load More..." /> -->
       </div>
-      <div v-else style="margin-top: 40px">
-        <app-spinner :is-visible="true" />
+      <div v-else style="margin: 0 auto; text-align: center; margin-top: 20px">
+        You have not been active yet
       </div>
     </div>
   </section>
@@ -33,10 +36,12 @@ export default {
   data() {
     return {
       activityData: [],
+      isLoading: true,
     }
   },
   async mounted() {
     try {
+      this.isLoading = true
       await this.$store.dispatch('connections/getConnectionsData')
       await this.$store.dispatch('profile/getProfileData')
       const connections = this.$store.getters['profile/connections']
@@ -54,18 +59,18 @@ export default {
         return
       }
 
-      this.activityData = events
-        .map(event => {
-          event = {
-            ...event,
-            fromProfile: profile,
-            toProfile: connections.find(con => con.id === event.toBrightId),
-          }
-          return event
-        })
-        .reverse()
+      this.activityData = events.map(event => {
+        event = {
+          ...event,
+          fromProfile: profile,
+          toProfile: connections.find(con => con.id === event.toBrightId),
+        }
+        return event
+      })
     } catch (error) {
       this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+    } finally {
+      this.isLoading = false
     }
   },
 }

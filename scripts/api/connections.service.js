@@ -26,9 +26,21 @@ export const getConnection = async toBrightId => {
   return res.data
 }
 
-export const getProfile = async fromBrightId => {
-  const res = await backendApi.get('/v1/profile/' + fromBrightId)
-  return res
+export const getProfile = async (fromBrightId, isPublic = false) => {
+  try {
+    let res
+    const privateRoute = '/v1/profile/'
+    const publicRoute = '/v1/profile/public/'
+    const route = isPublic ? publicRoute : privateRoute
+
+    res = await backendApi.get(route + fromBrightId)
+    if (res.status === 500) {
+      res = await backendApi.get(publicRoute + fromBrightId)
+    }
+    return res
+  } catch (error) {
+    throw new Error('profile is not defined')
+  }
 }
 
 export const setNickname = async ({ fromBrightId, toBrightId, nickname }) => {

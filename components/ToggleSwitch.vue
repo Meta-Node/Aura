@@ -5,7 +5,7 @@
         :id="generateId"
         class="toggle-switch__checkbox"
         type="checkbox"
-        checked
+        :checked="false"
       />
       <span class="toggle-switch__round"></span>
     </label>

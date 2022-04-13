@@ -9,7 +9,8 @@
     <div v-else class="container feedback__wrapper">
       <profile-info
         :img="userInfo.photo"
-        :name="userInfo.nickname || userInfo.name"
+        :name="userInfo.name"
+        :nickname="userInfo.nickname"
         :rating="userInfo.rating"
         :date="difDate.value"
         :connections="userInfo.numOfConnections"
@@ -62,6 +63,7 @@
       <four-unrated :users="fourUnrated" />
     </div>
     <nickname-popup
+      v-if="userInfo && userInfo.id"
       ref="popup"
       :to-bright-id="userInfo.id"
       @updateNickname="updateNickname"
@@ -111,6 +113,9 @@ export default {
         user => user.id !== this.$route.params.id
       )
     },
+    profileData() {
+      return this.$store.getters['profile/profileData']
+    },
   },
   async mounted() {
     const brightId = this.$route.params.id
@@ -128,7 +133,7 @@ export default {
       this.userInfo = connections.find(con => con.id === brightId)
       this.connections = connections.filter(con => con.id !== brightId)
 
-      const res = await getProfile(brightId)
+      const res = await getProfile(brightId, true)
       this.userInfo = { ...this.userInfo, ...res.data }
 
       this.getDate()

@@ -29,6 +29,9 @@ export default {
       if (this.$route.name === 'community') {
         this.startUsers = this.connections
         this.users = this.startUsers
+        if (this.$route.query.filter) {
+          this.onFiltered(this.$route.query.filter)
+        }
         return
       }
 
@@ -53,6 +56,9 @@ export default {
         console.log(error)
       }
       this.users = this.startUsers
+      if (this.$route.query.filter) {
+        this.onFiltered(this.$route.query.filter)
+      }
     } catch (error) {
       console.log(error)
     } finally {
