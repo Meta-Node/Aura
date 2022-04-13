@@ -60,16 +60,17 @@ export default {
   },
 
   mounted() {
-    if (this.value > 0) {
-      this.updateValue(this.value + 1)
-      return
-    }
-    if (this.value === 0.5) {
+    if (+this.value === 0.5) {
       this.updateValue(1)
       return
     }
 
-    if (this.value === -0.5) {
+    if (+this.value > 0) {
+      this.updateValue(this.value + 1)
+      return
+    }
+
+    if (+this.value === -0.5) {
       this.updateValue(-1)
       return
     }
