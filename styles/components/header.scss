@@ -88,7 +88,7 @@
   line-height: 100%;
 }
 
-.nuxt-link-exact-active {
+.nuxt-link-active {
   color: var(--white);
 }
 
@@ -189,7 +189,7 @@
 
 .popup-menu__text {
   font-size: 14px;
-  &.nuxt-link-exact-active {
+  &.nuxt-link-active {
     color: var(--black);
   }
 }

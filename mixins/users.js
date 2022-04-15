@@ -79,6 +79,12 @@ export default {
         return filter
       })
 
+      if (name !== 'All') {
+        this.$router.push({ query: { filter: name } })
+      } else {
+        this.$router.push({ query: null })
+      }
+
       if (name === 'All') {
         this.getAll()
       }
