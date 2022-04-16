@@ -3,17 +3,17 @@
     <div class="container activity__wrapper">
       <h3 class="activity__title">Activity</h3>
       <div class="activity-switch">
-        <div class="energy-switch__wrapper">
+        <div class="switch__wrapper">
           <button
-            class="energy-switch__filter-button"
-            :class="[isPersonal && 'energy-switch__filter-button--active']"
+            class="switch__filter-button"
+            :class="[isPersonal && 'switch__filter-button--active']"
             @click="onPersonalClick"
           >
             Personal
           </button>
           <button
-            class="energy-switch__filter-button"
-            :class="[!isPersonal && 'energy-switch__filter-button--active']"
+            class="switch__filter-button"
+            :class="[!isPersonal && 'switch__filter-button--active']"
             @click="onGlobalClick"
           >
             Global

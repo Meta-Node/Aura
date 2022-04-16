@@ -9,18 +9,18 @@
       </div>
       <div v-else>
         <energy-indicator :percent="availableEnergy" />
-        <div class="energy-switch">
-          <div class="energy-switch__wrapper">
+        <div class="switch">
+          <div class="switch__wrapper">
             <button
-              class="energy-switch__filter-button"
-              :class="[isExplorer && 'energy-switch__filter-button--active']"
+              class="switch__filter-button"
+              :class="[isExplorer && 'switch__filter-button--active']"
               @click="onExplorerClick"
             >
               Explorer
             </button>
             <button
-              class="energy-switch__filter-button"
-              :class="[!isExplorer && 'energy-switch__filter-button--active']"
+              class="switch__filter-button"
+              :class="[!isExplorer && 'switch__filter-button--active']"
               @click="onEnergyClick"
             >
               Energy

@@ -1,11 +1,11 @@
-.energy-switch__wrapper {
+.switch__wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 32px;
 }
 
-.energy-switch__filter-button {
+.switch__filter-button {
   @include semi;
   font-size: 24px;
   line-height: 135%;
@@ -19,6 +19,6 @@
   }
 
   &--active {
-    color: var(--white)
+    color: var(--white);
   }
 }
