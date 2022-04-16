@@ -2,7 +2,7 @@
   <li class="activity__list">
     <div class="activity__main">
       <div class="activity__left-block">
-        <toggle-switch :id="id" />
+        <toggle-switch :id="id" :is-active="isImportant" @toggle="onToggle" />
       </div>
       <div class="activity__right-block">
         <div class="activity__text">
@@ -55,6 +55,10 @@ export default {
       type: Number,
       default: 0,
     },
+    isImportant: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   methods: {
@@ -83,6 +87,9 @@ export default {
         return 'transfered energy'
       }
       return action
+    },
+    onToggle(value) {
+      this.$emit('toggle', { value, id: this.id })
     },
   },
 }

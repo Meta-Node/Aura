@@ -2,76 +2,61 @@
   <section class="activity">
     <div class="container activity__wrapper">
       <h3 class="activity__title">Activity</h3>
-      <div v-if="isLoading" style="margin-top: 40px">
-        <app-spinner :is-visible="true" />
-      </div>
-      <div v-else-if="activityData.length">
-        <ul class="activity__info">
-          <activity-info
-            v-for="activity in activityData"
-            :id="activity.id"
-            :key="activity.id"
-            :from-user="activity.fromProfile"
-            :action="activity.action"
-            :to-user="activity.toProfile"
-            :time="activity.timestamp"
-          />
-        </ul>
-        <!-- <load-more text="Load More..." /> -->
-      </div>
-      <div v-else style="margin: 0 auto; text-align: center; margin-top: 20px">
-        You have not been active yet
+      <div class="activity-switch">
+        <div class="energy-switch__wrapper">
+          <button
+            class="energy-switch__filter-button"
+            :class="[isPersonal && 'energy-switch__filter-button--active']"
+            @click="onPersonalClick"
+          >
+            Personal
+          </button>
+          <button
+            class="energy-switch__filter-button"
+            :class="[!isPersonal && 'energy-switch__filter-button--active']"
+            @click="onGlobalClick"
+          >
+            Global
+          </button>
+        </div>
+        <div class="enegry__screens">
+          <transition name="fade" mode="out-in">
+            <personal-activity v-if="isPersonal" />
+            <global-activity v-else />
+          </transition>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import ActivityInfo from '~/components/ActivityInfo.vue'
-import AppSpinner from '~/components/AppSpinner.vue'
-import { getProfileActivity } from '~/scripts/api/activity.service'
+import GlobalActivity from '~/components/activity/GlobalActivity.vue'
+import PersonalActivity from '~/components/activity/PersonalActivity.vue'
 
 export default {
-  components: { ActivityInfo, AppSpinner },
+  components: { PersonalActivity, GlobalActivity },
   data() {
     return {
-      activityData: [],
-      isLoading: true,
+      isPersonal: true,
     }
   },
-  async mounted() {
-    try {
-      this.isLoading = true
-      await this.$store.dispatch('connections/getConnectionsData')
-      await this.$store.dispatch('profile/getProfileData')
-      const connections = this.$store.getters['profile/connections']
-      const profile = this.$store.getters['profile/profileData']
-      const brightId = profile?.id
-
-      if (!brightId) {
-        return
-      }
-
-      const res = await getProfileActivity(brightId)
-      const events = res?.data?.events
-
-      if (!events) {
-        return
-      }
-
-      this.activityData = events.map(event => {
-        event = {
-          ...event,
-          fromProfile: profile,
-          toProfile: connections.find(con => con.id === event.toBrightId),
-        }
-        return event
-      })
-    } catch (error) {
-      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
-    } finally {
-      this.isLoading = false
+  mounted() {
+    if (this.$route.query.tab) {
+      this.$route.query.tab === 'Personal'
+        ? this.onPersonalClick()
+        : this.onGlobalClick()
     }
+  },
+  methods: {
+    onPersonalClick() {
+      this.isPersonal = true
+      this.$router.push({ query: { tab: 'Personal' } })
+    },
+    onGlobalClick() {
+      this.isPersonal = false
+      this.$router.push({ query: { tab: 'Global' } })
+    },
   },
 }
 </script>

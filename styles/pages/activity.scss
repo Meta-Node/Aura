@@ -1,5 +1,6 @@
 .activity {
   margin-top: 112px;
+  padding-bottom: 60px;
 }
 
 .activity__title {
@@ -13,12 +14,20 @@
   color: var(--b-grey);
 }
 
-.activity__info {
+.activity__data {
   margin-top: 60px;
 }
 
+.activity__info {
+  margin-top: 12px;
+}
+
+.activity__tab-name {
+  font-size: 12px;
+}
+
 .activity__list {
-  +.activity__list {
+  + .activity__list {
     margin-top: 12px;
   }
 }
@@ -66,4 +75,8 @@
   opacity: 0.2;
   background-color: var(--b-grey);
   margin-top: 12px;
+}
+
+.activity-switch {
+  margin-top: 60px;
 }
