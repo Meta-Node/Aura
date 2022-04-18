@@ -62,7 +62,7 @@
 }
 
 .user__percents {
-  @include mono-bold;
+  @include mono-reg;
   display: flex;
   position: absolute;
   left: 50%;
@@ -72,6 +72,6 @@
   font-size: 14px;
   line-height: 125%;
   letter-spacing: -0.03em;
-  color: var(--grey);
+  color: var(--b-grey);
   margin-top: 8px;
 }

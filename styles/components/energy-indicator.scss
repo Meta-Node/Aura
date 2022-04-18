@@ -38,9 +38,9 @@
 }
 
 .explorer-energy__indicator-percents {
-  @include mono-bold;
+  @include mono-reg;
   font-size: 16px;
   line-height: 125%;
   letter-spacing: -0.03em;
-  color: var(--grey);
+  color: var(--b-grey);
 }
