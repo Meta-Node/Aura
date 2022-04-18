@@ -69,6 +69,7 @@ export default {
           return event
         })
         .filter(event => event.toProfile)
+        .reverse()
     } catch (error) {
       this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
     } finally {

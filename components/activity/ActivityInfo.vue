@@ -65,16 +65,16 @@ export default {
     computeDate(date) {
       const activityDate = new Date(date)
       const todayDate = new Date(Date.now())
-      const todayDay = todayDate.getDay()
-
-      const day = activityDate.getDay()
       const hours = activityDate.getHours()
 
       let minutes = activityDate.getMinutes()
       minutes = +minutes <= 9 ? `0${minutes}` : minutes
 
-      if (todayDay - day >= 1) {
-        return todayDay - day + ' day(s) ago'
+      const delta = Math.abs(todayDate - activityDate) / 1000
+      const days = Math.floor(delta / 86400)
+
+      if (days > 1) {
+        return days + ' day(s) ago'
       }
 
       return `${hours}:${minutes}`
