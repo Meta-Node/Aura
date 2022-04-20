@@ -16,7 +16,7 @@ export const mutations = {
   },
   setProfileData(state, value) {
     state.profileData = value
-    localStorage.setItem('profileData', JSON.stringify(value))
+    this.$localForage.setItem('profileData', value)
   },
 }
 

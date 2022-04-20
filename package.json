@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@emotionagency/utils": "latest",
+    "@nuxtjs/localforage": "^1.1.0",
     "@nuxtjs/pwa": "^3.3.5",
     "apisauce": "^2.1.5",
     "assert": "^2.0.0",
