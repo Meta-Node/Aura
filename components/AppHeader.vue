@@ -93,6 +93,14 @@
                 Activity
               </nuxt-link>
             </li>
+            <li class="popup-menu__list">
+              <button
+                class="menu-text popup-menu__text popup-menu__text--red"
+                @click="logout"
+              >
+                Logout
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -131,6 +139,10 @@ export default {
     },
     togglePopup() {
       this.isPopupOpen ? this.closePopup() : this.openPopup()
+    },
+    logout() {
+      this.$store.dispatch('login/logout')
+      this.$router.push('/')
     },
   },
 }

@@ -130,6 +130,9 @@ export const readChannel = async (data, resolve) => {
       res = await backendApi.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
       const data = decryptData(encrypted, aesKey)
+      if (data.password) {
+        delete data.password
+      }
       console.log(data, 'user info')
       profile = data
     }

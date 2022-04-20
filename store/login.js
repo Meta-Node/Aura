@@ -53,4 +53,12 @@ export const actions = {
       throw error
     }
   },
+  logout({ commit, state, rootState }) {
+    localStorage.removeItem('brightId')
+    localStorage.removeItem('publicKey')
+    localStorage.removeItem('privateKey')
+    localStorage.removeItem('timestamp')
+    this.$localForage.removeItem('profileData')
+    commit('app/setIsAuth', false, { root: true })
+  },
 }
