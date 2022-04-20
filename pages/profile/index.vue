@@ -50,14 +50,20 @@ export default {
     },
   },
   async mounted() {
-    this.isLoading = true
-    await this.$store.dispatch('profile/getProfileData')
+    try {
+      this.isLoading = true
+      await this.$store.dispatch('profile/getProfileData')
 
-    this.profile = this.$store.getters['profile/profileData']
-    this.connections = this.$store.getters['profile/connections']
+      this.profile = this.$store.getters['profile/profileData']
+      this.connections = this.$store.getters['profile/connections']
 
-    this.getDate()
-    this.isLoading = false
+      this.getDate()
+    } catch (error) {
+      console.log(error)
+      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+    } finally {
+      this.isLoading = false
+    }
   },
 
   methods: {
