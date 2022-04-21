@@ -168,8 +168,8 @@ export default {
         setTimeout(() => {
           this.$refs.deeplinkBtn.click()
         }, 500)
-        await this.$store.dispatch('login/getProfileData')
         this.$store.commit('app/setLoading', true)
+        await this.$store.dispatch('login/getProfileData')
 
         await this.$store.dispatch('login/connectToBackend')
         this.$store.commit('app/setLoading', false)

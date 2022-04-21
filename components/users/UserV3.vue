@@ -1,12 +1,13 @@
 <template>
   <li class="user-v3__humans-list">
     <nuxt-link :to="url" class="user-v3__username">
-      <img
+      <nuxt-img
         :src="img"
         :alt="name"
         class="user-v3__image"
         width="48"
         height="48"
+        loading="lazy"
       />
       <p class="user-v3__tag">{{ name }}</p>
     </nuxt-link>

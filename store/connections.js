@@ -19,7 +19,17 @@ export const actions = {
       }
       const res = await getConnections(brightId)
       if (res?.data?.connections) {
-        commit('setConnectionsData', res.data.connections)
+        let conn = res.data.connections
+        conn = conn.sort(con => {
+          if (con.conn.level === 'just met') {
+            return -1
+          }
+          if (con.conn.level === 'already known') {
+            return 1
+          }
+          return 0
+        })
+        commit('setConnectionsData', conn)
       } else {
         throw new Error('We have no data in connections')
       }

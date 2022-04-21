@@ -1,7 +1,7 @@
 <template>
   <li class="user-v1__item">
     <nuxt-link :to="url">
-      <img
+      <nuxt-img
         width="74"
         height="74"
         :src="img"
@@ -9,6 +9,7 @@
         class="user-v1__image"
         :class="[brightness && 'user-v1__image--brightness']"
         :style="`--brightness: ${brightness}px`"
+        loading="lazy"
       />
       <p class="user-v1__tag">{{ name }}</p>
     </nuxt-link>
