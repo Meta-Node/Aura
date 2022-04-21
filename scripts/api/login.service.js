@@ -106,7 +106,7 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   return { channelId, aesKey, signingKey }
 }
 
-export const readChannel = async (data, resolve) => {
+export const readChannel = async (data, nuxtCtx, resolve) => {
   let profile
   const connections = []
   const { channelId, aesKey, signingKey } = data
@@ -124,6 +124,10 @@ export const readChannel = async (data, resolve) => {
   if (!completed) {
     return
   }
+
+  console.log(nuxtCtx)
+
+  nuxtCtx.commit('app/setLoading', true, { root: true })
 
   for (const dataId of dataIds) {
     if (dataId.startsWith('sig_userinfo_')) {
@@ -149,9 +153,9 @@ export const readChannel = async (data, resolve) => {
   resolve({ profile, connections })
 }
 
-export const readChannelPromise = data => {
+export const readChannelPromise = (data, nuxtCtx) => {
   return new Promise((resolve, reject) => {
-    intervalID = setInterval(() => readChannel(data, resolve), 3000)
+    intervalID = setInterval(() => readChannel(data, nuxtCtx, resolve), 3000)
   })
 }
 

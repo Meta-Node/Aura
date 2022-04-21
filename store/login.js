@@ -32,7 +32,7 @@ export const actions = {
   },
   async getProfileData({ commit, state, rootState }) {
     try {
-      const res = await readChannelPromise(state.brightIdData)
+      const res = await readChannelPromise(state.brightIdData, this)
       console.log(res)
       commit('setProfileData', res)
       localStorage.setItem('brightId', state.profileData.profile.id)
@@ -46,8 +46,7 @@ export const actions = {
   },
   async connectToBackend({ commit, state, rootState }) {
     try {
-      const res = await commitToBackend()
-      console.log(res)
+      await commitToBackend()
     } catch (error) {
       console.log(error)
       throw error
