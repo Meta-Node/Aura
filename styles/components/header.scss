@@ -4,11 +4,13 @@
   width: 100%;
   top: 0;
   left: 0;
-  transition: opacity 0.25s ease, transform 0.25s ease,
-    background-color 0.25s ease;
+  transition-timing-function: ease;
+  transition-duration: 0.25s;
+  transition-property: opacity, transform, background-color, backdrop-filter;
 
   &.add-bg {
-    background-color: var(--black);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
   }
 }
 
