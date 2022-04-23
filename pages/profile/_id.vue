@@ -56,6 +56,9 @@ export default {
     brightId() {
       return this.$route.params.id
     },
+    isPublicRouteQuery() {
+      return this.$route.query?.account === 'public'
+    },
     getDate() {
       const difDate = {}
       const today = new Date()
@@ -130,7 +133,7 @@ export default {
         this.profile = connections.find(con => con.id === this.brightId)
         this.connections = connections.filter(con => con.id !== this.brightId)
 
-        const res = await getProfile(this.brightId, false)
+        const res = await getProfile(this.brightId, this.isPublicRouteQuery)
         this.profile = { ...this.profile, ...res.data }
         this.isPrivate = !res.isPublic
 
@@ -168,7 +171,11 @@ export default {
       const { copyToClipboard } = await import(
         '~/scripts/utils/copyToClipboard'
       )
-      copyToClipboard(location.href)
+      const URL = this.isPublicRouteQuery
+        ? location.href
+        : location.href + '?account=public'
+
+      copyToClipboard(URL)
       this.$store.commit('toast/addToast', {
         text: 'Link was coppied to your clipboard',
         color: 'primary',

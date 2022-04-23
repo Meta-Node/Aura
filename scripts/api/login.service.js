@@ -125,8 +125,6 @@ export const readChannel = async (data, nuxtCtx, resolve) => {
     return
   }
 
-  console.log(nuxtCtx)
-
   nuxtCtx.commit('app/setLoading', true, { root: true })
 
   for (const dataId of dataIds) {

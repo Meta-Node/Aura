@@ -6,11 +6,10 @@
   left: 0;
   transition-timing-function: ease;
   transition-duration: 0.25s;
-  transition-property: opacity, transform, background-color, backdrop-filter;
+  transition-property: opacity, transform, background-color;
 
   &.add-bg {
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 1);
   }
 }
 
