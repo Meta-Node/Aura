@@ -1,11 +1,7 @@
 <template>
   <header class="header navbar">
     <nav class="container header__nav">
-      <nuxt-link
-        :to="!isAuth ? '/' : '/profile'"
-        class="header__img-wrapper"
-        aria-label="logo"
-      >
+      <nuxt-link :to="homeURL" class="header__img-wrapper" aria-label="logo">
         <svg
           class="img header__img"
           width="52"
@@ -74,7 +70,7 @@
         <div class="popup-menu" :class="[isPopupOpen && 'popup-menu--open']">
           <ul class="popup-menu__reduce">
             <li class="popup-menu__list">
-              <nuxt-link to="/profile/" class="menu-text popup-menu__text">
+              <nuxt-link :to="homeURL" class="menu-text popup-menu__text">
                 Profile
               </nuxt-link>
             </li>
@@ -119,6 +115,9 @@ export default {
     isAuth() {
       return this.$store.state.app.isAuth
     },
+    homeURL() {
+      return !this.isAuth ? '/' : '/profile/'
+    },
   },
 
   async mounted() {
@@ -143,6 +142,10 @@ export default {
     logout() {
       this.$store.dispatch('login/logout')
       this.$router.push('/')
+      this.$store.commit('toast/addToast', {
+        text: 'You have successfully logged out',
+        color: 'success',
+      })
     },
   },
 }

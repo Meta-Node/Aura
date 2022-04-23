@@ -34,8 +34,9 @@ export default {
 
     if (isAuth.value) {
       this.$store.commit('app/setIsAuth', true)
+      const brightId = localStorage.getItem('brightId')
       if (this.$route.name === 'index') {
-        this.$router.push('/profile')
+        this.$router.push('/profile/' + brightId)
       }
       try {
         await this.$store.dispatch('connections/getConnectionsData')

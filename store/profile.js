@@ -22,7 +22,13 @@ export const mutations = {
 export const actions = {
   async getProfileData({ commit, state, rootState }, isPublic) {
     try {
-      const profileData = (await this.$localForage.getItem('profileData')) || []
+      const lsPd = JSON.parse(localStorage.getItem('profileData') || '[]')
+      const profileData =
+        (await this.$localForage.getItem('profileData')) || lsPd
+
+      if (!profileData || !profileData.length) {
+        return
+      }
 
       const profile = profileData?.profile
       const connections = profileData?.connections

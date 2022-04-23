@@ -34,8 +34,10 @@ export const getProfile = async (fromBrightId, isPublic = false) => {
     const route = isPublic ? publicRoute : privateRoute
 
     res = await backendApi.get(route + fromBrightId)
+    res = { ...res, isPublic }
     if (res.status === 500) {
       res = await backendApi.get(publicRoute + fromBrightId)
+      res = { ...res, isPublic: true }
     }
     return res
   } catch (error) {

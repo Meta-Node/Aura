@@ -1,184 +1,68 @@
 <template>
-  <section class="feedback">
-    <div v-if="isLoading" style="margin-top: 40px">
-      <app-spinner :is-visible="true" />
-    </div>
-    <div v-else-if="!isLoading && !userInfo.name" class="container">
-      <p style="margin: 0 auto; text-align: center">User not found</p>
-    </div>
-    <div v-else class="container feedback__wrapper">
-      <profile-info
-        :img="userInfo.photo"
-        :name="userInfo.name"
-        :nickname="userInfo.nickname"
-        :rating="userInfo.rating"
-        :date="difDate.value"
-        :connections="userInfo.numOfConnections"
-        :brightness="brightness"
-        @share="onShare"
-        @edit="onEdit"
-      />
-      <div class="feedback__questions">
-        <div class="feedback__quality-wrapper">
-          <transition name="fade" mode="out-in">
-            <button
-              v-if="!isFeedbackSliderVisible"
-              class="text-button feedback__question-btn"
-              @click="onFeedbackClick"
-            >
-              Rate {{ userInfo.name.split(' ')[0] }}?
-            </button>
-            <div v-else class="feedback__transition">
-              <feedback-slider
-                id="quality"
-                type="range"
-                :min="-5"
-                :max="5"
-                :step="1"
-                :value="+userInfo.previousRating || 0"
-                @changed="onFeedbackChanged"
-              />
-            </div>
-          </transition>
-        </div>
-        <transition name="fade" mode="out-in">
-          <div v-if="isEnergyWindowVisible" class="feedback__energy-wrapper">
-            <!-- <button class="text-button feedback__question-btn">
-              Explore Energy?
-            </button> -->
-            <div class="feedback__energy-slider">
-              <h3 class="feedback__energy-title">Energy Transfer</h3>
-              <energy-slider
-                id="quality"
-                type="range"
-                :min="0"
-                :max="100"
-                :step="25"
-                :value="0"
-              />
-            </div>
-          </div>
-        </transition>
-      </div>
-      <four-unrated :users="fourUnrated" />
-    </div>
-    <nickname-popup
-      v-if="userInfo && userInfo.id"
-      ref="popup"
-      :to-bright-id="userInfo.id"
+  <div data-route="profile">
+    <private-profile
+      v-if="isPrivate"
+      ref="private"
+      :profile="profile"
+      :date="getDate"
+      :is-loading="isLoading"
+      :brightness="brightness"
+      :four-unrated="fourUnrated"
       @updateNickname="updateNickname"
+      @share="onShare"
     />
-  </section>
+    <public-profile
+      v-if="!isPrivate"
+      ref="public"
+      :profile="profile"
+      :date="getDate"
+      :brightness="brightness"
+      :four-unrated="fourUnrated"
+      :is-loading="isLoading"
+      @share="onShare"
+    />
+  </div>
 </template>
 
 <script>
-import AppSpinner from '~/components/AppSpinner.vue'
-
-import FeedbackSlider from '~/components/FeedbackSlider.vue'
-import NicknamePopup from '~/components/popup/NicknamePopup.vue'
-import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
+import PrivateProfile from '~/components/profile/PrivateProfile.vue'
+import PublicProfile from '~/components/profile/PublicProfile.vue'
 import { getConnection, getProfile } from '~/scripts/api/connections.service'
-import { rateUser } from '~/scripts/api/rate.service'
-import FourUnrated from '~/components/FourUnrated.vue'
 
 export default {
   components: {
-    FeedbackSlider,
-    ProfileInfo,
-    AppSpinner,
-    NicknamePopup,
-
-    FourUnrated,
+    PrivateProfile,
+    PublicProfile,
   },
   mixins: [transition],
-
   data() {
     return {
-      isFeedbackSliderVisible: false,
-      isEnergyWindowVisible: false,
-      isAlreadyRated: false,
-      isLoading: true,
-      userInfo: {},
+      isPrivate: true,
+      isOwn: false,
+      profile: {},
       connections: [],
-      difDate: {},
+      isLoading: true,
     }
   },
+
   computed: {
     brightness() {
-      return this.userInfo.rating / 10
+      return this.profile?.rating / 10
     },
     fourUnrated() {
-      return this.$store.getters['profile/fourUnrated']?.filter(
-        user => user.id !== this.$route.params.id
-      )
+      return this.$store.getters['profile/fourUnrated']
     },
-    profileData() {
-      return this.$store.getters['profile/profileData']
-    },
-  },
-  async mounted() {
-    const brightId = this.$route.params.id
-    if (this.$route.params.id === localStorage.getItem('brightId')) {
-      this.$router.push('/profile/')
-      return
-    }
-    this.isLoading = true
-
-    try {
-      await this.$store.dispatch('connections/getConnectionsData')
-      await this.$store.dispatch('profile/getProfileData')
-      const connections = this.$store.getters['profile/connections']
-
-      this.userInfo = connections.find(con => con.id === brightId)
-      this.connections = connections.filter(con => con.id !== brightId)
-
-      const res = await getProfile(brightId, true)
-      this.userInfo = { ...this.userInfo, ...res.data }
-
-      this.getDate()
-      const connectionRes = await getConnection(brightId)
-      if (connectionRes.previousRating) {
-        this.isAlreadyRated = true
-        this.isFeedbackSliderVisible = true
-        this.userInfo.previousRating = connectionRes.previousRating.rating
-      }
-    } catch (error) {
-      console.log(error)
-      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
-    } finally {
-      this.isLoading = false
-    }
-  },
-  methods: {
-    onFeedbackClick() {
-      this.isFeedbackSliderVisible = true
-    },
-    onEnergyClick() {
-      this.isEnergySliderVisible = true
-    },
-    async onFeedbackChanged(rating) {
-      this.$store.commit('app/setLoading', true)
-      await rateUser({
-        rating,
-        fromBrightId: localStorage.getItem('brightId'),
-        toBrightId: this.userInfo.id,
-      })
-      this.$store.commit('app/setLoading', false)
-
-      this.$store.commit('toast/addToast', {
-        text: 'Successfully updated',
-        color: 'success',
-      })
-
-      if (rating > 0.5) {
-        this.$router.push('/energy/')
-      }
+    brightId() {
+      return this.$route.params.id
     },
     getDate() {
+      const difDate = {}
       const today = new Date()
-
-      const reg = new Date(this.userInfo.brightIdDate)
+      if (!this.profile?.brightIdDate) {
+        return
+      }
+      const reg = new Date(this.profile.brightIdDate)
 
       const todayDate = {
         year: today.getFullYear(),
@@ -193,21 +77,93 @@ export default {
       }
 
       Object.keys(todayDate).forEach(key => {
-        this.difDate[key] = todayDate[key] - regDate[key]
+        difDate[key] = todayDate[key] - regDate[key]
       })
 
-      if (this.difDate.year >= 1) {
-        this.difDate.value = this.difDate.year + ' year(s)'
-        return
+      if (difDate.year >= 1) {
+        return difDate.year + ' year(s)'
       }
 
-      if (this.difDate.year < 1 && this.difDate.month >= 1) {
-        this.difDate.value = this.difDate.month + ' month(s)'
-        return
+      if (difDate.year < 1 && difDate.month >= 1) {
+        return difDate.month + ' month(s)'
       }
 
-      this.difDate.value = '< 1 month'
+      return '< 1 month'
     },
+  },
+
+  watch: {
+    isPrivate() {
+      const accType = this.isPrivate ? 'private' : 'public'
+      this.$router.push({ query: { account: accType } })
+    },
+  },
+
+  async mounted() {
+    this.isLoading = true
+
+    if (!this.brightId) {
+      this.$router.push('/profile/' + localStorage.getItem('brightId'))
+      return
+    }
+
+    if (this.brightId === localStorage.getItem('brightId')) {
+      this.isPrivate = false
+      this.isOwn = true
+      await this.loadOwnProfile()
+      return
+    }
+
+    await this.loadConnectionProfile()
+  },
+  beforeDestroy() {
+    this.$router.push({ query: null })
+  },
+
+  methods: {
+    async loadConnectionProfile() {
+      try {
+        await this.$store.dispatch('connections/getConnectionsData')
+        await this.$store.dispatch('profile/getProfileData')
+        const connections = this.$store.getters['profile/connections']
+
+        this.profile = connections.find(con => con.id === this.brightId)
+        this.connections = connections.filter(con => con.id !== this.brightId)
+
+        const res = await getProfile(this.brightId, false)
+        this.profile = { ...this.profile, ...res.data }
+        this.isPrivate = !res.isPublic
+
+        const connectionRes = await getConnection(this.brightId)
+        if (connectionRes.previousRating && this.isPrivate) {
+          this.$refs.private.isFeedbackSliderVisible = true
+          this.profile.previousRating = connectionRes.previousRating.rating
+        }
+      } catch (error) {
+        console.log(error)
+        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+      } finally {
+        this.isLoading = false
+      }
+    },
+    async loadOwnProfile() {
+      try {
+        await this.$store.dispatch('profile/getProfileData')
+
+        this.profile = this.$store.getters['profile/profileData']
+        this.connections = this.$store.getters['profile/connections']
+      } catch (error) {
+        console.log(error)
+        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    updateNickname(value) {
+      this.profile.nickname = value
+    },
+
     async onShare() {
       const { copyToClipboard } = await import(
         '~/scripts/utils/copyToClipboard'
@@ -217,12 +173,6 @@ export default {
         text: 'Link was coppied to your clipboard',
         color: 'primary',
       })
-    },
-    onEdit() {
-      this.$refs.popup.openPopup()
-    },
-    updateNickname(value) {
-      this.userInfo.nickname = value
     },
   },
 }
