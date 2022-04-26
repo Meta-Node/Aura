@@ -39,7 +39,20 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/axios',
   ],
+
+  proxy: {
+    '/brightid': {
+      target: 'https://recovery.brightid.org',
+      changeOrigin: true,
+      pathRewrite: { '^/brightid': '/' },
+    },
+  },
+
+  axios: {
+    proxy: true,
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

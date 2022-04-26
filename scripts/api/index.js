@@ -5,8 +5,8 @@ import B64 from 'base64-js'
 export const brightIdBaseURL = 'http://184.72.224.75'
 
 export const brightIdApi = create({
-  baseURL: brightIdBaseURL,
   headers: { 'Cache-Control': 'no-cache' },
+  mode: 'no-cors',
 })
 
 export const backendApi = create({

@@ -206,6 +206,35 @@ export const commitToBackend = async () => {
   }
 }
 
+export async function pullDecryptedUserData(key, password, ctx) {
+  return decryptUserData(await pullEncryptedUserData(key, ctx), password)
+}
+
+async function pullEncryptedUserData(key, ctx) {
+  return await ctx.$axios.get(`/brightid/backups/${key}/data`)
+}
+
+function decryptUserData(encryptedUserData, password) {
+  return JSON.parse(
+    CryptoJS.AES.decrypt(encryptedUserData.data, password).toString(
+      CryptoJS.enc.Utf8
+    )
+  )
+}
+
+export async function pullProfilePhoto(key, brightId, password, ctx) {
+  try {
+    const encryptedUserPicture = await ctx.$axios.get(
+      `/brightid/backups/${key}/${brightId}`
+    )
+    return CryptoJS.AES.decrypt(encryptedUserPicture.data, password).toString(
+      CryptoJS.enc.Utf8
+    )
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const loginByExplorerCode = async (explorerCode, password) => {
   try {
     const brightId = CryptoJS.AES.decrypt(explorerCode, password).toString(
@@ -233,6 +262,19 @@ export const loginByExplorerCode = async (explorerCode, password) => {
     }
 
     await backendApi.post('/v1/connect/explorer-code', body)
+
+    // const userData = await pullDecryptedUserData(privateKey, password, ctx)
+
+    // console.log(userData.connections[0])
+
+    // const pp = await pullProfilePhoto(
+    //   privateKey,
+    //   userData.connections[0].id,
+    //   password,
+    //   ctx
+    // )
+
+    // console.log(pp)
 
     return {
       publicKey,

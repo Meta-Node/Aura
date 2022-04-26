@@ -1,6 +1,7 @@
 import {
   commitToBackend,
   importBrightID,
+  loginByExplorerCode,
   readChannelPromise,
 } from '~/scripts/api/login.service'
 
@@ -21,6 +22,20 @@ export const mutations = {
 }
 
 export const actions = {
+  async loginByExplorerCode({ commit, state, rootState }, data) {
+    try {
+      const brightIdData = await loginByExplorerCode(
+        data.explorer,
+        data.password
+      )
+      localStorage.setItem('brightId', brightIdData.brightId)
+      localStorage.setItem('publicKey', brightIdData.publicKey)
+      localStorage.setItem('privateKey', brightIdData.privateKey)
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  },
   async getBrightIdData({ commit, state, rootState }) {
     try {
       const data = await importBrightID()
