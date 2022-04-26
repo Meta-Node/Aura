@@ -1,6 +1,9 @@
 .activity {
   margin-top: 112px;
   padding-bottom: 60px;
+  .toggle-switch {
+    margin-right: 24px;
+  }
 }
 
 .activity__title {
@@ -46,7 +49,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-left: 24px;
   width: 100%;
 }
 

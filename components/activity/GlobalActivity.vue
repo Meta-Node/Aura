@@ -3,11 +3,7 @@
     <app-spinner :is-visible="true" />
   </div>
   <div v-else-if="startedActivityData.length" class="activity__data">
-    <div class="activity__filters">
-      <app-filter :filters="filters" @filtered="onFiltered" />
-    </div>
     <div v-if="activityData.length" class="activity__content">
-      <small class="activity__tab-name">Not important / Important</small>
       <ul class="activity__info">
         <activity-info
           v-for="activity in activityData"
@@ -31,12 +27,11 @@
 </template>
 
 <script>
-import AppFilter from '../filters/AppFilter.vue'
 import ActivityInfo from '~/components/activity/ActivityInfo.vue'
 import activityVue from '~/mixins/activity.js'
 
 export default {
-  components: { ActivityInfo, AppFilter },
+  components: { ActivityInfo },
   mixins: [activityVue],
 }
 </script>

@@ -39,7 +39,9 @@ export default {
         this.$router.push('/profile/' + brightId)
       }
       try {
-        await this.$store.dispatch('connections/getConnectionsData')
+        if (!this.$route.query?.account !== 'public') {
+          await this.$store.dispatch('connections/getConnectionsData')
+        }
         await this.$store.dispatch('profile/getProfileData')
       } catch (error) {
         console.log(error)
@@ -47,7 +49,10 @@ export default {
       }
     } else {
       this.$store.commit('app/setIsAuth', false)
-      this.$router.push('/')
+
+      if (this.$route.query?.account !== 'public') {
+        this.$router.push('/')
+      }
     }
   },
 }

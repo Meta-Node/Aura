@@ -19,3 +19,19 @@
   text-align: center;
   color: var(--b-grey);
 }
+
+.profile__login-cta {
+  display: flex;
+  padding: 4px;
+  justify-content: center;
+  align-items: center;
+  background: url('/images/bg.jpg');
+  @include cover();
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: var(--grey);
+  font-size: 12px;
+}

@@ -3,13 +3,13 @@
     <div v-if="isLoading" style="margin-top: 40px">
       <app-spinner :is-visible="true" />
     </div>
-    <div v-else-if="!isLoading && !profile.name" class="container">
+    <div v-else-if="!isLoading && !profile" class="container">
       User not found
     </div>
     <div v-else class="container profile__wrapper">
       <profile-info
-        :img="profile.photo"
-        :name="profile.name"
+        :img="profile.photo || null"
+        :name="profile.name || 'Unknown'"
         :rating="profile.rating"
         :date="date"
         :connections="profile.numOfConnections"

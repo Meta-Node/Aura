@@ -18,6 +18,7 @@
           :to-user="activity.toProfile"
           :time="activity.timestamp"
           :is-important="activity.isimportant"
+          :is-personal="true"
         />
       </ul>
       <!-- <load-more text="Load More..." /> -->

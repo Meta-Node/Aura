@@ -21,6 +21,13 @@
       :is-loading="isLoading"
       @share="onShare"
     />
+    <nuxt-link
+      v-if="!isAuth && isPublicRouteQuery"
+      to="/"
+      class="profile__login-cta"
+    >
+      Please, login in Aura app to see more
+    </nuxt-link>
   </div>
 </template>
 
@@ -93,6 +100,9 @@ export default {
 
       return '< 1 month'
     },
+    isAuth() {
+      return this.$store.state.app.isAuth
+    },
   },
 
   watch: {
@@ -126,7 +136,8 @@ export default {
   methods: {
     async loadConnectionProfile() {
       try {
-        await this.$store.dispatch('connections/getConnectionsData')
+        !this.isPublicRouteQuery &&
+          (await this.$store.dispatch('connections/getConnectionsData'))
         await this.$store.dispatch('profile/getProfileData')
         const connections = this.$store.getters['profile/connections']
 
@@ -138,7 +149,7 @@ export default {
         this.isPrivate = !res.isPublic
 
         const connectionRes = await getConnection(this.brightId)
-        if (connectionRes.previousRating && this.isPrivate) {
+        if (connectionRes?.previousRating && this.isPrivate) {
           this.$refs.private.isFeedbackSliderVisible = true
           this.profile.previousRating = connectionRes.previousRating.rating
         }

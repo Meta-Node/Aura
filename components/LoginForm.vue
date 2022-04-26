@@ -52,6 +52,7 @@
 
 <script>
 import BrightIdLogin from './BrightIdLogin.vue'
+import { loginByExplorerCode } from '~/scripts/api/login.service'
 // import AppInput from '~/components/AppInput.vue'
 
 export default {
@@ -77,10 +78,11 @@ export default {
 
       this.hasErrors = this.explorer.error || this.password.error
     },
-    onSubmit() {
+    async onSubmit() {
       if (!this.hasErrors) {
+        await loginByExplorerCode(this.explorer.value, this.password.value)
         this.$store.commit('app/setIsAuth', true)
-        this.$router.push('/profile/')
+        // this.$router.push('/profile/')
         this.$refs.explorer.reset()
         this.$refs.password.reset()
       }

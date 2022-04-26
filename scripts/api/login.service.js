@@ -205,3 +205,42 @@ export const commitToBackend = async () => {
     throw error
   }
 }
+
+export const loginByExplorerCode = async (explorerCode, password) => {
+  try {
+    const brightId = CryptoJS.AES.decrypt(explorerCode, password).toString(
+      CryptoJS.enc.Utf8
+    )
+
+    if (!brightId) {
+      throw new Error('incorrect explorerCode or password')
+    }
+
+    const privateKey = hash(brightId + password)
+    console.log(`key: ${privateKey}`)
+
+    const { publicKey, secretKey } = await nacl.sign.keyPair()
+    const b64PublicKey = B64.fromByteArray(publicKey)
+    console.log(`b64PublicKey: ${b64PublicKey}`)
+    const b64SecretKey = B64.fromByteArray(secretKey)
+    console.log(`b64SecretKey: ${b64SecretKey}`)
+
+    const body = {
+      publicKey,
+      brightId,
+      key: privateKey,
+      password,
+    }
+
+    await backendApi.post('/v1/connect/explorer-code', body)
+
+    return {
+      publicKey,
+      brightId,
+      privateKey,
+      password,
+    }
+  } catch (error) {
+    throw error
+  }
+}

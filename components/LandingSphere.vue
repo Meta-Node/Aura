@@ -8,9 +8,13 @@ export default {
   mixins: [transition],
 
   async mounted() {
-    const { Sphere } = await import('~/scripts/Sphere')
+    try {
+      const { Sphere } = await import('~/scripts/Sphere')
 
-    this.scene = new Sphere(this.$refs.sphere)
+      this.scene = new Sphere(this.$refs.sphere)
+    } catch (error) {
+      console.log(error)
+    }
   },
 
   beforeDestroy() {

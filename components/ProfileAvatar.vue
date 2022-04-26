@@ -3,7 +3,7 @@
     <img
       :style="`--brightness: ${brightness}px`"
       class="img profile__avatar"
-      :src="img"
+      :src="img || '/images/avatar-thumb.jpg'"
       :alt="alt"
     />
   </div>

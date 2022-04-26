@@ -1,7 +1,7 @@
 <template>
   <li class="activity__list">
     <div class="activity__main">
-      <div class="activity__left-block">
+      <div v-if="isPersonal" class="activity__left-block">
         <toggle-switch :id="id" :is-active="isImportant" @toggle="onToggle" />
       </div>
       <div class="activity__right-block">
@@ -56,6 +56,10 @@ export default {
       default: 0,
     },
     isImportant: {
+      type: Boolean,
+      default: false,
+    },
+    isPersonal: {
       type: Boolean,
       default: false,
     },
