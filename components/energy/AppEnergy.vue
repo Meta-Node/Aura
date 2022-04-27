@@ -5,19 +5,25 @@
         <app-filter :filters="filters" @filtered="onFiltered" />
       </div>
       <div class="app-energy__humans-stat">
-        <ul v-if="users.length" class="app-energy__humans">
-          <user-v-3
-            v-for="user in users"
-            :id="user.id"
-            :key="user.id"
-            :img="user.id"
-            :name="user.nickname || user.name"
-            :rating="+user.rating"
-            :energy="user.transferedEnergy"
-            :url="`/profile/${user.id}`"
-            @changeEnergy="onChangeEnergy"
-          />
-        </ul>
+        <lazy-loading-items
+          v-if="users.length"
+          :items="users"
+          @updateItems="onUpdateItems"
+        >
+          <ul class="app-energy__humans">
+            <user-v-3
+              v-for="user in visibleItems"
+              :id="user.id"
+              :key="user.id"
+              :img="user.id"
+              :name="user.nickname || user.name"
+              :rating="+user.rating"
+              :energy="user.transferedEnergy"
+              :url="`/profile/${user.id}`"
+              @changeEnergy="onChangeEnergy"
+            />
+          </ul>
+        </lazy-loading-items>
         <span v-else class="users-not-found">Users not found</span>
       </div>
       <!-- <load-more text="Load More..." /> -->
@@ -48,9 +54,11 @@
 <script>
 import AppFilter from '../filters/AppFilter.vue'
 import UserV3 from '~/components/users/UserV3.vue'
+import loadItems from '~/mixins/loadItems'
 
 export default {
   components: { UserV3, AppFilter },
+  mixins: [loadItems],
   props: {
     users: {
       type: Array,

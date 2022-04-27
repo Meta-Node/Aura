@@ -3,10 +3,15 @@
     <app-spinner :is-visible="true" />
   </div>
   <div v-else-if="startedActivityData.length" class="activity__data">
-    <div v-if="activityData.length" class="activity__content">
+    <lazy-loading-items
+      v-if="activityData.length"
+      class="activity__content"
+      :items="activityData"
+      @updateItems="onUpdateItems"
+    >
       <ul class="activity__info">
         <activity-info
-          v-for="activity in activityData"
+          v-for="activity in visibleItems"
           :id="activity.id"
           :key="activity.id"
           :from-user="activity.fromProfile"
@@ -16,8 +21,7 @@
           :is-important="activity.isimportant"
         />
       </ul>
-      <!-- <load-more text="Load More..." /> -->
-    </div>
+    </lazy-loading-items>
     <div v-else>You have not been active yet</div>
   </div>
 
@@ -29,9 +33,10 @@
 <script>
 import ActivityInfo from '~/components/activity/ActivityInfo.vue'
 import activityVue from '~/mixins/activity.js'
+import loadItems from '~/mixins/loadItems'
 
 export default {
   components: { ActivityInfo },
-  mixins: [activityVue],
+  mixins: [activityVue, loadItems],
 }
 </script>

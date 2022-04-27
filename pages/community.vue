@@ -12,35 +12,41 @@
         <h3 class="community__humans-title">Your Connections</h3>
 
         <app-filter :filters="filters" @filtered="onFiltered" />
-        <ul v-if="users.length" class="user-v1-ul">
-          <user-v-1
-            v-for="user in users"
-            :key="user.id"
-            :is-brightness="true"
-            :brightness="user.rating / 10"
-            :img="user.id"
-            :name="user.nickname || user.name"
-            :url="`/profile/${user.id}`"
-          />
-        </ul>
+        <lazy-loading-items
+          v-if="users.length"
+          :items="users"
+          @updateItems="onUpdateItems"
+        >
+          <ul class="user-v1-ul">
+            <user-v-1
+              v-for="user in visibleItems"
+              :key="user.id"
+              :is-brightness="true"
+              :brightness="user.rating / 10"
+              :img="user.id"
+              :name="user.nickname || user.name"
+              :url="`/profile/${user.id}`"
+            />
+          </ul>
+        </lazy-loading-items>
         <span v-else class="users-not-found">Users not found</span>
-        <!-- <load-more text="Load More..." /> -->
       </div>
     </div>
   </section>
 </template>
 
 <script>
-// Should works with https://www.npmjs.com/package/vue-infinite-scroll
-import UserV1 from '~/components/users/UserV1.vue'
-
-import AppSearch from '~/components/AppSearch.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
+import loadItems from '~/mixins/loadItems'
+import AppSearch from '~/components/AppSearch.vue'
 import AppFilter from '~/components/filters/AppFilter.vue'
+
+import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
+import UserV1 from '~/components/users/UserV1.vue'
 export default {
-  components: { UserV1, AppSearch, AppFilter },
-  mixins: [transition, users],
+  components: { AppSearch, AppFilter, LazyLoadingItems, UserV1 },
+  mixins: [transition, users, loadItems],
   data() {
     return {
       filters: [
