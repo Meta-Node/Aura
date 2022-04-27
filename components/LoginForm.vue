@@ -80,13 +80,20 @@ export default {
         return
       }
 
-      await this.$store.dispatch('login/loginByExplorerCode', {
-        explorer: this.explorer.value,
-        password: this.password.value,
-      })
+      try {
+        await this.$store.dispatch('login/loginByExplorerCode', {
+          explorer: this.explorer.value,
+          password: this.password.value,
+        })
 
-      this.$store.commit('app/setIsAuth', true)
-      this.$router.push('/profile/')
+        this.$store.commit('app/setIsAuth', true)
+        this.$router.push('/profile/')
+      } catch (error) {
+        this.$store.commit('toast/addToast', {
+          text: 'Incorrect data',
+          color: 'danger',
+        })
+      }
     },
 
     emmitError() {

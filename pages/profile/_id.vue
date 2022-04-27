@@ -146,10 +146,11 @@ export default {
 
         const res = await getProfile(this.brightId, this.isPublicRouteQuery)
         this.profile = { ...this.profile, ...res.data }
-        this.isPrivate = !res.isPublic
 
         const connectionRes = await getConnection(this.brightId)
-        if (connectionRes?.previousRating && this.isPrivate) {
+        this.isPrivate = !this.isPublicRouteQuery
+
+        if (connectionRes?.previousRating) {
           this.$refs.private.isFeedbackSliderVisible = true
           this.profile.previousRating = connectionRes.previousRating.rating
         }
