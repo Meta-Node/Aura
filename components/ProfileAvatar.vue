@@ -1,6 +1,6 @@
 <template>
   <div class="profile__card-img">
-    <img
+    <nuxt-img
       :style="`--brightness: ${brightness}px`"
       class="img profile__avatar"
       :src="img || '/images/avatar-thumb.jpg'"

@@ -33,15 +33,13 @@ const hash = data => {
 const createImportQR = async () => {
   const array = CryptoJS.lib.WordArray.random(16)
   const aesKey = b64ToUrlSafeB64(CryptoJS.enc.Base64.stringify(array))
-  console.log(`aesKey: ${aesKey}`)
+
   const channelId = hash(aesKey)
-  console.log(`channelId: ${channelId}`)
 
   const { publicKey, secretKey } = await nacl.sign.keyPair()
   const b64PublicKey = B64.fromByteArray(publicKey)
-  console.log(`b64PublicKey: ${b64PublicKey}`)
+
   const b64SecretKey = B64.fromByteArray(secretKey)
-  console.log(`b64SecretKey: ${b64SecretKey}`)
 
   const timestamp = Date.now()
   const dataObj = {
@@ -61,9 +59,6 @@ const createImportQR = async () => {
   const deeplink = `brightid://connection-code/${encodeURIComponent(qrString)}`
   qrString = deeplink
 
-  console.log(`QR string: ${qrString}`)
-  console.log(`Deep link: ${deeplink}`)
-
   return {
     channelId,
     aesKey,
@@ -79,9 +74,9 @@ const createImportQR = async () => {
 const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   const array = CryptoJS.lib.WordArray.random(16)
   const aesKey = b64ToUrlSafeB64(CryptoJS.enc.Base64.stringify(array))
-  console.log(`aesKey: ${aesKey}`)
+
   const channelId = hash(aesKey)
-  console.log(`channelId: ${channelId}`)
+
   const dataObj = { signingKey, lastSyncTime, isPrimaryDevice: false }
   const data = JSON.stringify(dataObj)
   let body = JSON.stringify({ data, uuid: 'data' })
@@ -96,12 +91,6 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   assert.ok(res.ok, 'failed to post completed flag to the channel')
 
   qrString = `${brightIdBaseURL}?aes=${aesKey}&t=4`
-  console.log(`QR string: ${qrString}`)
-  console.log(
-    `Deep link: https://brightid://brightid.org/connection-code/${encodeURIComponent(
-      qrString
-    )}`
-  )
 
   return { channelId, aesKey, signingKey }
 }
@@ -169,7 +158,7 @@ export const importBrightID = async () => {
 
 export const syncBrightID = async () => {
   const brightID =
-    localStorage.getItem('brightID') ||
+    localStorage.getItem('brightId') ||
     '5cvu9DUZyzPUclHHcgNhs0S71Z2nAOwAYAljYgisGgA'
   const signingKey =
     localStorage.getItem('publicKey') ||
@@ -177,8 +166,7 @@ export const syncBrightID = async () => {
 
   try {
     const lastSyncTime = localStorage.getItem('timestamp') || 1645509278250
-    const data = await createSyncQR(brightID, signingKey, lastSyncTime)
-    console.log(data)
+    await createSyncQR(brightID, signingKey, lastSyncTime)
   } catch (error) {
     console.log(error)
   }
@@ -245,41 +233,27 @@ export const loginByExplorerCode = async (explorerCode, password) => {
       throw new Error('incorrect explorerCode or password')
     }
 
-    const privateKey = hash(brightId + password)
-    console.log(`key: ${privateKey}`)
+    const authKey = hash(brightId + password)
 
     const { publicKey, secretKey } = await nacl.sign.keyPair()
     const b64PublicKey = B64.fromByteArray(publicKey)
-    console.log(`b64PublicKey: ${b64PublicKey}`)
+
     const b64SecretKey = B64.fromByteArray(secretKey)
-    console.log(`b64SecretKey: ${b64SecretKey}`)
 
     const body = {
-      publicKey,
+      publicKey: b64PublicKey,
       brightId,
-      key: privateKey,
+      key: authKey,
       password,
     }
 
     await backendApi.post('/v1/connect/explorer-code', body)
 
-    // const userData = await pullDecryptedUserData(privateKey, password, ctx)
-
-    // console.log(userData.connections[0])
-
-    // const pp = await pullProfilePhoto(
-    //   privateKey,
-    //   userData.connections[0].id,
-    //   password,
-    //   ctx
-    // )
-
-    // console.log(pp)
-
     return {
-      publicKey,
+      publicKey: b64PublicKey,
       brightId,
-      privateKey,
+      authKey,
+      privateKey: b64SecretKey,
       password,
     }
   } catch (error) {

@@ -8,7 +8,7 @@
     </div>
     <div v-else class="container profile__wrapper">
       <profile-info
-        :img="profile.photo || null"
+        :img="profileAvatar"
         :name="profile.name || 'Unknown'"
         :rating="profile.rating"
         :date="date"
@@ -28,11 +28,12 @@ import ProfileInfo from '~/components/ProfileInfo.vue'
 import AuraSphere from '~/components/AuraSphere.vue'
 
 import transition from '~/mixins/transition'
+import avatar from '~/mixins/avatar'
 import FourUnrated from '~/components/FourUnrated.vue'
 
 export default {
   components: { ProfileInfo, AuraSphere, FourUnrated },
-  mixins: [transition],
+  mixins: [transition, avatar],
   props: {
     profile: {
       type: Object,
@@ -61,6 +62,12 @@ export default {
     fourUnrated: {
       type: Array,
       default: () => [],
+    },
+  },
+
+  computed: {
+    img() {
+      return this.$route.params.id
     },
   },
 

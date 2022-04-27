@@ -6,8 +6,8 @@
       class="form__input-wrapper"
       type="text"
       placeholder="Explorer Code"
-      validation="minLength(10)"
-      validation-text="Value must be longer than 10"
+      validation="minLength(88)"
+      validation-text="Value length must be equal 88"
       :required="true"
       @inputValue="onInputValue"
     />
@@ -30,19 +30,15 @@
         style="display: none"
         checked="checked"
       />
-      <label class="checkbox" for="input-checkbox"
+      <!-- <label class="checkbox" for="input-checkbox"
         ><span>
           <svg width="12px" height="10px" viewbox="0 0 12 10">
             <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
         ><span>Remember my details</span></label
-      >
+      > -->
     </div>
     <div class="form__btn-wrapper">
-      <app-button
-        type="submit"
-        class="text-button form__btn"
-        :disabled="hasErrors"
-      >
+      <app-button type="submit" class="text-button form__btn">
         <span class="form__btn-text">Sign In</span>
       </app-button>
       <bright-id-login />
@@ -52,7 +48,6 @@
 
 <script>
 import BrightIdLogin from './BrightIdLogin.vue'
-import { loginByExplorerCode } from '~/scripts/api/login.service'
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
 
@@ -80,20 +75,30 @@ export default {
       this.hasErrors = this.explorer.error || this.password.error
     },
     async onSubmit() {
-      if (!this.hasErrors) {
-        const res = await loginByExplorerCode(
-          this.explorer.value,
-          this.password.value,
-          this
-        )
-
-        console.log(res)
-
-        // this.$store.commit('app/setIsAuth', true)
-        // this.$router.push('/profile/')
-        this.$refs.explorer.reset()
-        this.$refs.password.reset()
+      if (this.hasErrors) {
+        this.emmitError()
+        return
       }
+
+      await this.$store.dispatch('login/loginByExplorerCode', {
+        explorer: this.explorer.value,
+        password: this.password.value,
+      })
+
+      this.$store.commit('app/setIsAuth', true)
+      this.$router.push('/profile/')
+    },
+
+    emmitError() {
+      this.$refs.explorer.throwError()
+      this.$refs.password.throwError()
+    },
+
+    resetForm() {
+      this.$refs.explorer.value = ''
+      this.$refs.password.value = ''
+
+      this.hasErrors = false
     },
   },
 }

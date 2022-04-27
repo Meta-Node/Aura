@@ -1,4 +1,5 @@
 import { getProfile } from '~/scripts/api/connections.service'
+import { pullProfilePhoto } from '~/scripts/api/login.service'
 import { getRatedUsers } from '~/scripts/api/rate.service'
 
 export const state = () => ({
@@ -22,11 +23,6 @@ export const mutations = {
 export const actions = {
   async getProfileData({ commit, state, rootState }, isPublic) {
     try {
-      const lsPd = localStorage.getItem('profileData')
-      if (lsPd) {
-        this.$localForage.setItem('profileData', JSON.parse(lsPd))
-        localStorage.removeItem('profileData')
-      }
       const profileData = await this.$localForage.getItem('profileData')
 
       if (!profileData) {
@@ -57,6 +53,23 @@ export const actions = {
     } catch (error) {
       throw error
     }
+  },
+
+  async getProfilePhoto({ commit, state, rootState }, brightId) {
+    const privateKey = localStorage.getItem('authKey')
+    const profileInfo = await this.$localForage.getItem('profileData')
+    if (!profileInfo) {
+      return
+    }
+
+    const profilePhoto = await pullProfilePhoto(
+      privateKey,
+      brightId,
+      profileInfo.profile.password,
+      this
+    )
+
+    return profilePhoto
   },
 }
 

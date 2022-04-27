@@ -69,10 +69,14 @@ export default {
     onFiltered(name) {
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
-          filter.active = filter.isIcon ? true : !filter.active
           if (filter.isIcon) {
-            filter.reverse = !filter.active ? false : !filter.reverse
+            if (!filter.active) {
+              filter.reverse = false
+            } else {
+              filter.reverse = !filter.reverse
+            }
           }
+          filter.active = filter.isIcon ? true : !filter.active
         } else {
           filter.active = false
         }

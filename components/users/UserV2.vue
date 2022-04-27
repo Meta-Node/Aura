@@ -2,7 +2,7 @@
   <li class="user-v2__humans-list">
     <nuxt-link :to="url" class="user-v2__username">
       <nuxt-img
-        :src="img"
+        :src="profileAvatar"
         :alt="name"
         class="user-v2__image"
         width="48"
@@ -19,7 +19,10 @@
 </template>
 
 <script>
+import avatar from '~/mixins/avatar'
 export default {
+  mixins: [avatar],
+
   props: {
     url: {
       type: String,

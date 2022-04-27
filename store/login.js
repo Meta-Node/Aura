@@ -3,6 +3,7 @@ import {
   importBrightID,
   loginByExplorerCode,
   readChannelPromise,
+  pullDecryptedUserData,
 } from '~/scripts/api/login.service'
 
 export const state = () => ({
@@ -16,6 +17,9 @@ export const mutations = {
     state.brightIdData = value
   },
   setProfileData(state, value) {
+    if (value.userData) {
+      delete value.userData
+    }
     state.profileData = value
     this.$localForage.setItem('profileData', value)
   },
@@ -31,6 +35,17 @@ export const actions = {
       localStorage.setItem('brightId', brightIdData.brightId)
       localStorage.setItem('publicKey', brightIdData.publicKey)
       localStorage.setItem('privateKey', brightIdData.privateKey)
+      localStorage.setItem('authKey', brightIdData.authKey)
+
+      const profileData = await pullDecryptedUserData(
+        brightIdData.authKey,
+        brightIdData.password,
+        this
+      )
+      commit('setProfileData', {
+        ...profileData,
+        profile: { ...profileData.userData, password: brightIdData.password },
+      })
     } catch (error) {
       console.log(error)
       throw error
@@ -72,6 +87,7 @@ export const actions = {
     localStorage.removeItem('publicKey')
     localStorage.removeItem('privateKey')
     localStorage.removeItem('timestamp')
+    localStorage.removeItem('authKey')
     this.$localForage.removeItem('profileData')
     commit('app/setIsAuth', false, { root: true })
   },

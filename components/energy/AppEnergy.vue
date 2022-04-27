@@ -10,7 +10,7 @@
             v-for="user in users"
             :id="user.id"
             :key="user.id"
-            :img="user.photo"
+            :img="user.id"
             :name="user.nickname || user.name"
             :rating="+user.rating"
             :energy="user.transferedEnergy"

@@ -4,7 +4,7 @@
       <nuxt-img
         width="74"
         height="74"
-        :src="img"
+        :src="profileAvatar"
         :alt="name"
         class="user-v1__image"
         :class="[brightness && 'user-v1__image--brightness']"
@@ -17,7 +17,9 @@
 </template>
 
 <script>
+import avatar from '~/mixins/avatar'
 export default {
+  mixins: [avatar],
   props: {
     url: {
       type: String,

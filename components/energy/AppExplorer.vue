@@ -9,7 +9,7 @@
           <user-v-2
             v-for="user in users"
             :key="user.id"
-            :img="user.photo"
+            :img="user.id"
             :name="user.nickname || user.name"
             :url="`/profile/${user.id}`"
             inbound="0%"

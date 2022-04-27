@@ -2,6 +2,7 @@
   <div class="input-wrapper">
     <input
       :id="id"
+      ref="input"
       class="input form__input"
       :class="[
         isSearch && 'form__input--search',

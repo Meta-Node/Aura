@@ -8,7 +8,7 @@
     </div>
     <div v-else class="container feedback__wrapper">
       <profile-info
-        :img="profile.photo"
+        :img="profileAvatar"
         :name="profile.name"
         :nickname="profile.nickname"
         :rating="profile.rating"
@@ -77,9 +77,10 @@ import AppSpinner from '~/components/AppSpinner.vue'
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import NicknamePopup from '~/components/popup/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
-import transition from '~/mixins/transition'
 import { rateUser } from '~/scripts/api/rate.service'
 import FourUnrated from '~/components/FourUnrated.vue'
+import transition from '~/mixins/transition'
+import avatar from '~/mixins/avatar'
 
 export default {
   components: {
@@ -90,7 +91,7 @@ export default {
 
     FourUnrated,
   },
-  mixins: [transition],
+  mixins: [transition, avatar],
   props: {
     profile: {
       type: Object,
@@ -124,6 +125,12 @@ export default {
       isEnergyWindowVisible: false,
       isAlreadyRated: false,
     }
+  },
+
+  computed: {
+    img() {
+      return this.$route.params.id
+    },
   },
 
   methods: {

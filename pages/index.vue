@@ -30,20 +30,9 @@
 import LandingSphere from '~/components/LandingSphere.vue'
 import LoginForm from '~/components/LoginForm.vue'
 import transition from '~/mixins/transition'
-import { backendApi } from '~/scripts/api/'
 
 export default {
   components: { LoginForm, LandingSphere },
   mixins: [transition],
-  methods: {
-    async onSearch() {
-      const res = await backendApi.get('/v1/connections/search', {
-        fromBrightId: localStorage.getItem('brightId'),
-        seed: 5,
-      })
-
-      console.log(res)
-    },
-  },
 }
 </script>

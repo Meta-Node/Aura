@@ -18,7 +18,7 @@
             :key="user.id"
             :is-brightness="true"
             :brightness="user.rating / 10"
-            :img="user.photo"
+            :img="user.id"
             :name="user.nickname || user.name"
             :url="`/profile/${user.id}`"
           />
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+// Should works with https://www.npmjs.com/package/vue-infinite-scroll
 import UserV1 from '~/components/users/UserV1.vue'
 
 import AppSearch from '~/components/AppSearch.vue'
