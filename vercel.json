@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/brightid/:path*",
-      "destination": "https://recovery.brightid.org:path*"
+      "destination": "https://recovery.brightid.org/:path*"
     },
     {
       "source": "/brightid/:path*/",
-      "destination": "https://recovery.brightid.org:path*/"
+      "destination": "https://recovery.brightid.org/:path*/"
     }
   ]
 }
