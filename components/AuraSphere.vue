@@ -16,11 +16,15 @@ export default {
   },
   computed: {
     diameter() {
-      const STEPS_COUNT = 100
+      if (this.rating === 0) {
+        return 118
+      }
+
+      const STEPS_COUNT = 200
       const MAX_DIAMETER = 192
       const MIN_DIAMETER = 48
 
-      const PERCENT_STEPS = getRange(0, 100, STEPS_COUNT)
+      const PERCENT_STEPS = getRange(-100, 100, STEPS_COUNT)
       const STEPS = getRange(MIN_DIAMETER, MAX_DIAMETER, STEPS_COUNT)
 
       let diameter = 0
