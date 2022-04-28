@@ -76,7 +76,7 @@ export default {
               filter.reverse = !filter.reverse
             }
           }
-          filter.active = filter.isIcon ? true : !filter.active
+          filter.active = true
         } else {
           filter.active = false
         }
@@ -85,14 +85,7 @@ export default {
 
       const queries = this.$route.query
 
-      if (name !== 'All') {
-        this.$router.push({ query: { ...queries, filter: name } })
-      } else {
-        if (queries.filter) {
-          delete queries.filter
-        }
-        this.$router.push({ query: { ...queries } })
-      }
+      this.$router.push({ query: { ...queries, filter: name } })
 
       if (name === 'All') {
         this.getAll()
