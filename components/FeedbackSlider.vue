@@ -2,16 +2,22 @@
   <div class="feedback__quality-slider">
     <h3 class="feedback__quality-title">{{ qualityValue }}</h3>
     <div class="range-slider feedback__quality-slider">
-      <input
-        :id="id"
-        class="feedback__quality-input"
-        :type="type"
-        :min="min"
-        :max="max"
-        :step="step"
-        :value="newValue"
-        @input="onRange"
-      />
+      <label :for="id" class="feedback__quality-label">
+        <span
+          class="feedback__quality-prev-value"
+          :style="{ width: prevPercent + '%' }"
+        ></span>
+        <input
+          :id="id"
+          class="feedback__quality-input"
+          :type="type"
+          :min="min"
+          :max="max"
+          :step="step"
+          :value="newValue"
+          @input="onRange"
+        />
+      </label>
       <p>
         <span id="percents" class="feedback__percents">{{ percents }}</span>
       </p>
@@ -51,6 +57,7 @@ export default {
 
   data() {
     return {
+      prevPercent: 0,
       step: 1,
       percents: 0,
       newValue: 0,
@@ -59,25 +66,49 @@ export default {
     }
   },
 
+  watch: {
+    updatedPercent() {
+      this.updatePrevValue(+this.newValue)
+    },
+  },
+
   mounted() {
-    if (+this.value === 0.5) {
-      this.updateValue(1)
-      return
-    }
-
-    if (+this.value > 0) {
-      this.updateValue(this.value + 1)
-      return
-    }
-
-    if (+this.value === -0.5) {
-      this.updateValue(-1)
-      return
-    }
-    this.updateValue(this.value)
+    this.setupValue()
+    this.updatePrevValue(+this.newValue)
   },
 
   methods: {
+    setupValue() {
+      if (+this.value === 0) {
+        this.updateValue(0)
+        return
+      }
+
+      if (+this.value === 0.5) {
+        this.updateValue(1)
+        return
+      }
+
+      if (+this.value > 0) {
+        this.updateValue(this.value + 1)
+        return
+      }
+
+      if (+this.value === -0.5) {
+        this.updateValue(-1)
+        return
+      }
+      this.updateValue(this.value - 1)
+    },
+    updatePrevValue(value) {
+      const possibleValues = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+
+      possibleValues.forEach((val, idx) => {
+        if (val === value) {
+          this.prevPercent = (idx / 10) * 100
+        }
+      })
+    },
     onRange(e) {
       e.preventDefault()
       this.updateValue(e.target.value)
