@@ -142,7 +142,15 @@ export default {
       }
     },
     async onToggle(data) {
-      await setImportantActivity(data.id, data.value)
+      try {
+        await setImportantActivity(data.id, data.value)
+        this.$store.commit('toast/addToast', {
+          text: 'Successfully updated',
+          color: 'success',
+        })
+      } catch (error) {
+        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+      }
     },
   },
 }

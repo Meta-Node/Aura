@@ -24,6 +24,7 @@
           :time="activity.timestamp"
           :is-important="activity.isimportant"
           :is-personal="true"
+          @toggle="onToggle"
         />
       </ul>
       <!-- <load-more text="Load More..." /> -->

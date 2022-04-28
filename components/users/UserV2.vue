@@ -10,6 +10,7 @@
         loading="lazy"
       />
       <p class="user-v2__tag">{{ name }}</p>
+      <small class="user-v2__rate">({{ rating }})</small>
     </nuxt-link>
     <div class="user-v2__numbers">
       <p class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
@@ -35,6 +36,10 @@ export default {
     name: {
       type: String,
       default: 'Name',
+    },
+    rating: {
+      type: Number,
+      default: 0,
     },
     inbound: {
       type: String,

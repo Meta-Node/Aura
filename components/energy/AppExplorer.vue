@@ -10,12 +10,14 @@
           :items="users"
           @updateItems="onUpdateItems"
         >
+          <small class="app-explorer__table-name">Inbound / Outbound</small>
           <ul class="app-explorer__humans">
             <user-v-2
               v-for="user in visibleItems"
               :key="user.id"
               :img="user.id"
               :name="user.nickname || user.name"
+              :rating="+user.rating"
               :url="`/profile/${user.id}`"
               inbound="0%"
               :outbound="user.transferedEnergy + '%'"
