@@ -92,6 +92,7 @@ export default {
       ],
     }
   },
+
   computed: {
     transferedEnergy() {
       return this.$store.state.energy.transferedEnergy
@@ -100,12 +101,38 @@ export default {
       return this.$store.state.energy.availableEnergy || 0
     },
   },
+
+  watch: {
+    isExplorer() {
+      this.isExplorer
+        ? this.updateRouterQuery('Explorer')
+        : this.updateRouterQuery('Energy')
+    },
+  },
+
+  beforeDestroy() {
+    const queries = this.$route.query
+    if (queries.tab) {
+      delete queries.tab
+    }
+    this.$router.push({ query: { ...queries } })
+  },
   async mounted() {
     try {
       await this.$store.dispatch('energy/getTransferedEnergy')
     } catch (error) {
       this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
       console.log(error)
+    }
+
+    const routeQuery = this.$route.query?.tab
+
+    if (routeQuery === 'Explorer') {
+      this.isExplorer = true
+      return
+    }
+    if (routeQuery === 'Energy') {
+      this.isExplorer = false
     }
   },
   methods: {
@@ -114,6 +141,10 @@ export default {
     },
     onEnergyClick() {
       this.isExplorer = false
+    },
+    updateRouterQuery(tabName) {
+      const queries = this.$route.query
+      this.$router.push({ query: { ...queries, tab: tabName } })
     },
   },
 }

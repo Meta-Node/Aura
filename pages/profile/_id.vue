@@ -130,7 +130,11 @@ export default {
     await this.loadConnectionProfile()
   },
   beforeDestroy() {
-    this.$router.push({ query: null })
+    const queries = this.$route.query
+    if (queries.account) {
+      delete queries.account
+    }
+    this.$router.push({ query: { ...queries } })
   },
 
   methods: {

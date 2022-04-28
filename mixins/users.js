@@ -83,10 +83,15 @@ export default {
         return filter
       })
 
+      const queries = this.$route.query
+
       if (name !== 'All') {
-        this.$router.push({ query: { filter: name } })
+        this.$router.push({ query: { ...queries, filter: name } })
       } else {
-        this.$router.push({ query: null })
+        if (queries.filter) {
+          delete queries.filter
+        }
+        this.$router.push({ query: { ...queries } })
       }
 
       if (name === 'All') {

@@ -155,7 +155,7 @@ export default {
       })
 
       if (rating > 0.5) {
-        this.$router.push('/energy/')
+        this.$router.push('/energy?tab=Energy')
       }
     },
     onShare() {
