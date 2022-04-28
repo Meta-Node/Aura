@@ -8,7 +8,7 @@
         <div class="activity__text">
           <span v-if="fromUser" class="activity__from-user">
             <nuxt-link :to="'/profile/' + fromUser.id">
-              {{ fromUser.name }}
+              {{ fromUser.nickname || fromUser.name }}
             </nuxt-link>
           </span>
           <span class="activity__action">

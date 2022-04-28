@@ -99,10 +99,14 @@ export default {
 
       this.startedActivityData = events
         .map(event => {
+          const toProfile =
+            event.toBrightId === profile.id
+              ? profile
+              : connections.find(con => con.id === event.toBrightId)
           event = {
             ...event,
             fromProfile: connections.find(con => con.id === event.fromBrightId),
-            toProfile: connections.find(con => con.id === event.toBrightId),
+            toProfile,
           }
           return event
         })
