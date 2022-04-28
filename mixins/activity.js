@@ -117,7 +117,7 @@ export default {
     onFiltered(name) {
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
-          filter.active = !filter.active
+          filter.active = true
         } else {
           filter.active = false
         }
