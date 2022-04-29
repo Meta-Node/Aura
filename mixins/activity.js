@@ -77,7 +77,6 @@ export default {
           return event
         })
         .filter(event => event.toProfile)
-        .reverse()
     },
     async getGlobalActivity() {
       await this.$store.dispatch('connections/getConnectionsData')
@@ -112,7 +111,6 @@ export default {
         })
         .filter(event => event.toProfile)
         .filter(event => event.fromProfile)
-        .reverse()
     },
     onFiltered(name) {
       this.filters = this.filters.map(filter => {
