@@ -53,6 +53,9 @@ export default {
       type: Number,
       default: 0,
     },
+    prevValue: {
+      type: Number,
+    },
   },
 
   data() {
@@ -101,6 +104,10 @@ export default {
       this.updateValue(this.value - 1)
     },
     updatePrevValue(value) {
+      if (!this.prevValue) {
+        return
+      }
+
       const possibleValues = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
 
       possibleValues.forEach((val, idx) => {

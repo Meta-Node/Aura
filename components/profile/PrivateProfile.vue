@@ -27,6 +27,7 @@
               :min="-5"
               :max="5"
               :step="1"
+              :prev-value="+profile.previousRating"
               :value="+profile.previousRating || 0"
               @changed="onFeedbackChanged"
             />
