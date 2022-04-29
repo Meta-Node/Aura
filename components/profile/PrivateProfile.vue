@@ -20,45 +20,18 @@
       />
       <div class="feedback__questions">
         <div class="feedback__quality-wrapper">
-          <transition name="fade" mode="out-in">
-            <button
-              v-if="!isFeedbackSliderVisible"
-              class="text-button feedback__question-btn"
-              @click="onFeedbackClick"
-            >
-              Rate {{ profile.name.split(' ')[0] }}?
-            </button>
-            <div v-else class="feedback__transition">
-              <feedback-slider
-                id="quality"
-                type="range"
-                :min="-5"
-                :max="5"
-                :step="1"
-                :value="+profile.previousRating || 0"
-                @changed="onFeedbackChanged"
-              />
-            </div>
-          </transition>
-        </div>
-        <transition name="fade" mode="out-in">
-          <div v-if="isEnergyWindowVisible" class="feedback__energy-wrapper">
-            <!-- <button class="text-button feedback__question-btn">
-              Explore Energy?
-            </button> -->
-            <div class="feedback__energy-slider">
-              <h3 class="feedback__energy-title">Energy Transfer</h3>
-              <energy-slider
-                id="quality"
-                type="range"
-                :min="0"
-                :max="100"
-                :step="25"
-                :value="0"
-              />
-            </div>
+          <div class="feedback__transition">
+            <feedback-slider
+              id="quality"
+              type="range"
+              :min="-5"
+              :max="5"
+              :step="1"
+              :value="+profile.previousRating || 0"
+              @changed="onFeedbackChanged"
+            />
           </div>
-        </transition>
+        </div>
       </div>
       <four-unrated :users="fourUnrated" />
     </div>
@@ -121,8 +94,6 @@ export default {
 
   data() {
     return {
-      isFeedbackSliderVisible: false,
-      isEnergyWindowVisible: false,
       isAlreadyRated: false,
     }
   },
@@ -134,12 +105,6 @@ export default {
   },
 
   methods: {
-    onFeedbackClick() {
-      this.isFeedbackSliderVisible = true
-    },
-    // onEnergyClick() {
-    //   this.isEnergySliderVisible = true
-    // },
     async onFeedbackChanged(rating) {
       this.$store.commit('app/setLoading', true)
       await rateUser({

@@ -155,7 +155,6 @@ export default {
         this.isPrivate = !this.isPublicRouteQuery
 
         if (connectionRes?.previousRating) {
-          this.$refs.private.isFeedbackSliderVisible = true
           this.profile.previousRating = connectionRes.previousRating.rating
         }
       } catch (error) {
