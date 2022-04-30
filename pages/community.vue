@@ -77,5 +77,11 @@ export default {
       ],
     }
   },
+
+  head() {
+    return {
+      title: `Aura | Community`,
+    }
+  },
 }
 </script>

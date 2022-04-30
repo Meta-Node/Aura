@@ -93,6 +93,12 @@ export default {
     }
   },
 
+  head() {
+    return {
+      title: `Aura | Energy`,
+    }
+  },
+
   computed: {
     transferedEnergy() {
       return this.$store.state.energy.transferedEnergy

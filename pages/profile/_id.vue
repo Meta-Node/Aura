@@ -43,6 +43,7 @@ export default {
     PublicProfile,
   },
   mixins: [transition],
+
   data() {
     return {
       isPrivate: true,
@@ -50,6 +51,12 @@ export default {
       profile: {},
       connections: [],
       isLoading: true,
+    }
+  },
+
+  head() {
+    return {
+      title: `Aura | ${this.profile?.name || this.profile?.id || 'Unknown'}`,
     }
   },
 

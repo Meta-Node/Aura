@@ -41,6 +41,12 @@ export default {
       isPersonal: true,
     }
   },
+
+  head() {
+    return {
+      title: `Aura | Activity`,
+    }
+  },
   mounted() {
     if (this.$route.query.tab) {
       this.$route.query.tab === 'Personal'

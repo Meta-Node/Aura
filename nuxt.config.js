@@ -1,3 +1,6 @@
+const title = 'Discover & grow your Aura...'
+const description = 'Your Aura represents power & influence upon the Auracle.'
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -9,11 +12,49 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'aura',
+    title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: description,
+      },
+
+      { name: 'twitter:card', content: 'summary_large_image' },
+      {
+        name: 'twitter:title',
+        content: title,
+      },
+      {
+        name: 'twitter:description',
+        content: description,
+      },
+      {
+        name: 'twitter:image',
+        content: '/icon.png',
+      },
+      {
+        property: 'og:image',
+        content: '/icon.png',
+      },
+      {
+        hid: 'og:site_name',
+        property: 'og:site_name',
+        content: 'Aura',
+      },
+      {
+        hid: 'og:title',
+        name: 'og:title',
+        content: title,
+      },
+      {
+        hid: 'og:description',
+        name: 'og:title',
+        content: description,
+      },
+      { hid: 'theme-color', name: 'theme-color', content: '#333333' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },

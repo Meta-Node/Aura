@@ -34,5 +34,10 @@ import transition from '~/mixins/transition'
 export default {
   components: { LoginForm, LandingSphere },
   mixins: [transition],
+  head() {
+    return {
+      title: 'Aura | Login',
+    }
+  },
 }
 </script>
