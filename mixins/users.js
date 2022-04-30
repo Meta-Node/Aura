@@ -161,9 +161,9 @@ export default {
         ...this.startUsers.filter(su => su.transferedEnergy),
       ].sort((a, b) => +a.transferedEnergy - b.transferedEnergy)
       if (fromLess) {
-        this.users = this.filteredUsers
-      } else {
         this.users = this.filteredUsers.reverse()
+      } else {
+        this.users = this.filteredUsers
       }
     },
     getByName(fromA) {
