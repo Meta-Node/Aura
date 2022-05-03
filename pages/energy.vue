@@ -72,12 +72,6 @@ export default {
 
       filters: [
         {
-          name: 'All',
-          isIcon: false,
-          active: true,
-          reverse: false,
-        },
-        {
           name: 'Name',
           isIcon: true,
           active: false,

@@ -94,6 +94,10 @@ export default {
         this.getUnrated()
       }
 
+      if (name === 'Already Known') {
+        this.getAlreadyKnown()
+      }
+
       if (name === 'Name') {
         const fromA = !this.filters.find(f => f.name === name).reverse
         this.getByName(fromA)
@@ -184,6 +188,13 @@ export default {
       } else {
         this.users = this.filteredUsers.reverse()
       }
+    },
+    getAlreadyKnown() {
+      this.filteredUsers = [...this.startUsers].filter(
+        user => user.level === 'already known'
+      )
+
+      this.users = this.filteredUsers
     },
   },
 }

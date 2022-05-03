@@ -2,6 +2,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 100%;
+  @media (max-width: $br1) {
+    overflow: scroll;
+    justify-content: flex-start;
+    margin-left: -16px;
+    width: calc(100% + 32px);
+    max-width: none;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 .filter-button {
@@ -17,6 +27,7 @@
   margin-right: 10px;
   opacity: 0.5;
   display: flex;
+  white-space: nowrap;
   justify-content: center;
   align-items: center;
 

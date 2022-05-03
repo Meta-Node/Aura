@@ -51,12 +51,6 @@ export default {
     return {
       filters: [
         {
-          name: 'All',
-          isIcon: false,
-          active: true,
-          reverse: false,
-        },
-        {
           name: 'Name',
           isIcon: true,
           active: false,
@@ -70,6 +64,12 @@ export default {
         },
         {
           name: 'Unrated',
+          isIcon: false,
+          active: false,
+          reverse: false,
+        },
+        {
+          name: 'Already Known',
           isIcon: false,
           active: false,
           reverse: false,
