@@ -36,15 +36,6 @@ export default {
       if (this.$route.name === 'index') {
         this.$router.push('/profile/' + brightId)
       }
-      try {
-        if (!this.$route.query?.account !== 'public') {
-          await this.$store.dispatch('connections/getConnectionsData')
-        }
-        await this.$store.dispatch('profile/getProfileData')
-      } catch (error) {
-        console.log(error)
-        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
-      }
     } else {
       this.$store.commit('app/setIsAuth', false)
 
