@@ -19,7 +19,7 @@
               :name="user.nickname || user.name"
               :rating="+user.rating"
               :url="`/profile/${user.id}`"
-              inbound="0%"
+              :inbound="user.inboundEnergy + '%'"
               :outbound="user.transferedEnergy + '%'"
             />
           </ul>

@@ -26,7 +26,22 @@ export const getEnergy = async transfers => {
 
     const res = await backendApi.get('/v1/energy/' + brightId)
     if (!res.data) {
-      throw new Error('data in not defined')
+      throw new Error('Energy data in not defined')
+    }
+    return res.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export const getInboundEnergy = async () => {
+  try {
+    const brightId = localStorage.getItem('brightId')
+
+    const res = await backendApi.get('/v1/energy/inbound/' + brightId)
+    if (!res.data) {
+      throw new Error('Energy data in not defined')
     }
     return res.data
   } catch (error) {

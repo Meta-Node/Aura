@@ -1,8 +1,13 @@
-import { getEnergy, transferEnergy } from '~/scripts/api/energy.service'
+import {
+  getEnergy,
+  getInboundEnergy,
+  transferEnergy,
+} from '~/scripts/api/energy.service'
 import { getRatedUsers } from '~/scripts/api/rate.service'
 
 export const state = () => ({
   transferedEnergy: [],
+  inboundEnergy: [],
   availableEnergy: 100,
 })
 
@@ -23,19 +28,25 @@ export const mutations = {
 
     state.availableEnergy = availableEnergy
   },
+
+  setInboundEnergy(state, value) {
+    state.inboundEnergy = value
+  },
 }
 
 export const actions = {
   async getTransferedEnergy({ commit, state }) {
     try {
-      const { energy } = await getEnergy()
+      const { energy: outboundEnergy } = await getEnergy()
+
       const ratedUsers = await getRatedUsers()
       const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
 
       const allUsers = moreThanZero.map(user => ({
         toBrightId: user.toBrightId,
         amount:
-          energy.find(en => en.toBrightId === user.toBrightId)?.amount || 0,
+          outboundEnergy.find(en => en.toBrightId === user.toBrightId)
+            ?.amount || 0,
       }))
 
       const totalAmount = allUsers.map(user => user.amount)
@@ -50,6 +61,18 @@ export const actions = {
       throw error
     }
   },
+
+  async getInboundEnergy({ commit }) {
+    try {
+      const { energy: inboundEnergy } = await getInboundEnergy()
+
+      commit('setInboundEnergy', inboundEnergy)
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  },
+
   async updateEnergy({ commit, state }) {
     try {
       await transferEnergy(state.transferedEnergy)

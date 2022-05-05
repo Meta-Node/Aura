@@ -15,6 +15,9 @@ export default {
     transferedEnergy() {
       return this.$store.state.energy.transferedEnergy
     },
+    inboundEnergy() {
+      return this.$store.state.energy.inboundEnergy
+    },
     connections() {
       return this.$store.getters['profile/connections']
     },
@@ -38,6 +41,7 @@ export default {
       try {
         const ratedUsers = await getRatedUsers()
         await this.$store.dispatch('energy/getTransferedEnergy')
+        await this.$store.dispatch('energy/getInboundEnergy')
 
         const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
 
@@ -47,6 +51,9 @@ export default {
             transferedEnergy: this.transferedEnergy.find(
               en => en.toBrightId === user.toBrightId
             ).amount,
+            inboundEnergy:
+              this.inboundEnergy.find(en => en.fromBrightId === user.toBrightId)
+                ?.amount || 0,
             ...this.connections.find(conn => conn.id === user.toBrightId),
           }
         })
