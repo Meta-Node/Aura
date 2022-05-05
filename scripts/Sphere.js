@@ -107,10 +107,10 @@ export class Sphere {
   }
 
   destroy() {
-    this.geometry.dispose()
-    this.material.dispose()
-    this.glowMaterial.dispose()
-    this.texture.dispose()
+    this.geometry && this.geometry.dispose()
+    this.material && this.material.dispose()
+    this.glowMaterial && this.glowMaterial.dispose()
+    this.texture && this.texture.dispose()
 
     raf.off(this.animate)
     resize.off(this.resize)
