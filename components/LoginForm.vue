@@ -41,18 +41,17 @@
       <app-button type="submit" class="text-button form__btn">
         <span class="form__btn-text">Sign In</span>
       </app-button>
-      <bright-id-login />
+      <!-- <bright-id-login /> -->
     </div>
   </form>
 </template>
 
 <script>
-import BrightIdLogin from './BrightIdLogin.vue'
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
 
 export default {
-  components: { BrightIdLogin, AppInput, AppButton },
+  components: { AppInput, AppButton },
 
   data() {
     return {
