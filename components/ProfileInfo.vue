@@ -121,6 +121,11 @@ export default {
       return name.replace(' ', '<br />')
     },
     ratingText() {
+      
+      if (this.rating <= 0) {
+        return 'Unrated'
+      }
+
       if (this.rating <= 33) {
         return 'Bronze'
       }
