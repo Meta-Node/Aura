@@ -1,12 +1,21 @@
 <template>
   <section class="feedback">
-    <div v-if="isLoading" style="margin-top: 40px">
+    <div
+      v-if="isLoading"
+      style="margin-top: 40px"
+    >
       <app-spinner :is-visible="true" />
     </div>
-    <div v-else-if="!isLoading && !profile.name" class="container">
+    <div
+      v-else-if="!isLoading && !profile.name"
+      class="container"
+    >
       <p style="margin: 0 auto; text-align: center">User not found</p>
     </div>
-    <div v-else class="container feedback__wrapper">
+    <div
+      v-else
+      class="container feedback__wrapper"
+    >
       <profile-info
         :img="profileAvatar"
         :name="profile.name"
@@ -69,11 +78,11 @@ export default {
   props: {
     profile: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
     connections: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
     isLoading: {
       type: Boolean,

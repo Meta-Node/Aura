@@ -1,6 +1,10 @@
 <template>
   <div class="grid profile-info">
-    <profile-avatar :img="img" alt="Avatar" :brightness="brightness" />
+    <profile-avatar
+      :img="img"
+      alt="Avatar"
+      :brightness="brightness"
+    />
     <div class="profile__user-info">
       <div class="profile__username">
         <div class="profile__block-left">
@@ -9,7 +13,10 @@
             :title="nickname || name"
             v-html="separatedName"
           />
-          <small v-if="nickname" class="profile__name">({{ name }})</small>
+          <small
+            v-if="nickname"
+            class="profile__name"
+          >({{ name }})</small>
         </div>
         <div class="profile__block-right">
           <p
@@ -98,6 +105,10 @@ export default {
       type: Number,
       default: 0,
     },
+    prevRating: {
+      type: Number,
+      default: 0,
+    },
     date: {
       type: String,
       default: '',
@@ -121,6 +132,11 @@ export default {
       return name.replace(' ', '<br />')
     },
     ratingText() {
+
+      if (this.rating === 0) {
+        return 'Unrated'
+      }
+
       if (this.rating <= 33) {
         return 'Bronze'
       }
