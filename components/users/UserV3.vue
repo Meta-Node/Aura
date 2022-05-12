@@ -1,6 +1,9 @@
 <template>
   <li class="user-v3__humans-list">
-    <nuxt-link :to="url" class="user-v3__username">
+    <nuxt-link
+      :to="url"
+      class="user-v3__username"
+    >
       <nuxt-img
         :src="profileAvatar"
         :alt="name"
@@ -10,6 +13,8 @@
         loading="lazy"
       />
       <p class="user-v3__tag">{{ name }}</p>
+      <small class="user-v2__rate">({{ rating }})</small>
+
     </nuxt-link>
     <div class="user-v3__numbers">
       <user-slider
