@@ -55,3 +55,16 @@ export const getAlreadyKnown = users => {
 export const trim = str => {
   return str.trim().toLowerCase()
 }
+
+export const onSearch = (value, users) => {
+  const foundUsers = users.filter(el => {
+    if (el.nickname && trim(el.nickname).includes(value)) {
+      return true
+    }
+    if (trim(el.name).includes(value)) {
+      return true
+    }
+    return false
+  })
+  return foundUsers
+}

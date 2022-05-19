@@ -4,6 +4,7 @@ import {
   getByName,
   getByRating,
   getUnrated,
+  onSearch,
   trim,
 } from '~/scripts/utils/filters'
 
@@ -51,19 +52,52 @@ export default {
 
       this.filteredUsers = this.users
     },
+    // onFiltered(name) {
+    //   this.$refs.search.resetSearch()
+    //   this.users = this.startUsers
+
+    //   const currentFilter = this.filters.find(f => f.name === name)
+    //   if (!currentFilter) {
+    //     this.getAll()
+    //     return
+    //   }
+
+    //   const unicAppliedFilters = this.appliedFilters.filter(
+    //     f => f.name !== name
+    //   )
+
+    //   this.appliedFilters = [...unicAppliedFilters, currentFilter]
+
+    //   const queries = this.$route.query
+    //   const filtersQuery = this.appliedFilters.map(f => f.name).join(',')
+
+    //   this.$router.push({ query: { ...queries, filter: filtersQuery } })
+
+    //   this.appliedFilters.forEach(f => {
+    //     this.filters = this.filters.map(filter => {
+    //       if (filter.name === f.name) {
+    //         if (filter.isIcon) {
+    //           if (!filter.active) {
+    //             filter.reverse = false
+    //           } else {
+    //             filter.reverse = !filter.reverse
+    //           }
+    //         }
+    //         filter.active = !filter.active
+    //       }
+    //       return filter
+    //     })
+
+    //     const fromLess = !this.filters.find(fil => fil.name === f.name)?.reverse
+    //     this[`get${f.name.replace(' ', '')}`](fromLess)
+    //   })
+
+    //   this.filteredUsers = this.users
+    // },
     onSearchValue(value) {
       const trimmedValue = trim(value)
-      const users = this.filteredUsers
+      const foundUsers = onSearch(trimmedValue, this.filteredUsers)
 
-      const foundUsers = users.filter(el => {
-        if (el.nickname && trim(el.nickname).includes(trimmedValue)) {
-          return true
-        }
-        if (trim(el.name).includes(trimmedValue)) {
-          return true
-        }
-        return false
-      })
       if (trimmedValue.length) {
         this.users = foundUsers
       } else {
