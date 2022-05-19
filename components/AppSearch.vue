@@ -1,6 +1,7 @@
 <template>
   <app-input
     id="search"
+    ref="input"
     class="community__input-wrapper"
     type="text"
     placeholder="Search..."
@@ -23,6 +24,9 @@ export default {
       this.value = data.value.trim()
       this.$emit('searchValue', this.value)
     },
+    resetSearch() {
+      this.$refs.input.resetSearch()
+    }
   },
 }
 </script>

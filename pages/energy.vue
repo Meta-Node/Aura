@@ -2,9 +2,15 @@
   <section class="energy">
     <div class="container energy__wrapper">
       <div class="explorer__input-wrapper">
-        <app-search @searchValue="onSearchValue" />
+        <app-search
+          ref="search"
+          @searchValue="onSearchValue"
+        />
       </div>
-      <div v-if="isLoading" style="margin-top: 40px">
+      <div
+        v-if="isLoading"
+        style="margin-top: 40px"
+      >
         <app-spinner :is-visible="true" />
       </div>
       <div v-else>
@@ -27,7 +33,10 @@
             </button>
           </div>
           <div class="enegry__screens">
-            <transition name="fade" mode="out-in">
+            <transition
+              name="fade"
+              mode="out-in"
+            >
               <app-explorer
                 v-if="isExplorer"
                 :users="users"

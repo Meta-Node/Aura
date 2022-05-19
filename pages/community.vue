@@ -3,15 +3,27 @@
     <div class="container community__wrapper">
       <div class="community__search">
         <h3 class="community__search-title">Find A Connection</h3>
-        <app-search @searchValue="onSearchValue" />
+        <app-search
+          ref="search"
+          @searchValue="onSearchValue"
+        />
       </div>
-      <div v-if="isLoading" style="margin-top: 40px">
+      <div
+        v-if="isLoading"
+        style="margin-top: 40px"
+      >
         <app-spinner :is-visible="true" />
       </div>
-      <div v-else class="community__users">
+      <div
+        v-else
+        class="community__users"
+      >
         <h3 class="community__humans-title">Your Connections</h3>
 
-        <app-filter :filters="filters" @filtered="onFiltered" />
+        <app-filter
+          :filters="filters"
+          @filtered="onFiltered"
+        />
         <lazy-loading-items
           v-if="users.length"
           :items="users"
@@ -29,7 +41,10 @@
             />
           </ul>
         </lazy-loading-items>
-        <span v-else class="users-not-found">Users not found</span>
+        <span
+          v-else
+          class="users-not-found"
+        >Users not found</span>
       </div>
     </div>
   </section>

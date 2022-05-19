@@ -1,9 +1,15 @@
 import { getRatedUsers } from '~/scripts/api/rate.service'
+import {
+  getAlreadyKnown,
+  getByAmount,
+  getByName,
+  getByRating,
+  getUnrated,
+} from '~/scripts/utils/filters'
 
 export default {
   data() {
     return {
-      foundUsers: [],
       startUsers: [],
       filteredUsers: [],
       users: [],
@@ -32,9 +38,8 @@ export default {
       if (this.$route.name === 'community') {
         this.startUsers = this.connections
         this.users = this.startUsers
-        if (this.$route.query.filter) {
-          this.onFiltered(this.$route.query.filter)
-        }
+        this.onFiltered(this.$route.query?.filter || 'All')
+
         return
       }
 
@@ -63,9 +68,8 @@ export default {
         console.log(error)
       }
       this.users = this.startUsers
-      if (this.$route.query.filter) {
-        this.onFiltered(this.$route.query.filter)
-      }
+
+      this.onFiltered(this.$route.query?.filter || 'All')
     } catch (error) {
       console.log(error)
     } finally {
@@ -74,6 +78,7 @@ export default {
   },
   methods: {
     onFiltered(name) {
+      this.users = this.startUsers
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
           if (filter.isIcon) {
@@ -94,39 +99,17 @@ export default {
 
       this.$router.push({ query: { ...queries, filter: name } })
 
-      if (name === 'All') {
-        this.getAll()
-      }
-      if (name === 'Unrated') {
-        this.getUnrated()
-      }
+      const fromLess = !this.filters.find(f => f.name === name)?.reverse
+      this[`get${name.replace(' ', '')}`](fromLess)
 
-      if (name === 'Already Known') {
-        this.getAlreadyKnown()
-      }
-
-      if (name === 'Name') {
-        const fromA = !this.filters.find(f => f.name === name).reverse
-        this.getByName(fromA)
-      }
-
-      if (name === 'Rating') {
-        const fromLess = !this.filters.find(f => f.name === name).reverse
-        this.getByRating(fromLess)
-      }
-
-      if (name === 'Amount') {
-        const fromLess = !this.filters.find(f => f.name === name).reverse
-        this.getByAmount(fromLess)
-      }
+      this.filteredUsers = this.users
+      this.$refs.search.resetSearch()
     },
     onSearchValue(value) {
       const trimmedValue = this.trim(value)
-      const users = this.filteredUsers.length
-        ? this.filteredUsers
-        : this.startUsers
+      const users = this.filteredUsers
 
-      this.foundUsers = users.filter(el => {
+      const foundUsers = users.filter(el => {
         if (el.nickname && this.trim(el.nickname).includes(trimmedValue)) {
           return true
         }
@@ -136,72 +119,36 @@ export default {
         return false
       })
       if (trimmedValue.length) {
-        this.users = this.foundUsers
+        this.users = foundUsers
       } else {
-        this.users = users
+        this.users = this.startUsers
       }
     },
     trim(str) {
       return str.trim().toLowerCase()
     },
-    getUnrated() {
-      const unratedUsers = this.startUsers.filter(user => !user.rating)
-
-      this.filteredUsers = unratedUsers
-      this.users = this.filteredUsers
-    },
-
     getAll() {
       this.filteredUsers = this.startUsers
 
       this.users = this.filteredUsers
     },
+    getUnrated() {
+      const unratedUsers = getUnrated(this.startUsers)
 
-    getByRating(fromLess) {
-      this.filteredUsers = [...this.startUsers.filter(su => su.rating)].sort(
-        (a, b) => +a.rating - b.rating
-      )
-      if (fromLess) {
-        this.users = this.filteredUsers
-      } else {
-        this.users = this.filteredUsers.reverse()
-      }
+      this.filteredUsers = unratedUsers
+      this.users = this.filteredUsers
     },
-    getByAmount(fromLess) {
-      this.filteredUsers = [
-        ...this.startUsers.filter(su => su.transferedEnergy),
-      ].sort((a, b) => +a.transferedEnergy - b.transferedEnergy)
-      if (fromLess) {
-        this.users = this.filteredUsers.reverse()
-      } else {
-        this.users = this.filteredUsers
-      }
+    getName(fromLess) {
+      this.users = getByName(this.startUsers, fromLess)
     },
-    getByName(fromA) {
-      this.filteredUsers = [...this.startUsers].sort(function (a, b) {
-        const aName = a.nickname || a.name
-        const bName = b.nickname || b.name
-        if (aName > bName) {
-          return 1
-        }
-        if (bName > aName) {
-          return -1
-        }
-        return 0
-      })
-
-      if (fromA) {
-        this.users = this.filteredUsers
-      } else {
-        this.users = this.filteredUsers.reverse()
-      }
+    getRating(fromLess) {
+      this.users = getByRating(this.startUsers, fromLess)
+    },
+    getAmount(fromLess) {
+      this.users = getByAmount(this.startUsers, fromLess)
     },
     getAlreadyKnown() {
-      this.filteredUsers = [...this.startUsers].filter(
-        user => user.level === 'already known'
-      )
-
-      this.users = this.filteredUsers
+      this.users = getAlreadyKnown(this.startUsers)
     },
   },
 }
