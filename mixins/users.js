@@ -39,7 +39,6 @@ export default {
         this.startUsers = this.connections
         this.users = this.startUsers
         this.onFiltered(this.$route.query?.filter || 'All')
-
         return
       }
 
@@ -78,6 +77,8 @@ export default {
   },
   methods: {
     onFiltered(name) {
+      this.$refs.search.resetSearch()
+
       this.users = this.startUsers
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
@@ -103,7 +104,6 @@ export default {
       this[`get${name.replace(' ', '')}`](fromLess)
 
       this.filteredUsers = this.users
-      this.$refs.search.resetSearch()
     },
     onSearchValue(value) {
       const trimmedValue = this.trim(value)
