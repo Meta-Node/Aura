@@ -51,3 +51,7 @@ export const getAlreadyKnown = users => {
 
   return newUsers
 }
+
+export const trim = str => {
+  return str.trim().toLowerCase()
+}

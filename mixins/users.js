@@ -5,6 +5,7 @@ import {
   getByName,
   getByRating,
   getUnrated,
+  trim,
 } from '~/scripts/utils/filters'
 
 export default {
@@ -106,14 +107,14 @@ export default {
       this.filteredUsers = this.users
     },
     onSearchValue(value) {
-      const trimmedValue = this.trim(value)
+      const trimmedValue = trim(value)
       const users = this.filteredUsers
 
       const foundUsers = users.filter(el => {
-        if (el.nickname && this.trim(el.nickname).includes(trimmedValue)) {
+        if (el.nickname && trim(el.nickname).includes(trimmedValue)) {
           return true
         }
-        if (this.trim(el.name).includes(trimmedValue)) {
+        if (trim(el.name).includes(trimmedValue)) {
           return true
         }
         return false
@@ -124,19 +125,14 @@ export default {
         this.users = this.startUsers
       }
     },
-    trim(str) {
-      return str.trim().toLowerCase()
-    },
+
     getAll() {
       this.filteredUsers = this.startUsers
 
       this.users = this.filteredUsers
     },
     getUnrated() {
-      const unratedUsers = getUnrated(this.startUsers)
-
-      this.filteredUsers = unratedUsers
-      this.users = this.filteredUsers
+      this.users = getUnrated(this.startUsers)
     },
     getName(fromLess) {
       this.users = getByName(this.startUsers, fromLess)
