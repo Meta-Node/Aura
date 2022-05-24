@@ -82,13 +82,13 @@ export default {
       filters: [
         {
           name: 'Name',
-          isIcon: true,
+          type: 'reversable',
           active: false,
           reverse: false,
         },
         {
           name: 'Amount',
-          isIcon: true,
+          type: 'reversable',
           active: false,
           reverse: false,
         },

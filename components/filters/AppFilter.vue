@@ -4,7 +4,7 @@
       v-for="filter in filters"
       :key="filter.name"
       :name="filter.name"
-      :is-icon="filter.isIcon"
+      :is-icon="filter.type === 'reversable'"
       :active="filter.active"
       :reverse="filter.reverse"
       @clicked="onChange"

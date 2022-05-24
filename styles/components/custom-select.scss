@@ -1,0 +1,76 @@
+.custom-select {
+  position: relative;
+  text-align: left;
+  outline: none;
+  height: 24px;
+  line-height: 24px;
+  @include bold;
+  font-size: 12px;
+}
+
+.custom-select__selected {
+  background-color: var(--grey);
+  border-radius: 70px;
+  opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: var(--s-grey);
+  padding-left: 16px;
+  padding-right: 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-select__selected.open {
+  // border-radius: 70px 70px 0px 0px;
+  opacity: 1;
+}
+
+.custom-select__selected:after {
+  display: block;
+  content: '+';
+  width: 8px;
+  height: 4px;
+  position: relative;
+  top: -6px;
+  font-size: 16px;
+  line-height: 1em;
+}
+
+.custom-select__items {
+  color: var(--s-grey);
+  overflow: hidden;
+  position: absolute;
+  background-color: var(--grey);
+  left: 0;
+  top: 28px;
+  right: 0;
+  border-radius: 18px;
+  z-index: 1;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.custom-select__item {
+  color: var(--s-grey);
+
+  padding-left: 1em;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+
+  &--selected {
+    color: var(--white);
+  }
+}
+
+.custom-select__items div:hover {
+  color: var(--white);
+}
+
+.selectHide {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+}

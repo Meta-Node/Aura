@@ -29,7 +29,7 @@ export default {
       this.users = this.startUsers
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
-          if (filter.isIcon) {
+          if (filter.type === 'reversable') {
             if (!filter.active) {
               filter.reverse = false
             } else {
@@ -48,7 +48,10 @@ export default {
       this.$router.push({ query: { ...queries, filter: name } })
 
       const fromLess = !this.filters.find(f => f.name === name)?.reverse
-      this[`get${name.replace(' ', '')}`](fromLess)
+      this.users = this[`get${name.replace(' ', '')}`](
+        this.startUsers,
+        fromLess
+      )
 
       this.filteredUsers = this.users
     },
@@ -76,7 +79,7 @@ export default {
     //   this.appliedFilters.forEach(f => {
     //     this.filters = this.filters.map(filter => {
     //       if (filter.name === f.name) {
-    //         if (filter.isIcon) {
+    //         if (filter.type === 'reverable') {
     //           if (!filter.active) {
     //             filter.reverse = false
     //           } else {
@@ -108,22 +111,22 @@ export default {
     getAll() {
       this.filteredUsers = this.startUsers
 
-      this.users = this.filteredUsers
+      return this.filteredUsers
     },
-    getUnrated() {
-      this.users = getUnrated(this.startUsers)
+    getUnrated(users) {
+      return getUnrated(users)
     },
-    getName(fromLess) {
-      this.users = getByName(this.startUsers, fromLess)
+    getName(users, fromLess) {
+      return getByName(users, fromLess)
     },
-    getRating(fromLess) {
-      this.users = getByRating(this.startUsers, fromLess)
+    getRating(users, fromLess) {
+      return getByRating(users, fromLess)
     },
-    getAmount(fromLess) {
-      this.users = getByAmount(this.startUsers, fromLess)
+    getAmount(users, fromLess) {
+      return getByAmount(users, fromLess)
     },
-    getAlreadyKnown() {
-      this.users = getAlreadyKnown(this.startUsers)
+    getAlreadyKnown(users, value) {
+      return getAlreadyKnown(users, value)
     },
   },
 }

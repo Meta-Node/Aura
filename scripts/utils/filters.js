@@ -46,8 +46,12 @@ export const getByName = (users, fromA) => {
   }
 }
 
-export const getAlreadyKnown = users => {
-  const newUsers = [...users].filter(user => user.level === 'already known')
+export const getAlreadyKnown = (users, value) => {
+  if (value === 'All' || !value) {
+    return users
+  }
+
+  const newUsers = [...users].filter(user => user.level === value.toLowerCase())
 
   return newUsers
 }
