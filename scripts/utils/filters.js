@@ -51,6 +51,12 @@ export const getAlreadyKnown = (users, value) => {
     return users
   }
 
+  if (value === 'Aready known+') {
+    return [...users].filter(
+      user => user.level === 'already known' || user.level === 'recovery'
+    )
+  }
+
   const newUsers = [...users].filter(user => user.level === value.toLowerCase())
 
   return newUsers

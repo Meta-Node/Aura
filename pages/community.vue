@@ -41,10 +41,10 @@
             @clicked="onFiltered('Unrated')"
           />
           <custom-select
-            v-model="recoveryLevelFilter"
+            v-model="connectionTypeFilter"
             default="All"
-            name="Recovery level"
-            :options="['All', 'Just met', 'Already known']"
+            name="Connection Type"
+            :options="['All', 'Just met', 'Already known', 'Aready known+']"
           ></custom-select>
 
         </div>
@@ -89,7 +89,7 @@ export default {
   mixins: [transition, users, loadItems],
   data() {
     return {
-      recoveryLevelFilter: 'All',
+      connectionTypeFilter: 'All',
       nameFilter: {
         active: false,
         isReversed: false
@@ -116,8 +116,8 @@ export default {
   },
 
   watch: {
-    recoveryLevelFilter(value) {
-      this.onFiltered('Recovery', value)
+    connectionTypeFilter(value) {
+      this.onFiltered('ConnectionType', value)
     }
   },
 
@@ -141,8 +141,8 @@ export default {
         this.onUnratedClick()
 
       }
-      if (name === 'Recovery') {
-        this.onRecoveryLevelChange(value)
+      if (name === 'ConnectionType') {
+        this.onConnectionTypeChange(value)
       }
 
       const queries = this.$route.query
@@ -163,9 +163,9 @@ export default {
       }
 
       if (this.unratedFilter.active) {
-        this.users = this.getAlreadyKnown(this.getUnrated(this.getName(this.startUsers, !this.nameFilter.isReversed)), this.recoveryLevelFilter)
+        this.users = this.getAlreadyKnown(this.getUnrated(this.getName(this.startUsers, !this.nameFilter.isReversed)), this.connectionTypeFilter)
       } else {
-        this.users = this.getAlreadyKnown(this.getName(this.startUsers, !this.nameFilter.isReversed), this.recoveryLevelFilter)
+        this.users = this.getAlreadyKnown(this.getName(this.startUsers, !this.nameFilter.isReversed), this.connectionTypeFilter)
       }
     },
     onRatingClick() {
@@ -178,7 +178,7 @@ export default {
         this.ratingFilter.active = true
         this.ratingFilter.isReversed = false
       }
-      this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), this.recoveryLevelFilter)
+      this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), this.connectionTypeFilter)
 
     },
     onUnratedClick() {
@@ -189,18 +189,18 @@ export default {
       if (this.unratedFilter.active) {
 
         if (this.nameFilter.active) {
-          this.users = this.getAlreadyKnown(this.getUnrated(this.getName(this.startUsers, !this.nameFilter.isReversed)), this.recoveryLevelFilter)
+          this.users = this.getAlreadyKnown(this.getUnrated(this.getName(this.startUsers, !this.nameFilter.isReversed)), this.connectionTypeFilter)
           return
         }
 
-        this.users = this.getAlreadyKnown(this.getUnrated(this.startUsers), this.recoveryLevelFilter)
+        this.users = this.getAlreadyKnown(this.getUnrated(this.startUsers), this.connectionTypeFilter)
       } else {
-        this.users = this.getAlreadyKnown(this.startUsers, this.recoveryLevelFilter)
+        this.users = this.getAlreadyKnown(this.startUsers, this.connectionTypeFilter)
         this.ratingFilter = { active: false, isReversed: false }
         this.nameFilter = { active: false, isReversed: false }
       }
     },
-    onRecoveryLevelChange(value) {
+    onConnectionTypeChange(value) {
 
       if (this.unratedFilter.active) {
         if (this.nameFilter.active) {
