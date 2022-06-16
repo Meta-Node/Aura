@@ -44,7 +44,7 @@
             v-model="connectionTypeFilter"
             default="All"
             name="Connection Type"
-            :options="['All', 'Just met', 'Already known', 'Aready known+']"
+            :options="['All', 'Just met', 'Aready known+']"
           ></custom-select>
 
         </div>
