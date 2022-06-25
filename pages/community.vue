@@ -85,33 +85,49 @@ import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
 import UserV1 from '~/components/users/UserV1.vue'
 import FilterButton from '~/components/filters/FilterButton.vue'
 export default {
+  computed: {
+    finalUsers() {
+      return this.getUnrated(this.users)
+    },
+    connectionTypeFilter: {
+      get(){
+        return this.$store.state.community.connectionTypeFilter
+      },
+      set(value) {
+        this.$store.commit('community/setConnectionTypeFilter', value)
+      }
+    },
+    nameFilter: {
+      get(){
+        return this.$store.state.community.nameFilter
+      },
+      set(value) {
+        this.$store.commit('community/setNameFilter', value)
+      }
+    },
+    ratingFilter: {
+      get(){
+        return this.$store.state.community.ratingFilter
+      },
+      set(value) {
+        this.$store.commit('community/setRatingFilter', value)
+      }
+    },
+    unratedFilter: {
+      get(){
+        return this.$store.state.community.unratedFilter
+      },
+      set(value) {
+        this.$store.commit('community/setUnratedFilter', value)
+      }
+    },
+  },
   components: { AppSearch, LazyLoadingItems, UserV1, CustomSelect, FilterButton },
   mixins: [transition, users, loadItems],
-  data() {
-    return {
-      connectionTypeFilter: 'All',
-      nameFilter: {
-        active: false,
-        isReversed: false
-      },
-      ratingFilter: {
-        active: false,
-        isReversed: false
-      },
-      unratedFilter: {
-        active: false
-      }
-    }
-  },
 
   head() {
     return {
       title: `Aura | Community`,
-    }
-  },
-  computed: {
-    finalUsers() {
-      return this.getUnrated(this.users)
     }
   },
 
@@ -156,10 +172,15 @@ export default {
       this.ratingFilter = { active: false, isReversed: false }
 
       if (this.nameFilter.active) {
-        this.nameFilter.isReversed = !this.nameFilter.isReversed
+        this.nameFilter = {
+          ...this.nameFilter,
+          isReversed: !this.nameFilter.isReversed,
+        }
       } else {
-        this.nameFilter.active = true
-        this.nameFilter.isReversed = false
+        this.nameFilter = {
+          active: true,
+          isReversed: false
+        }
       }
 
       if (this.unratedFilter.active) {
@@ -170,19 +191,30 @@ export default {
     },
     onRatingClick() {
       this.nameFilter = { active: false, isReversed: false }
-      this.unratedFilter.active = false
+      this.unratedFilter = {
+        ...this.unratedFilter,
+        active: false
+      }
 
       if (this.ratingFilter.active) {
-        this.ratingFilter.isReversed = !this.ratingFilter.isReversed
+        this.ratingFilter = {
+          ...this.ratingFilter,
+          isReversed: !this.ratingFilter.isReversed
+        }
       } else {
-        this.ratingFilter.active = true
-        this.ratingFilter.isReversed = false
+        this.ratingFilter = {
+          active: true,
+          isReversed: false
+        }
       }
       this.users = this.getAlreadyKnown(this.getRating(this.startUsers, this.ratingFilter.isReversed), this.connectionTypeFilter)
 
     },
     onUnratedClick() {
-      this.unratedFilter.active = !this.unratedFilter.active
+      this.unratedFilter = {
+        ...this.unratedFilter,
+        active: !this.unratedFilter.active
+      }
       this.ratingFilter = { active: false, isReversed: false }
 
 
