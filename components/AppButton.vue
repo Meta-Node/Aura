@@ -1,9 +1,15 @@
 <template>
-  <button class="btn">
-    <slot />
+  <button :data-testid="dataTestid" class="btn">
+    <slot/>
   </button>
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    dataTestid: {
+      type: String,
+    }
+  }
+}
 </script>

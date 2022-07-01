@@ -1,3 +1,5 @@
+import { FAKE_USER_EXPLORER_CODE, FAKE_USER_PASSWORD } from '../utils/data'
+
 describe('Login', () => {
   beforeEach(() => {
     cy.on('window:before:load', win => {
@@ -21,5 +23,8 @@ describe('Login', () => {
 
   it('renders login', () => {
     cy.visit('/')
+    cy.get('[data-testid=login-explorer-code]').type(FAKE_USER_EXPLORER_CODE)
+    cy.get('[data-testid=login-password]').type(FAKE_USER_PASSWORD)
+    cy.get('[data-testid=login-submit]').click()
   })
 })

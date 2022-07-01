@@ -15,6 +15,8 @@ Cypress.on('window:before:load', win => {
     }
   }
 
+  // eslint-disable-next-line no-proto
   win.navigator.clipboard.__proto__.writeText = text => (copyText = text)
+  // eslint-disable-next-line no-proto
   win.navigator.clipboard.__proto__.readText = () => copyText
 })
