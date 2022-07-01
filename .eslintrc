@@ -10,12 +10,19 @@
   "extends": [
     "@nuxtjs",
     "plugin:prettier/recommended",
-    "plugin:nuxt/recommended"
+    "plugin:nuxt/recommended",
+    "plugin:cypress/recommended"
   ],
   "plugins": [],
   // add your custom rules here
   "rules": {
-    "arrow-parens": [1, "as-needed", { "requireForBlockBody": false }],
+    "arrow-parens": [
+      1,
+      "as-needed",
+      {
+        "requireForBlockBody": false
+      }
+    ],
     "comma-dangle": "off",
     "no-useless-catch": "off",
     "no-console": "off",
