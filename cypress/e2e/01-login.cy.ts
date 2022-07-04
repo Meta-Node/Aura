@@ -1,4 +1,10 @@
-import { FAKE_USER_EXPLORER_CODE, FAKE_USER_PASSWORD } from '../utils/data'
+import {
+  BRIGHT_ID_BACKUP,
+  FAKE_AUTH_KEY,
+  FAKE_BRIGHT_ID,
+  FAKE_USER_EXPLORER_CODE,
+  FAKE_USER_PASSWORD,
+} from '../utils/data'
 
 describe('Login', () => {
   beforeEach(() => {
@@ -21,10 +27,29 @@ describe('Login', () => {
     cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
-  it('renders login', () => {
+  it('login', () => {
     cy.visit('/')
     cy.get('[data-testid=login-explorer-code]').type(FAKE_USER_EXPLORER_CODE)
     cy.get('[data-testid=login-password]').type(FAKE_USER_PASSWORD)
+    cy.intercept(
+      {
+        url: `/v1/connect/explorer-code`,
+        method: 'POST',
+      },
+      {
+        body: 'OK',
+      }
+    )
+    cy.intercept(
+      {
+        url: `/brightid/backups/${FAKE_AUTH_KEY}/data`,
+        method: 'GET',
+      },
+      {
+        body: BRIGHT_ID_BACKUP,
+      }
+    )
     cy.get('[data-testid=login-submit]').click()
+    cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
   })
 })
