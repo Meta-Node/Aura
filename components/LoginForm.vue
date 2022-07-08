@@ -3,32 +3,34 @@
     <app-input
       id="explorer"
       ref="explorer"
+      :required="true"
       class="form__input-wrapper"
-      type="text"
+      data-testid="login-explorer-code"
       placeholder="Explorer Code"
+      type="text"
       validation="minLength(88)"
       validation-text="Value length must be equal 88"
-      :required="true"
       @inputValue="onInputValue"
     />
     <app-input
       id="password"
       ref="password"
+      :required="true"
       class="form__input-wrapper"
+      data-testid="login-password"
+      placeholder="Password"
       type="password"
       validation="required"
       validation-text="Password is required"
-      placeholder="Password"
-      :required="true"
       @inputValue="onInputValue"
     />
     <div class="checkbox-wrapper">
       <input
         id="input-checkbox"
-        class="input-checkbox"
-        type="checkbox"
-        style="display: none"
         checked="checked"
+        class="input-checkbox"
+        style="display: none"
+        type="checkbox"
       />
       <!-- <label class="checkbox" for="input-checkbox"
         ><span>
@@ -38,7 +40,7 @@
       > -->
     </div>
     <div class="form__btn-wrapper">
-      <app-button type="submit" class="text-button form__btn">
+      <app-button class="text-button form__btn" data-testid="login-submit" type="submit">
         <span class="form__btn-text">Sign In</span>
       </app-button>
       <!-- <bright-id-login /> -->
@@ -51,7 +53,7 @@ import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
 
 export default {
-  components: { AppInput, AppButton },
+  components: {AppInput, AppButton},
 
   data() {
     return {
@@ -69,7 +71,7 @@ export default {
 
   methods: {
     onInputValue(val) {
-      this[val.id] = { ...this[val.id], ...val }
+      this[val.id] = {...this[val.id], ...val}
 
       this.hasErrors = this.explorer.error || this.password.error
     },

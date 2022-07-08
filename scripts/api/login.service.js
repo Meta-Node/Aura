@@ -4,6 +4,11 @@ import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 
 import { backendApi, brightIdBaseURL, encryptData } from '.'
+import {
+  b64ToUrlSafeB64,
+  decryptUserData,
+  hash,
+} from '~/scripts/utils/encryption'
 
 let qrString
 let intervalID
@@ -13,21 +18,6 @@ const decryptData = (data, aesKey) => {
     CryptoJS.enc.Utf8
   )
   return JSON.parse(decrypted)
-}
-
-const b64ToUrlSafeB64 = s => {
-  const alts = {
-    '/': '_',
-    '+': '-',
-    '=': '',
-  }
-  return s.replace(/[/+=]/g, c => alts[c])
-}
-
-const hash = data => {
-  const h = CryptoJS.SHA256(data)
-  const b = h.toString(CryptoJS.enc.Base64)
-  return b64ToUrlSafeB64(b)
 }
 
 const createImportQR = async () => {
@@ -195,25 +185,22 @@ export const commitToBackend = async () => {
 }
 
 export async function pullDecryptedUserData(key, password, ctx) {
-  return decryptUserData(await pullEncryptedUserData(key, ctx), password)
+  return decryptUserData((await pullEncryptedUserData(key, ctx)).data, password)
 }
 
 async function pullEncryptedUserData(key, ctx) {
   return await ctx.$axios.get(`/brightid/backups/${key}/data`)
 }
 
-function decryptUserData(encryptedUserData, password) {
-  return JSON.parse(
-    CryptoJS.AES.decrypt(encryptedUserData.data, password).toString(
-      CryptoJS.enc.Utf8
-    )
-  )
-}
-
 export async function pullProfilePhoto(key, brightId, password, ctx) {
   try {
     const encryptedUserPicture = await ctx.$axios.get(
       `/brightid/backups/${key}/${brightId}`
+    )
+    console.log(
+      CryptoJS.AES.decrypt(encryptedUserPicture.data, password).toString(
+        CryptoJS.enc.Utf8
+      )
     )
     return CryptoJS.AES.decrypt(encryptedUserPicture.data, password).toString(
       CryptoJS.enc.Utf8
