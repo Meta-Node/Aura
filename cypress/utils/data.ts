@@ -1,8 +1,4 @@
-import {
-  encryptData,
-  encryptUserData,
-  hash,
-} from '../../scripts/utils/encryption'
+import { encryptData, encryptUserData, hash } from '../../scripts/utils/crypto'
 
 export const FAKE_USER_PASSWORD = 'SamplePassword'
 export const FAKE_BRIGHT_ID = 'iisPpbwQwXC5yLuNsi_7eXRLVEnFwGAHhS1Cc6KfxGD'

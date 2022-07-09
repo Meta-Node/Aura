@@ -1,28 +1,23 @@
 import assert from 'assert'
-import CryptoJS from 'crypto-js'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 
 import { backendApi, brightIdBaseURL, encryptData } from '.'
 import {
   b64ToUrlSafeB64,
+  decryptData,
   decryptUserData,
   hash,
-} from '~/scripts/utils/encryption'
+  randomWordArray,
+  wordArrayToB64,
+} from '~/scripts/utils/crypto'
 
 let qrString
 let intervalID
 
-const decryptData = (data, aesKey) => {
-  const decrypted = CryptoJS.AES.decrypt(data, aesKey).toString(
-    CryptoJS.enc.Utf8
-  )
-  return JSON.parse(decrypted)
-}
-
 const createImportQR = async () => {
-  const array = CryptoJS.lib.WordArray.random(16)
-  const aesKey = b64ToUrlSafeB64(CryptoJS.enc.Base64.stringify(array))
+  const array = randomWordArray(16)
+  const aesKey = b64ToUrlSafeB64(wordArrayToB64(array))
 
   const channelId = hash(aesKey)
 
@@ -62,8 +57,8 @@ const createImportQR = async () => {
 }
 
 const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
-  const array = CryptoJS.lib.WordArray.random(16)
-  const aesKey = b64ToUrlSafeB64(CryptoJS.enc.Base64.stringify(array))
+  const array = randomWordArray(16)
+  const aesKey = b64ToUrlSafeB64(wordArrayToB64(array))
 
   const channelId = hash(aesKey)
 
@@ -110,7 +105,7 @@ export const readChannel = async (data, nuxtCtx, resolve) => {
     if (dataId.startsWith('sig_userinfo_')) {
       res = await backendApi.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
-      const data = decryptData(encrypted, aesKey)
+      const data = decryptUserData(encrypted, aesKey)
       if (data.password) {
         delete data.password
       }
@@ -120,7 +115,7 @@ export const readChannel = async (data, nuxtCtx, resolve) => {
     if (dataId.startsWith('connection_')) {
       res = await backendApi.get(`profile/download/${channelId}/${dataId}`)
       const encrypted = res.data.data
-      const data = decryptData(encrypted, aesKey)
+      const data = decryptUserData(encrypted, aesKey)
       console.log(data, 'connection')
       connections.push(data)
     }
@@ -197,14 +192,7 @@ export async function pullProfilePhoto(key, brightId, password, ctx) {
     const encryptedUserPicture = await ctx.$axios.get(
       `/brightid/backups/${key}/${brightId}`
     )
-    console.log(
-      CryptoJS.AES.decrypt(encryptedUserPicture.data, password).toString(
-        CryptoJS.enc.Utf8
-      )
-    )
-    return CryptoJS.AES.decrypt(encryptedUserPicture.data, password).toString(
-      CryptoJS.enc.Utf8
-    )
+    return decryptData(encryptedUserPicture.data, password)
   } catch (error) {
     console.log(error)
   }
@@ -212,9 +200,7 @@ export async function pullProfilePhoto(key, brightId, password, ctx) {
 
 export const loginByExplorerCode = async (explorerCode, password) => {
   try {
-    const brightId = CryptoJS.AES.decrypt(explorerCode, password).toString(
-      CryptoJS.enc.Utf8
-    )
+    const brightId = decryptData(explorerCode, password)
 
     if (!brightId) {
       throw new Error('incorrect explorerCode or password')

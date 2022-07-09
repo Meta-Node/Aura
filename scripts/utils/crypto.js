@@ -30,3 +30,8 @@ export const hash = data => {
   const b = h.toString(CryptoJS.enc.Base64)
   return b64ToUrlSafeB64(b)
 }
+
+export const randomWordArray = size => CryptoJS.lib.WordArray.random(size)
+
+export const wordArrayToB64 = WordArray =>
+  CryptoJS.enc.Base64.stringify(WordArray)
