@@ -5,8 +5,8 @@
     <ul v-if="users && users.length" class="user-v1-ul">
       <user-v-1
         v-for="user in users"
+        :id="user.id"
         :key="user.id"
-        :img="user.id"
         :name="user.nickname || user.name"
         :url="`/profile/${user.id}`"
       />
@@ -19,8 +19,9 @@
 
 <script>
 import UserV1 from '~/components/users/UserV1.vue'
+
 export default {
-  components: { UserV1 },
+  components: {UserV1},
   props: {
     users: {
       type: Array,

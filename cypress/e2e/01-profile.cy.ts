@@ -1,6 +1,7 @@
 import {
   AURA_PROFILE,
   AURA_RATINGS,
+  BRIGHT_ID_BACKUP,
   BRIGHT_ID_BACKUP_ENCRYPTED,
   FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
@@ -105,7 +106,7 @@ describe('Login', () => {
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
   })
 
-  it('profile', () => {
+  it.only('profile', () => {
     cy.on('window:before:load', win => {
       window.localStorage.setItem('authKey', FAKE_AUTH_KEY)
       window.localStorage.setItem('brightId', FAKE_BRIGHT_ID)
@@ -115,5 +116,14 @@ describe('Login', () => {
     })
     cy.visit('/')
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
+    BRIGHT_ID_BACKUP.userData.name.split(' ').forEach(s => {
+      cy.get(`[data-testid=profile-user-name]`).contains(s)
+    })
+    cy.get(`[data-testid=profile-user-info]`).contains(
+      `${AURA_PROFILE.numOfConnections} Connections`
+    )
+    cy.get(
+      `[data-testid=user-v1-${BRIGHT_ID_BACKUP.connections[0].id}-name]`
+    ).contains(BRIGHT_ID_BACKUP.connections[0].name)
   })
 })

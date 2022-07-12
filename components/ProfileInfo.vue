@@ -1,16 +1,17 @@
 <template>
   <div class="grid profile-info">
     <profile-avatar
+      :brightness="brightness"
       :img="img"
       alt="Avatar"
-      :brightness="brightness"
     />
     <div class="profile__user-info">
       <div class="profile__username">
         <div class="profile__block-left">
           <h3
-            class="profile__nickname"
             :title="nickname || name"
+            class="profile__nickname"
+            data-testid="profile-user-name"
             v-html="separatedName"
           />
           <small
@@ -20,23 +21,23 @@
         </div>
         <div class="profile__block-right">
           <p
-            class="profile__rating"
             :class="`profile__rating--${ratingText.toLowerCase()}`"
+            class="profile__rating"
           >
             {{ ratingText }}
           </p>
           <div class="profile__functions">
             <button
               v-if="!isOwnProfile"
-              class="profile__edit"
               aria-label="Edit Profile"
+              class="profile__edit"
               @click="onEditClick"
             >
               <svg
-                width="17"
+                fill="none"
                 height="17"
                 viewBox="0 0 17 17"
-                fill="none"
+                width="17"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -46,15 +47,15 @@
               </svg>
             </button>
             <button
-              class="profile__share"
               aria-label="Share Profile"
+              class="profile__share"
               @click="onShareClick"
             >
               <svg
-                width="16"
+                fill="none"
                 height="20"
                 viewBox="0 0 16 20"
-                fill="none"
+                width="16"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -75,8 +76,8 @@
         </div>
       </div>
       <div class="profile__about">
-        <p class="profile__info">
-          {{ date }}<br />
+        <p class="profile__info" data-testid="profile-user-info">
+          {{ date }}<br/>
           {{ connections }} Connections
         </p>
       </div>
@@ -86,8 +87,9 @@
 
 <script>
 import ProfileAvatar from './ProfileAvatar.vue'
+
 export default {
-  components: { ProfileAvatar },
+  components: {ProfileAvatar},
   props: {
     img: {
       type: String,

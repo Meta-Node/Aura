@@ -2,22 +2,23 @@
   <li class="user-v1__item">
     <nuxt-link :to="url">
       <nuxt-img
-        width="74"
-        height="74"
-        :src="profileAvatar"
         :alt="name"
-        class="user-v1__image"
         :class="[brightness && 'user-v1__image--brightness']"
+        :src="profileAvatar"
         :style="`--brightness: ${brightness}px`"
+        class="user-v1__image"
+        height="74"
         loading="lazy"
+        width="74"
       />
-      <p class="user-v1__tag">{{ name }}</p>
+      <p :data-testid="`user-v1-${id}-name`" class="user-v1__tag">{{ name }}</p>
     </nuxt-link>
   </li>
 </template>
 
 <script>
 import avatar from '~/mixins/avatar'
+
 export default {
   mixins: [avatar],
   props: {
@@ -25,7 +26,7 @@ export default {
       type: String,
       default: '/',
     },
-    img: {
+    id: {
       type: String,
       default: '/',
     },
