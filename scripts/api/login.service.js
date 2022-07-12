@@ -7,6 +7,7 @@ import {
   b64ToUrlSafeB64,
   decryptData,
   decryptUserData,
+  generateB64Keypair,
   hash,
   randomWordArray,
   wordArrayToB64,
@@ -208,13 +209,10 @@ export const loginByExplorerCode = async (explorerCode, password) => {
 
     const authKey = hash(brightId + password)
 
-    const { publicKey, secretKey } = await nacl.sign.keyPair()
-    const b64PublicKey = B64.fromByteArray(publicKey)
-
-    const b64SecretKey = B64.fromByteArray(secretKey)
+    const { publicKey, privateKey } = generateB64Keypair()
 
     const body = {
-      publicKey: b64PublicKey,
+      publicKey,
       brightId,
       key: authKey,
       password,
@@ -223,10 +221,10 @@ export const loginByExplorerCode = async (explorerCode, password) => {
     await backendApi.post('/v1/connect/explorer-code', body)
 
     return {
-      publicKey: b64PublicKey,
+      publicKey,
       brightId,
       authKey,
-      privateKey: b64SecretKey,
+      privateKey,
       password,
     }
   } catch (error) {

@@ -4,12 +4,13 @@
 
 <script>
 import transition from '~/mixins/transition'
+
 export default {
   mixins: [transition],
 
   async mounted() {
     try {
-      const { Sphere } = await import('~/scripts/Sphere')
+      const {Sphere} = await import('~/scripts/Sphere')
 
       this.scene = new Sphere(this.$refs.sphere)
     } catch (error) {

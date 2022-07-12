@@ -1,4 +1,6 @@
 import CryptoJS from 'crypto-js'
+import nacl from 'tweetnacl'
+import B64 from 'base64-js'
 
 export function encryptData(data, password) {
   return CryptoJS.AES.encrypt(data, password).toString()
@@ -35,3 +37,15 @@ export const randomWordArray = size => CryptoJS.lib.WordArray.random(size)
 
 export const wordArrayToB64 = WordArray =>
   CryptoJS.enc.Base64.stringify(WordArray)
+
+export const generateB64Keypair = () => {
+  const { publicKey, secretKey } = nacl.sign.keyPair()
+  const b64PublicKey = B64.fromByteArray(publicKey)
+
+  const b64SecretKey = B64.fromByteArray(secretKey)
+
+  return {
+    privateKey: b64SecretKey,
+    publicKey: b64PublicKey,
+  }
+}

@@ -36,6 +36,7 @@ export class Sphere {
     resize.on(this.resize)
 
     this.renderer.setSize(this.width, this.height)
+    if (!this.$wrapper) return
     this.$wrapper.appendChild(this.renderer.domElement)
 
     this.createMesh()
@@ -90,6 +91,7 @@ export class Sphere {
   }
 
   resize() {
+    if (!this.$wrapper) return
     const { width, height } = window.getComputedStyle(this.$wrapper)
     this.width = parseInt(width) * 1.61
     this.height = parseInt(height) * 1.61
