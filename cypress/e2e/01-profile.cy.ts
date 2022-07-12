@@ -106,7 +106,7 @@ describe('Login', () => {
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
   })
 
-  it.only('profile', () => {
+  it('profile', () => {
     cy.on('window:before:load', win => {
       window.localStorage.setItem('authKey', FAKE_AUTH_KEY)
       window.localStorage.setItem('brightId', FAKE_BRIGHT_ID)

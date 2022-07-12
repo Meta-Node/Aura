@@ -7,11 +7,10 @@
     />
     <div class="profile__user-info">
       <div class="profile__username">
-        <div class="profile__block-left">
+        <div class="profile__block-left" data-testid="profile-user-name">
           <h3
             :title="nickname || name"
             class="profile__nickname"
-            data-testid="profile-user-name"
             v-html="separatedName"
           />
           <small
