@@ -1,19 +1,14 @@
 <template>
   <div class="user">
     <div class="user__slider">
-      <label :for="id" class="user__input-label" :style="`--quota: ${quota}%`">
-        <input
-          :id="id"
-          v-model="percents"
-          class="user__input-slider"
-          :type="type"
-          :min="min"
-          :max="max"
-          :step="step"
-        />
-      </label>
+      <div v-for="val in values" :key="val"
+           :class="{user__slider__values__active: percents === val}"
+           class="user__slider__values"
+           @click="percents = val"
+      >{{ val }}
+      </div>
     </div>
-    <small id="percents" class="user__percents">{{ percents }}%</small>
+    <small id="percents" class="user__percents">{{ percents }}</small>
   </div>
 </template>
 
@@ -49,12 +44,13 @@ export default {
       default: 100,
     },
   },
-
   data() {
     return {
       percents: 0,
+      values: [0, 1, 2, 5, 25, 100]
     }
   },
+
   computed: {
     availableEnergy() {
       return this.$store.state.energy.availableEnergy
@@ -62,20 +58,20 @@ export default {
   },
 
   watch: {
-    percents(current, prev) {
-      if (current > this.quota) {
-        this.percents = this.quota
-      }
-
-      this.$nextTick(() => {
-        if (this.availableEnergy < 0) {
-          if (current > prev) {
-            this.percents = +prev
-            this.$emit('changeEnergy', +this.percents)
-            this.$forceUpdate()
-          }
-        }
-      })
+    percents(_current, _prev) {
+      // if (current > this.quota) {
+      //   this.percents = this.quota
+      // }
+      //
+      // this.$nextTick(() => {
+      //   if (this.availableEnergy < 0) {
+      //     if (current > prev) {
+      //       this.percents = +prev
+      //       this.$emit('changeEnergy', +this.percents)
+      //       this.$forceUpdate()
+      //     }
+      //   }
+      // })
       this.$emit('changeEnergy', +this.percents)
     },
   },
@@ -85,7 +81,8 @@ export default {
   },
 
   methods: {
-    onAfterChange() {},
+    onAfterChange() {
+    },
   },
 }
 </script>

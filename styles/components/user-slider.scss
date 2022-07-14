@@ -1,11 +1,29 @@
 .user__slider {
   display: flex;
   align-items: center;
-  width: 118px;
-  height: 22px;
   border-radius: 80px;
   background: var(--grey);
   position: relative;
+
+  &__values {
+    padding: 5px 7px;
+    cursor: pointer;
+
+    &__active {
+      background-color: gray;
+    }
+  }
+
+  &__values:first-child {
+    border-radius: 80px 0px 0px 80px;
+    padding-left: 10px;
+  }
+
+  &__values:last-child {
+    border-radius: 0px 80px 80px 0px;
+    padding-right: 10px;
+  }
+
 }
 
 .user__input-label {
@@ -15,6 +33,7 @@
   height: 100%;
 
   overflow: hidden;
+
   ::before {
     content: '';
     z-index: 0;

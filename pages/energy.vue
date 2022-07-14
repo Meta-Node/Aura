@@ -11,22 +11,22 @@
         v-if="isLoading"
         style="margin-top: 40px"
       >
-        <app-spinner :is-visible="true" />
+        <app-spinner :is-visible="true"/>
       </div>
       <div v-else>
-        <energy-indicator :percent="availableEnergy" />
+        <!--        <energy-indicator :percent="availableEnergy" />-->
         <div class="switch">
           <div class="switch__wrapper">
             <button
-              class="switch__filter-button"
               :class="[isExplorer && 'switch__filter-button--active']"
+              class="switch__filter-button"
               @click="onExplorerClick"
             >
               Explorer
             </button>
             <button
-              class="switch__filter-button"
               :class="[!isExplorer && 'switch__filter-button--active']"
+              class="switch__filter-button"
               @click="onEnergyClick"
             >
               Energy
@@ -34,19 +34,19 @@
           </div>
           <div class="enegry__screens">
             <transition
-              name="fade"
               mode="out-in"
+              name="fade"
             >
               <app-explorer
                 v-if="isExplorer"
-                :users="users"
                 :filters="filters"
+                :users="users"
                 @filtered="onFiltered"
               />
               <app-energy
                 v-else
-                :users="users"
                 :filters="filters"
+                :users="users"
                 @filtered="onFiltered"
               />
             </transition>
@@ -62,14 +62,14 @@ import AppSearch from '~/components/AppSearch.vue'
 import AppSpinner from '~/components/AppSpinner.vue'
 import AppEnergy from '~/components/energy/AppEnergy'
 import AppExplorer from '~/components/energy/AppExplorer'
-import EnergyIndicator from '~/components/EnergyIndicator.vue'
+// import EnergyIndicator from '~/components/EnergyIndicator.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 
 export default {
   components: {
     AppSearch,
-    EnergyIndicator,
+    // EnergyIndicator,
     AppEnergy,
     AppExplorer,
     AppSpinner,
@@ -124,13 +124,13 @@ export default {
     if (queries.tab) {
       delete queries.tab
     }
-    this.$router.push({ query: { ...queries } })
+    this.$router.push({query: {...queries}})
   },
   async mounted() {
     try {
       await this.$store.dispatch('energy/getTransferedEnergy')
     } catch (error) {
-      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+      this.$store.commit('toast/addToast', {text: 'Error', color: 'danger'})
       console.log(error)
     }
 
@@ -153,7 +153,7 @@ export default {
     },
     updateRouterQuery(tabName) {
       const queries = this.$route.query
-      this.$router.push({ query: { ...queries, tab: tabName } })
+      this.$router.push({query: {...queries, tab: tabName}})
     },
   },
 }
