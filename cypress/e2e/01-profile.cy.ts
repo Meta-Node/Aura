@@ -1,15 +1,12 @@
 import {
   AURA_PROFILE,
-  AURA_RATINGS,
   BRIGHT_ID_BACKUP,
-  BRIGHT_ID_BACKUP_ENCRYPTED,
   FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
   FAKE_PRIVATE_KEY,
   FAKE_PUBLIC_KEY,
   FAKE_USER_EXPLORER_CODE,
   FAKE_USER_PASSWORD,
-  PROFILE_PICTURE,
 } from '../utils/data'
 
 describe('Login', () => {
@@ -18,67 +15,10 @@ describe('Login', () => {
       cy.spy(win.console, 'error').as('spyWinConsoleError')
       cy.spy(win.console, 'warn').as('spyWinConsoleWarn')
     })
-    cy.intercept(
-      {
-        url: `**/v1/**`,
-      },
-      {
-        statusCode: 404,
-      }
-    )
-    cy.intercept(
-      {
-        url: `**/brightid/**`,
-      },
-      {
-        statusCode: 404,
-      }
-    )
-    cy.intercept(
-      {
-        url: `/v1/connect/explorer-code`,
-        method: 'POST',
-      },
-      {
-        body: 'OK',
-      }
-    ).as('explorerCode')
-    cy.intercept(
-      {
-        url: `/brightid/backups/*/*`,
-        method: 'GET',
-      },
-      {
-        body: PROFILE_PICTURE,
-      }
-    )
-    cy.intercept(
-      {
-        url: `/brightid/backups/${FAKE_AUTH_KEY}/data`,
-        method: 'GET',
-      },
-      {
-        body: BRIGHT_ID_BACKUP_ENCRYPTED,
-      }
-    )
-    cy.intercept(
-      {
-        url: `/v1/profile/${FAKE_BRIGHT_ID}`,
-        method: 'GET',
-      },
-      {
-        body: AURA_PROFILE,
-      }
-    )
-    cy.intercept(
-      {
-        url: `/v1/ratings/${FAKE_BRIGHT_ID}`,
-        method: 'GET',
-      },
-      {
-        body: AURA_RATINGS,
-      }
-    )
+    // @ts-ignore
+    cy.blockApiRequests()
+    // @ts-ignore
+    cy.profileIntercepts()
   })
 
   afterEach(() => {

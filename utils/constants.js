@@ -1,0 +1,1 @@
+export const CONNECTION_SEARCH_SEED = 5

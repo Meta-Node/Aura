@@ -78,10 +78,8 @@ export const BRIGHT_ID_BACKUP_ENCRYPTED = encryptUserData(
   FAKE_USER_PASSWORD
 )
 
-export const AURA_PROFILE = {
-  numOfConnections: BRIGHT_ID_BACKUP.connections.length,
-  brightIdDate: RANDOM_TIMESTAMP,
-  fourUnrated: [
+export const AURA_CONNECTIONS = {
+  connections: [
     {
       _id: `users/${BRIGHT_ID_BACKUP.connections[0].id}`,
       _key: BRIGHT_ID_BACKUP.connections[0].id,
@@ -104,7 +102,35 @@ export const AURA_PROFILE = {
         timestamp: RANDOM_TIMESTAMP,
       },
     },
+    {
+      _id: `users/${BRIGHT_ID_BACKUP.connections[1].id}`,
+      _key: BRIGHT_ID_BACKUP.connections[1].id,
+      _rev: '_QaEK360-na',
+      createdAt: RANDOM_TIMESTAMP,
+      eligible_groups: [],
+      eligible_timestamp: RANDOM_TIMESTAMP + 1000000000,
+      parent: RANDOM_HASH,
+      signingKeys: [toSigningKey(BRIGHT_ID_BACKUP.connections[1].id)],
+      conn: {
+        _key: '97656970088',
+        _id: 'connections/97656970088',
+        _from: `users/${FAKE_BRIGHT_ID}`,
+        _to: `users/${BRIGHT_ID_BACKUP.connections[1].id}`,
+        _rev: '_QaEK360yn-',
+        initTimestamp: RANDOM_TIMESTAMP,
+        level: 'already known',
+        replacedWith: null,
+        reportReason: null,
+        timestamp: RANDOM_TIMESTAMP,
+      },
+    },
   ],
+}
+
+export const AURA_PROFILE = {
+  numOfConnections: BRIGHT_ID_BACKUP.connections.length,
+  brightIdDate: RANDOM_TIMESTAMP,
+  fourUnrated: [AURA_CONNECTIONS.connections[0]],
   rating: 0,
   nicknames: [],
 }
@@ -125,3 +151,34 @@ export const PROFILE_PICTURE = encryptData(
   'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAC0ALQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwb/xAAcEAEBAQACAwEAAAAAAAAAAAAAEQEhQTFRYZH/xAAZAQEBAQEBAQAAAAAAAAAAAAAAAQIDBgf/xAAWEQEBAQAAAAAAAAAAAAAAAAAAEQH/2gAMAwEAAhEDEQA/APTqDyr6YAIAsASKKCCiAAIAQAWCUTFBAAABQSCiJXMWDo0AqIigCKABgqUQi4FABAASgKCIoBQihRBRKMAOigEAIolCAIABRekwiggsBEVRN0RQQABAFQTBQSueYKOlbAEoAQA8qBQFRKkFCoAIALClRQQTFAQqLBKE+CgRz0FdG0FVEqCgUAQEUEAxcSlSKFBAVERRRUhFBABAACsCjdaABAgqUSCwEBFASLDMQSKsIAAiioCUFIlKi4EEAAYMUbaqKAFAKiKKioRQAVEqACFBSFRFAABNAUKIKFGExTG2gUECCoqQKCBoqUqKQEAANASgoACkSlIAIuCAMYBjbQUAoKJUIAAAgChQhBUEigUoAIAIAoVQBBzWEHQAAD8FiUQiwCgogGAIAAAqCKCUwAADFxKILwCVzFHStEBUEUCpQBABQQXMCqAIACICgUBUqIoAYGArEAddUAZQAXVX2AgAAZyAgTkwERVgGoigiiAopnQAQBB//9k=',
   FAKE_USER_PASSWORD
 )
+
+export const AURA_ENERGIES = {
+  energy: [
+    {
+      toBrightId: BRIGHT_ID_BACKUP.connections[1].id,
+      amount: 25,
+    },
+  ],
+}
+
+export const AURA_INBOUND_ENERGIES = {
+  energy: [
+    {
+      fromBrightId: BRIGHT_ID_BACKUP.connections[1].id,
+      amount: 2,
+    },
+  ],
+}
+
+export function getRating(brightId: string) {
+  return AURA_RATINGS.ratings.find(r => r.toBrightId === brightId)?.rating
+}
+
+export function getOutboundEnergy(brightId: string) {
+  return AURA_ENERGIES.energy.find(e => e.toBrightId === brightId)?.amount
+}
+
+export function getInboundEnergy(brightId: string) {
+  return AURA_INBOUND_ENERGIES.energy.find(e => e.fromBrightId === brightId)
+    ?.amount
+}

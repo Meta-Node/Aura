@@ -1,9 +1,10 @@
 import { backendApi, encryptData } from '.'
+import { CONNECTION_SEARCH_SEED } from '~/utils/constants'
 
 export const getConnections = async fromBrightId => {
   const res = await backendApi.get('/v1/connections/search', {
     fromBrightId,
-    seed: 5,
+    seed: CONNECTION_SEARCH_SEED,
   })
 
   return res
