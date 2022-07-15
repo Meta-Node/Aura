@@ -1,9 +1,13 @@
+import localforage from 'localforage'
 import {
   AURA_PROFILE,
   AURA_RATINGS,
   BRIGHT_ID_BACKUP_ENCRYPTED,
   FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
+  FAKE_PRIVATE_KEY,
+  FAKE_PUBLIC_KEY,
+  LOCAL_FORAGE_DATA,
   PROFILE_PICTURE,
 } from '../utils/data'
 
@@ -93,4 +97,29 @@ Cypress.Commands.add('profileIntercepts', () => {
       body: AURA_RATINGS,
     }
   )
+})
+
+Cypress.Commands.add('setupProfile', () => {
+  cy.profileIntercepts()
+  cy.on('window:before:load', async win => {
+    localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+    await localforage.setItem('profileData', LOCAL_FORAGE_DATA)
+    window.localStorage.setItem('authKey', FAKE_AUTH_KEY)
+    window.localStorage.setItem('brightId', FAKE_BRIGHT_ID)
+    window.localStorage.setItem('publicKey', FAKE_PUBLIC_KEY)
+    window.localStorage.setItem('privateKey', FAKE_PRIVATE_KEY)
+    window.localStorage.setItem('isAuth', '{"value":true}')
+  })
+})
+
+Cypress.Commands.add('clearProfile', () => {
+  cy.on('window:before:load', async win => {
+    localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+    await localforage.removeItem('profileData')
+    window.localStorage.removeItem('authKey')
+    window.localStorage.removeItem('brightId')
+    window.localStorage.removeItem('publicKey')
+    window.localStorage.removeItem('privateKey')
+    window.localStorage.removeItem('isAuth')
+  })
 })

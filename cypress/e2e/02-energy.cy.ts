@@ -3,10 +3,7 @@ import {
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
   BRIGHT_ID_BACKUP,
-  FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
-  FAKE_PRIVATE_KEY,
-  FAKE_PUBLIC_KEY,
   getInboundEnergy,
   getOutboundEnergy,
   getRating,
@@ -22,7 +19,7 @@ describe('Energy', () => {
     // @ts-ignore
     cy.blockApiRequests()
     // @ts-ignore
-    cy.profileIntercepts()
+    cy.setupProfile()
     cy.intercept(
       {
         url: `/v1/energy/${FAKE_BRIGHT_ID}`,
@@ -61,13 +58,6 @@ describe('Energy', () => {
   const ratedConnection = BRIGHT_ID_BACKUP.connections[1]
 
   it('shows energies', () => {
-    cy.on('window:before:load', win => {
-      window.localStorage.setItem('authKey', FAKE_AUTH_KEY)
-      window.localStorage.setItem('brightId', FAKE_BRIGHT_ID)
-      window.localStorage.setItem('publicKey', FAKE_PUBLIC_KEY)
-      window.localStorage.setItem('privateKey', FAKE_PRIVATE_KEY)
-      window.localStorage.setItem('isAuth', '{"value":true}')
-    })
     cy.visit('/energy/?tab=Explorer&filter=All')
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'

@@ -1,12 +1,12 @@
+import * as localforage from 'localforage'
 import {
   AURA_PROFILE,
   BRIGHT_ID_BACKUP,
   FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
-  FAKE_PRIVATE_KEY,
-  FAKE_PUBLIC_KEY,
+  FAKE_BRIGHT_ID_PASSWORD,
   FAKE_USER_EXPLORER_CODE,
-  FAKE_USER_PASSWORD,
+  LOCAL_FORAGE_DATA,
 } from '../utils/data'
 
 describe('Login', () => {
@@ -17,8 +17,6 @@ describe('Login', () => {
     })
     // @ts-ignore
     cy.blockApiRequests()
-    // @ts-ignore
-    cy.profileIntercepts()
   })
 
   afterEach(() => {
@@ -27,33 +25,35 @@ describe('Login', () => {
   })
 
   it('login', () => {
+    // @ts-ignore
+    cy.clearProfile()
+    // @ts-ignore
+    cy.profileIntercepts()
     cy.visit('/')
     cy.get('[data-testid=login-explorer-code]').type(FAKE_USER_EXPLORER_CODE)
-    cy.get('[data-testid=login-password]').type(FAKE_USER_PASSWORD)
+    cy.get('[data-testid=login-password]').type(FAKE_BRIGHT_ID_PASSWORD)
     cy.get('[data-testid=login-submit]').click()
     cy.wait('@explorerCode')
       .its('request.body')
       .should(body => {
         expect(body.brightId).to.eq(FAKE_BRIGHT_ID)
-        expect(body.password).to.eq(FAKE_USER_PASSWORD)
+        expect(body.password).to.eq(FAKE_BRIGHT_ID_PASSWORD)
         expect(body.key).to.eq(FAKE_AUTH_KEY)
         // eslint-disable-next-line no-unused-expressions
         expect(body.publicKey).to.be.not.null
       })
-      .then(() => {
+      .then(async () => {
         expect(localStorage.getItem('brightId')).to.eq(FAKE_BRIGHT_ID)
+        localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+        const data = await localforage.getItem('profileData')
+        expect(data).to.deep.eq(LOCAL_FORAGE_DATA)
       })
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
   })
 
   it('profile', () => {
-    cy.on('window:before:load', win => {
-      window.localStorage.setItem('authKey', FAKE_AUTH_KEY)
-      window.localStorage.setItem('brightId', FAKE_BRIGHT_ID)
-      window.localStorage.setItem('publicKey', FAKE_PUBLIC_KEY)
-      window.localStorage.setItem('privateKey', FAKE_PRIVATE_KEY)
-      window.localStorage.setItem('isAuth', '{"value":true}')
-    })
+    // @ts-ignore
+    cy.setupProfile()
     cy.visit('/')
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
     BRIGHT_ID_BACKUP.userData.name.split(' ').forEach(s => {
