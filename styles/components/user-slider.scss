@@ -1,29 +1,28 @@
 .user__slider {
   display: flex;
   align-items: center;
-  border-radius: 80px;
-  background: var(--grey);
   position: relative;
 
-  &__values {
-    padding: 5px 7px;
+  &__action {
+    background: var(--grey);
+    padding: 5px 10px;
+    margin: 0px 5px;
     cursor: pointer;
+  }
 
-    &__active {
-      background-color: gray;
+  &__input {
+    background: #dddddd;
+    padding: 7px;
+    text-align: center;
+    width: 40px;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
-
-  &__values:first-child {
-    border-radius: 80px 0px 0px 80px;
-    padding-left: 10px;
-  }
-
-  &__values:last-child {
-    border-radius: 0px 80px 80px 0px;
-    padding-right: 10px;
-  }
-
 }
 
 .user__input-label {

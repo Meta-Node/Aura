@@ -5,26 +5,25 @@
       class="user-v3__username"
     >
       <nuxt-img
-        :src="profileAvatar"
         :alt="name"
+        :src="profileAvatar"
         class="user-v3__image"
-        width="48"
         height="48"
         loading="lazy"
+        width="48"
       />
       <p class="user-v3__tag">{{ name }}</p>
       <small class="user-v2__rate">({{ rating }})</small>
-
     </nuxt-link>
     <div class="user-v3__numbers">
       <user-slider
         id="quality"
-        type="range"
-        :min="0"
         :max="100"
+        :min="0"
+        :quota="getQuota"
         :step="1"
         :value="energy"
-        :quota="getQuota"
+        type="range"
         @changeEnergy="changeEnergy"
       />
     </div>
@@ -69,7 +68,7 @@ export default {
   },
   methods: {
     changeEnergy(value) {
-      this.$emit('changeEnergy', { amount: value, toBrightId: this.id })
+      this.$emit('changeEnergy', {amount: value, toBrightId: this.id})
     },
   },
 }

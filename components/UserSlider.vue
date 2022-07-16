@@ -1,14 +1,20 @@
 <template>
   <div class="user">
     <div class="user__slider">
-      <div v-for="val in values" :key="val"
-           :class="{user__slider__values__active: percents === val}"
-           class="user__slider__values"
-           @click="percents = val"
-      >{{ val }}
+      <div
+        class="user__slider__action"
+        @click="decrease">-
+      </div>
+      <input
+        v-model="percents"
+        :max="values[values.length - 1]"
+        :min="values[0]"
+        class="user__slider__input" type="number"/>
+      <div
+        class="user__slider__action"
+        @click="increase">+
       </div>
     </div>
-    <small id="percents" class="user__percents">{{ percents }}</small>
   </div>
 </template>
 
@@ -81,7 +87,21 @@ export default {
   },
 
   methods: {
-    onAfterChange() {
+    increase() {
+      for (let i = 0; i < this.values.length; i++) {
+        if (this.values[i] > this.percents) {
+          this.percents = this.values[i]
+          return
+        }
+      }
+    },
+    decrease() {
+      for (let i = this.values.length - 1; i >= 0; i--) {
+        if (this.values[i] < this.percents) {
+          this.percents = this.values[i]
+          return
+        }
+      }
     },
   },
 }
