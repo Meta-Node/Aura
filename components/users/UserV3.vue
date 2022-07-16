@@ -12,8 +12,8 @@
         loading="lazy"
         width="48"
       />
-      <p class="user-v3__tag">{{ name }}</p>
-      <small class="user-v2__rate">({{ rating }})</small>
+      <p :data-testid="`user-v3-${id}-name`" class="user-v3__tag">{{ name }}</p>
+      <small :data-testid="`user-v3-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
     </nuxt-link>
     <div class="user-v3__numbers">
       <user-slider
@@ -22,6 +22,7 @@
         :min="0"
         :quota="getQuota"
         :step="1"
+        :user-id="id"
         :value="energy"
         type="range"
         @changeEnergy="changeEnergy"

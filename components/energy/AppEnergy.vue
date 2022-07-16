@@ -2,7 +2,7 @@
   <div class="app-energy">
     <div class="app-energy__statistic">
       <div class="app-energy__switch-wrapper">
-        <app-filter :filters="filters" @filtered="onFiltered" />
+        <app-filter :filters="filters" @filtered="onFiltered"/>
       </div>
       <div class="app-energy__humans-stat">
         <lazy-loading-items
@@ -15,10 +15,10 @@
               v-for="user in visibleItems"
               :id="user.id"
               :key="user.id"
+              :energy="user.transferedEnergy"
               :img="user.id"
               :name="user.nickname || user.name"
               :rating="+user.rating"
-              :energy="user.transferedEnergy"
               :url="`/profile/${user.id}`"
               @changeEnergy="onChangeEnergy"
             />
@@ -28,21 +28,21 @@
       </div>
       <!-- <load-more text="Load More..." /> -->
       <div class="app-energy__circle-wrapper">
-        <button class="app-energy__circle-button" @click="updateEnergy">
+        <button class="app-energy__circle-button" data-testid="update-energy" @click="updateEnergy">
           <span class="app-energy__check-mark"
-            ><svg
-              width="14"
-              height="10"
-              viewBox="0 0 14 10"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+          ><svg
+            fill="none"
+            height="10"
+            viewBox="0 0 14 10"
+            width="14"
+            xmlns="http://www.w3.org/2000/svg"
+          >
               <path
                 d="M1.66699 5L5.66699 9L12.3337 1"
                 stroke="#EEEEEE"
-                stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                stroke-width="2"
               /></svg
           ></span>
         </button>
@@ -57,7 +57,7 @@ import UserV3 from '~/components/users/UserV3.vue'
 import loadItems from '~/mixins/loadItems'
 
 export default {
-  components: { UserV3, AppFilter },
+  components: {UserV3, AppFilter},
   mixins: [loadItems],
   props: {
     users: {
@@ -87,7 +87,7 @@ export default {
         })
         this.$router.push('/community?filter=Unrated')
       } catch (error) {
-        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+        this.$store.commit('toast/addToast', {text: 'Error', color: 'danger'})
       }
     },
     onChangeEnergy(data) {

@@ -7,6 +7,7 @@
       </div>
       <input
         v-model="percents"
+        :data-testid="`user-slider-${userId}-input`"
         :max="values[values.length - 1]"
         :min="values[0]"
         class="user__slider__input" type="number"/>
@@ -21,6 +22,9 @@
 <script>
 export default {
   props: {
+    userId: {
+      type: String,
+    },
     id: {
       type: String,
       default: '',

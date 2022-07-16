@@ -16,6 +16,7 @@
               v-for="user in visibleItems"
               :id="user.id"
               :key="user.id"
+              :img="user.id"
               :inbound="user.inboundEnergy + '%'"
               :name="user.nickname || user.name"
               :outbound="user.transferedEnergy + '%'"
