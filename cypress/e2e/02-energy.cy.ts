@@ -2,11 +2,12 @@ import {
   AURA_CONNECTIONS,
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
-  BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
   getInboundEnergy,
   getOutboundEnergy,
   getRating,
+  ratedConnection,
+  unratedConnection,
 } from '../utils/data'
 import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
 
@@ -53,9 +54,6 @@ describe('Energy', () => {
     cy.get('@spyWinConsoleError').should('have.callCount', 0)
     cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
-
-  const unratedConnection = BRIGHT_ID_BACKUP.connections[0]
-  const ratedConnection = BRIGHT_ID_BACKUP.connections[1]
 
   it('shows energies', () => {
     cy.visit('/energy/?tab=Explorer&filter=All')

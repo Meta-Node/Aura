@@ -28,6 +28,56 @@ const toSigningKey = s => {
   return s.replace(/[-_]/g, c => alts[c]) + '='
 }
 
+export const unratedConnection = {
+  id: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08',
+  name: 'Unrated Connection',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08.jpg',
+  },
+  status: 'verified',
+  notificationToken: '017381a8-8acc-417b-8e77-d7b7cc9b37b7',
+  level: 'already known',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'already known',
+}
+
+export const ratedConnection = {
+  id: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q',
+  name: 'Rated Connection',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q.jpg',
+  },
+  status: 'verified',
+  notificationToken: '8bcfc21a-22ea-4a30-b398-b260efbf39af',
+  level: 'already known',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'already known',
+}
+
+export const ratedConnectionWithoutEnergy = {
+  id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
+  name: 'Rated No Energy',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb.jpg',
+  },
+  status: 'verified',
+  notificationToken: '8bcfc21a-22ea-4a30-b398-b260efbf39af',
+  level: 'already known',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'already known',
+}
 export const BRIGHT_ID_BACKUP = {
   userData: {
     id: FAKE_BRIGHT_ID,
@@ -37,54 +87,9 @@ export const BRIGHT_ID_BACKUP = {
     },
   },
   connections: [
-    {
-      id: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08',
-      name: 'Unrated Connection',
-      connectionDate: RANDOM_TIMESTAMP,
-      photo: {
-        filename: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08.jpg',
-      },
-      status: 'verified',
-      notificationToken: '017381a8-8acc-417b-8e77-d7b7cc9b37b7',
-      level: 'already known',
-      socialMedia: [],
-      verifications: [],
-      reportReason: null,
-      timestamp: RANDOM_TIMESTAMP,
-      incomingLevel: 'already known',
-    },
-    {
-      id: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q',
-      name: 'Rated Connection',
-      connectionDate: RANDOM_TIMESTAMP,
-      photo: {
-        filename: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q.jpg',
-      },
-      status: 'verified',
-      notificationToken: '8bcfc21a-22ea-4a30-b398-b260efbf39af',
-      level: 'already known',
-      socialMedia: [],
-      verifications: [],
-      reportReason: null,
-      timestamp: RANDOM_TIMESTAMP,
-      incomingLevel: 'already known',
-    },
-    {
-      id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
-      name: 'Rated No Energy',
-      connectionDate: RANDOM_TIMESTAMP,
-      photo: {
-        filename: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb.jpg',
-      },
-      status: 'verified',
-      notificationToken: '8bcfc21a-22ea-4a30-b398-b260efbf39af',
-      level: 'already known',
-      socialMedia: [],
-      verifications: [],
-      reportReason: null,
-      timestamp: RANDOM_TIMESTAMP,
-      incomingLevel: 'already known',
-    },
+    unratedConnection,
+    ratedConnection,
+    ratedConnectionWithoutEnergy,
   ],
   groups: [],
 }
