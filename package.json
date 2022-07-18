@@ -10,7 +10,7 @@
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "yarn lint:js",
     "cypress": "start-server-and-test 'yarn dev' http://localhost:3000 'cypress open'",
-    "cypress:headless": "start-server-and-test 'yarn dev' http://localhost:3000 'cypress run'"
+    "cypress:headless": "yarn generate && start-server-and-test 'yarn start' http://localhost:3000 'cypress run'"
   },
   "dependencies": {
     "@emotionagency/utils": "^1.0.2",
