@@ -2,11 +2,12 @@ import assert from 'assert'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 
-import { backendApi, brightIdBaseURL, encryptData } from '.'
+import { backendApi, brightIdBaseURL } from '.'
 import {
   b64ToUrlSafeB64,
   decryptData,
   decryptUserData,
+  encryptDataWithPrivateKey,
   generateB64Keypair,
   hash,
   randomWordArray,
@@ -167,7 +168,7 @@ export const commitToBackend = async () => {
       timestamp: Date.now(),
     }
 
-    const encryptedTimestamp = encryptData(encryptedData)
+    const encryptedTimestamp = encryptDataWithPrivateKey(encryptedData)
 
     await backendApi.post('/v1/connect', {
       brightId,

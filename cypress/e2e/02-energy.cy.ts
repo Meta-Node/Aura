@@ -2,6 +2,7 @@ import {
   AURA_CONNECTIONS,
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
+  EnergyAllocation,
   FAKE_BRIGHT_ID,
   getInboundEnergy,
   getOutboundEnergy,
@@ -10,8 +11,11 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
-import { encryptData } from '../../scripts/utils/crypto'
+import {
+  CONNECTION_SEARCH_SEED,
+  TOAST_ERROR,
+  TOAST_SUCCESS,
+} from '../../utils/constants'
 
 describe('Energy', () => {
   beforeEach(() => {
@@ -57,7 +61,71 @@ describe('Energy', () => {
     cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
-  it('shows energies', () => {
+  const oldEnergyAllocation: EnergyAllocation = AURA_ENERGIES.energy
+  const newEnergyAllocation: EnergyAllocation = [
+    {
+      amount: 100,
+      toBrightId: ratedConnectionWithoutEnergy.id,
+    },
+    {
+      amount: 5,
+      toBrightId: ratedConnection.id,
+    },
+  ]
+
+  function getEnergyAllocationAmount(
+    allocation: EnergyAllocation,
+    brightId: string
+  ) {
+    return String(allocation.find(e => e.toBrightId === brightId)?.amount)
+  }
+
+  function submitEnergyFailure() {
+    cy.intercept(
+      {
+        url: `/v1/energy/${FAKE_BRIGHT_ID}`,
+        method: 'POST',
+      },
+      {
+        statusCode: 500,
+      }
+    ).as('submitEnergyError')
+    cy.get('[data-testid=update-energy]').click()
+    cy.wait('@submitEnergyError')
+    cy.get(`.toast--${TOAST_ERROR}`)
+  }
+
+  function submitEnergySuccess() {
+    cy.intercept(
+      {
+        url: `/v1/energy/${FAKE_BRIGHT_ID}`,
+        method: 'POST',
+      },
+      {
+        body: { energyAllocation: newEnergyAllocation },
+        statusCode: 200,
+      }
+    ).as('submitEnergy')
+    cy.intercept(
+      {
+        url: `/v1/energy/${FAKE_BRIGHT_ID}`,
+        method: 'GET',
+      },
+      {
+        body: { energy: newEnergyAllocation },
+      }
+    )
+
+    cy.get('[data-testid=update-energy]').click()
+    cy.wait('@submitEnergy')
+      .its('request.body')
+      .should(body => {
+        expect(body).to.have.key('encryptedTransfers')
+      })
+    cy.get(`.toast--${TOAST_SUCCESS}`)
+  }
+
+  function showsEnergies(allocation: EnergyAllocation) {
     cy.visit('/energy/?tab=Explorer&filter=All')
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'
@@ -72,31 +140,15 @@ describe('Energy', () => {
       getInboundEnergy(ratedConnection.id)
     )
     cy.get(`[data-testid=user-v2-${ratedConnection.id}-outbound]`).contains(
-      getOutboundEnergy(ratedConnection.id)
+      getEnergyAllocationAmount(allocation, ratedConnection.id)
     )
+  }
+
+  it('shows energies', () => {
+    showsEnergies(oldEnergyAllocation)
   })
 
   it('can submit energies', () => {
-    const energyAllocation = [
-      {
-        toBrightId: ratedConnection.id,
-        amount: 5,
-      },
-      {
-        toBrightId: ratedConnectionWithoutEnergy.id,
-        amount: 100,
-      },
-    ]
-    cy.intercept(
-      {
-        url: `/v1/energy/${FAKE_BRIGHT_ID}}`,
-        method: 'POST',
-      },
-      {
-        body: { energyAllocation },
-      }
-    ).as('submitEnergy')
-
     cy.visit('/energy/?tab=Energy&filter=All')
     cy.get(`[data-testid=user-v3-${unratedConnection.id}-name]`).should(
       'not.exist'
@@ -107,28 +159,27 @@ describe('Energy', () => {
     cy.get(`[data-testid=user-v3-${ratedConnection.id}-rating]`).contains(
       getRating(ratedConnection.id)
     )
+    cy.get(
+      `[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`
+    ).type(
+      getEnergyAllocationAmount(
+        newEnergyAllocation,
+        ratedConnectionWithoutEnergy.id
+      )
+    )
     cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
       .invoke('val')
       .then(val => {
         expect(val).to.equal(String(getOutboundEnergy(ratedConnection.id)))
-      })
-    cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
-      .clear()
-      .type(String(energyAllocation[0].amount))
-    cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
-      .clear()
-      .type(String(energyAllocation[1].amount))
-    cy.get('[data-testid=update-energy]').click()
 
-    cy.wait('@submitEnergy')
-      .its('request.body')
-      .should(body => {
-        expect(body).to.eq(
-          encryptData({
-            transfer: energyAllocation,
-          })
-        )
+        cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
+          .clear()
+          .type(
+            getEnergyAllocationAmount(newEnergyAllocation, ratedConnection.id)
+          )
+        submitEnergyFailure()
+        submitEnergySuccess()
+        showsEnergies(newEnergyAllocation)
       })
-      .then(() => {})
   })
 })

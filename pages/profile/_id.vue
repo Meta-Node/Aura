@@ -3,28 +3,28 @@
     <private-profile
       v-if="isPrivate"
       ref="private"
-      :profile="profile"
-      :date="getDate"
-      :is-loading="isLoading"
       :brightness="brightness"
+      :date="getDate"
       :four-unrated="fourUnrated"
-      @updateNickname="updateNickname"
+      :is-loading="isLoading"
+      :profile="profile"
       @share="onShare"
+      @updateNickname="updateNickname"
     />
     <public-profile
       v-if="!isPrivate"
       ref="public"
-      :profile="profile"
-      :date="getDate"
       :brightness="brightness"
+      :date="getDate"
       :four-unrated="fourUnrated"
       :is-loading="isLoading"
+      :profile="profile"
       @share="onShare"
     />
     <nuxt-link
       v-if="!isAuth && isPublicRouteQuery"
-      to="/"
       class="profile__login-cta"
+      to="/"
     >
       Please, login in Aura app to see more
     </nuxt-link>
@@ -35,7 +35,8 @@
 import transition from '~/mixins/transition'
 import PrivateProfile from '~/components/profile/PrivateProfile.vue'
 import PublicProfile from '~/components/profile/PublicProfile.vue'
-import { getConnection, getProfile } from '~/scripts/api/connections.service'
+import {getConnection, getProfile} from '~/scripts/api/connections.service'
+import {TOAST_ERROR} from "~/utils/constants";
 
 export default {
   components: {
@@ -115,7 +116,7 @@ export default {
   watch: {
     isPrivate() {
       const accType = this.isPrivate ? 'private' : 'public'
-      this.$router.push({ query: { account: accType } })
+      this.$router.push({query: {account: accType}})
     },
   },
 
@@ -141,14 +142,14 @@ export default {
     if (queries.account) {
       delete queries.account
     }
-    this.$router.push({ query: { ...queries } })
+    this.$router.push({query: {...queries}})
   },
 
   methods: {
     async loadConnectionProfile() {
       try {
         !this.isPublicRouteQuery &&
-          (await this.$store.dispatch('connections/getConnectionsData'))
+        (await this.$store.dispatch('connections/getConnectionsData'))
         await this.$store.dispatch('profile/getProfileData')
         const connections = this.$store.getters['profile/connections']
 
@@ -156,7 +157,7 @@ export default {
         this.connections = connections.filter(con => con.id !== this.brightId)
 
         const res = await getProfile(this.brightId, this.isPublicRouteQuery)
-        this.profile = { ...this.profile, ...res.data }
+        this.profile = {...this.profile, ...res.data}
 
         const connectionRes = await getConnection(this.brightId)
         this.isPrivate = !this.isPublicRouteQuery
@@ -166,7 +167,7 @@ export default {
         }
       } catch (error) {
         console.log(error)
-        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+        this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       } finally {
         this.isLoading = false
       }
@@ -179,7 +180,7 @@ export default {
         this.connections = this.$store.getters['profile/connections']
       } catch (error) {
         console.log(error)
-        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+        this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       } finally {
         this.isLoading = false
       }
@@ -190,9 +191,9 @@ export default {
     },
 
     async onShare() {
-      const { copyToClipboard } = await import(
+      const {copyToClipboard} = await import(
         '~/scripts/utils/copyToClipboard'
-      )
+        )
       const URL = this.isPublicRouteQuery
         ? location.href
         : location.href + '?account=public'

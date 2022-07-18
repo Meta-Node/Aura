@@ -4,7 +4,7 @@
       v-if="isLoading"
       style="margin-top: 40px"
     >
-      <app-spinner :is-visible="true" />
+      <app-spinner :is-visible="true"/>
     </div>
     <div
       v-else-if="!isLoading && !profile.name"
@@ -17,33 +17,33 @@
       class="container feedback__wrapper"
     >
       <profile-info
+        :brightness="brightness"
+        :connections="profile.numOfConnections"
+        :date="date"
         :img="profileAvatar"
         :name="profile.name"
         :nickname="profile.nickname"
         :rating="profile.rating"
-        :date="date"
-        :connections="profile.numOfConnections"
-        :brightness="brightness"
-        @share="onShare"
         @edit="onEdit"
+        @share="onShare"
       />
       <div class="feedback__questions">
         <div class="feedback__quality-wrapper">
           <div class="feedback__transition">
             <feedback-slider
               id="quality"
-              type="range"
-              :min="-5"
               :max="5"
-              :step="1"
+              :min="-5"
               :prev-value="+profile.previousRating"
+              :step="1"
               :value="+profile.previousRating || 0"
+              type="range"
               @changed="onFeedbackChanged"
             />
           </div>
         </div>
       </div>
-      <four-unrated :users="fourUnrated" />
+      <four-unrated :users="fourUnrated"/>
     </div>
     <nickname-popup
       v-if="profile && profile.id"
@@ -60,10 +60,11 @@ import AppSpinner from '~/components/AppSpinner.vue'
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import NicknamePopup from '~/components/popup/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
-import { rateUser } from '~/scripts/api/rate.service'
+import {rateUser} from '~/scripts/api/rate.service'
 import FourUnrated from '~/components/FourUnrated.vue'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
+import {TOAST_SUCCESS} from "~/utils/constants";
 
 export default {
   components: {
@@ -78,11 +79,13 @@ export default {
   props: {
     profile: {
       type: Object,
-      default: () => { },
+      default: () => {
+      },
     },
     connections: {
       type: Object,
-      default: () => { },
+      default: () => {
+      },
     },
     isLoading: {
       type: Boolean,
@@ -126,7 +129,7 @@ export default {
 
       this.$store.commit('toast/addToast', {
         text: 'Successfully updated',
-        color: 'success',
+        color: TOAST_SUCCESS,
       })
 
       if (rating > 0.5) {

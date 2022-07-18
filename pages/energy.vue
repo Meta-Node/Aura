@@ -65,6 +65,7 @@ import AppExplorer from '~/components/energy/AppExplorer'
 // import EnergyIndicator from '~/components/EnergyIndicator.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
+import {TOAST_ERROR} from "~/utils/constants";
 
 export default {
   components: {
@@ -130,7 +131,7 @@ export default {
     try {
       await this.$store.dispatch('energy/getTransferedEnergy')
     } catch (error) {
-      this.$store.commit('toast/addToast', {text: 'Error', color: 'danger'})
+      this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       console.log(error)
     }
 

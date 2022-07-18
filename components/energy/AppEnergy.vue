@@ -55,6 +55,7 @@
 import AppFilter from '../filters/AppFilter.vue'
 import UserV3 from '~/components/users/UserV3.vue'
 import loadItems from '~/mixins/loadItems'
+import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 
 export default {
   components: {UserV3, AppFilter},
@@ -83,11 +84,11 @@ export default {
         await this.$store.dispatch('energy/updateEnergy')
         this.$store.commit('toast/addToast', {
           text: 'Energy successfully updated',
-          color: 'success',
+          color: TOAST_SUCCESS,
         })
         this.$router.push('/community?filter=Unrated')
       } catch (error) {
-        this.$store.commit('toast/addToast', {text: 'Error', color: 'danger'})
+        this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       }
     },
     onChangeEnergy(data) {

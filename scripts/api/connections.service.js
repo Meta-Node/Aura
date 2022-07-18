@@ -1,5 +1,6 @@
-import { backendApi, encryptData } from '.'
+import { backendApi } from '.'
 import { CONNECTION_SEARCH_SEED } from '~/utils/constants'
+import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 
 export const getConnections = async fromBrightId => {
   const res = await backendApi.get('/v1/connections/search', {
@@ -54,7 +55,7 @@ export const setNickname = async ({ fromBrightId, toBrightId, nickname }) => {
     nickname,
   }
 
-  const encryptedNickname = encryptData(encryptedData)
+  const encryptedNickname = encryptDataWithPrivateKey(encryptedData)
   const res = await backendApi.post(URL, {
     encryptedNickname,
   })

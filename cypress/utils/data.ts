@@ -214,6 +214,13 @@ export const PROFILE_PICTURE = encryptData(
   FAKE_BRIGHT_ID_PASSWORD
 )
 
+export type EnergyAllocationItem = {
+  toBrightId: string
+  amount: number
+}
+
+export type EnergyAllocation = EnergyAllocationItem[]
+
 export const AURA_ENERGIES = {
   energy: [
     {

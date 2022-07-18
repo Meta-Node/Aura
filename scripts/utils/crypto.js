@@ -49,3 +49,17 @@ export const generateB64Keypair = () => {
     publicKey: b64PublicKey,
   }
 }
+
+export const encryptDataWithPrivateKey = encryptedData => {
+  const privateKey = localStorage.getItem('privateKey')
+
+  if (!privateKey) {
+    throw new Error('need secret key stored')
+  }
+
+  const utf8Encode = new TextEncoder()
+  return nacl.sign(
+    utf8Encode.encode(JSON.stringify(encryptedData)),
+    B64.toByteArray(privateKey)
+  )
+}

@@ -6,12 +6,12 @@
         <app-input
           id="nickname"
           ref="nickname"
+          :required="true"
           class="form__input-wrapper"
-          type="text"
           placeholder="New Nickname"
+          type="text"
           validation="minLength(2)"
           validation-text="Value must be longer than 2"
-          :required="true"
           @inputValue="onInputValue"
         />
         <app-button class="nickname-form__btn">Submit</app-button>
@@ -24,9 +24,11 @@
 import AppPopup from './AppPopup.vue'
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
-import { setNickname } from '~/scripts/api/connections.service'
+import {setNickname} from '~/scripts/api/connections.service'
+import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
+
 export default {
-  components: { AppPopup, AppInput, AppButton },
+  components: {AppPopup, AppInput, AppButton},
   props: {
     toBrightId: {
       type: String,
@@ -44,7 +46,7 @@ export default {
   },
   methods: {
     onInputValue(val) {
-      this[val.id] = { ...this[val.id], ...val }
+      this[val.id] = {...this[val.id], ...val}
 
       this.hasErrors = this.nickname.error
     },
@@ -60,14 +62,14 @@ export default {
           this.closePopup()
           this.$store.commit('toast/addToast', {
             text: 'Succesfully updated',
-            color: 'success',
+            color: TOAST_SUCCESS,
           })
           this.$emit('updateNickname', this.nickname.value)
         } catch (error) {
           console.log(error)
           this.$store.commit('toast/addToast', {
             text: 'Error',
-            color: 'danger',
+            color: TOAST_ERROR,
           })
         }
       }
