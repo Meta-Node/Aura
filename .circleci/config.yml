@@ -19,6 +19,7 @@ workflows:
           # before running tests across multiple machines
           # this avoids installing same dependencies 10 times
           executor: cypress-14-19-0
+          install-command: 'yarn install --frozen-lockfile'
           requires:
             - cypress/install
           record: false # record results on Cypress Dashboard
