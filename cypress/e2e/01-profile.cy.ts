@@ -1,4 +1,3 @@
-import * as localforage from 'localforage'
 import {
   AURA_PROFILE,
   BRIGHT_ID_BACKUP,
@@ -6,7 +5,6 @@ import {
   FAKE_BRIGHT_ID,
   FAKE_BRIGHT_ID_PASSWORD,
   FAKE_USER_EXPLORER_CODE,
-  LOCAL_FORAGE_DATA,
 } from '../utils/data'
 
 describe('Login', () => {
@@ -42,11 +40,11 @@ describe('Login', () => {
         // eslint-disable-next-line no-unused-expressions
         expect(body.publicKey).to.be.not.null
       })
-      .then(async () => {
+      .then(() => {
         expect(localStorage.getItem('brightId')).to.eq(FAKE_BRIGHT_ID)
-        localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
-        const data = await localforage.getItem('profileData')
-        expect(data).to.deep.eq(LOCAL_FORAGE_DATA)
+        // localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+        // const data = await localforage.getItem('profileData')
+        // expect(data).to.deep.eq(LOCAL_FORAGE_DATA)
       })
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
   })
