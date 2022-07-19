@@ -25,3 +25,4 @@ workflows:
           record: false # record results on Cypress Dashboard
           group: 'all tests' # name this group "all tests" on the dashboard
           start: 'yarn start' # start server before running tests
+          store_artifacts: true
