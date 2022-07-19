@@ -14,22 +14,25 @@
         <app-spinner :is-visible="true"/>
       </div>
       <div v-else>
-        <!--        <energy-indicator :percent="availableEnergy" />-->
+        <div class="explorer-energy">
+          <h3 class="explorer-energy__indicator-text">Energy</h3>
+        </div>
+        <!--        <energy-indicator :percent="availableEnergy"/>-->
         <div class="switch">
           <div class="switch__wrapper">
             <button
-              :class="[isExplorer && 'switch__filter-button--active']"
+              :class="[isView && 'switch__filter-button--active']"
               class="switch__filter-button"
               @click="onExplorerClick"
             >
-              Explorer
+              View
             </button>
             <button
-              :class="[!isExplorer && 'switch__filter-button--active']"
+              :class="[!isView && 'switch__filter-button--active']"
               class="switch__filter-button"
               @click="onEnergyClick"
             >
-              Energy
+              Set
             </button>
           </div>
           <div class="enegry__screens">
@@ -38,7 +41,7 @@
               name="fade"
             >
               <app-explorer
-                v-if="isExplorer"
+                v-if="isView"
                 :filters="filters"
                 :users="users"
                 @filtered="onFiltered"
@@ -67,6 +70,11 @@ import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 import {TOAST_ERROR} from "~/utils/constants";
 
+const TABS = Object.freeze({
+  VIEW: 'View',
+  SET: 'Set',
+})
+
 export default {
   components: {
     AppSearch,
@@ -78,7 +86,7 @@ export default {
   mixins: [transition, users],
   data() {
     return {
-      isExplorer: true,
+      isView: true,
 
       filters: [
         {
@@ -113,10 +121,10 @@ export default {
   },
 
   watch: {
-    isExplorer() {
-      this.isExplorer
-        ? this.updateRouterQuery('Explorer')
-        : this.updateRouterQuery('Energy')
+    isView() {
+      this.isView
+        ? this.updateRouterQuery(TABS.VIEW)
+        : this.updateRouterQuery(TABS.SET)
     },
   },
 
@@ -137,20 +145,20 @@ export default {
 
     const routeQuery = this.$route.query?.tab
 
-    if (routeQuery === 'Explorer') {
-      this.isExplorer = true
+    if (routeQuery === TABS.SET) {
+      this.isView = true
       return
     }
-    if (routeQuery === 'Energy') {
-      this.isExplorer = false
+    if (routeQuery === TABS.VIEW) {
+      this.isView = false
     }
   },
   methods: {
     onExplorerClick() {
-      this.isExplorer = true
+      this.isView = true
     },
     onEnergyClick() {
-      this.isExplorer = false
+      this.isView = false
     },
     updateRouterQuery(tabName) {
       const queries = this.$route.query
