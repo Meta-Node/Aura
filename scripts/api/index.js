@@ -10,7 +10,7 @@ export const brightIdApi = create({
 })
 
 export const backendApi = create({
-  baseURL: 'https://aura-be-staging.herokuapp.com',
+  baseURL: 'https://aura-be.herokuapp.com',
   headers: { 'Cache-Control': 'no-cache' },
 })
 
