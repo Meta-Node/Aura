@@ -3,6 +3,7 @@ import {
   getByAmount,
   getByName,
   getByRating,
+  getExcludeZeros,
   getUnrated,
   onSearch,
   trim,
@@ -80,6 +81,9 @@ export default {
     },
     getAlreadyKnown(users, value) {
       return getAlreadyKnown(users, value)
+    },
+    getExcludeZeros(users, value) {
+      return getExcludeZeros(users, value)
     },
   },
 }

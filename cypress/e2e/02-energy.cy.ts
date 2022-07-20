@@ -2,7 +2,6 @@ import {
   AURA_CONNECTIONS,
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
-  EnergyAllocation,
   FAKE_BRIGHT_ID,
   getInboundEnergy,
   getOutboundEnergy,
@@ -17,6 +16,7 @@ import {
   TOAST_ERROR,
   TOAST_SUCCESS,
 } from '../../utils/constants'
+import { Connection, EnergyAllocation } from '../types'
 
 describe('Energy', () => {
   beforeEach(() => {
@@ -78,7 +78,7 @@ describe('Energy', () => {
     allocation: EnergyAllocation,
     brightId: string
   ) {
-    return String(allocation.find(e => e.toBrightId === brightId)?.amount)
+    return String(allocation.find(e => e.toBrightId === brightId)?.amount || 0)
   }
 
   function submitEnergyFailure() {
@@ -126,27 +126,35 @@ describe('Energy', () => {
     cy.get(`.toast--${TOAST_SUCCESS}`)
   }
 
-  function showsEnergies(allocation: EnergyAllocation) {
+  function showsConnectionInView(
+    connection: Connection,
+    allocation: EnergyAllocation
+  ) {
+    cy.get(`[data-testid=user-v2-${connection.id}-name]`).contains(
+      connection.name
+    )
+    cy.get(`[data-testid=user-v2-${connection.id}-rating]`).contains(
+      getRating(connection.id)
+    )
+    cy.get(`[data-testid=user-v2-${connection.id}-inbound]`).contains(
+      getInboundEnergy(connection.id)
+    )
+    cy.get(`[data-testid=user-v2-${connection.id}-outbound]`).contains(
+      getEnergyAllocationAmount(allocation, connection.id)
+    )
+  }
+
+  it('shows and filters energies', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}&filter=All`)
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
-    cy.get(`[data-testid=user-v2-${ratedConnection.id}-name]`).contains(
-      ratedConnection.name
-    )
-    cy.get(`[data-testid=user-v2-${ratedConnection.id}-rating]`).contains(
-      getRating(ratedConnection.id)
-    )
-    cy.get(`[data-testid=user-v2-${ratedConnection.id}-inbound]`).contains(
-      getInboundEnergy(ratedConnection.id)
-    )
-    cy.get(`[data-testid=user-v2-${ratedConnection.id}-outbound]`).contains(
-      getEnergyAllocationAmount(allocation, ratedConnection.id)
-    )
-  }
-
-  it('shows energies', () => {
-    showsEnergies(oldEnergyAllocation)
+    showsConnectionInView(ratedConnection, oldEnergyAllocation)
+    showsConnectionInView(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+    cy.get(`[data-testid=filter-ExcludeZeros]`).click()
+    cy.get(
+      `[data-testid=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
+    ).should('not.exist')
   })
 
   it('can submit energies', () => {
@@ -180,7 +188,9 @@ describe('Energy', () => {
           )
         submitEnergyFailure()
         submitEnergySuccess()
-        showsEnergies(newEnergyAllocation)
+        cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}&filter=All`)
+        showsConnectionInView(ratedConnection, newEnergyAllocation)
+        showsConnectionInView(ratedConnectionWithoutEnergy, newEnergyAllocation)
       })
   })
 })

@@ -4,6 +4,7 @@ import {
   generateB64Keypair,
   hash,
 } from '../../scripts/utils/crypto'
+import { Connection } from '../types'
 
 const { publicKey, privateKey } = generateB64Keypair()
 export const FAKE_PRIVATE_KEY = privateKey
@@ -28,7 +29,7 @@ const toSigningKey = s => {
   return s.replace(/[-_]/g, c => alts[c]) + '='
 }
 
-export const unratedConnection = {
+export const unratedConnection: Connection = {
   id: 'hbHxMhhLz_VpXgk8rKbTInQg7bJrhBfsMQqhDwphX08',
   name: 'Unrated Connection',
   connectionDate: RANDOM_TIMESTAMP,
@@ -45,7 +46,7 @@ export const unratedConnection = {
   incomingLevel: 'already known',
 }
 
-export const ratedConnection = {
+export const ratedConnection: Connection = {
   id: 'y-ZDOpXZDI9erfF2bR0tUguDsiyh2MUBQGnSKhIAf7q',
   name: 'Rated Connection',
   connectionDate: RANDOM_TIMESTAMP,
@@ -62,7 +63,7 @@ export const ratedConnection = {
   incomingLevel: 'already known',
 }
 
-export const ratedConnectionWithoutEnergy = {
+export const ratedConnectionWithoutEnergy: Connection = {
   id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
   name: 'Rated No Energy',
   connectionDate: RANDOM_TIMESTAMP,
@@ -78,6 +79,7 @@ export const ratedConnectionWithoutEnergy = {
   timestamp: RANDOM_TIMESTAMP,
   incomingLevel: 'already known',
 }
+
 export const BRIGHT_ID_BACKUP = {
   userData: {
     id: FAKE_BRIGHT_ID,
@@ -214,13 +216,6 @@ export const PROFILE_PICTURE = encryptData(
   FAKE_BRIGHT_ID_PASSWORD
 )
 
-export type EnergyAllocationItem = {
-  toBrightId: string
-  amount: number
-}
-
-export type EnergyAllocation = EnergyAllocationItem[]
-
 export const AURA_ENERGIES = {
   energy: [
     {
@@ -244,10 +239,12 @@ export function getRating(brightId: string) {
 }
 
 export function getOutboundEnergy(brightId: string) {
-  return AURA_ENERGIES.energy.find(e => e.toBrightId === brightId)?.amount
+  return AURA_ENERGIES.energy.find(e => e.toBrightId === brightId)?.amount || 0
 }
 
 export function getInboundEnergy(brightId: string) {
-  return AURA_INBOUND_ENERGIES.energy.find(e => e.fromBrightId === brightId)
-    ?.amount
+  return (
+    AURA_INBOUND_ENERGIES.energy.find(e => e.fromBrightId === brightId)
+      ?.amount || 0
+  )
 }

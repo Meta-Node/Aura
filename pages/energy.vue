@@ -96,6 +96,10 @@ export default {
           active: false,
           reverse: false,
         },
+        {
+          name: 'Exclude Zeros',
+          active: false,
+        }
       ],
     }
   },
