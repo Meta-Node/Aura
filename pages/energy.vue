@@ -68,12 +68,7 @@ import AppExplorer from '~/components/energy/AppExplorer'
 // import EnergyIndicator from '~/components/EnergyIndicator.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
-import {TOAST_ERROR} from "~/utils/constants";
-
-const TABS = Object.freeze({
-  VIEW: 'View',
-  SET: 'Set',
-})
+import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
 
 export default {
   components: {
@@ -123,8 +118,8 @@ export default {
   watch: {
     isView() {
       this.isView
-        ? this.updateRouterQuery(TABS.VIEW)
-        : this.updateRouterQuery(TABS.SET)
+        ? this.updateRouterQuery(ENERGY_TABS.VIEW)
+        : this.updateRouterQuery(ENERGY_TABS.SET)
     },
   },
 
@@ -145,11 +140,11 @@ export default {
 
     const routeQuery = this.$route.query?.tab
 
-    if (routeQuery === TABS.SET) {
+    if (routeQuery === ENERGY_TABS.VIEW) {
       this.isView = true
       return
     }
-    if (routeQuery === TABS.VIEW) {
+    if (routeQuery === ENERGY_TABS.SET) {
       this.isView = false
     }
   },

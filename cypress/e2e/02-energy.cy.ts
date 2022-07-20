@@ -13,6 +13,7 @@ import {
 } from '../utils/data'
 import {
   CONNECTION_SEARCH_SEED,
+  ENERGY_TABS,
   TOAST_ERROR,
   TOAST_SUCCESS,
 } from '../../utils/constants'
@@ -126,7 +127,7 @@ describe('Energy', () => {
   }
 
   function showsEnergies(allocation: EnergyAllocation) {
-    cy.visit('/energy/?tab=Explorer&filter=All')
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}&filter=All`)
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
@@ -149,7 +150,7 @@ describe('Energy', () => {
   })
 
   it('can submit energies', () => {
-    cy.visit('/energy/?tab=Energy&filter=All')
+    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}&filter=All`)
     cy.get(`[data-testid=user-v3-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
