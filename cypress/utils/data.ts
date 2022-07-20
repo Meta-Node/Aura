@@ -81,6 +81,23 @@ export const ratedConnectionWithoutEnergy: Connection = {
   incomingLevel: 'already known',
 }
 
+export const ratedConnectionNegative: Connection = {
+  id: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q',
+  name: 'Rated Connection Negative',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'ZDI9erfF2bR0-ZDOpXtUguyDsiyh2MUBQGnSKhIAf7q.jpg',
+  },
+  status: 'verified',
+  notificationToken: 'b87b2e1d-9a27-4309-96d7-1efc9c91544e',
+  level: 'already known',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'already known',
+}
+
 export const BRIGHT_ID_BACKUP = {
   userData: {
     id: FAKE_BRIGHT_ID,
@@ -93,6 +110,7 @@ export const BRIGHT_ID_BACKUP = {
     unratedConnection,
     ratedConnection,
     ratedConnectionWithoutEnergy,
+    ratedConnectionNegative,
   ],
   groups: [],
 }
@@ -115,80 +133,36 @@ export const BRIGHT_ID_BACKUP_ENCRYPTED = encryptUserData(
 )
 
 export const AURA_CONNECTIONS = {
-  connections: [
-    {
-      _id: `users/${BRIGHT_ID_BACKUP.connections[0].id}`,
-      _key: BRIGHT_ID_BACKUP.connections[0].id,
-      _rev: '_dK3nJ5y-1-',
-      createdAt: RANDOM_TIMESTAMP,
-      eligible_groups: [],
-      eligible_timestamp: RANDOM_TIMESTAMP + 1000000000,
-      parent: RANDOM_HASH,
-      signingKeys: [toSigningKey(BRIGHT_ID_BACKUP.connections[0].id)],
-      conn: {
-        _key: '97656970088',
-        _id: 'connections/97656970088',
-        _from: `users/${FAKE_BRIGHT_ID}`,
-        _to: `users/${BRIGHT_ID_BACKUP.connections[0].id}`,
-        _rev: '_dK3anJ5y-A',
-        initTimestamp: RANDOM_TIMESTAMP,
-        level: 'already known',
-        replacedWith: null,
-        reportReason: null,
-        timestamp: RANDOM_TIMESTAMP,
-      },
+  connections: BRIGHT_ID_BACKUP.connections.map(connection => ({
+    _id: `users/${connection.id}`,
+    _key: connection.id,
+    _rev: '_dK3nJ5y-1-',
+    createdAt: RANDOM_TIMESTAMP,
+    eligible_groups: [],
+    eligible_timestamp: RANDOM_TIMESTAMP + 1000000000,
+    parent: RANDOM_HASH,
+    signingKeys: [toSigningKey(connection.id)],
+    conn: {
+      _key: '97656970088',
+      _id: 'connections/97656970088',
+      _from: `users/${FAKE_BRIGHT_ID}`,
+      _to: `users/${connection.id}`,
+      _rev: '_dK3anJ5y-A',
+      initTimestamp: RANDOM_TIMESTAMP,
+      level: connection.level,
+      replacedWith: null,
+      reportReason: connection.reportReason,
+      timestamp: RANDOM_TIMESTAMP,
     },
-    {
-      _id: `users/${BRIGHT_ID_BACKUP.connections[1].id}`,
-      _key: BRIGHT_ID_BACKUP.connections[1].id,
-      _rev: '_QaEK360-na',
-      createdAt: RANDOM_TIMESTAMP,
-      eligible_groups: [],
-      eligible_timestamp: RANDOM_TIMESTAMP + 1000000000,
-      parent: RANDOM_HASH,
-      signingKeys: [toSigningKey(BRIGHT_ID_BACKUP.connections[1].id)],
-      conn: {
-        _key: '97656970088',
-        _id: 'connections/97656970088',
-        _from: `users/${FAKE_BRIGHT_ID}`,
-        _to: `users/${BRIGHT_ID_BACKUP.connections[1].id}`,
-        _rev: '_QaEK360yn-',
-        initTimestamp: RANDOM_TIMESTAMP,
-        level: 'already known',
-        replacedWith: null,
-        reportReason: null,
-        timestamp: RANDOM_TIMESTAMP,
-      },
-    },
-    {
-      _id: `users/${BRIGHT_ID_BACKUP.connections[2].id}`,
-      _key: BRIGHT_ID_BACKUP.connections[2].id,
-      _rev: '_zAEK960-na',
-      createdAt: RANDOM_TIMESTAMP,
-      eligible_groups: [],
-      eligible_timestamp: RANDOM_TIMESTAMP + 1000000000,
-      parent: RANDOM_HASH,
-      signingKeys: [toSigningKey(BRIGHT_ID_BACKUP.connections[2].id)],
-      conn: {
-        _key: '97656970088',
-        _id: 'connections/97656970088',
-        _from: `users/${FAKE_BRIGHT_ID}`,
-        _to: `users/${BRIGHT_ID_BACKUP.connections[2].id}`,
-        _rev: '_zAEK960n-a',
-        initTimestamp: RANDOM_TIMESTAMP,
-        level: 'already known',
-        replacedWith: null,
-        reportReason: null,
-        timestamp: RANDOM_TIMESTAMP,
-      },
-    },
-  ],
+  })),
 }
 
 export const AURA_PROFILE = {
   numOfConnections: BRIGHT_ID_BACKUP.connections.length,
   brightIdDate: RANDOM_TIMESTAMP,
-  fourUnrated: [AURA_CONNECTIONS.connections[0]],
+  fourUnrated: [
+    AURA_CONNECTIONS.connections.find(con => con._id === unratedConnection.id),
+  ],
   rating: 0,
   nicknames: [],
 }
@@ -197,16 +171,23 @@ export const AURA_RATINGS = {
   ratings: [
     {
       id: 5050,
-      toBrightId: BRIGHT_ID_BACKUP.connections[1].id,
+      toBrightId: ratedConnection.id,
       fromBrightId: FAKE_BRIGHT_ID,
       rating: '4',
       createdAt: '2021-07-10T20:59:03.036Z',
     },
     {
-      id: 5050,
-      toBrightId: BRIGHT_ID_BACKUP.connections[2].id,
+      id: 3040,
+      toBrightId: ratedConnectionWithoutEnergy.id,
       fromBrightId: FAKE_BRIGHT_ID,
       rating: '3',
+      createdAt: '2021-07-13T20:59:03.036Z',
+    },
+    {
+      id: 6070,
+      toBrightId: ratedConnectionNegative.id,
+      fromBrightId: FAKE_BRIGHT_ID,
+      rating: '-1',
       createdAt: '2021-07-11T20:59:03.036Z',
     },
   ],
@@ -220,7 +201,7 @@ export const PROFILE_PICTURE = encryptData(
 export const AURA_ENERGIES = {
   energy: [
     {
-      toBrightId: BRIGHT_ID_BACKUP.connections[1].id,
+      toBrightId: ratedConnection.id,
       amount: 25,
     },
   ],
@@ -229,7 +210,7 @@ export const AURA_ENERGIES = {
 export const AURA_INBOUND_ENERGIES = {
   energy: [
     {
-      fromBrightId: BRIGHT_ID_BACKUP.connections[1].id,
+      fromBrightId: ratedConnection.id,
       amount: 2,
     },
   ],

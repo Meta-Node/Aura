@@ -39,18 +39,19 @@ export default {
         await this.$store.dispatch('energy/getTransferedEnergy')
         await this.$store.dispatch('energy/getInboundEnergy')
 
-        const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
+        // const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
 
-        const finalUsers = moreThanZero.map(user => {
+        const finalUsers = this.connections.map(conn => {
+          const ratedUser = ratedUsers.find(user => user.toBrightId === conn.id)
           return {
-            rating: +user.rating,
-            transferedEnergy: this.transferedEnergy.find(
-              en => en.toBrightId === user.toBrightId
-            ).amount,
-            inboundEnergy:
-              this.inboundEnergy.find(en => en.fromBrightId === user.toBrightId)
+            rating: ratedUser ? +ratedUser.rating : undefined,
+            transferedEnergy:
+              this.transferedEnergy.find(en => en.toBrightId === conn.id)
                 ?.amount || 0,
-            ...this.connections.find(conn => conn.id === user.toBrightId),
+            inboundEnergy:
+              this.inboundEnergy.find(en => en.fromBrightId === conn.id)
+                ?.amount || 0,
+            ...conn,
           }
         })
 

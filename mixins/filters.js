@@ -49,17 +49,16 @@ export default {
       )
 
       this.filteredUsers = this.users
+      this.onSearchValue('')
     },
 
     onSearchValue(value) {
       const trimmedValue = trim(value)
-      const foundUsers = onSearch(trimmedValue, this.filteredUsers)
 
-      if (trimmedValue.length) {
-        this.users = foundUsers
-      } else {
-        this.users = this.filteredUsers
-      }
+      const usersBase = trimmedValue
+        ? this.filteredUsers
+        : this.filteredUsers.filter(user => +user.rating >= 1)
+      this.users = onSearch(trimmedValue, usersBase)
     },
 
     getAll() {
@@ -83,6 +82,7 @@ export default {
       return getAlreadyKnown(users, value)
     },
     getExcludeZeros(users, value) {
+      console.log('called')
       return getExcludeZeros(users, value)
     },
   },
