@@ -197,5 +197,8 @@ describe('Energy', () => {
     showsConnectionInSetTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
     submitEnergyFailure()
     submitEnergySuccess()
+    cy.get('[data-testid=energy-tab-switch-view]').click()
+    showsConnectionInViewTab(ratedConnection, newEnergyAllocation)
+    showsConnectionInViewTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
   })
 })
