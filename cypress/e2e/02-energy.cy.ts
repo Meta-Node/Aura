@@ -4,7 +4,6 @@ import {
   AURA_INBOUND_ENERGIES,
   FAKE_BRIGHT_ID,
   getInboundEnergy,
-  getOutboundEnergy,
   getRating,
   ratedConnection,
   ratedConnectionWithoutEnergy,
@@ -179,7 +178,11 @@ describe('Energy', () => {
     cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
       .invoke('val')
       .then(val => {
-        expect(val).to.equal(String(getOutboundEnergy(ratedConnection.id)))
+        expect(val).to.equal(
+          String(
+            getEnergyAllocationAmount(oldEnergyAllocation, ratedConnection.id)
+          )
+        )
 
         cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
           .clear()

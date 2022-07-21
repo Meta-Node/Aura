@@ -86,7 +86,7 @@ export default {
           text: 'Energy successfully updated',
           color: TOAST_SUCCESS,
         })
-        this.$router.push('/community?filter=Unrated')
+        // this.$router.push('/community?filter=Unrated')
       } catch (error) {
         this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       }
