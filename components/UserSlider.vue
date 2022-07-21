@@ -18,14 +18,15 @@
       </div>
     </div>
     <small id="percents" :data-testid="`user-slider-${userId}-percentage`"
-           class="user__percents">{{ percentage }}%</small>
+           class="user__percents">{{ outboundPercentage }}%</small>
   </div>
 </template>
 
 <script>
-import {toRoundedPercentage} from "~/utils/numbers";
+import energy from '~/mixins/energy'
 
 export default {
+  mixins: [energy],
   props: {
     userId: {
       type: String,
@@ -65,14 +66,9 @@ export default {
   },
 
   computed: {
-    energySum() {
-      return this.$store.getters['energy/transferedEnergyAmount']
-    },
-    percentage() {
-      return toRoundedPercentage(this.value, this.energySum)
-    },
-    availableEnergy() {
-      return this.$store.state.energy.availableEnergy
+    // used in energy mixin
+    outbound() {
+      return this.value
     },
   },
   methods: {

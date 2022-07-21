@@ -4,7 +4,7 @@ import {
   AURA_INBOUND_ENERGIES,
   FAKE_BRIGHT_ID,
   getEnergyAllocationAmount,
-  getEnergyAllocationSum,
+  getEnergyAllocationPercentageString,
   getInboundEnergy,
   getRating,
   ratedConnection,
@@ -17,7 +17,6 @@ import {
   TOAST_ERROR,
   TOAST_SUCCESS,
 } from '../../utils/constants'
-import { toRoundedPercentage } from '../../utils/numbers'
 import { Connection, EnergyAllocation } from '../types'
 
 describe('Energy', () => {
@@ -135,7 +134,7 @@ describe('Energy', () => {
       getInboundEnergy(connection.id)
     )
     cy.get(`[data-testid=user-v2-${connection.id}-outbound]`).contains(
-      getEnergyAllocationAmount(allocation, connection.id)
+      getEnergyAllocationPercentageString(allocation, connection.id)
     )
   }
 
@@ -150,10 +149,7 @@ describe('Energy', () => {
       getRating(connection.id)
     )
     cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).contains(
-      toRoundedPercentage(
-        getEnergyAllocationAmount(allocation, connection.id),
-        getEnergyAllocationSum(allocation)
-      ) + '%'
+      getEnergyAllocationPercentageString(allocation, connection.id)
     )
   }
 
