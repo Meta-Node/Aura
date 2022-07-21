@@ -18,14 +18,14 @@
     <div class="user-v3__numbers">
       <user-slider
         id="quality"
+        v-model="value"
         :max="100"
         :min="0"
         :quota="getQuota"
         :step="1"
         :user-id="id"
-        :value="energy"
         type="range"
-        @changeEnergy="changeEnergy"
+        @input="changeEnergy"
       />
     </div>
   </li>
@@ -60,16 +60,29 @@ export default {
     energy: {
       type: Number,
       default: 0,
-    },
+    }
+  },
+  data() {
+    return {
+      value: 0,
+    }
   },
   computed: {
     getQuota() {
       return this.rating * 25
     },
   },
+  watch: {
+    energy: {
+      immediate: true,
+      handler(newValue, _oldValue) {
+        this.value = Number(newValue);
+      }
+    }
+  },
   methods: {
     changeEnergy(value) {
-      this.$emit('changeEnergy', {amount: value, toBrightId: this.id})
+      this.$emit('changeEnergy', {amount: Number(value), toBrightId: this.id})
     },
   },
 }

@@ -4,7 +4,7 @@ import {
   generateB64Keypair,
   hash,
 } from '../../scripts/utils/crypto'
-import { Connection } from '../types'
+import { Connection, EnergyAllocation } from '../types'
 
 const { publicKey, privateKey } = generateB64Keypair()
 export const FAKE_PRIVATE_KEY = privateKey
@@ -247,4 +247,15 @@ export function getInboundEnergy(brightId: string) {
     AURA_INBOUND_ENERGIES.energy.find(e => e.fromBrightId === brightId)
       ?.amount || 0
   )
+}
+
+export function getEnergyAllocationSum(allocation: EnergyAllocation) {
+  return allocation.reduce((a, c) => a + c.amount, 0)
+}
+
+export function getEnergyAllocationAmount(
+  allocation: EnergyAllocation,
+  brightId: string
+) {
+  return String(allocation.find(e => e.toBrightId === brightId)?.amount || 0)
 }
