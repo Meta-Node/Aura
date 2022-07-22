@@ -3,6 +3,8 @@ import {
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
   FAKE_BRIGHT_ID,
+  getEnergyAllocationAmount,
+  getEnergyAllocationPercentageString,
   getInboundEnergy,
   getRating,
   ratedConnection,
@@ -73,13 +75,6 @@ describe('Energy', () => {
     },
   ]
 
-  function getEnergyAllocationAmount(
-    allocation: EnergyAllocation,
-    brightId: string
-  ) {
-    return String(allocation.find(e => e.toBrightId === brightId)?.amount || 0)
-  }
-
   function submitEnergyFailure() {
     cy.intercept(
       {
@@ -125,7 +120,7 @@ describe('Energy', () => {
     cy.get(`.toast--${TOAST_SUCCESS}`)
   }
 
-  function showsConnectionInView(
+  function showsConnectionInViewTab(
     connection: Connection,
     allocation: EnergyAllocation
   ) {
@@ -139,7 +134,22 @@ describe('Energy', () => {
       getInboundEnergy(connection.id)
     )
     cy.get(`[data-testid=user-v2-${connection.id}-outbound]`).contains(
-      getEnergyAllocationAmount(allocation, connection.id)
+      getEnergyAllocationPercentageString(allocation, connection.id)
+    )
+  }
+
+  function showsConnectionInSetTab(
+    connection: Connection,
+    allocation: EnergyAllocation
+  ) {
+    cy.get(`[data-testid=user-v3-${connection.id}-name]`).contains(
+      connection.name
+    )
+    cy.get(`[data-testid=user-v3-${connection.id}-rating]`).contains(
+      getRating(connection.id)
+    )
+    cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).contains(
+      getEnergyAllocationPercentageString(allocation, connection.id)
     )
   }
 
@@ -148,52 +158,43 @@ describe('Energy', () => {
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
-    showsConnectionInView(ratedConnection, oldEnergyAllocation)
-    showsConnectionInView(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+    showsConnectionInViewTab(ratedConnection, oldEnergyAllocation)
+    showsConnectionInViewTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
     cy.get(`[data-testid=filter-ExcludeZeros]`).click()
     cy.get(
       `[data-testid=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
     ).should('not.exist')
   })
 
-  it('can submit energies', () => {
+  it('can update energies', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}&filter=All`)
     cy.get(`[data-testid=user-v3-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
-    cy.get(`[data-testid=user-v3-${ratedConnection.id}-name]`).contains(
-      ratedConnection.name
-    )
-    cy.get(`[data-testid=user-v3-${ratedConnection.id}-rating]`).contains(
-      getRating(ratedConnection.id)
-    )
-    cy.get(
-      `[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`
-    ).type(
-      getEnergyAllocationAmount(
-        newEnergyAllocation,
-        ratedConnectionWithoutEnergy.id
-      )
-    )
-    cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
-      .invoke('val')
-      .then(val => {
-        expect(val).to.equal(
-          String(
-            getEnergyAllocationAmount(oldEnergyAllocation, ratedConnection.id)
-          )
+    showsConnectionInSetTab(ratedConnection, oldEnergyAllocation)
+    showsConnectionInSetTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+    cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
+      .should('have.value', 0)
+      .clear()
+      .type(
+        getEnergyAllocationAmount(
+          newEnergyAllocation,
+          ratedConnectionWithoutEnergy.id
         )
-
-        cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
-          .clear()
-          .type(
-            getEnergyAllocationAmount(newEnergyAllocation, ratedConnection.id)
-          )
-        submitEnergyFailure()
-        submitEnergySuccess()
-        cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}&filter=All`)
-        showsConnectionInView(ratedConnection, newEnergyAllocation)
-        showsConnectionInView(ratedConnectionWithoutEnergy, newEnergyAllocation)
-      })
+      )
+    cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
+      .should(
+        'have.value',
+        getEnergyAllocationAmount(oldEnergyAllocation, ratedConnection.id)
+      )
+      .clear()
+      .type(getEnergyAllocationAmount(newEnergyAllocation, ratedConnection.id))
+    showsConnectionInSetTab(ratedConnection, newEnergyAllocation)
+    showsConnectionInSetTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
+    submitEnergyFailure()
+    submitEnergySuccess()
+    cy.get('[data-testid=energy-tab-switch-view]').click()
+    showsConnectionInViewTab(ratedConnection, newEnergyAllocation)
+    showsConnectionInViewTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
   })
 })

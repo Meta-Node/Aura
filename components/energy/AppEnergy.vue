@@ -87,6 +87,7 @@ export default {
           color: TOAST_SUCCESS,
         })
         // this.$router.push('/community?filter=Unrated')
+        this.$emit('getTransferedEnergy')
       } catch (error) {
         this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       }

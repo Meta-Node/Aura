@@ -23,6 +23,7 @@
             <button
               :class="[isView && 'switch__filter-button--active']"
               class="switch__filter-button"
+              data-testid="energy-tab-switch-view"
               @click="onExplorerClick"
             >
               View
@@ -30,6 +31,7 @@
             <button
               :class="[!isView && 'switch__filter-button--active']"
               class="switch__filter-button"
+              data-testid="energy-tab-switch-set"
               @click="onEnergyClick"
             >
               Set
@@ -51,6 +53,7 @@
                 :filters="filters"
                 :users="users"
                 @filtered="onFiltered"
+                @getTransferedEnergy="getUserData"
               />
             </transition>
           </div>
@@ -134,13 +137,8 @@ export default {
     }
     this.$router.push({query: {...queries}})
   },
-  async mounted() {
-    try {
-      await this.$store.dispatch('energy/getTransferedEnergy')
-    } catch (error) {
-      this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
-      console.log(error)
-    }
+  mounted() {
+    this.getTransferedEnergy()
 
     const routeQuery = this.$route.query?.tab
 
@@ -153,6 +151,13 @@ export default {
     }
   },
   methods: {
+    getTransferedEnergy() {
+      this.$store.dispatch('energy/getTransferedEnergy')
+        .catch(error => {
+          this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+          console.log(error)
+        })
+    },
     onExplorerClick() {
       this.isView = true
     },

@@ -14,17 +14,19 @@
     </nuxt-link>
     <div class="user-v2__numbers">
       <p :data-testid="`user-v2-${id}-inbound`" class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
-      <p :data-testid="`user-v2-${id}-outbound`" class="user-v2__num user-v2__num-outbound">{{ outbound }}</p>
+      <p :data-testid="`user-v2-${id}-outbound`" class="user-v2__num user-v2__num-outbound">{{
+          outboundPercentage
+        }}%</p>
     </div>
   </li>
 </template>
 
 <script>
 import avatar from '~/mixins/avatar'
+import energy from '~/mixins/energy'
 
 export default {
-  mixins: [avatar],
-
+  mixins: [avatar, energy],
   props: {
     url: {
       type: String,
@@ -51,8 +53,8 @@ export default {
       default: '',
     },
     outbound: {
-      type: String,
-      default: '',
+      type: Number,
+      default: 0,
     },
   },
 }

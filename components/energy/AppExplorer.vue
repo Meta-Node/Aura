@@ -19,7 +19,7 @@
               :img="user.id"
               :inbound="user.inboundEnergy + '%'"
               :name="user.nickname || user.name"
-              :outbound="user.transferedEnergy + '%'"
+              :outbound="user.transferedEnergy"
               :rating="+user.rating"
               :url="`/profile/${user.id}`"
             />
