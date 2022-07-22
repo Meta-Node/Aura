@@ -133,7 +133,7 @@ export default {
       })
 
       if (rating > 0.5) {
-        this.$router.push('/energy?tab=Energy')
+        this.$router.push('/community')
       }
     },
     onShare() {
