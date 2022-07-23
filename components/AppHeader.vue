@@ -84,11 +84,11 @@
                 Energy
               </nuxt-link>
             </li>
-            <li class="popup-menu__list">
-              <nuxt-link class="menu-text popup-menu__text" to="/activity/">
-                Activity
-              </nuxt-link>
-            </li>
+            <!--            <li class="popup-menu__list">-->
+            <!--              <nuxt-link class="menu-text popup-menu__text" to="/activity/">-->
+            <!--                Activity-->
+            <!--              </nuxt-link>-->
+            <!--            </li>-->
             <li class="popup-menu__list">
               <button
                 class="menu-text popup-menu__text popup-menu__text--red"
