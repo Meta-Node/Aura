@@ -15,6 +15,10 @@ export const getByRating = (users, fromLess) => {
   }
 }
 
+export const getExcludeZeros = (users, _value) => {
+  return users.filter(su => su.transferedEnergy)
+}
+
 export const getByAmount = (users, fromLess) => {
   const newUsers = [...users.filter(su => su.transferedEnergy)].sort(
     (a, b) => +a.transferedEnergy - b.transferedEnergy

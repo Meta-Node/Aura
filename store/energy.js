@@ -11,6 +11,13 @@ export const state = () => ({
   availableEnergy: 100,
 })
 
+export const getters = {
+  transferedEnergyAmount: state => {
+    const totalAmount = state.transferedEnergy.map(user => user.amount)
+    return totalAmount.reduce((prev, cur) => prev + cur, 0)
+  },
+}
+
 export const mutations = {
   setAvailableEnergy(state, value) {
     state.availableEnergy = value

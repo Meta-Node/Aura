@@ -5,27 +5,27 @@
       class="user-v3__username"
     >
       <nuxt-img
-        :src="profileAvatar"
         :alt="name"
+        :src="profileAvatar"
         class="user-v3__image"
-        width="48"
         height="48"
         loading="lazy"
+        width="48"
       />
-      <p class="user-v3__tag">{{ name }}</p>
-      <small class="user-v2__rate">({{ rating }})</small>
-
+      <p :data-testid="`user-v3-${id}-name`" class="user-v3__tag">{{ name }}</p>
+      <small :data-testid="`user-v3-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
     </nuxt-link>
     <div class="user-v3__numbers">
       <user-slider
         id="quality"
-        type="range"
-        :min="0"
+        v-model="value"
         :max="100"
-        :step="1"
-        :value="energy"
+        :min="0"
         :quota="getQuota"
-        @changeEnergy="changeEnergy"
+        :step="1"
+        :user-id="id"
+        type="range"
+        @input="changeEnergy"
       />
     </div>
   </li>
@@ -60,16 +60,29 @@ export default {
     energy: {
       type: Number,
       default: 0,
-    },
+    }
+  },
+  data() {
+    return {
+      value: 0,
+    }
   },
   computed: {
     getQuota() {
       return this.rating * 25
     },
   },
+  watch: {
+    energy: {
+      immediate: true,
+      handler(newValue, _oldValue) {
+        this.value = Number(newValue);
+      }
+    }
+  },
   methods: {
     changeEnergy(value) {
-      this.$emit('changeEnergy', { amount: value, toBrightId: this.id })
+      this.$emit('changeEnergy', {amount: Number(value), toBrightId: this.id})
     },
   },
 }

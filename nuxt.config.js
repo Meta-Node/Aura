@@ -1,3 +1,7 @@
+const DOTENV_PATH =
+  process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
+require('dotenv').config({ path: DOTENV_PATH })
+
 const title = 'Discover & grow your Aura...'
 const description = 'Your Aura represents power & influence upon the Auracle.'
 
@@ -79,6 +83,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/pwa
+    ['@nuxtjs/dotenv', { filename: DOTENV_PATH }],
     '@nuxtjs/pwa',
     '@nuxtjs/axios',
   ],

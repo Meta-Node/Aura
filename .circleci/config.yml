@@ -19,10 +19,10 @@ workflows:
           # before running tests across multiple machines
           # this avoids installing same dependencies 10 times
           executor: cypress-14-19-0
+          install-command: 'yarn install --frozen-lockfile'
           requires:
             - cypress/install
           record: false # record results on Cypress Dashboard
-          parallel: true # split all specs across machines
-          parallelism: 4 # use 4 CircleCI machines to finish quickly
           group: 'all tests' # name this group "all tests" on the dashboard
           start: 'yarn start' # start server before running tests
+          store_artifacts: true

@@ -7,6 +7,7 @@
         v-for="user in users"
         :id="user.id"
         :key="user.id"
+        :img="user.id"
         :name="user.nickname || user.name"
         :url="`/profile/${user.id}`"
       />
