@@ -8,6 +8,7 @@ import {
   getInboundEnergy,
   getRating,
   ratedConnection,
+  ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
@@ -163,16 +164,27 @@ describe('Energy', () => {
   it('shows and filters energies', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}&filter=All`)
 
+    // shows rated connections
+    showsConnectionInViewTab(ratedConnection, oldEnergyAllocation)
+    showsConnectionInViewTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+    // does not show unrated or negative rated connections
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
-    showsConnectionInViewTab(ratedConnection, oldEnergyAllocation)
-    showsConnectionInViewTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+    cy.get(`[data-testid=user-v2-${ratedConnectionNegative.id}-name]`).should(
+      'not.exist'
+    )
 
-    // shows unrated connections when searching
-    cy.get('[data-testid=top-search]').clear().type('unrated')
+    // shows unrated connections when searching, but not negative rated ones
+    cy.get('[data-testid=top-search]').type('ra')
     showsConnectionInViewTab(unratedConnection, oldEnergyAllocation)
+    cy.get(`[data-testid=user-v2-${ratedConnectionNegative.id}-name]`).should(
+      'not.exist'
+    )
+    cy.get('[data-testid=top-search]').clear()
+
     // filters based on search value
+    cy.get('[data-testid=top-search]').type(unratedConnection.name)
     cy.get(
       `[data-testid=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
     ).should('not.exist')
