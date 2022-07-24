@@ -2,18 +2,20 @@
   <app-input
     id="search"
     ref="input"
-    class="community__input-wrapper"
-    type="text"
-    placeholder="Search..."
     :is-search="true"
+    class="community__input-wrapper"
+    data-testid="top-search"
+    placeholder="Search..."
+    type="text"
     @inputValue="onInputValue"
   />
 </template>
 
 <script>
 import AppInput from './AppInput.vue'
+
 export default {
-  components: { AppInput },
+  components: {AppInput},
   data() {
     return {
       value: '',

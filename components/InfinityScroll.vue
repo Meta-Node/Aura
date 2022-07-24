@@ -1,6 +1,6 @@
 <template>
   <div class="infinity-scroll">
-    <slot />
+    <slot/>
     <app-spinner
       v-if="!isDone"
       ref="indicator"
@@ -12,9 +12,10 @@
 
 <script>
 import AppSpinner from './AppSpinner.vue'
+
 let rafInst
 export default {
-  components: { AppSpinner },
+  components: {AppSpinner},
   props: {
     infinityScrollActive: {
       type: Boolean,
@@ -26,7 +27,7 @@ export default {
     },
   },
   async mounted() {
-    const { raf } = await import('@emotionagency/utils')
+    const {raf} = await import('@emotionagency/utils')
     rafInst = raf
     rafInst.on(this.scrollHandler)
   },
@@ -38,12 +39,13 @@ export default {
       if (!this.infinityScrollActive) {
         return
       }
-      const indicator = this.$refs.indicator.$el
+      const indicator = this.$refs.indicator?.$el
+      if (indicator) {
+        const bottomOfWindow = indicator.getBoundingClientRect().bottom
 
-      const bottomOfWindow = indicator.getBoundingClientRect().bottom
-
-      if (bottomOfWindow < window.innerHeight) {
-        this.$emit('loadMore')
+        if (bottomOfWindow < window.innerHeight) {
+          this.$emit('loadMore')
+        }
       }
     },
   },

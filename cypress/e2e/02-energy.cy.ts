@@ -127,15 +127,22 @@ describe('Energy', () => {
     cy.get(`[data-testid=user-v2-${connection.id}-name]`).contains(
       connection.name
     )
-    cy.get(`[data-testid=user-v2-${connection.id}-rating]`).contains(
-      getRating(connection.id)
-    )
-    cy.get(`[data-testid=user-v2-${connection.id}-inbound]`).contains(
-      getInboundEnergy(connection.id)
-    )
-    cy.get(`[data-testid=user-v2-${connection.id}-outbound]`).contains(
-      getEnergyAllocationPercentageString(allocation, connection.id)
-    )
+    const rating = getRating(connection.id)
+    if (rating) {
+      cy.get(`[data-testid=user-v2-${connection.id}-rating]`).contains(
+        getRating(connection.id)
+      )
+      cy.get(`[data-testid=user-v2-${connection.id}-inbound]`).contains(
+        getInboundEnergy(connection.id)
+      )
+      cy.get(`[data-testid=user-v2-${connection.id}-outbound]`).contains(
+        getEnergyAllocationPercentageString(allocation, connection.id)
+      )
+    } else {
+      cy.get(`[data-testid=user-v2-${connection.id}-rating]`).should(
+        'not.exist'
+      )
+    }
   }
 
   function showsConnectionInSetTab(
@@ -155,11 +162,23 @@ describe('Energy', () => {
 
   it('shows and filters energies', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}&filter=All`)
+
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
     showsConnectionInViewTab(ratedConnection, oldEnergyAllocation)
     showsConnectionInViewTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+
+    // shows unrated connections when searching
+    cy.get('[data-testid=top-search]').clear().type('unrated')
+    showsConnectionInViewTab(unratedConnection, oldEnergyAllocation)
+    // filters based on search value
+    cy.get(
+      `[data-testid=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
+    ).should('not.exist')
+    cy.get('[data-testid=top-search]').clear()
+
+    // exclude zeros filter
     cy.get(`[data-testid=filter-ExcludeZeros]`).click()
     cy.get(
       `[data-testid=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
