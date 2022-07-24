@@ -3,6 +3,7 @@ import {
   getByAmount,
   getByName,
   getByRating,
+  getByRatingDate,
   getExcludeZeros,
   getUnrated,
   onSearch,
@@ -81,6 +82,9 @@ export default {
     },
     getRating(users, fromLess) {
       return getByRating(users, fromLess)
+    },
+    getRecent(users, fromLess) {
+      return getByRatingDate(users, fromLess)
     },
     getAmount(users, fromLess) {
       return getByAmount(users, fromLess)

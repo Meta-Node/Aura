@@ -26,6 +26,17 @@ export const getByAmount = (users, fromLess) => {
   }
 }
 
+export const getByRatingDate = (users, fromLess) => {
+  const newUsers = [...users.filter(su => su.ratingData)].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  )
+  if (fromLess) {
+    return newUsers
+  } else {
+    return newUsers.reverse()
+  }
+}
+
 export const getExcludeZeros = (users, _value) => {
   return users.filter(su => su.transferedEnergy)
 }

@@ -106,6 +106,12 @@ export default {
           reverse: false,
         },
         {
+          name: 'Recent',
+          type: 'reversable',
+          active: false,
+          reverse: false,
+        },
+        {
           name: 'Exclude Zeros',
           active: false,
         }

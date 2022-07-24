@@ -40,9 +40,12 @@ export default {
         await this.$store.dispatch('energy/getInboundEnergy')
 
         const finalUsers = this.connections.map(conn => {
-          const ratedUser = ratedUsers.find(user => user.toBrightId === conn.id)
+          const ratingData = ratedUsers.find(
+            user => user.toBrightId === conn.id
+          )
           return {
-            rating: ratedUser ? +ratedUser.rating : undefined,
+            ratingData,
+            rating: ratingData ? +ratingData.rating : undefined,
             transferedEnergy:
               this.transferedEnergy.find(en => en.toBrightId === conn.id)
                 ?.amount || 0,
