@@ -10,13 +10,18 @@
         width="48"
       />
       <p :data-testid="`user-v2-${id}-name`" class="user-v2__tag">{{ name }}</p>
-      <small :data-testid="`user-v2-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
+      <small v-if="rating" :data-testid="`user-v2-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
     </nuxt-link>
     <div class="user-v2__numbers">
-      <p :data-testid="`user-v2-${id}-inbound`" class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
-      <p :data-testid="`user-v2-${id}-outbound`" class="user-v2__num user-v2__num-outbound">{{
-          outboundPercentage
-        }}%</p>
+      <template v-if="rating">
+        <p :data-testid="`user-v2-${id}-inbound`" class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
+        <p :data-testid="`user-v2-${id}-outbound`" class="user-v2__num user-v2__num-outbound">{{
+            outboundPercentage
+          }}%</p>
+      </template>
+      <nuxt-link v-else :to="url">
+        Not Rated Yet
+      </nuxt-link>
     </div>
   </li>
 </template>
@@ -34,7 +39,7 @@ export default {
     },
     id: {
       type: String,
-      default: '/',
+      default: '',
     },
     img: {
       type: String,

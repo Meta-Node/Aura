@@ -39,8 +39,6 @@ export default {
         await this.$store.dispatch('energy/getTransferedEnergy')
         await this.$store.dispatch('energy/getInboundEnergy')
 
-        // const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
-
         const finalUsers = this.connections.map(conn => {
           const ratedUser = ratedUsers.find(user => user.toBrightId === conn.id)
           return {

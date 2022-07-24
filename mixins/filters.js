@@ -55,9 +55,10 @@ export default {
     onSearchValue(value) {
       const trimmedValue = trim(value)
 
-      const usersBase = trimmedValue
-        ? this.filteredUsers
-        : this.filteredUsers.filter(user => +user.rating >= 1)
+      const usersBase =
+        this.$route.name === 'energy' && !trimmedValue
+          ? this.filteredUsers.filter(user => +user.rating >= 1)
+          : this.filteredUsers
       this.users = onSearch(trimmedValue, usersBase)
     },
 
