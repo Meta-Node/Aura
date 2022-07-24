@@ -13,20 +13,25 @@
         width="48"
       />
       <p :data-testid="`user-v3-${id}-name`" class="user-v3__tag">{{ name }}</p>
-      <small :data-testid="`user-v3-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
+      <small v-if="rating" :data-testid="`user-v3-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
     </nuxt-link>
     <div class="user-v3__numbers">
-      <user-slider
-        id="quality"
-        v-model="value"
-        :max="100"
-        :min="0"
-        :quota="getQuota"
-        :step="1"
-        :user-id="id"
-        type="range"
-        @input="changeEnergy"
-      />
+      <template v-if="rating">
+        <user-slider
+          id="quality"
+          v-model="value"
+          :max="100"
+          :min="0"
+          :quota="getQuota"
+          :step="1"
+          :user-id="id"
+          type="range"
+          @input="changeEnergy"
+        />
+      </template>
+      <nuxt-link v-else :to="url">
+        Not Rated Yet
+      </nuxt-link>
     </div>
   </li>
 </template>
