@@ -30,6 +30,15 @@ export const getByAmount = (users, fromLess) => {
   }
 }
 
+export const getByRated = (users, fromLess) => {
+  const newUsers = [...users].sort((a, b) => +a.rating - b.rating)
+  if (fromLess) {
+    return newUsers.reverse()
+  } else {
+    return newUsers
+  }
+}
+
 export const getByName = (users, fromA) => {
   const newUsers = [...users].sort(function (a, b) {
     const aName = a.nickname || a.name

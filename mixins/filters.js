@@ -2,6 +2,7 @@ import {
   getAlreadyKnown,
   getByAmount,
   getByName,
+  getByRated,
   getByRating,
   getExcludeZeros,
   getUnrated,
@@ -84,6 +85,9 @@ export default {
     },
     getAmount(users, fromLess) {
       return getByAmount(users, fromLess)
+    },
+    getRated(users, fromLess) {
+      return getByRated(users, fromLess)
     },
     getAlreadyKnown(users, value) {
       return getAlreadyKnown(users, value)
