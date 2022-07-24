@@ -2,7 +2,6 @@ import {
   getAlreadyKnown,
   getByAmount,
   getByName,
-  getByRated,
   getByRating,
   getExcludeZeros,
   getUnrated,
@@ -87,13 +86,12 @@ export default {
       return getByAmount(users, fromLess)
     },
     getRated(users, fromLess) {
-      return getByRated(users, fromLess)
+      return this.getRating(users, fromLess)
     },
     getAlreadyKnown(users, value) {
       return getAlreadyKnown(users, value)
     },
     getExcludeZeros(users, value) {
-      console.log('called')
       return getExcludeZeros(users, value)
     },
   },
