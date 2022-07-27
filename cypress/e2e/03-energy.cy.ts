@@ -6,6 +6,7 @@ import {
   getEnergyAllocationPercentageString,
   getInboundEnergy,
   getRating,
+  oldRatings,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
@@ -113,11 +114,9 @@ describe('Energy', () => {
     cy.get(`[data-testid=user-v2-${connection.id}-name]`).contains(
       connection.name
     )
-    const rating = getRating(connection.id)
+    const rating = getRating(connection.id, oldRatings)
     if (rating) {
-      cy.get(`[data-testid=user-v2-${connection.id}-rating]`).contains(
-        getRating(connection.id)
-      )
+      cy.get(`[data-testid=user-v2-${connection.id}-rating]`).contains(rating)
       cy.get(`[data-testid=user-v2-${connection.id}-inbound]`).contains(
         getInboundEnergy(connection.id)
       )
@@ -139,7 +138,7 @@ describe('Energy', () => {
       connection.name
     )
     cy.get(`[data-testid=user-v3-${connection.id}-rating]`).contains(
-      getRating(connection.id)
+      getRating(connection.id, oldRatings)
     )
     cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).contains(
       getEnergyAllocationPercentageString(allocation, connection.id)

@@ -186,32 +186,65 @@ export const AURA_GENERAL_PROFILE: AuraProfile = {
   nicknames: [],
 }
 
+export const oldRatings: AuraRating[] = [
+  {
+    id: 5050,
+    toBrightId: ratedConnection.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '4',
+    createdAt: '2021-07-10T20:59:03.036Z',
+  },
+  {
+    id: 3040,
+    toBrightId: ratedConnectionWithoutEnergy.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '3',
+    createdAt: '2021-07-13T20:59:03.036Z',
+  },
+  {
+    id: 6070,
+    toBrightId: ratedConnectionNegative.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '-1',
+    createdAt: '2021-07-11T20:59:03.036Z',
+  },
+]
+
+export const newRatings: AuraRating[] = [
+  {
+    id: 5060,
+    toBrightId: ratedConnection.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '-2',
+    createdAt: '2021-07-10T20:59:03.036Z',
+  },
+  {
+    id: 3050,
+    toBrightId: ratedConnectionWithoutEnergy.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '0',
+    createdAt: '2021-07-13T20:59:03.036Z',
+  },
+  {
+    id: 6080,
+    toBrightId: ratedConnectionNegative.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '0.5',
+    createdAt: '2021-07-11T20:59:03.036Z',
+  },
+  {
+    id: 7080,
+    toBrightId: unratedConnection.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '4',
+    createdAt: '2021-07-17T20:59:03.036Z',
+  },
+]
+
 export const AURA_RATINGS: {
   ratings: AuraRating[]
 } = {
-  ratings: [
-    {
-      id: 5050,
-      toBrightId: ratedConnection.id,
-      fromBrightId: FAKE_BRIGHT_ID,
-      rating: '4',
-      createdAt: '2021-07-10T20:59:03.036Z',
-    },
-    {
-      id: 3040,
-      toBrightId: ratedConnectionWithoutEnergy.id,
-      fromBrightId: FAKE_BRIGHT_ID,
-      rating: '3',
-      createdAt: '2021-07-13T20:59:03.036Z',
-    },
-    {
-      id: 6070,
-      toBrightId: ratedConnectionNegative.id,
-      fromBrightId: FAKE_BRIGHT_ID,
-      rating: '-1',
-      createdAt: '2021-07-11T20:59:03.036Z',
-    },
-  ],
+  ratings: oldRatings,
 }
 
 export const PROFILE_PICTURE = encryptData(
@@ -237,12 +270,12 @@ export const AURA_INBOUND_ENERGIES = {
   ],
 }
 
-export function getRatingObject(brightId: string) {
-  return AURA_RATINGS.ratings.find(r => r.toBrightId === brightId)
+export function getRatingObject(brightId: string, ratings: AuraRating[]) {
+  return ratings.find(r => r.toBrightId === brightId)
 }
 
-export function getRating(brightId: string) {
-  return getRatingObject(brightId)?.rating
+export function getRating(brightId: string, ratings: AuraRating[]) {
+  return getRatingObject(brightId, ratings)?.rating
 }
 
 export function getOutboundEnergy(brightId: string) {
@@ -284,7 +317,7 @@ export function getConnectionResponse(connection: Connection) {
     connectedTimestamp: connection.timestamp,
     fourUnrated: [],
   }
-  const ratingObj = getRatingObject(connection.id)
+  const ratingObj = getRatingObject(connection.id, oldRatings)
   if (ratingObj) {
     obj.previousRating = ratingObj
   }

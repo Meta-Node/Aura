@@ -74,7 +74,7 @@ describe('Energy', () => {
   //   cy.get(`.toast--${TOAST_SUCCESS}`)
   // }
 
-  function showRate(connection: Connection) {
+  function doRate(connection: Connection) {
     cy.intercept(
       {
         url: `/v1/profile/${connection.id}`,
@@ -94,7 +94,7 @@ describe('Energy', () => {
       }
     )
     cy.get(`[data-testid=user-v1-${connection.id}-name]`).click()
-    const ratingValue = Number(getRating(connection.id))
+    const ratingValue = Number(getRating(connection.id, oldRatings))
     cy.get('[data-testid=feedback-quality-value]').contains(
       getStepName(ratingValue)
     )
@@ -111,6 +111,6 @@ describe('Energy', () => {
         connection.name
       )
     })
-    showRate(ratedConnection)
+    doRate(ratedConnection)
   })
 })
