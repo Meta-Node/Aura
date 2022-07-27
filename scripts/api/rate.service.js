@@ -12,9 +12,12 @@ export const rateUser = async ({ fromBrightId, toBrightId, rating }) => {
     const endpoint = '/v1/ratings/'
     const URL = `${endpoint}${fromBrightId}/${toBrightId}`
 
-    await backendApi.post(URL, {
+    const res = await backendApi.post(URL, {
       encryptedRating,
     })
+    if (res.status !== 200) {
+      throw new Error('Could not submit rating')
+    }
   } catch (error) {
     console.log(error)
     throw error

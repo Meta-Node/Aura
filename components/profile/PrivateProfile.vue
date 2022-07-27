@@ -64,7 +64,7 @@ import {rateUser} from '~/scripts/api/rate.service'
 import FourUnrated from '~/components/FourUnrated.vue'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
-import {TOAST_SUCCESS} from "~/utils/constants";
+import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 
 export default {
   components: {
@@ -120,20 +120,22 @@ export default {
   methods: {
     async onFeedbackChanged(rating) {
       this.$store.commit('app/setLoading', true)
-      await rateUser({
-        rating,
-        fromBrightId: localStorage.getItem('brightId'),
-        toBrightId: this.profile.id,
-      })
-      this.$store.commit('app/setLoading', false)
+      try {
+        await rateUser({
+          rating,
+          fromBrightId: localStorage.getItem('brightId'),
+          toBrightId: this.profile.id,
+        })
+        this.$store.commit('app/setLoading', false)
 
-      this.$store.commit('toast/addToast', {
-        text: 'Successfully updated',
-        color: TOAST_SUCCESS,
-      })
-
-      if (rating > 0.5) {
+        this.$store.commit('toast/addToast', {
+          text: 'Successfully updated',
+          color: TOAST_SUCCESS,
+        })
         this.$router.push('/community')
+      } catch (error) {
+        this.$store.commit('app/setLoading', false)
+        this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       }
     },
     onShare() {

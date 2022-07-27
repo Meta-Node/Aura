@@ -1,14 +1,16 @@
 import {
   AURA_GENERAL_PROFILE,
-  AURA_RATINGS,
   BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
   getConnectionResponse,
   getRating,
+  newRatings,
+  oldRatings,
   ratedConnection,
 } from '../utils/data'
-import { Connection } from '../types'
+import { AuraRating, Connection } from '../types'
 import { getStepName, valueToStep } from '../../utils/rating'
+import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 
 describe('Energy', () => {
   beforeEach(() => {
@@ -27,52 +29,64 @@ describe('Energy', () => {
     cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
-  const oldRatings = AURA_RATINGS.ratings
+  const currentRatings = Object.assign([], oldRatings)
 
-  // function submitEnergyFailure() {
-  //   cy.intercept(
-  //     {
-  //       url: `/v1/energy/${FAKE_BRIGHT_ID}`,
-  //       method: 'POST',
-  //     },
-  //     {
-  //       statusCode: 500,
-  //     }
-  //   ).as('submitEnergyError')
-  //   cy.get('[data-testid=update-energy]').click()
-  //   cy.wait('@submitEnergyError')
-  //   cy.get(`.toast--${TOAST_ERROR}`)
-  // }
+  function submitNewRatingFailure(connection: Connection) {
+    cy.intercept(
+      {
+        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
+        method: 'POST',
+      },
+      {
+        statusCode: 500,
+      }
+    ).as('submitRatingError')
+    cy.get('[data-testid=feedback-quality-confirm]').click()
+    cy.wait('@submitRatingError')
+    cy.get(`.toast--${TOAST_ERROR}`)
+  }
+
   //
-  // function submitEnergySuccess() {
-  //   cy.intercept(
-  //     {
-  //       url: `/v1/energy/${FAKE_BRIGHT_ID}`,
-  //       method: 'POST',
-  //     },
-  //     {
-  //       body: { energyAllocation: newEnergyAllocation },
-  //       statusCode: 200,
-  //     }
-  //   ).as('submitEnergy')
-  //   cy.intercept(
-  //     {
-  //       url: `/v1/energy/${FAKE_BRIGHT_ID}`,
-  //       method: 'GET',
-  //     },
-  //     {
-  //       body: { energy: newEnergyAllocation },
-  //     }
-  //   )
-  //
-  //   cy.get('[data-testid=update-energy]').click()
-  //   cy.wait('@submitEnergy')
-  //     .its('request.body')
-  //     .should(body => {
-  //       expect(body).to.have.key('encryptedTransfers')
-  //     })
-  //   cy.get(`.toast--${TOAST_SUCCESS}`)
-  // }
+  function submitNewRatingSuccess(connection: Connection) {
+    //   cy.intercept(
+    //     {
+    //       url: `/v1/energy/${FAKE_BRIGHT_ID}`,
+    //       method: 'POST',
+    //     },
+    //     {
+    //       body: { energyAllocation: newEnergyAllocation },
+    //       statusCode: 200,
+    //     }
+    //   ).as('submitEnergy')
+    //   cy.intercept(
+    //     {
+    //       url: `/v1/energy/${FAKE_BRIGHT_ID}`,
+    //       method: 'GET',
+    //     },
+    //     {
+    //       body: { energy: newEnergyAllocation },
+    //     }
+    //   )
+    //
+    //   cy.get('[data-testid=update-energy]').click()
+    //   cy.wait('@submitEnergy')
+    //     .its('request.body')
+    //     .should(body => {
+    //       expect(body).to.have.key('encryptedTransfers')
+    //     })
+    cy.get(`.toast--${TOAST_SUCCESS}`)
+  }
+
+  function showsRateValue(connection: Connection, ratings: AuraRating[]) {
+    const ratingValue = Number(getRating(connection.id, ratings))
+    cy.get('[data-testid=feedback-quality-value]').contains(
+      getStepName(ratingValue)
+    )
+    cy.get('[data-testid=feedback-quality-input]').should(
+      'have.value',
+      valueToStep[ratingValue]
+    )
+  }
 
   function doRate(connection: Connection) {
     cy.intercept(
@@ -94,14 +108,17 @@ describe('Energy', () => {
       }
     )
     cy.get(`[data-testid=user-v1-${connection.id}-name]`).click()
-    const ratingValue = Number(getRating(connection.id, oldRatings))
-    cy.get('[data-testid=feedback-quality-value]').contains(
-      getStepName(ratingValue)
-    )
-    cy.get('[data-testid=feedback-quality-input]').should(
-      'have.value',
-      valueToStep[ratingValue]
-    )
+    showsRateValue(connection, oldRatings)
+
+    // set new rating value
+    const newRatingValue = Number(getRating(connection.id, newRatings))
+    cy.get('[data-testid=feedback-quality-input]')
+      .invoke('val', valueToStep[newRatingValue])
+      .trigger('input')
+
+    showsRateValue(connection, newRatings)
+
+    submitNewRatingFailure(connection)
   }
 
   it('do rate', () => {
