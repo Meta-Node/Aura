@@ -1,11 +1,14 @@
 import {
   AURA_GENERAL_PROFILE,
-  BRIGHT_ID_BACKUP,
   FAKE_BRIGHT_ID,
   getConnectionResponse,
   getRating,
   newRatings,
   oldRatings,
+  ratedConnection,
+  ratedConnectionNegative,
+  ratedConnectionWithoutEnergy,
+  unratedConnection,
 } from '../utils/data'
 import { AuraRating, Connection } from '../types'
 import { getStepName, valueToStep } from '../../utils/rating'
@@ -142,13 +145,35 @@ describe('Energy', () => {
     cy.go(-1)
   }
 
-  it('do rate', () => {
+  it('rates an unrated connection', () => {
     cy.visit(`/community/`)
-    BRIGHT_ID_BACKUP.connections.forEach(connection => {
-      cy.get(`[data-testid=user-v1-${connection.id}-name]`).contains(
-        connection.name
-      )
-      doRate(connection)
-    })
+    cy.get(`[data-testid=user-v1-${unratedConnection.id}-name]`).contains(
+      unratedConnection.name
+    )
+    doRate(unratedConnection)
+  })
+
+  it('rates a rated connection', () => {
+    cy.visit(`/community/`)
+    cy.get(`[data-testid=user-v1-${ratedConnection.id}-name]`).contains(
+      ratedConnection.name
+    )
+    doRate(ratedConnection)
+  })
+
+  it('submits an unchanged rate', () => {
+    cy.visit(`/community/`)
+    cy.get(
+      `[data-testid=user-v1-${ratedConnectionWithoutEnergy.id}-name]`
+    ).contains(ratedConnectionWithoutEnergy.name)
+    doRate(ratedConnectionWithoutEnergy)
+  })
+
+  it('changes a negative rate', () => {
+    cy.visit(`/community/`)
+    cy.get(`[data-testid=user-v1-${ratedConnectionNegative.id}-name]`).contains(
+      ratedConnectionNegative.name
+    )
+    doRate(ratedConnectionNegative)
   })
 })

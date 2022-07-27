@@ -219,10 +219,10 @@ export const newRatings: AuraRating[] = [
     createdAt: '2021-07-10T20:59:03.036Z',
   },
   {
-    id: 3050,
+    id: 3040,
     toBrightId: ratedConnectionWithoutEnergy.id,
     fromBrightId: FAKE_BRIGHT_ID,
-    rating: '0',
+    rating: '3',
     createdAt: '2021-07-13T20:59:03.036Z',
   },
   {
