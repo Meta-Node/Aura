@@ -1,5 +1,4 @@
 import {
-  AURA_CONNECTIONS,
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
   FAKE_BRIGHT_ID,
@@ -12,12 +11,7 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import {
-  CONNECTION_SEARCH_SEED,
-  ENERGY_TABS,
-  TOAST_ERROR,
-  TOAST_SUCCESS,
-} from '../../utils/constants'
+import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 import { Connection, EnergyAllocation } from '../types'
 
 describe('Energy', () => {
@@ -46,15 +40,6 @@ describe('Energy', () => {
       },
       {
         body: AURA_INBOUND_ENERGIES,
-      }
-    )
-    cy.intercept(
-      {
-        url: `/v1/connections/search?fromBrightId=${FAKE_BRIGHT_ID}&seed=${CONNECTION_SEARCH_SEED}`,
-        method: 'GET',
-      },
-      {
-        body: AURA_CONNECTIONS,
       }
     )
   })

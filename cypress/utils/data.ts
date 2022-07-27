@@ -4,7 +4,14 @@ import {
   generateB64Keypair,
   hash,
 } from '../../scripts/utils/crypto'
-import { Connection, EnergyAllocation } from '../types'
+import {
+  AuraConnection,
+  AuraProfile,
+  AuraRating,
+  Connection,
+  ConnectionResponse,
+  EnergyAllocation,
+} from '../types'
 import { toRoundedPercentage } from '../../utils/numbers'
 
 const { publicKey, privateKey } = generateB64Keypair()
@@ -132,7 +139,9 @@ export const BRIGHT_ID_BACKUP_ENCRYPTED = encryptUserData(
   FAKE_BRIGHT_ID_PASSWORD
 )
 
-export const AURA_CONNECTIONS = {
+export const AURA_CONNECTIONS: {
+  connections: AuraConnection[]
+} = {
   connections: BRIGHT_ID_BACKUP.connections.map(connection => ({
     _id: `users/${connection.id}`,
     _key: connection.id,
@@ -157,17 +166,29 @@ export const AURA_CONNECTIONS = {
   })),
 }
 
-export const AURA_PROFILE = {
+export const AURA_PROFILE: AuraProfile = {
   numOfConnections: BRIGHT_ID_BACKUP.connections.length,
   brightIdDate: RANDOM_TIMESTAMP,
   fourUnrated: [
-    AURA_CONNECTIONS.connections.find(con => con._id === unratedConnection.id),
+    AURA_CONNECTIONS.connections.find(
+      con => con._id.replace('users/', '') === unratedConnection.id
+    ),
   ],
   rating: 0,
   nicknames: [],
 }
 
-export const AURA_RATINGS = {
+export const AURA_GENERAL_PROFILE: AuraProfile = {
+  numOfConnections: 5,
+  brightIdDate: RANDOM_TIMESTAMP,
+  fourUnrated: [],
+  rating: 0,
+  nicknames: [],
+}
+
+export const AURA_RATINGS: {
+  ratings: AuraRating[]
+} = {
   ratings: [
     {
       id: 5050,
@@ -216,8 +237,12 @@ export const AURA_INBOUND_ENERGIES = {
   ],
 }
 
+export function getRatingObject(brightId: string) {
+  return AURA_RATINGS.ratings.find(r => r.toBrightId === brightId)
+}
+
 export function getRating(brightId: string) {
-  return AURA_RATINGS.ratings.find(r => r.toBrightId === brightId)?.rating
+  return getRatingObject(brightId)?.rating
 }
 
 export function getOutboundEnergy(brightId: string) {
@@ -252,4 +277,22 @@ export function getEnergyAllocationPercentageString(
       getEnergyAllocationSum(allocation)
     ) + '%'
   )
+}
+
+export function getConnectionResponse(connection: Connection) {
+  const obj: ConnectionResponse = {
+    connectedTimestamp: connection.timestamp,
+    fourUnrated: [],
+  }
+  const ratingObj = getRatingObject(connection.id)
+  if (ratingObj) {
+    obj.previousRating = ratingObj
+  }
+  const energy = getEnergyAllocationAmount(AURA_ENERGIES.energy, connection.id)
+  if (energy) {
+    obj.energyAllocated = {
+      amount: Number(energy),
+    }
+  }
+  return obj
 }

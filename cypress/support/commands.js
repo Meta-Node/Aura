@@ -1,5 +1,6 @@
 import localforage from 'localforage'
 import {
+  AURA_CONNECTIONS,
   AURA_PROFILE,
   AURA_RATINGS,
   BRIGHT_ID_BACKUP_ENCRYPTED,
@@ -10,6 +11,7 @@ import {
   LOCAL_FORAGE_DATA,
   PROFILE_PICTURE,
 } from '../utils/data'
+import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
 
 Cypress.Commands.add('shouldBeCalled', (alias, timesCalled) => {
   expect(
@@ -95,6 +97,15 @@ Cypress.Commands.add('profileIntercepts', () => {
     },
     {
       body: AURA_RATINGS,
+    }
+  )
+  cy.intercept(
+    {
+      url: `/v1/connections/search?fromBrightId=${FAKE_BRIGHT_ID}&seed=${CONNECTION_SEARCH_SEED}`,
+      method: 'GET',
+    },
+    {
+      body: AURA_CONNECTIONS,
     }
   )
 })
