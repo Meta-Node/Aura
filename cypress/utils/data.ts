@@ -312,12 +312,15 @@ export function getEnergyAllocationPercentageString(
   )
 }
 
-export function getConnectionResponse(connection: Connection) {
+export function getConnectionResponse(
+  connection: Connection,
+  ratings: AuraRating[]
+) {
   const obj: ConnectionResponse = {
     connectedTimestamp: connection.timestamp,
     fourUnrated: [],
   }
-  const ratingObj = getRatingObject(connection.id, oldRatings)
+  const ratingObj = getRatingObject(connection.id, ratings)
   if (ratingObj) {
     obj.previousRating = ratingObj
   }
