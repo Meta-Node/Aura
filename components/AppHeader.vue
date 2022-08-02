@@ -84,6 +84,11 @@
                 Energy
               </nuxt-link>
             </li>
+            <li class="popup-menu__list">
+              <nuxt-link class="menu-text popup-menu__text" to="/contact-us/">
+                Contact Us
+              </nuxt-link>
+            </li>
             <!--            <li class="popup-menu__list">-->
             <!--              <nuxt-link class="menu-text popup-menu__text" to="/activity/">-->
             <!--                Activity-->
