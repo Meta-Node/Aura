@@ -6,7 +6,7 @@ export const getUnrated = users => {
 
 export const getByRating = (users, fromLess) => {
   const newUsers = [...users.filter(su => su.rating)].sort(
-    (a, b) => +a.rating - b.rating
+    (a, b) => +b.rating - a.rating
   )
   if (fromLess) {
     return newUsers
@@ -28,7 +28,9 @@ export const getByAmount = (users, fromLess) => {
 
 export const getByRatingDate = (users, fromLess) => {
   const newUsers = [...users.filter(su => su.ratingData)].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    (a, b) =>
+      new Date(a.ratingData.createdAt).getTime() -
+      new Date(b.ratingData.createdAt).getTime()
   )
   if (fromLess) {
     return newUsers
@@ -46,10 +48,10 @@ export const getByName = (users, fromA) => {
     const aName = a.nickname || a.name
     const bName = b.nickname || b.name
     if (aName > bName) {
-      return 1
+      return -1
     }
     if (bName > aName) {
-      return -1
+      return 1
     }
     return 0
   })

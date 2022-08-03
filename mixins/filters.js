@@ -86,6 +86,9 @@ export default {
     getRecent(users, fromLess) {
       return getByRatingDate(users, fromLess)
     },
+    getOutbound(users, fromLess) {
+      return getByAmount(users, fromLess)
+    },
     getAmount(users, fromLess) {
       return getByAmount(users, fromLess)
     },

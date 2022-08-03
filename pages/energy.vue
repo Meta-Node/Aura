@@ -94,7 +94,7 @@ export default {
           reverse: false,
         },
         {
-          name: 'Amount',
+          name: 'Outbound',
           type: 'reversable',
           active: false,
           reverse: false,
