@@ -1,0 +1,45 @@
+.contact-us {
+  margin-top: 112px;
+  padding-bottom: 60px;
+  
+  .toggle-switch {
+    margin-right: 24px;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 48px;
+  }
+
+  &__title {
+    @include semi;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    line-height: 130%;
+    letter-spacing: -0.03em;
+    color: var(--b-grey);
+    margin-bottom: 48px;
+  }
+
+  &__text {
+    @include med;
+    margin-top: 30px;
+    font-size: 16px;
+    line-height: 150%;
+    background: linear-gradient(
+      90deg,
+      #ffffff 0.53%,
+      rgba(255, 255, 255, 0.5) 145.92%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+}
