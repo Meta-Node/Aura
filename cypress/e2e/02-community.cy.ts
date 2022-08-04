@@ -14,7 +14,7 @@ import { AuraRating, Connection } from '../types'
 import { getStepName, valueToStep } from '../../utils/rating'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 
-describe('Energy', () => {
+describe('Community', () => {
   beforeEach(() => {
     cy.on('window:before:load', win => {
       cy.spy(win.console, 'error').as('spyWinConsoleError')
