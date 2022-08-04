@@ -29,12 +29,14 @@ export const RANDOM_TIMESTAMP = 1640511387053
 export const RANDOM_BLOCK_NUMBER = 10307210
 
 // not sure if it works right
-const toSigningKey = s => {
-  const alts = {
+const toSigningKey = (s: string) => {
+  const alts: {
+    [key: string]: string
+  } = {
     _: '/',
     '-': '+',
   }
-  return s.replace(/[-_]/g, c => alts[c]) + '='
+  return s.replace(/[-_]/g, (c: string) => alts[c]) + '='
 }
 
 export const unratedConnection: Connection = {
@@ -172,7 +174,7 @@ export const AURA_PROFILE: AuraProfile = {
   fourUnrated: [
     AURA_CONNECTIONS.connections.find(
       con => con._id.replace('users/', '') === unratedConnection.id
-    ),
+    )!,
   ],
   rating: 0,
   nicknames: [],

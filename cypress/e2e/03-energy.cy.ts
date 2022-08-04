@@ -138,7 +138,7 @@ describe('Energy', () => {
       connection.name
     )
     cy.get(`[data-testid=user-v3-${connection.id}-rating]`).contains(
-      getRating(connection.id, oldRatings)
+      getRating(connection.id, oldRatings)!
     )
     cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).contains(
       getEnergyAllocationPercentageString(allocation, connection.id)

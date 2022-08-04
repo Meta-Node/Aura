@@ -31,7 +31,7 @@ describe('Energy', () => {
     cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
-  let currentRatings = Object.assign([], oldRatings)
+  let currentRatings: AuraRating[] = Object.assign([], oldRatings)
 
   function setNewRating(connection: Connection) {
     const newRating = newRatings.find(r => r.toBrightId === connection.id)
@@ -120,7 +120,7 @@ describe('Energy', () => {
   function showsRateValue(connection: Connection, ratings: AuraRating[]) {
     const ratingValue = Number(getRating(connection.id, ratings) || 0)
     cy.get('[data-testid=feedback-quality-value]').contains(
-      getStepName(ratingValue)
+      getStepName(ratingValue)!
     )
     cy.get('[data-testid=feedback-quality-input]').should(
       'have.value',
