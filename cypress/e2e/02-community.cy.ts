@@ -97,6 +97,26 @@ describe('Energy', () => {
     cy.get(`.toast--${TOAST_SUCCESS}`)
   }
 
+  function submitNewRatingNoChange(connection: Connection) {
+    cy.intercept(
+      {
+        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
+        method: 'POST',
+      },
+      {
+        statusCode: 500,
+      }
+    ).as('submitRatingError')
+    setNewRating(connection)
+
+    cy.get('[data-testid=feedback-quality-confirm]').click()
+    // should not be called
+    cy.get('@submitRatingError.all').should('have.length', 0)
+    cy.get(`.toast--${TOAST_SUCCESS}`, { timeout: 1 }).should('not.exist')
+    cy.get(`.toast--${TOAST_ERROR}`, { timeout: 1 }).should('not.exist')
+    cy.url().should('include', `/community/${FAKE_BRIGHT_ID}`)
+  }
+
   function showsRateValue(connection: Connection, ratings: AuraRating[]) {
     const ratingValue = Number(getRating(connection.id, ratings) || 0)
     cy.get('[data-testid=feedback-quality-value]').contains(
@@ -131,15 +151,19 @@ describe('Energy', () => {
     showsRateValue(connection, oldRatings)
 
     // set new rating value
+    const oldRatingValue = Number(getRating(connection.id, oldRatings))
     const newRatingValue = Number(getRating(connection.id, newRatings))
     cy.get('[data-testid=feedback-quality-input]')
       .invoke('val', valueToStep[newRatingValue])
       .trigger('input')
 
     showsRateValue(connection, newRatings)
-
-    submitNewRatingFailure(connection)
-    submitNewRatingSuccess(connection)
+    if (newRatingValue === oldRatingValue) {
+      submitNewRatingNoChange(connection)
+    } else {
+      submitNewRatingFailure(connection)
+      submitNewRatingSuccess(connection)
+    }
     cy.get(`[data-testid=user-v1-${connection.id}-name]`).click()
     showsRateValue(connection, newRatings)
     cy.go(-1)
@@ -161,7 +185,7 @@ describe('Energy', () => {
     doRate(ratedConnection)
   })
 
-  it('submits an unchanged rate', () => {
+  it('does not send request for an unchanged rate', () => {
     cy.visit(`/community/`)
     cy.get(
       `[data-testid=user-v1-${ratedConnectionWithoutEnergy.id}-name]`
