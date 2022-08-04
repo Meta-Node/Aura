@@ -36,7 +36,7 @@
               :min="-5"
               :prev-value="+profile.previousRating"
               :step="1"
-              :value="+profile.previousRating || 0"
+              :value="previousRating"
               type="range"
               @changed="onFeedbackChanged"
             />
@@ -112,6 +112,9 @@ export default {
   },
 
   computed: {
+    previousRating() {
+      return +this.profile.previousRating || 0
+    },
     img() {
       return this.$route.params.id
     },
@@ -121,17 +124,19 @@ export default {
     async onFeedbackChanged(rating) {
       this.$store.commit('app/setLoading', true)
       try {
-        await rateUser({
-          rating,
-          fromBrightId: localStorage.getItem('brightId'),
-          toBrightId: this.profile.id,
-        })
-        this.$store.commit('app/setLoading', false)
+        if (rating !== this.previousRating) {
+          await rateUser({
+            rating,
+            fromBrightId: localStorage.getItem('brightId'),
+            toBrightId: this.profile.id,
+          })
+          this.$store.commit('app/setLoading', false)
 
-        this.$store.commit('toast/addToast', {
-          text: 'Successfully updated',
-          color: TOAST_SUCCESS,
-        })
+          this.$store.commit('toast/addToast', {
+            text: 'Successfully updated',
+            color: TOAST_SUCCESS,
+          })
+        }
         this.$router.push('/community')
       } catch (error) {
         this.$store.commit('app/setLoading', false)

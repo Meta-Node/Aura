@@ -114,7 +114,7 @@ describe('Energy', () => {
     cy.get('@submitRatingError.all').should('have.length', 0)
     cy.get(`.toast--${TOAST_SUCCESS}`, { timeout: 1 }).should('not.exist')
     cy.get(`.toast--${TOAST_ERROR}`, { timeout: 1 }).should('not.exist')
-    cy.url().should('include', `/community/${FAKE_BRIGHT_ID}`)
+    cy.url().should('include', `/community`)
   }
 
   function showsRateValue(connection: Connection, ratings: AuraRating[]) {
