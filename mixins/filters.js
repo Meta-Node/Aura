@@ -25,7 +25,7 @@ export default {
       this.users = this.startUsers
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
-          if (filter.type === 'reversable') {
+          if (filter.type === 'reversible') {
             if (!filter.active) {
               filter.reverse = false
             } else {

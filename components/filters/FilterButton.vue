@@ -1,13 +1,13 @@
 <template>
   <button
     :class="[active && 'filter-button--active']"
-    :data-testid="`filter-${name.replace(' ', '')}`"
+    :data-testid="testId"
     class="filter-button"
     @click="onClick"
   >
     {{ name }}
     <span
-      v-if="isIcon"
+      v-if="reversible"
       :style="{ transform: reverse ? 'rotate(180deg)' : 'rotate(0deg)' }"
       class="filter-button__icon"
     >
@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isIcon: {
+    reversible: {
       type: Boolean,
       default: true,
     },
@@ -43,6 +43,15 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  computed: {
+    testId() {
+      const id = `filter-${this.name.replace(' ', '')}`
+      if (!this.active) return `${id}-inactive`
+      if (!this.reversible) return `${id}-active`
+      if (!this.reverse) return `${id}-descending`
+      return `${id}-ascending`
+    }
   },
 
   methods: {
