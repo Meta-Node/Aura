@@ -2,6 +2,7 @@ import assert from 'assert'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 
+import { Store } from 'vuex'
 import { backendApi, brightIdBaseURL } from '.'
 import {
   b64ToUrlSafeB64,
@@ -13,9 +14,10 @@ import {
   randomWordArray,
   wordArrayToB64,
 } from '~/scripts/utils/crypto'
+import { BrightIdData, RootState } from '~/types/store'
 
-let qrString
-let intervalID
+let qrString: string
+let intervalID: NodeJS.Timer
 
 const createImportQR = async () => {
   const array = randomWordArray(16)
@@ -58,7 +60,11 @@ const createImportQR = async () => {
   }
 }
 
-const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
+const createSyncQR = async (
+  brightID: string,
+  signingKey: string,
+  lastSyncTime: number
+) => {
   const array = randomWordArray(16)
   const aesKey = b64ToUrlSafeB64(wordArrayToB64(array))
 
@@ -82,17 +88,21 @@ const createSyncQR = async (brightID, signingKey, lastSyncTime) => {
   return { channelId, aesKey, signingKey }
 }
 
-export const readChannel = async (data, nuxtCtx, resolve) => {
+export const readChannel = async (
+  data: any, // TODO: determine type
+  nuxtCtx: Store<RootState>,
+  resolve: (data: unknown) => void
+) => {
   let profile
   const connections = []
   const { channelId, aesKey, signingKey } = data
-  let res = await backendApi.get(`/profile/list/${channelId}`)
+  let res = await backendApi.get<any>(`/profile/list/${channelId}`)
 
   const dataIds = res.data.profileIds
 
-  const uploader = id => id.replace('completed_', '').split(':')[1]
+  const uploader = (id: string) => id.replace('completed_', '').split(':')[1]
   const completed = dataIds.find(
-    dataId =>
+    (dataId: string) =>
       dataId.startsWith('sig_completed_') &&
       uploader(dataId) !== b64ToUrlSafeB64(signingKey)
   )
@@ -127,7 +137,10 @@ export const readChannel = async (data, nuxtCtx, resolve) => {
   resolve({ profile, connections })
 }
 
-export const readChannelPromise = (data, nuxtCtx) => {
+export const readChannelPromise = (
+  data: BrightIdData,
+  nuxtCtx: Store<RootState>
+) => {
   return new Promise((resolve, _reject) => {
     intervalID = setInterval(() => readChannel(data, nuxtCtx, resolve), 3000)
   })
@@ -152,7 +165,8 @@ export const syncBrightID = async () => {
     'WPL5WOLMbJ9M2wKbx9QaGOlJcXcIwQ7o8FfdoP+EX5g='
 
   try {
-    const lastSyncTime = localStorage.getItem('timestamp') || 1645509278250
+    const lastSyncTime =
+      Number(localStorage.getItem('timestamp')) || 1645509278250
     await createSyncQR(brightID, signingKey, lastSyncTime)
   } catch (error) {
     console.log(error)
@@ -181,15 +195,24 @@ export const commitToBackend = async () => {
   }
 }
 
-export async function pullDecryptedUserData(key, password, ctx) {
+export async function pullDecryptedUserData(
+  key: string,
+  password: string,
+  ctx: Store<RootState>
+) {
   return decryptUserData((await pullEncryptedUserData(key, ctx)).data, password)
 }
 
-async function pullEncryptedUserData(key, ctx) {
-  return await ctx.$axios.get(`/brightid/backups/${key}/data`)
+function pullEncryptedUserData(key: string, ctx: Store<RootState>) {
+  return ctx.$axios.get<string>(`/brightid/backups/${key}/data`)
 }
 
-export async function pullProfilePhoto(key, brightId, password, ctx) {
+export async function pullProfilePhoto(
+  key: string,
+  brightId: string,
+  password: string,
+  ctx: Store<RootState>
+) {
   try {
     const encryptedUserPicture = await ctx.$axios.get(
       `/brightid/backups/${key}/${brightId}`
@@ -200,7 +223,10 @@ export async function pullProfilePhoto(key, brightId, password, ctx) {
   }
 }
 
-export const loginByExplorerCode = async (explorerCode, password) => {
+export const loginByExplorerCode = async (
+  explorerCode: string,
+  password: string
+) => {
   try {
     const brightId = decryptData(explorerCode, password)
 

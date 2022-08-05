@@ -309,7 +309,7 @@ export function getEnergyAllocationPercentageString(
 ) {
   return (
     toRoundedPercentage(
-      getEnergyAllocationAmount(allocation, brightId),
+      Number(getEnergyAllocationAmount(allocation, brightId)),
       getEnergyAllocationSum(allocation)
     ) + '%'
   )

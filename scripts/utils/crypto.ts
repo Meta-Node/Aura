@@ -68,7 +68,7 @@ export const generateB64Keypair = () => {
   }
 }
 
-export const encryptDataWithPrivateKey = (data: string) => {
+export const encryptDataWithPrivateKey = (data: any) => {
   if (IS_DEV) {
     console.log('encryptDataWithPrivateKey')
     console.log(data)
