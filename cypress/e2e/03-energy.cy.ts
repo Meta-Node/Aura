@@ -219,15 +219,23 @@ describe('Energy', () => {
     cy.get('[data-testid=filter-Rated-descending]').click()
     assertOrder(ratingsInEnergyFilterAllSortedByRateAscending)
 
-    cy.get('[data-testid=filter-Rated-ascending]')
+    cy.get('[data-testid=filter-Rated-ascending]').should('exist')
   })
+
+  function assertExcludeZerosFilter(isApplied: boolean) {
+    cy.get(
+      `[data-testid^=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
+    ).should(isApplied ? 'not.exist' : 'exist')
+  }
 
   it('exclude zeros filter', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    assertExcludeZerosFilter(false)
     cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).click()
-    cy.get(
-      `[data-testid=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
-    ).should('not.exist')
+    assertExcludeZerosFilter(true)
+    cy.get(`[data-testid=filter-ExcludeZeros-active]`).click()
+    assertExcludeZerosFilter(false)
+    cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).should('exist')
   })
 
   it('shows energies in set tab', () => {
