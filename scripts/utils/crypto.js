@@ -2,7 +2,13 @@ import CryptoJS from 'crypto-js'
 import nacl from 'tweetnacl'
 import B64 from 'base64-js'
 
+const IS_DEV = process.env.NODE_ENV !== 'production'
+
 export function encryptData(data, password) {
+  if (IS_DEV) {
+    console.log('encryptData')
+    console.log(data)
+  }
   return CryptoJS.AES.encrypt(data, password).toString()
 }
 
@@ -11,7 +17,14 @@ export function encryptUserData(userData, password) {
 }
 
 export function decryptData(data, password) {
-  return CryptoJS.AES.decrypt(data, password).toString(CryptoJS.enc.Utf8)
+  const decrypted = CryptoJS.AES.decrypt(data, password).toString(
+    CryptoJS.enc.Utf8
+  )
+  if (IS_DEV) {
+    console.log('decryptData')
+    console.log(decrypted)
+  }
+  return decrypted
 }
 
 export function decryptUserData(encryptedUserData, password) {
@@ -51,6 +64,10 @@ export const generateB64Keypair = () => {
 }
 
 export const encryptDataWithPrivateKey = encryptedData => {
+  if (IS_DEV) {
+    console.log('encryptDataWithPrivateKey')
+    console.log(encryptedData)
+  }
   const privateKey = localStorage.getItem('privateKey')
 
   if (!privateKey) {
