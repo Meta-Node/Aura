@@ -10,7 +10,7 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import { AuraRating, Connection } from '../types'
+import { AuraRating, Connection } from '../../types'
 import { getStepName, valueToStep } from '../../utils/rating'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 

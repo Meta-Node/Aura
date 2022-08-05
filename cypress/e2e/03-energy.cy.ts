@@ -13,7 +13,7 @@ import {
   unratedConnection,
 } from '../utils/data'
 import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
-import { Connection, EnergyAllocation } from '../types'
+import { Connection, EnergyAllocation } from '../../types'
 
 describe('Energy', () => {
   beforeEach(() => {

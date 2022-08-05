@@ -24,6 +24,7 @@
     },
     "types": [
       "@types/node",
+      "@types/crypto-js",
       "@nuxt/types"
     ]
   },

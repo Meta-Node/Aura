@@ -128,7 +128,7 @@ export const readChannel = async (data, nuxtCtx, resolve) => {
 }
 
 export const readChannelPromise = (data, nuxtCtx) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     intervalID = setInterval(() => readChannel(data, nuxtCtx, resolve), 3000)
   })
 }

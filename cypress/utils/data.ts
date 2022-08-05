@@ -8,10 +8,11 @@ import {
   AuraConnection,
   AuraProfile,
   AuraRating,
+  BrightIdBackup,
   Connection,
   ConnectionResponse,
   EnergyAllocation,
-} from '../types'
+} from '../../types'
 import { toRoundedPercentage } from '../../utils/numbers'
 
 const { publicKey, privateKey } = generateB64Keypair()
@@ -107,7 +108,7 @@ export const ratedConnectionNegative: Connection = {
   incomingLevel: 'already known',
 }
 
-export const BRIGHT_ID_BACKUP = {
+export const BRIGHT_ID_BACKUP: BrightIdBackup = {
   userData: {
     id: FAKE_BRIGHT_ID,
     name: 'My Name',

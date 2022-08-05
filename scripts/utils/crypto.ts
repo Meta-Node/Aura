@@ -1,10 +1,12 @@
 import CryptoJS from 'crypto-js'
+
 import nacl from 'tweetnacl'
-import B64 from 'base64-js'
+import { fromByteArray, toByteArray } from 'base64-js'
+import { BrightIdBackup } from '~/types'
 
 const IS_DEV = process.env.NODE_ENV !== 'production'
 
-export function encryptData(data, password) {
+export function encryptData(data: string, password: string) {
   if (IS_DEV) {
     console.log('encryptData')
     console.log(data)
@@ -12,11 +14,11 @@ export function encryptData(data, password) {
   return CryptoJS.AES.encrypt(data, password).toString()
 }
 
-export function encryptUserData(userData, password) {
+export function encryptUserData(userData: BrightIdBackup, password: string) {
   return encryptData(JSON.stringify(userData), password)
 }
 
-export function decryptData(data, password) {
+export function decryptData(data: string, password: string) {
   const decrypted = CryptoJS.AES.decrypt(data, password).toString(
     CryptoJS.enc.Utf8
   )
@@ -27,12 +29,14 @@ export function decryptData(data, password) {
   return decrypted
 }
 
-export function decryptUserData(encryptedUserData, password) {
+export function decryptUserData(encryptedUserData: string, password: string) {
   return JSON.parse(decryptData(encryptedUserData, password))
 }
 
-export const b64ToUrlSafeB64 = s => {
-  const alts = {
+export const b64ToUrlSafeB64 = (s: string) => {
+  const alts: {
+    [key: string]: string
+  } = {
     '/': '_',
     '+': '-',
     '=': '',
@@ -40,22 +44,23 @@ export const b64ToUrlSafeB64 = s => {
   return s.replace(/[/+=]/g, c => alts[c])
 }
 
-export const hash = data => {
+export const hash = (data: string) => {
   const h = CryptoJS.SHA256(data)
   const b = h.toString(CryptoJS.enc.Base64)
   return b64ToUrlSafeB64(b)
 }
 
-export const randomWordArray = size => CryptoJS.lib.WordArray.random(size)
+export const randomWordArray = (size: number) =>
+  CryptoJS.lib.WordArray.random(size)
 
-export const wordArrayToB64 = WordArray =>
+export const wordArrayToB64 = (WordArray: CryptoJS.lib.WordArray) =>
   CryptoJS.enc.Base64.stringify(WordArray)
 
 export const generateB64Keypair = () => {
   const { publicKey, secretKey } = nacl.sign.keyPair()
-  const b64PublicKey = B64.fromByteArray(publicKey)
+  const b64PublicKey = fromByteArray(publicKey)
 
-  const b64SecretKey = B64.fromByteArray(secretKey)
+  const b64SecretKey = fromByteArray(secretKey)
 
   return {
     privateKey: b64SecretKey,
@@ -63,10 +68,10 @@ export const generateB64Keypair = () => {
   }
 }
 
-export const encryptDataWithPrivateKey = encryptedData => {
+export const encryptDataWithPrivateKey = (data: string) => {
   if (IS_DEV) {
     console.log('encryptDataWithPrivateKey')
-    console.log(encryptedData)
+    console.log(data)
   }
   const privateKey = localStorage.getItem('privateKey')
 
@@ -76,7 +81,7 @@ export const encryptDataWithPrivateKey = encryptedData => {
 
   const utf8Encode = new TextEncoder()
   return nacl.sign(
-    utf8Encode.encode(JSON.stringify(encryptedData)),
-    B64.toByteArray(privateKey)
+    utf8Encode.encode(JSON.stringify(data)),
+    toByteArray(privateKey)
   )
 }
