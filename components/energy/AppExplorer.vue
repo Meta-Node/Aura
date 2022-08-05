@@ -13,11 +13,12 @@
           <small class="app-explorer__table-name">Inbound / Outbound</small>
           <ul class="app-explorer__humans">
             <user-v-2
-              v-for="user in visibleItems"
+              v-for="(user, i) in visibleItems"
               :id="user.id"
               :key="user.id"
               :img="user.id"
               :inbound="user.inboundEnergy + '%'"
+              :index="i"
               :name="user.nickname || user.name"
               :outbound="user.transferedEnergy"
               :rating="+user.rating"

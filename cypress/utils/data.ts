@@ -74,6 +74,23 @@ export const ratedConnection: Connection = {
   incomingLevel: 'already known',
 }
 
+export const ratedConnection2: Connection = {
+  id: 'zx-DOpXZuDsiyh2MUBQGnSKhIADI9erfF2bR0tUgf7q',
+  name: 'Rated Connection 2',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'zx-DOpXZuDsiyh2MUBQGnSKhIADI9erfF2bR0tUgf7q.jpg',
+  },
+  status: 'verified',
+  notificationToken: '0230078e-2b66-4165-93e2-f0a3363c2540',
+  level: 'already known',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'already known',
+}
+
 export const ratedConnectionWithoutEnergy: Connection = {
   id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
   name: 'Rated No Energy',
@@ -119,6 +136,7 @@ export const BRIGHT_ID_BACKUP: BrightIdBackup = {
   connections: [
     unratedConnection,
     ratedConnection,
+    ratedConnection2,
     ratedConnectionWithoutEnergy,
     ratedConnectionNegative,
   ],
@@ -195,6 +213,13 @@ export const oldRatings: AuraRating[] = [
     toBrightId: ratedConnection.id,
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '4',
+    createdAt: '2021-07-10T20:59:03.036Z',
+  },
+  {
+    id: 5050,
+    toBrightId: ratedConnection2.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '2',
     createdAt: '2021-07-10T20:59:03.036Z',
   },
   {
@@ -335,3 +360,20 @@ export function getConnectionResponse(
   }
   return obj
 }
+
+export const ratedMoreThanOrEqualToOneConnections =
+  BRIGHT_ID_BACKUP.connections.filter(
+    c => (getRating(c.id, oldRatings) || 0) > 1
+  )
+
+export const ratingsInEnergyFilterAll = oldRatings.filter(
+  r => Number(r.rating) >= 1
+)
+
+export const ratingsInEnergyFilterAllSortedByRateAscending = [
+  ...ratingsInEnergyFilterAll,
+].sort((a, b) => Number(a.rating) - Number(b.rating))
+
+export const ratingsInEnergyFilterAllSortedByRateDescending = [
+  ...ratingsInEnergyFilterAllSortedByRateAscending,
+].reverse()

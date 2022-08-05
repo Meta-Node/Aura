@@ -10,6 +10,10 @@ import {
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
+  ratedMoreThanOrEqualToOneConnections,
+  ratingsInEnergyFilterAll,
+  ratingsInEnergyFilterAllSortedByRateAscending,
+  ratingsInEnergyFilterAllSortedByRateDescending,
   unratedConnection,
 } from '../utils/data'
 import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
@@ -111,23 +115,27 @@ describe('Energy', () => {
     connection: Connection,
     allocation: EnergyAllocation
   ) {
-    cy.get(`[data-testid=user-v2-${connection.id}-name]`).contains(
+    cy.get(`[data-testid^=user-v2-${connection.id}-name]`).contains(
       connection.name
     )
     const rating = getRating(connection.id, oldRatings)
     if (rating) {
-      cy.get(`[data-testid=user-v2-${connection.id}-rating]`).contains(rating)
-      cy.get(`[data-testid=user-v2-${connection.id}-inbound]`).contains(
+      cy.get(`[data-testid^=user-v2-${connection.id}-rating]`).contains(rating)
+      cy.get(`[data-testid^=user-v2-${connection.id}-inbound]`).contains(
         getInboundEnergy(connection.id)
       )
-      cy.get(`[data-testid=user-v2-${connection.id}-outbound]`).contains(
+      cy.get(`[data-testid^=user-v2-${connection.id}-outbound]`).contains(
         getEnergyAllocationPercentageString(allocation, connection.id)
       )
     } else {
-      cy.get(`[data-testid=user-v2-${connection.id}-rating]`).should(
+      cy.get(`[data-testid^=user-v2-${connection.id}-rating]`).should(
         'not.exist'
       )
     }
+  }
+
+  function checkConnectionOrderInViewTab(brightId: string, index: number) {
+    cy.get(`[data-testid=user-v2-${brightId}-name-${index}]`).should('exist')
   }
 
   function showsConnectionInSetTab(
@@ -146,11 +154,13 @@ describe('Energy', () => {
   }
 
   it('shows and filters energies', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}&filter=All`)
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
 
     // shows rated connections
-    showsConnectionInViewTab(ratedConnection, oldEnergyAllocation)
-    showsConnectionInViewTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+    ratedMoreThanOrEqualToOneConnections.forEach(c => {
+      showsConnectionInViewTab(c, oldEnergyAllocation)
+    })
+
     // does not show unrated or negative rated connections
     cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
       'not.exist'
@@ -181,8 +191,34 @@ describe('Energy', () => {
     ).should('not.exist')
   })
 
+  it('orders energies', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+
+    // sorting by rate should change the order for the test to be valid
+    expect(ratingsInEnergyFilterAllSortedByRateAscending).to.not.deep.equal(
+      ratingsInEnergyFilterAll
+    )
+    expect(ratingsInEnergyFilterAllSortedByRateDescending).to.not.deep.equal(
+      ratingsInEnergyFilterAll
+    )
+
+    ratingsInEnergyFilterAll.forEach((r, i) => {
+      checkConnectionOrderInViewTab(r.toBrightId, i)
+    })
+
+    cy.get('[data-testid=filter-Rated]').click()
+    ratingsInEnergyFilterAllSortedByRateDescending.forEach((r, i) => {
+      checkConnectionOrderInViewTab(r.toBrightId, i)
+    })
+
+    cy.get('[data-testid=filter-Rated]').click()
+    ratingsInEnergyFilterAllSortedByRateAscending.forEach((r, i) => {
+      checkConnectionOrderInViewTab(r.toBrightId, i)
+    })
+  })
+
   it('can update energies', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}&filter=All`)
+    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
     cy.get(`[data-testid=user-v3-${unratedConnection.id}-name]`).should(
       'not.exist'
     )

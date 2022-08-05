@@ -193,7 +193,7 @@ describe('Community', () => {
     doRate(ratedConnectionWithoutEnergy)
   })
 
-  it('changes a negative rate', () => {
+  it('can change a negative rate', () => {
     cy.visit(`/community/`)
     cy.get(`[data-testid=user-v1-${ratedConnectionNegative.id}-name]`).contains(
       ratedConnectionNegative.name

@@ -9,7 +9,7 @@
         loading="lazy"
         width="48"
       />
-      <p :data-testid="`user-v2-${id}-name`" class="user-v2__tag">{{ name }}</p>
+      <p :data-testid="`user-v2-${id}-name-${index}`" class="user-v2__tag">{{ name }}</p>
       <small v-if="rating" :data-testid="`user-v2-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
     </nuxt-link>
     <div class="user-v2__numbers">
@@ -33,6 +33,10 @@ import energy from '~/mixins/energy'
 export default {
   mixins: [avatar, energy],
   props: {
+    index: {
+      type: Number,
+      default: 0,
+    },
     url: {
       type: String,
       default: '/',
