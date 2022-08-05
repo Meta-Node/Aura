@@ -21,18 +21,21 @@ export default {
   methods: {
     onFiltered(name) {
       this.$refs.search.resetSearch()
-
+      let active = true
       this.users = this.startUsers
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
           if (filter.type === 'reversible') {
             if (!filter.active) {
+              filter.active = true
               filter.reverse = false
             } else {
               filter.reverse = !filter.reverse
             }
+          } else {
+            filter.active = !filter.active
+            active = filter.active
           }
-          filter.active = true
         } else {
           filter.active = false
         }
@@ -40,11 +43,11 @@ export default {
       })
 
       const queries = this.$route.query
+      const filterName = active ? name : 'All'
+      this.$router.push({ query: { ...queries, filter: filterName } })
 
-      this.$router.push({ query: { ...queries, filter: name } })
-
-      const fromLess = !this.filters.find(f => f.name === name)?.reverse
-      this.users = this[`get${name.replace(' ', '')}`](
+      const fromLess = !this.filters.find(f => f.name === filterName)?.reverse
+      this.users = this[`get${filterName.replace(' ', '')}`](
         this.startUsers,
         fromLess
       )
