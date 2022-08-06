@@ -265,6 +265,27 @@ describe('Energy', () => {
     cy.get('[data-testid=filter-Rated-ascending]').should('exist')
   })
 
+  it('can filter ordered list', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+
+    expect(connectionsInEnergyFilterAll).to.not.deep.equal(
+      connectionsInEnergyFilterAllSortedByRateAscending
+    )
+    expect(connectionsInEnergyFilterAllSortedByRateAscending).to.not.deep.equal(
+      connectionsInEnergyFilterExcludeZeroSortedByRateAscending
+    )
+
+    // order
+    cy.get('[data-testid=filter-Rated-inactive]').click()
+    assertOrder(connectionsInEnergyFilterAllSortedByRateDescending)
+
+    // filter
+    cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).click()
+    assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateDescending)
+    cy.get('[data-testid=filter-Rated-descending]').should('exist')
+    cy.get('[data-testid=filter-ExcludeZeros-active]').should('exist')
+  })
+
   it('shows energies in set tab', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
     cy.get(`[data-testid=user-v3-${unratedConnection.id}-name]`).should(

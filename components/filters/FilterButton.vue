@@ -7,7 +7,7 @@
   >
     {{ name }}
     <span
-      v-if="reversible"
+      v-if="ordering"
       :style="{ transform: reverse ? 'rotate(180deg)' : 'rotate(0deg)' }"
       class="filter-button__icon"
     >
@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    reversible: {
+    ordering: {
       type: Boolean,
       default: true,
     },
@@ -48,7 +48,7 @@ export default {
     testId() {
       const id = `filter-${this.name.replace(' ', '')}`
       if (!this.active) return `${id}-inactive`
-      if (!this.reversible) return `${id}-active`
+      if (!this.ordering) return `${id}-active`
       if (!this.reverse) return `${id}-descending`
       return `${id}-ascending`
     }

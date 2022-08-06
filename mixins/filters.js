@@ -21,11 +21,12 @@ export default {
   methods: {
     onFiltered(name) {
       this.$refs.search.resetSearch()
-      let active = true
+
       this.users = this.startUsers
+      const filterType = this.filters.find(filter => filter.name === name)?.type
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
-          if (filter.type === 'reversible') {
+          if (filter.type === 'ordering') {
             if (!filter.active) {
               filter.active = true
               filter.reverse = false
@@ -34,24 +35,43 @@ export default {
             }
           } else {
             filter.active = !filter.active
-            active = filter.active
           }
-        } else {
+        } else if (filter.type === filterType) {
           filter.active = false
         }
         return filter
       })
 
+      const activeFilter = this.filters.find(
+        filter => filter.type !== 'ordering' && filter.active
+      )
+      const filterName = activeFilter?.name || 'All'
+
       const queries = this.$route.query
-      const filterName = active ? name : 'All'
       this.$router.push({ query: { ...queries, filter: filterName } })
 
-      const fromLess = !this.filters.find(f => f.name === filterName)?.reverse
-      this.users = this[`get${filterName.replace(' ', '')}`](
+      const fromLess = !activeFilter?.reverse
+      let newUsers = this[`get${filterName.replace(' ', '')}`](
         this.startUsers,
         fromLess
       )
 
+      const activeOrder = this.filters.find(
+        filter => filter.type === 'ordering' && filter.active
+      )
+      if (activeOrder) {
+        const orderName = activeOrder.name
+        newUsers = this[`get${orderName.replace(' ', '')}`](
+          newUsers,
+          !activeOrder.reverse
+        )
+      }
+      console.log('activeFilter')
+      console.log(activeFilter)
+      console.log('activeOrder')
+      console.log(activeOrder)
+
+      this.users = newUsers
       this.filteredUsers = this.users
       this.onSearchValue('')
     },

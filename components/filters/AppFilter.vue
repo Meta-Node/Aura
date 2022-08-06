@@ -5,8 +5,8 @@
       :key="filter.name"
       :active="filter.active"
       :name="filter.name"
+      :ordering="filter.type === 'ordering'"
       :reverse="filter.reverse"
-      :reversible="filter.type === 'reversible'"
       @clicked="onChange"
     />
   </div>

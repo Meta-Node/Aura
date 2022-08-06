@@ -89,25 +89,25 @@ export default {
       filters: [
         {
           name: 'Name',
-          type: 'reversible',
+          type: 'ordering',
           active: false,
           reverse: false,
         },
         {
           name: 'Outbound',
-          type: 'reversible',
+          type: 'ordering',
           active: false,
           reverse: false,
         },
         {
           name: 'Rated',
-          type: 'reversible',
+          type: 'ordering',
           active: false,
           reverse: false,
         },
         {
           name: 'Recent',
-          type: 'reversible',
+          type: 'ordering',
           active: false,
           reverse: false,
         },
