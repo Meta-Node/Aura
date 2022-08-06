@@ -4,6 +4,9 @@ import {
   connectionsInEnergyFilterAll,
   connectionsInEnergyFilterAllSortedByRateAscending,
   connectionsInEnergyFilterAllSortedByRateDescending,
+  connectionsInEnergyFilterExcludeZero,
+  connectionsInEnergyFilterExcludeZeroSortedByRateAscending,
+  connectionsInEnergyFilterExcludeZeroSortedByRateDescending,
   FAKE_BRIGHT_ID,
   getEnergyAllocationAmount,
   getEnergyAllocationPercentageString,
@@ -226,6 +229,40 @@ describe('Energy', () => {
     cy.get(`[data-testid=filter-ExcludeZeros-active]`).click()
     assertExcludeZerosFilter(false)
     cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).should('exist')
+  })
+
+  it('can order filtered list', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+
+    expect(connectionsInEnergyFilterAll).to.not.deep.equal(
+      connectionsInEnergyFilterExcludeZero
+    )
+    // sorting by rate should change the order for the test to be valid
+    expect(
+      connectionsInEnergyFilterExcludeZeroSortedByRateAscending
+    ).to.not.deep.equal(connectionsInEnergyFilterExcludeZero)
+    expect(
+      connectionsInEnergyFilterExcludeZeroSortedByRateDescending
+    ).to.not.deep.equal(connectionsInEnergyFilterExcludeZero)
+
+    // filter
+    assertExcludeZerosFilter(false)
+    cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).click()
+    assertExcludeZerosFilter(true)
+    cy.get(`[data-testid=filter-ExcludeZeros-active]`).should('exist')
+
+    // order
+    connectionsInEnergyFilterExcludeZero.forEach((c, i) => {
+      checkConnectionOrderInViewTab(c.id, i)
+    })
+
+    cy.get('[data-testid=filter-Rated-inactive]').click()
+    assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateDescending)
+
+    cy.get('[data-testid=filter-Rated-descending]').click()
+    assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateAscending)
+
+    cy.get('[data-testid=filter-Rated-ascending]').should('exist')
   })
 
   it('shows energies in set tab', () => {
