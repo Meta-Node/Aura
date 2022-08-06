@@ -108,12 +108,14 @@ describe('Energy', () => {
     connection: Connection,
     allocation: EnergyAllocation
   ) {
-    cy.get(`[data-testid^=user-v2-${connection.id}-name]`).contains(
+    cy.get(`[data-testid^=user-item-${connection.id}-name]`).contains(
       connection.name
     )
     const rating = getRating(connection.id, oldRatings)
     if (rating) {
-      cy.get(`[data-testid^=user-v2-${connection.id}-rating]`).contains(rating)
+      cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
+        rating
+      )
       cy.get(`[data-testid^=user-v2-${connection.id}-inbound]`).contains(
         getInboundEnergy(connection.id)
       )
@@ -121,7 +123,7 @@ describe('Energy', () => {
         getEnergyAllocationPercentageString(allocation, connection.id)
       )
     } else {
-      cy.get(`[data-testid^=user-v2-${connection.id}-rating]`).should(
+      cy.get(`[data-testid^=user-item-${connection.id}-rating]`).should(
         'not.exist'
       )
     }
@@ -131,10 +133,10 @@ describe('Energy', () => {
     connection: Connection,
     allocation: EnergyAllocation
   ) {
-    cy.get(`[data-testid=user-v3-${connection.id}-name]`).contains(
+    cy.get(`[data-testid^=user-item-${connection.id}-name]`).contains(
       connection.name
     )
-    cy.get(`[data-testid=user-v3-${connection.id}-rating]`).contains(
+    cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
       getRating(connection.id, oldRatings)!
     )
     cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).contains(
@@ -151,12 +153,12 @@ describe('Energy', () => {
     })
 
     // does not show unrated or negative rated connections
-    cy.get(`[data-testid=user-v2-${unratedConnection.id}-name]`).should(
+    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
-    cy.get(`[data-testid=user-v2-${ratedConnectionNegative.id}-name]`).should(
-      'not.exist'
-    )
+    cy.get(
+      `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
+    ).should('not.exist')
   })
 
   it('can search connections', () => {
@@ -165,21 +167,21 @@ describe('Energy', () => {
     // shows unrated connections when searching, but not negative rated ones
     cy.get('[data-testid=top-search]').type('ra')
     showsConnectionInViewTab(unratedConnection, oldEnergyAllocation)
-    cy.get(`[data-testid=user-v2-${ratedConnectionNegative.id}-name]`).should(
-      'not.exist'
-    )
+    cy.get(
+      `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
+    ).should('not.exist')
     cy.get('[data-testid=top-search]').clear()
 
     // filters based on search value
     cy.get('[data-testid=top-search]').type(unratedConnection.name)
     cy.get(
-      `[data-testid=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
+      `[data-testid^=user-item-${ratedConnectionWithoutEnergy.id}-name]`
     ).should('not.exist')
     cy.get('[data-testid=top-search]').clear()
   })
 
   function checkConnectionOrderInViewTab(brightId: string, index: number) {
-    cy.get(`[data-testid=user-v2-${brightId}-name-${index}]`).should('exist')
+    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('exist')
   }
 
   function assertOrder(orderedConnections: Connection[]) {
@@ -214,7 +216,7 @@ describe('Energy', () => {
 
   function assertExcludeZerosFilter(isApplied: boolean) {
     cy.get(
-      `[data-testid^=user-v2-${ratedConnectionWithoutEnergy.id}-name]`
+      `[data-testid^=user-item-${ratedConnectionWithoutEnergy.id}-name]`
     ).should(isApplied ? 'not.exist' : 'exist')
   }
 
@@ -285,7 +287,7 @@ describe('Energy', () => {
 
   it('shows energies in set tab', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
-    cy.get(`[data-testid=user-v3-${unratedConnection.id}-name]`).should(
+    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
     showsConnectionInSetTab(ratedConnection, oldEnergyAllocation)

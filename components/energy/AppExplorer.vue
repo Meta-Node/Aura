@@ -23,6 +23,7 @@
               :outbound="user.transferedEnergy"
               :rating="+user.rating"
               :url="`/profile/${user.id}`"
+              :user="user"
             />
           </ul>
         </lazy-loading-items>

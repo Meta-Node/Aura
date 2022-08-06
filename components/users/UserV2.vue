@@ -1,17 +1,6 @@
 <template>
   <li class="user-v2__humans-list">
-    <nuxt-link :to="url" class="user-v2__username">
-      <nuxt-img
-        :alt="name"
-        :src="profileAvatar"
-        class="user-v2__image"
-        height="48"
-        loading="lazy"
-        width="48"
-      />
-      <p :data-testid="`user-v2-${id}-name-${index}`" class="user-v2__tag">{{ name }}</p>
-      <small v-if="rating" :data-testid="`user-v2-${id}-rating`" class="user-v2__rate">({{ rating }})</small>
-    </nuxt-link>
+    <user-item-info :index="index" :user="user"></user-item-info>
     <div class="user-v2__numbers">
       <template v-if="rating">
         <p :data-testid="`user-v2-${id}-inbound`" class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
@@ -27,12 +16,18 @@
 </template>
 
 <script>
+import UserItemInfo from './UserItemInfo'
 import avatar from '~/mixins/avatar'
 import energy from '~/mixins/energy'
 
 export default {
+  components: {UserItemInfo},
   mixins: [avatar, energy],
   props: {
+    user: {
+      type: Object,
+      default: () => ({})
+    },
     index: {
       type: Number,
       default: 0,

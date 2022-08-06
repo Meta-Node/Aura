@@ -53,17 +53,13 @@
           :items="users"
           @updateItems="onUpdateItems"
         >
-          <ul class="user-v1-ul">
-            <user-v-1
-              v-for="user in visibleItems"
-              :id="user.id"
-              :key="user.id"
-              :brightness="user.rating / 10"
-              :img="user.id"
-              :is-brightness="true"
-              :name="user.nickname || user.name"
-              :url="`/profile/${user.id}`"
-            />
+          <ul class="user-item__list">
+            <li v-for="(user, index) in visibleItems"
+                :key="user.id"
+                class="user-item__container"
+            >
+              <user-item-info :index="index" :user="user"></user-item-info>
+            </li>
           </ul>
         </lazy-loading-items>
         <span
@@ -83,11 +79,11 @@ import loadItems from '~/mixins/loadItems'
 import AppSearch from '~/components/AppSearch.vue'
 
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
-import UserV1 from '~/components/users/UserV1.vue'
 import FilterButton from '~/components/filters/FilterButton.vue'
+import UserItemInfo from '~/components/users/UserItemInfo'
 
 export default {
-  components: {AppSearch, LazyLoadingItems, UserV1, CustomSelect, FilterButton},
+  components: {AppSearch, LazyLoadingItems, UserItemInfo, CustomSelect, FilterButton},
   mixins: [transition, users, loadItems],
 
   head() {

@@ -5,6 +5,7 @@ import {
   FAKE_BRIGHT_ID,
   FAKE_BRIGHT_ID_PASSWORD,
   FAKE_USER_EXPLORER_CODE,
+  unratedConnection,
 } from '../utils/data'
 
 describe('Login', () => {
@@ -60,8 +61,8 @@ describe('Login', () => {
     cy.get(`[data-testid=profile-user-info]`).contains(
       `${AURA_PROFILE.numOfConnections} Connections`
     )
-    cy.get(
-      `[data-testid=user-v1-${BRIGHT_ID_BACKUP.connections[0].id}-name]`
-    ).contains(BRIGHT_ID_BACKUP.connections[0].name)
+    cy.get(`[data-testid=user-v1-${unratedConnection.id}-name]`).contains(
+      unratedConnection.name
+    )
   })
 })
