@@ -147,7 +147,7 @@ describe('Community', () => {
         body: getConnectionResponse(connection, oldRatings),
       }
     )
-    cy.get(`[data-testid=user-v1-${connection.id}-name]`).click()
+    cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
     showsRateValue(connection, oldRatings)
 
     // set new rating value
@@ -164,14 +164,14 @@ describe('Community', () => {
       submitNewRatingFailure(connection)
       submitNewRatingSuccess(connection)
     }
-    cy.get(`[data-testid=user-v1-${connection.id}-name]`).click()
+    cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
     showsRateValue(connection, newRatings)
     cy.go(-1)
   }
 
   it('rates an unrated connection', () => {
     cy.visit(`/community/`)
-    cy.get(`[data-testid=user-v1-${unratedConnection.id}-name]`).contains(
+    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).contains(
       unratedConnection.name
     )
     doRate(unratedConnection)
@@ -179,7 +179,7 @@ describe('Community', () => {
 
   it('rates a rated connection', () => {
     cy.visit(`/community/`)
-    cy.get(`[data-testid=user-v1-${ratedConnection.id}-name]`).contains(
+    cy.get(`[data-testid^=user-item-${ratedConnection.id}-name]`).contains(
       ratedConnection.name
     )
     doRate(ratedConnection)
@@ -188,16 +188,16 @@ describe('Community', () => {
   it('does not send request for an unchanged rate', () => {
     cy.visit(`/community/`)
     cy.get(
-      `[data-testid=user-v1-${ratedConnectionWithoutEnergy.id}-name]`
+      `[data-testid^=user-item-${ratedConnectionWithoutEnergy.id}-name]`
     ).contains(ratedConnectionWithoutEnergy.name)
     doRate(ratedConnectionWithoutEnergy)
   })
 
   it('can change a negative rate', () => {
     cy.visit(`/community/`)
-    cy.get(`[data-testid=user-v1-${ratedConnectionNegative.id}-name]`).contains(
-      ratedConnectionNegative.name
-    )
+    cy.get(
+      `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
+    ).contains(ratedConnectionNegative.name)
     doRate(ratedConnectionNegative)
   })
 })

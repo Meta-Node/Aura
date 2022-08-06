@@ -12,14 +12,16 @@
         >
           <ul class="app-energy__humans">
             <user-v-3
-              v-for="user in visibleItems"
+              v-for="(user, i) in visibleItems"
               :id="user.id"
               :key="user.id"
               :energy="user.transferedEnergy"
               :img="user.id"
+              :index="i"
               :name="user.nickname || user.name"
               :rating="+user.rating"
               :url="`/profile/${user.id}`"
+              :user="user"
               @changeEnergy="onChangeEnergy"
             />
           </ul>
