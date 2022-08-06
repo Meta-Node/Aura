@@ -91,6 +91,23 @@ export const ratedConnection2: Connection = {
   incomingLevel: 'already known',
 }
 
+export const ratedConnection3: Connection = {
+  id: 'px-9erfF2bR0DOpXZuDsiyh2MUBQGnSKhIADItUgf7q',
+  name: 'Rated Connection 3',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'px-9erfF2bR0DOpXZuDsiyh2MUBQGnSKhIADItUgf7q.jpg',
+  },
+  status: 'verified',
+  notificationToken: '1f00f451-5ca9-43fa-a6bc-5438cd720b31',
+  level: 'already known',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'already known',
+}
+
 export const ratedConnectionWithoutEnergy: Connection = {
   id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
   name: 'Rated No Energy',
@@ -137,6 +154,7 @@ export const BRIGHT_ID_BACKUP: BrightIdBackup = {
     unratedConnection,
     ratedConnection,
     ratedConnection2,
+    ratedConnection3,
     ratedConnectionWithoutEnergy,
     ratedConnectionNegative,
   ],
@@ -223,6 +241,13 @@ export const oldRatings: AuraRating[] = [
     createdAt: '2021-07-10T20:59:03.036Z',
   },
   {
+    id: 5050,
+    toBrightId: ratedConnection3.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: '1',
+    createdAt: '2021-07-10T20:59:03.036Z',
+  },
+  {
     id: 3040,
     toBrightId: ratedConnectionWithoutEnergy.id,
     fromBrightId: FAKE_BRIGHT_ID,
@@ -238,6 +263,14 @@ export const oldRatings: AuraRating[] = [
   },
 ]
 
+export function getRatingObject(brightId: string, ratings: AuraRating[]) {
+  return ratings.find(r => r.toBrightId === brightId)
+}
+
+export function getRating(brightId: string, ratings: AuraRating[]) {
+  return getRatingObject(brightId, ratings)?.rating
+}
+
 export const newRatings: AuraRating[] = [
   {
     id: 5060,
@@ -247,10 +280,24 @@ export const newRatings: AuraRating[] = [
     createdAt: '2021-07-10T20:59:03.036Z',
   },
   {
+    id: 5050,
+    toBrightId: ratedConnection2.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: String(getRating(ratedConnection2.id, oldRatings)),
+    createdAt: '2021-07-10T20:59:03.036Z',
+  },
+  {
+    id: 5050,
+    toBrightId: ratedConnection3.id,
+    fromBrightId: FAKE_BRIGHT_ID,
+    rating: String(getRating(ratedConnection3.id, oldRatings)),
+    createdAt: '2021-07-10T20:59:03.036Z',
+  },
+  {
     id: 3040,
     toBrightId: ratedConnectionWithoutEnergy.id,
     fromBrightId: FAKE_BRIGHT_ID,
-    rating: '3',
+    rating: String(getRating(ratedConnectionWithoutEnergy.id, oldRatings)),
     createdAt: '2021-07-13T20:59:03.036Z',
   },
   {
@@ -286,6 +333,14 @@ export const AURA_ENERGIES = {
       toBrightId: ratedConnection.id,
       amount: 25,
     },
+    {
+      amount: 50,
+      toBrightId: ratedConnection2.id,
+    },
+    {
+      amount: 5,
+      toBrightId: ratedConnection3.id,
+    },
   ],
 }
 
@@ -298,24 +353,32 @@ export const AURA_INBOUND_ENERGIES = {
   ],
 }
 
-export function getRatingObject(brightId: string, ratings: AuraRating[]) {
-  return ratings.find(r => r.toBrightId === brightId)
-}
-
-export function getRating(brightId: string, ratings: AuraRating[]) {
-  return getRatingObject(brightId, ratings)?.rating
-}
-
-export function getOutboundEnergy(brightId: string) {
-  return AURA_ENERGIES.energy.find(e => e.toBrightId === brightId)?.amount || 0
-}
-
 export function getInboundEnergy(brightId: string) {
   return (
     AURA_INBOUND_ENERGIES.energy.find(e => e.fromBrightId === brightId)
       ?.amount || 0
   )
 }
+
+export const oldEnergyAllocation: EnergyAllocation = AURA_ENERGIES.energy
+export const newEnergyAllocation: EnergyAllocation = [
+  {
+    amount: 100,
+    toBrightId: ratedConnectionWithoutEnergy.id,
+  },
+  {
+    amount: 5,
+    toBrightId: ratedConnection.id,
+  },
+  {
+    amount: 50,
+    toBrightId: ratedConnection2.id,
+  },
+  {
+    amount: 5,
+    toBrightId: ratedConnection3.id,
+  },
+]
 
 export function getEnergyAllocationAmount(
   allocation: EnergyAllocation,
@@ -363,17 +426,28 @@ export function getConnectionResponse(
 
 export const ratedMoreThanOrEqualToOneConnections =
   BRIGHT_ID_BACKUP.connections.filter(
-    c => (getRating(c.id, oldRatings) || 0) > 1
+    c => (getRating(c.id, oldRatings) || 0) >= 1
   )
 
-export const ratingsInEnergyFilterAll = oldRatings.filter(
-  r => Number(r.rating) >= 1
-)
+export const connectionsInEnergyFilterAll = ratedMoreThanOrEqualToOneConnections
 
-export const ratingsInEnergyFilterAllSortedByRateAscending = [
-  ...ratingsInEnergyFilterAll,
-].sort((a, b) => Number(a.rating) - Number(b.rating))
+export const connectionsInEnergyFilterAllSortedByRateAscending = [
+  ...connectionsInEnergyFilterAll,
+].sort((a, b) => +getRating(a.id, oldRatings)! - +getRating(b.id, oldRatings)!)
 
-export const ratingsInEnergyFilterAllSortedByRateDescending = [
-  ...ratingsInEnergyFilterAllSortedByRateAscending,
+export const connectionsInEnergyFilterAllSortedByRateDescending = [
+  ...connectionsInEnergyFilterAllSortedByRateAscending,
+].reverse()
+
+export const connectionsInEnergyFilterExcludeZero =
+  connectionsInEnergyFilterAll.filter(
+    c => +getEnergyAllocationAmount(oldEnergyAllocation, c.id) > 0
+  )
+
+export const connectionsInEnergyFilterExcludeZeroSortedByRateAscending = [
+  ...connectionsInEnergyFilterExcludeZero,
+].sort((a, b) => +getRating(a.id, oldRatings)! - +getRating(b.id, oldRatings)!)
+
+export const connectionsInEnergyFilterExcludeZeroSortedByRateDescending = [
+  ...connectionsInEnergyFilterExcludeZeroSortedByRateAscending,
 ].reverse()

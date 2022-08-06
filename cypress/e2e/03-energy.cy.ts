@@ -1,23 +1,25 @@
 import {
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
+  connectionsInEnergyFilterAll,
+  connectionsInEnergyFilterAllSortedByRateAscending,
+  connectionsInEnergyFilterAllSortedByRateDescending,
   FAKE_BRIGHT_ID,
   getEnergyAllocationAmount,
   getEnergyAllocationPercentageString,
   getInboundEnergy,
   getRating,
+  newEnergyAllocation,
+  oldEnergyAllocation,
   oldRatings,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
   ratedMoreThanOrEqualToOneConnections,
-  ratingsInEnergyFilterAll,
-  ratingsInEnergyFilterAllSortedByRateAscending,
-  ratingsInEnergyFilterAllSortedByRateDescending,
   unratedConnection,
 } from '../utils/data'
 import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
-import { AuraRating, Connection, EnergyAllocation } from '../../types'
+import { Connection, EnergyAllocation } from '../../types'
 
 describe('Energy', () => {
   beforeEach(() => {
@@ -53,18 +55,6 @@ describe('Energy', () => {
     cy.get('@spyWinConsoleError').should('have.callCount', 0)
     cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
-
-  const oldEnergyAllocation: EnergyAllocation = AURA_ENERGIES.energy
-  const newEnergyAllocation: EnergyAllocation = [
-    {
-      amount: 100,
-      toBrightId: ratedConnectionWithoutEnergy.id,
-    },
-    {
-      amount: 5,
-      toBrightId: ratedConnection.id,
-    },
-  ]
 
   function submitEnergyFailure() {
     cy.intercept(
@@ -192,9 +182,9 @@ describe('Energy', () => {
     cy.get(`[data-testid=user-v2-${brightId}-name-${index}]`).should('exist')
   }
 
-  function assertOrder(orderedRating: AuraRating[]) {
-    orderedRating.forEach((r, i) => {
-      checkConnectionOrderInViewTab(r.toBrightId, i)
+  function assertOrder(orderedConnections: Connection[]) {
+    orderedConnections.forEach((r, i) => {
+      checkConnectionOrderInViewTab(r.id, i)
     })
   }
 
@@ -202,22 +192,22 @@ describe('Energy', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
 
     // sorting by rate should change the order for the test to be valid
-    expect(ratingsInEnergyFilterAllSortedByRateAscending).to.not.deep.equal(
-      ratingsInEnergyFilterAll
+    expect(connectionsInEnergyFilterAllSortedByRateAscending).to.not.deep.equal(
+      connectionsInEnergyFilterAll
     )
-    expect(ratingsInEnergyFilterAllSortedByRateDescending).to.not.deep.equal(
-      ratingsInEnergyFilterAll
-    )
+    expect(
+      connectionsInEnergyFilterAllSortedByRateDescending
+    ).to.not.deep.equal(connectionsInEnergyFilterAll)
 
-    ratingsInEnergyFilterAll.forEach((r, i) => {
-      checkConnectionOrderInViewTab(r.toBrightId, i)
+    connectionsInEnergyFilterAll.forEach((c, i) => {
+      checkConnectionOrderInViewTab(c.id, i)
     })
 
     cy.get('[data-testid=filter-Rated-inactive]').click()
-    assertOrder(ratingsInEnergyFilterAllSortedByRateDescending)
+    assertOrder(connectionsInEnergyFilterAllSortedByRateDescending)
 
     cy.get('[data-testid=filter-Rated-descending]').click()
-    assertOrder(ratingsInEnergyFilterAllSortedByRateAscending)
+    assertOrder(connectionsInEnergyFilterAllSortedByRateAscending)
 
     cy.get('[data-testid=filter-Rated-ascending]').should('exist')
   })
@@ -257,16 +247,18 @@ describe('Energy', () => {
   it('can update energies', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
-      .clear()
+      .type('{selectAll}')
       .type(
         getEnergyAllocationAmount(
           newEnergyAllocation,
           ratedConnectionWithoutEnergy.id
         )
       )
+
     cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`)
-      .clear()
+      .type('{selectAll}')
       .type(getEnergyAllocationAmount(newEnergyAllocation, ratedConnection.id))
+
     showsConnectionInSetTab(ratedConnection, newEnergyAllocation)
     showsConnectionInSetTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
     submitEnergyFailure()
