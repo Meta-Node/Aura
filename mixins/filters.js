@@ -13,6 +13,7 @@ import {
 export default {
   data() {
     return {
+      searchValue: '',
       filteredUsers: [],
       users: [],
       appliedFilters: [],
@@ -20,10 +21,9 @@ export default {
   },
   methods: {
     onFiltered(name) {
-      this.$refs.search.resetSearch()
-
       this.users = this.startUsers
       const filterType = this.filters.find(filter => filter.name === name)?.type
+
       this.filters = this.filters.map(filter => {
         if (filter.name === name) {
           if (filter.type === 'ordering') {
@@ -73,10 +73,12 @@ export default {
 
       this.users = newUsers
       this.filteredUsers = this.users
-      this.onSearchValue('')
+      // if there is activeOrder or activeFilter, clear the search bar
+      this.onSearchValue(activeOrder || activeFilter ? '' : this.searchValue)
     },
 
     onSearchValue(value) {
+      this.searchValue = value
       const trimmedValue = trim(value)
 
       let usersBase = this.filteredUsers

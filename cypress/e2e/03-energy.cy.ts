@@ -162,11 +162,6 @@ describe('Energy', () => {
   it('can search connections', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
 
-    /* TODO: fix the issue that causes this test to fail when removing the following line.
-            currently the user should wait for page load and then type in search
-     */
-    cy.get(`[data-testid^=user-v2-${ratedConnection.id}-name]`)
-
     // shows unrated connections when searching, but not negative rated ones
     cy.get('[data-testid=top-search]').type('ra')
     showsConnectionInViewTab(unratedConnection, oldEnergyAllocation)
