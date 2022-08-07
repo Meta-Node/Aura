@@ -424,12 +424,9 @@ export function getConnectionResponse(
   return obj
 }
 
-export const ratedMoreThanOrEqualToOneConnections =
-  BRIGHT_ID_BACKUP.connections.filter(
-    c => (getRating(c.id, oldRatings) || 0) >= 1
-  )
-
-export const connectionsInEnergyFilterAll = ratedMoreThanOrEqualToOneConnections
+export const connectionsInEnergyFilterAll = BRIGHT_ID_BACKUP.connections.filter(
+  c => (getRating(c.id, oldRatings) || 0) >= 1
+)
 
 export const connectionsInEnergyFilterAllSortedByRateAscending = [
   ...connectionsInEnergyFilterAll,

@@ -18,7 +18,6 @@ import {
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
-  ratedMoreThanOrEqualToOneConnections,
   unratedConnection,
 } from '../utils/data'
 import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
@@ -148,7 +147,7 @@ describe('Energy', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
 
     // shows rated connections
-    ratedMoreThanOrEqualToOneConnections.forEach(c => {
+    connectionsInEnergyFilterAll.forEach(c => {
       showsConnectionInViewTab(c, oldEnergyAllocation)
     })
 
