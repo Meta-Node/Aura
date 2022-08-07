@@ -1,4 +1,13 @@
 import {
+  FAKE_BRIGHT_ID,
+  ratedConnection,
+  ratedConnectionNegative,
+  ratedConnectionWithoutEnergy,
+  unratedConnection,
+} from '../utils/data'
+import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
+import { Connection, EnergyAllocation } from '../../types'
+import {
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
   connectionsInEnergyFilterAll,
@@ -7,21 +16,13 @@ import {
   connectionsInEnergyFilterExcludeZero,
   connectionsInEnergyFilterExcludeZeroSortedByRateAscending,
   connectionsInEnergyFilterExcludeZeroSortedByRateDescending,
-  FAKE_BRIGHT_ID,
   getEnergyAllocationAmount,
   getEnergyAllocationPercentageString,
   getInboundEnergy,
-  getRating,
   newEnergyAllocation,
   oldEnergyAllocation,
-  oldRatings,
-  ratedConnection,
-  ratedConnectionNegative,
-  ratedConnectionWithoutEnergy,
-  unratedConnection,
-} from '../utils/data'
-import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
-import { Connection, EnergyAllocation } from '../../types'
+} from '../utils/energy'
+import { getRating, oldRatings } from '../utils/rating'
 
 describe('Energy', () => {
   beforeEach(() => {

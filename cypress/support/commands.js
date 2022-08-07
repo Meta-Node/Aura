@@ -2,7 +2,6 @@ import localforage from 'localforage'
 import {
   AURA_CONNECTIONS,
   AURA_PROFILE,
-  AURA_RATINGS,
   BRIGHT_ID_BACKUP_ENCRYPTED,
   FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
@@ -12,6 +11,7 @@ import {
   PROFILE_PICTURE,
 } from '../utils/data'
 import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
+import { AURA_RATINGS } from '../utils/rating'
 
 Cypress.Commands.add('shouldBeCalled', (alias, timesCalled) => {
   expect(

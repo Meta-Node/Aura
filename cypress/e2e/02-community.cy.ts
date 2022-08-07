@@ -1,10 +1,6 @@
 import {
   AURA_GENERAL_PROFILE,
   FAKE_BRIGHT_ID,
-  getConnectionResponse,
-  getRating,
-  newRatings,
-  oldRatings,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
@@ -13,6 +9,16 @@ import {
 import { AuraRating, Connection } from '../../types'
 import { getStepName, valueToStep } from '../../utils/rating'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
+import { getConnectionResponse } from '../utils/energy'
+import {
+  connectionsInCommunityFilterAll,
+  connectionsInCommunityJustMet,
+  connectionsInCommunityJustMetSortedByNameAscending,
+  connectionsInCommunityJustMetSortedByNameDescending,
+  getRating,
+  newRatings,
+  oldRatings,
+} from '../utils/rating'
 
 describe('Community', () => {
   beforeEach(() => {
@@ -168,6 +174,43 @@ describe('Community', () => {
     showsRateValue(connection, newRatings)
     cy.go(-1)
   }
+
+  function checkConnectionOrderInViewTab(brightId: string, index: number) {
+    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('exist')
+  }
+
+  function assertOrder(orderedConnections: Connection[]) {
+    orderedConnections.forEach((r, i) => {
+      checkConnectionOrderInViewTab(r.id, i)
+    })
+  }
+
+  it('filters and sorts connections', () => {
+    cy.visit(`/community/`)
+    assertOrder(connectionsInCommunityFilterAll)
+
+    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
+      connectionsInCommunityJustMet
+    )
+    expect(connectionsInCommunityJustMet).to.not.deep.equal(
+      connectionsInCommunityJustMetSortedByNameAscending
+    )
+    expect(connectionsInCommunityJustMet).to.not.deep.equal(
+      connectionsInCommunityJustMetSortedByNameDescending
+    )
+
+    cy.get('[data-testid=custom-select]').click()
+    cy.get('[data-testid=custom-select-option-Justmet]').click()
+    assertOrder(connectionsInCommunityJustMet)
+
+    cy.get('[data-testid=filter-Name-inactive').click()
+    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+
+    cy.get('[data-testid=filter-Name-descending').click()
+    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+
+    cy.get('[data-testid=filter-Name-ascending').should('exist')
+  })
 
   it('rates an unrated connection', () => {
     cy.visit(`/community/`)

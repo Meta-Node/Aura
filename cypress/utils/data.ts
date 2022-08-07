@@ -7,13 +7,9 @@ import {
 import {
   AuraConnection,
   AuraProfile,
-  AuraRating,
   BrightIdBackup,
   Connection,
-  ConnectionResponse,
-  EnergyAllocation,
 } from '../../types'
-import { toRoundedPercentage } from '../../utils/numbers'
 
 const { publicKey, privateKey } = generateB64Keypair()
 export const FAKE_PRIVATE_KEY = privateKey
@@ -55,6 +51,57 @@ export const unratedConnection: Connection = {
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP,
   incomingLevel: 'already known',
+}
+
+export const justMet: Connection = {
+  id: 'k8rKbTInhbHxgQg7bJrhBfsMhhLz_VpXMQqhDwphX08',
+  name: 'Just Met',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'k8rKbTInhbHxgQg7bJrhBfsMhhLz_VpXMQqhDwphX08.jpg',
+  },
+  status: 'verified',
+  notificationToken: '00faf70f-8fcc-4129-8b5e-82037588e0e7',
+  level: 'just met',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'just met',
+}
+
+export const justMet2: Connection = {
+  id: 'TInQg7bJrhBfsMQqhhbHxMhhLz_VpXgk8rKbDwphX08',
+  name: 'Just Met 2',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'TInQg7bJrhBfsMQqhhbHxMhhLz_VpXgk8rKbDwphX08.jpg',
+  },
+  status: 'verified',
+  notificationToken: '691f81bf-e2b5-4f84-a22a-091ca9d5e6ae',
+  level: 'just met',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'just met',
+}
+
+export const justMet3: Connection = {
+  id: 'qhhbHxMhhLz_VpXgk8TInQg7bJrhBfsMQrKbDwphX08',
+  name: 'Just Met 3',
+  connectionDate: RANDOM_TIMESTAMP,
+  photo: {
+    filename: 'qhhbHxMhhLz_VpXgk8TInQg7bJrhBfsMQrKbDwphX08.jpg',
+  },
+  status: 'verified',
+  notificationToken: '3b4d7526-6b2b-4fbf-9db2-333ff5f23da0',
+  level: 'just met',
+  socialMedia: [],
+  verifications: [],
+  reportReason: null,
+  timestamp: RANDOM_TIMESTAMP,
+  incomingLevel: 'just met',
 }
 
 export const ratedConnection: Connection = {
@@ -100,12 +147,12 @@ export const ratedConnection3: Connection = {
   },
   status: 'verified',
   notificationToken: '1f00f451-5ca9-43fa-a6bc-5438cd720b31',
-  level: 'already known',
+  level: 'recovery',
   socialMedia: [],
   verifications: [],
   reportReason: null,
   timestamp: RANDOM_TIMESTAMP,
-  incomingLevel: 'already known',
+  incomingLevel: 'recovery',
 }
 
 export const ratedConnectionWithoutEnergy: Connection = {
@@ -152,6 +199,9 @@ export const BRIGHT_ID_BACKUP: BrightIdBackup = {
   },
   connections: [
     unratedConnection,
+    justMet,
+    justMet3,
+    justMet2,
     ratedConnection,
     ratedConnection2,
     ratedConnection3,
@@ -225,226 +275,7 @@ export const AURA_GENERAL_PROFILE: AuraProfile = {
   nicknames: [],
 }
 
-export const oldRatings: AuraRating[] = [
-  {
-    id: 5050,
-    toBrightId: ratedConnection.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '4',
-    createdAt: '2021-07-10T20:59:03.036Z',
-  },
-  {
-    id: 5050,
-    toBrightId: ratedConnection2.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '2',
-    createdAt: '2021-07-10T20:59:03.036Z',
-  },
-  {
-    id: 5050,
-    toBrightId: ratedConnection3.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '3',
-    createdAt: '2021-07-10T20:59:03.036Z',
-  },
-  {
-    id: 3040,
-    toBrightId: ratedConnectionWithoutEnergy.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '1',
-    createdAt: '2021-07-13T20:59:03.036Z',
-  },
-  {
-    id: 6070,
-    toBrightId: ratedConnectionNegative.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '-1',
-    createdAt: '2021-07-11T20:59:03.036Z',
-  },
-]
-
-export function getRatingObject(brightId: string, ratings: AuraRating[]) {
-  return ratings.find(r => r.toBrightId === brightId)
-}
-
-export function getRating(brightId: string, ratings: AuraRating[]) {
-  return getRatingObject(brightId, ratings)?.rating
-}
-
-export const newRatings: AuraRating[] = [
-  {
-    id: 5060,
-    toBrightId: ratedConnection.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '-2',
-    createdAt: '2021-07-10T20:59:03.036Z',
-  },
-  {
-    id: 5050,
-    toBrightId: ratedConnection2.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: String(getRating(ratedConnection2.id, oldRatings)),
-    createdAt: '2021-07-10T20:59:03.036Z',
-  },
-  {
-    id: 5050,
-    toBrightId: ratedConnection3.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: String(getRating(ratedConnection3.id, oldRatings)),
-    createdAt: '2021-07-10T20:59:03.036Z',
-  },
-  {
-    id: 3040,
-    toBrightId: ratedConnectionWithoutEnergy.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: String(getRating(ratedConnectionWithoutEnergy.id, oldRatings)),
-    createdAt: '2021-07-13T20:59:03.036Z',
-  },
-  {
-    id: 6080,
-    toBrightId: ratedConnectionNegative.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '0.5',
-    createdAt: '2021-07-11T20:59:03.036Z',
-  },
-  {
-    id: 7080,
-    toBrightId: unratedConnection.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: '4',
-    createdAt: '2021-07-17T20:59:03.036Z',
-  },
-]
-
-export const AURA_RATINGS: {
-  ratings: AuraRating[]
-} = {
-  ratings: oldRatings,
-}
-
 export const PROFILE_PICTURE = encryptData(
   'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAC0ALQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAECAwb/xAAcEAEBAQACAwEAAAAAAAAAAAAAEQEhQTFRYZH/xAAZAQEBAQEBAQAAAAAAAAAAAAAAAQIDBgf/xAAWEQEBAQAAAAAAAAAAAAAAAAAAEQH/2gAMAwEAAhEDEQA/APTqDyr6YAIAsASKKCCiAAIAQAWCUTFBAAABQSCiJXMWDo0AqIigCKABgqUQi4FABAASgKCIoBQihRBRKMAOigEAIolCAIABRekwiggsBEVRN0RQQABAFQTBQSueYKOlbAEoAQA8qBQFRKkFCoAIALClRQQTFAQqLBKE+CgRz0FdG0FVEqCgUAQEUEAxcSlSKFBAVERRRUhFBABAACsCjdaABAgqUSCwEBFASLDMQSKsIAAiioCUFIlKi4EEAAYMUbaqKAFAKiKKioRQAVEqACFBSFRFAABNAUKIKFGExTG2gUECCoqQKCBoqUqKQEAANASgoACkSlIAIuCAMYBjbQUAoKJUIAAAgChQhBUEigUoAIAIAoVQBBzWEHQAAD8FiUQiwCgogGAIAAAqCKCUwAADFxKILwCVzFHStEBUEUCpQBABQQXMCqAIACICgUBUqIoAYGArEAddUAZQAXVX2AgAAZyAgTkwERVgGoigiiAopnQAQBB//9k=',
   FAKE_BRIGHT_ID_PASSWORD
 )
-
-export const AURA_ENERGIES = {
-  energy: [
-    {
-      toBrightId: ratedConnection.id,
-      amount: 25,
-    },
-    {
-      amount: 50,
-      toBrightId: ratedConnection2.id,
-    },
-    {
-      amount: 5,
-      toBrightId: ratedConnection3.id,
-    },
-  ],
-}
-
-export const AURA_INBOUND_ENERGIES = {
-  energy: [
-    {
-      fromBrightId: ratedConnection.id,
-      amount: 2,
-    },
-  ],
-}
-
-export function getInboundEnergy(brightId: string) {
-  return (
-    AURA_INBOUND_ENERGIES.energy.find(e => e.fromBrightId === brightId)
-      ?.amount || 0
-  )
-}
-
-export const oldEnergyAllocation: EnergyAllocation = AURA_ENERGIES.energy
-export const newEnergyAllocation: EnergyAllocation = [
-  {
-    amount: 100,
-    toBrightId: ratedConnectionWithoutEnergy.id,
-  },
-  {
-    amount: 5,
-    toBrightId: ratedConnection.id,
-  },
-  {
-    amount: 50,
-    toBrightId: ratedConnection2.id,
-  },
-  {
-    amount: 5,
-    toBrightId: ratedConnection3.id,
-  },
-]
-
-export function getEnergyAllocationAmount(
-  allocation: EnergyAllocation,
-  brightId: string
-) {
-  return String(allocation.find(e => e.toBrightId === brightId)?.amount || 0)
-}
-
-export function getEnergyAllocationSum(allocation: EnergyAllocation) {
-  return allocation.reduce((a, c) => a + c.amount, 0)
-}
-
-export function getEnergyAllocationPercentageString(
-  allocation: EnergyAllocation,
-  brightId: string
-) {
-  return (
-    toRoundedPercentage(
-      Number(getEnergyAllocationAmount(allocation, brightId)),
-      getEnergyAllocationSum(allocation)
-    ) + '%'
-  )
-}
-
-export function getConnectionResponse(
-  connection: Connection,
-  ratings: AuraRating[]
-) {
-  const obj: ConnectionResponse = {
-    connectedTimestamp: connection.timestamp,
-    fourUnrated: [],
-  }
-  const ratingObj = getRatingObject(connection.id, ratings)
-  if (ratingObj) {
-    obj.previousRating = ratingObj
-  }
-  const energy = getEnergyAllocationAmount(AURA_ENERGIES.energy, connection.id)
-  if (energy) {
-    obj.energyAllocated = {
-      amount: Number(energy),
-    }
-  }
-  return obj
-}
-
-export const connectionsInEnergyFilterAll = BRIGHT_ID_BACKUP.connections.filter(
-  c => (getRating(c.id, oldRatings) || 0) >= 1
-)
-
-export const connectionsInEnergyFilterAllSortedByRateAscending = [
-  ...connectionsInEnergyFilterAll,
-].sort((a, b) => +getRating(a.id, oldRatings)! - +getRating(b.id, oldRatings)!)
-
-export const connectionsInEnergyFilterAllSortedByRateDescending = [
-  ...connectionsInEnergyFilterAllSortedByRateAscending,
-].reverse()
-
-export const connectionsInEnergyFilterExcludeZero =
-  connectionsInEnergyFilterAll.filter(
-    c => +getEnergyAllocationAmount(oldEnergyAllocation, c.id) > 0
-  )
-
-export const connectionsInEnergyFilterExcludeZeroSortedByRateAscending = [
-  ...connectionsInEnergyFilterExcludeZero,
-].sort((a, b) => +getRating(a.id, oldRatings)! - +getRating(b.id, oldRatings)!)
-
-export const connectionsInEnergyFilterExcludeZeroSortedByRateDescending = [
-  ...connectionsInEnergyFilterExcludeZeroSortedByRateAscending,
-].reverse()

@@ -10,12 +10,12 @@ export type Connection = {
   }
   status: 'verified'
   notificationToken: string
-  level: 'already known'
+  level: 'already known' | 'just met' | 'recovery'
   socialMedia: any[]
   verifications: any[]
   reportReason: string | null
   timestamp: number
-  incomingLevel: 'already known'
+  incomingLevel: 'already known' | 'just met' | 'recovery'
 }
 
 export type BrightIdBackup = {
