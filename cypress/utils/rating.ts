@@ -108,6 +108,14 @@ export const AURA_RATINGS: {
 
 export const connectionsInCommunityFilterAll = [...BRIGHT_ID_BACKUP.connections]
 
+export const connectionsInCommunityFilterAllSortedByNameAscending = [
+  ...connectionsInCommunityFilterAll,
+].sort((a, b) => a.name.localeCompare(b.name))
+
+export const connectionsInCommunityFilterAllSortedByNameDescending = [
+  ...connectionsInCommunityFilterAllSortedByNameAscending,
+].reverse()
+
 export const connectionsInCommunityAlreadyKnownPlus =
   connectionsInCommunityFilterAll.filter(
     user => user.level === 'already known' || user.level === 'recovery'

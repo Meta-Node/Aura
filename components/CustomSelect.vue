@@ -33,6 +33,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: String,
+      default: "",
+    },
     name: {
       type: String,
       required: false,
@@ -54,7 +58,7 @@ export default {
   },
   data() {
     return {
-      selected: this.default
+      selected: this.value ? this.value : this.default
         ? this.default
         : this.options.length > 0
           ? this.options[0]

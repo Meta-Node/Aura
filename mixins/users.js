@@ -32,7 +32,11 @@ export default {
         if (this.$route.name === 'community') {
           this.startUsers = this.connections
           this.users = this.startUsers
-          this.onFiltered(this.$route.query?.filter || 'All')
+          if (this.connectionTypeFilter) {
+            this.onFiltered('ConnectionType', this.connectionTypeFilter)
+          } else {
+            this.onFiltered(this.$route.query?.filter || 'All')
+          }
           return
         }
 

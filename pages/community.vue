@@ -132,12 +132,18 @@ export default {
   watch: {
     connectionTypeFilter(value) {
       this.onFiltered('ConnectionType', value)
+    },
+  },
+  mounted() {
+    if (this.connectionTypeFilter) {
+      this.onFiltered('ConnectionType', this.connectionTypeFilter)
     }
   },
 
   methods: {
     onFiltered(name, value) {
-      this.$refs.search.resetSearch()
+      console.log('onFiltered')
+      this.$refs.search?.resetSearch()
 
       if (name === 'All') {
         this.users = this.startUsers
@@ -205,7 +211,7 @@ export default {
           isReversed: false
         }
       }
-      this.users = this.getAlreadyKnown(this.getRating(this.startUsers, this.ratingFilter.isReversed), this.connectionTypeFilter)
+      this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), this.connectionTypeFilter)
 
     },
     onUnratedClick() {
@@ -238,7 +244,7 @@ export default {
           return
         }
         if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(this.getUnrated(this.getRating(this.startUsers, this.ratingFilter.isReversed)), value)
+          this.users = this.getAlreadyKnown(this.getUnrated(this.getRating(this.startUsers, !this.ratingFilter.isReversed)), value)
           return
         }
         this.users = this.getAlreadyKnown(this.getUnrated(this.startUsers), value)
@@ -249,7 +255,7 @@ export default {
           return
         }
         if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(this.getRating(this.startUsers, this.ratingFilter.isReversed), value)
+          this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), value)
           return
         }
         this.users = this.getAlreadyKnown(this.startUsers, value)
@@ -257,8 +263,7 @@ export default {
         this.nameFilter = {active: false, isReversed: false}
       }
     }
-  },
-
+  }
 
 }
 </script>

@@ -13,6 +13,8 @@ import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 import { getConnectionResponse } from '../utils/energy'
 import {
   connectionsInCommunityFilterAll,
+  connectionsInCommunityFilterAllSortedByNameAscending,
+  connectionsInCommunityFilterAllSortedByNameDescending,
   connectionsInCommunityJustMet,
   connectionsInCommunityJustMetSortedByNameAscending,
   connectionsInCommunityJustMetSortedByNameDescending,
@@ -193,6 +195,39 @@ describe('Community', () => {
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
       connectionsInCommunityJustMet
     )
+
+    cy.get('[data-testid=custom-select]').click()
+    cy.get('[data-testid=custom-select-option-Justmet]').click()
+    assertOrder(connectionsInCommunityJustMet)
+  })
+
+  it('sorts connections', () => {
+    cy.visit(`/community/`)
+    assertOrder(connectionsInCommunityFilterAll)
+
+    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
+      connectionsInCommunityFilterAllSortedByNameAscending
+    )
+    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
+      connectionsInCommunityFilterAllSortedByNameDescending
+    )
+
+    cy.get('[data-testid=filter-Name-inactive').click()
+    assertOrder(connectionsInCommunityFilterAllSortedByNameDescending)
+
+    cy.get('[data-testid=filter-Name-descending').click()
+    assertOrder(connectionsInCommunityFilterAllSortedByNameAscending)
+
+    cy.get('[data-testid=filter-Name-ascending').should('exist')
+  })
+
+  it('orders filtered list', () => {
+    cy.visit(`/community/`)
+    assertOrder(connectionsInCommunityFilterAll)
+
+    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
+      connectionsInCommunityJustMet
+    )
     expect(connectionsInCommunityJustMet).to.not.deep.equal(
       connectionsInCommunityJustMetSortedByNameAscending
     )
@@ -213,7 +248,29 @@ describe('Community', () => {
     cy.get('[data-testid=filter-Name-ascending').should('exist')
   })
 
-  it.only('keeps filters when navigating', () => {
+  it('filters ordered list', () => {
+    cy.visit(`/community/`)
+    assertOrder(connectionsInCommunityFilterAll)
+
+    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
+      connectionsInCommunityFilterAllSortedByNameAscending
+    )
+    expect(
+      connectionsInCommunityFilterAllSortedByNameAscending
+    ).to.not.deep.equal(connectionsInCommunityJustMetSortedByNameAscending)
+
+    cy.get('[data-testid=filter-Name-inactive').click()
+    cy.get('[data-testid=filter-Name-descending').click()
+    assertOrder(connectionsInCommunityFilterAllSortedByNameAscending)
+
+    cy.get('[data-testid=custom-select]').click()
+    cy.get('[data-testid=custom-select-option-Justmet]').click()
+    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+
+    cy.get('[data-testid=filter-Name-ascending').should('exist')
+  })
+
+  it('keeps filters when navigating', () => {
     cy.visit(`/community/`)
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
       connectionsInCommunityJustMetSortedByNameDescending
