@@ -35,15 +35,22 @@ export const AURA_INBOUND_ENERGIES = {
     {
       fromBrightId: ratedConnection.id,
       amount: 2,
+      scale: 2,
+    },
+    {
+      fromBrightId: ratedConnection2.id,
+      amount: 25,
+      scale: 50,
     },
   ],
 }
 
-export function getInboundEnergy(brightId: string) {
-  return (
-    AURA_INBOUND_ENERGIES.energy.find(e => e.fromBrightId === brightId)
-      ?.amount || 0
+export function getInboundEnergyPercentage(brightId: string) {
+  const inboundEnergy = AURA_INBOUND_ENERGIES.energy.find(
+    e => e.fromBrightId === brightId
   )
+  if (!inboundEnergy) return '0%'
+  return toRoundedPercentage(inboundEnergy.amount, inboundEnergy.scale) + '%'
 }
 
 export const oldEnergyAllocation: EnergyAllocation = AURA_ENERGIES.energy

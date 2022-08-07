@@ -1,5 +1,6 @@
 import { getRatedUsers } from '~/scripts/api/rate.service'
 import filtersMixin from '~/mixins/filters'
+import { toRoundedPercentage } from '~/utils/numbers'
 
 export default {
   mixins: [filtersMixin],
@@ -43,15 +44,21 @@ export default {
           const ratingData = ratedUsers.find(
             user => user.toBrightId === conn.id
           )
+          const inboundEnergyObject = this.inboundEnergy.find(
+            en => en.fromBrightId === conn.id
+          )
           return {
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
             transferedEnergy:
               this.transferedEnergy.find(en => en.toBrightId === conn.id)
                 ?.amount || 0,
-            inboundEnergy:
-              this.inboundEnergy.find(en => en.fromBrightId === conn.id)
-                ?.amount || 0,
+            inboundEnergyPercentage: inboundEnergyObject
+              ? toRoundedPercentage(
+                  inboundEnergyObject.amount,
+                  inboundEnergyObject.scale
+                )
+              : 0,
             ...conn,
           }
         })

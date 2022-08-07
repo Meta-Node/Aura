@@ -18,7 +18,7 @@ import {
   connectionsInEnergyFilterExcludeZeroSortedByRateDescending,
   getEnergyAllocationAmount,
   getEnergyAllocationPercentageString,
-  getInboundEnergy,
+  getInboundEnergyPercentage,
   newEnergyAllocation,
   oldEnergyAllocation,
 } from '../utils/energy'
@@ -117,7 +117,7 @@ describe('Energy', () => {
         rating
       )
       cy.get(`[data-testid^=user-v2-${connection.id}-inbound]`).contains(
-        getInboundEnergy(connection.id)
+        getInboundEnergyPercentage(connection.id)
       )
       cy.get(`[data-testid^=user-v2-${connection.id}-outbound]`).contains(
         getEnergyAllocationPercentageString(allocation, connection.id)
