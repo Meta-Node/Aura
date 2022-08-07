@@ -82,10 +82,39 @@ import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
 import FilterButton from '~/components/filters/FilterButton.vue'
 import UserItemInfo from '~/components/users/UserItemInfo'
 
+function tryParse(key) {
+  if (!process.client) return null
+  const str = localStorage.getItem(key)
+  if (!str) return null
+  console.log('str from ls')
+  console.log(str)
+  try {
+    return JSON.parse(str)
+  } catch (_e) {
+    return null
+  }
+}
+
 export default {
   components: {AppSearch, LazyLoadingItems, UserItemInfo, CustomSelect, FilterButton},
   mixins: [transition, users, loadItems],
-
+  data() {
+    return {
+      connectionTypeFilterData:
+        (process.client && localStorage.getItem('connectionTypeFilter')) || 'All',
+      nameFilterData: tryParse('nameFilter') || {
+        active: false,
+        isReversed: false,
+      },
+      ratingFilterData: tryParse('ratingFilter') || {
+        active: false,
+        isReversed: false,
+      },
+      unratedFilterData: tryParse('unratedFilter') || {
+        active: false,
+      },
+    }
+  },
   head() {
     return {
       title: `Aura | Community`,
@@ -97,34 +126,41 @@ export default {
     },
     connectionTypeFilter: {
       get() {
-        return this.$store.state.community.connectionTypeFilter
+        return this.connectionTypeFilterData
       },
       set(value) {
-        this.$store.commit('community/setConnectionTypeFilter', value)
+        if (process.client) localStorage.setItem('connectionTypeFilter', value)
+        this.connectionTypeFilterData = value
       }
     },
     nameFilter: {
       get() {
-        return this.$store.state.community.nameFilter
+        return this.nameFilterData
       },
       set(value) {
-        this.$store.commit('community/setNameFilter', value)
+        if (process.client)
+          localStorage.setItem('nameFilter', JSON.stringify(value))
+        this.nameFilterData = value
       }
     },
     ratingFilter: {
       get() {
-        return this.$store.state.community.ratingFilter
+        return this.ratingFilterData
       },
       set(value) {
-        this.$store.commit('community/setRatingFilter', value)
+        if (process.client)
+          localStorage.setItem('ratingFilter', JSON.stringify(value))
+        this.ratingFilterData = value
       }
     },
     unratedFilter: {
       get() {
-        return this.$store.state.community.unratedFilter
+        return this.unratedFilterData
       },
       set(value) {
-        this.$store.commit('community/setUnratedFilter', value)
+        if (process.client)
+          localStorage.setItem('unratedFilter', JSON.stringify(value))
+        this.unratedFilterData = value
       }
     },
   },
@@ -135,9 +171,7 @@ export default {
     },
   },
   mounted() {
-    if (this.connectionTypeFilter) {
-      this.onFiltered('ConnectionType', this.connectionTypeFilter)
-    }
+    this.onFiltered('ConnectionType', this.connectionTypeFilter)
   },
 
   methods: {
@@ -165,9 +199,9 @@ export default {
         this.onConnectionTypeChange(value)
       }
 
-      const queries = this.$route.query
-
-      this.$router.push({query: {...queries, filter: name}})
+      // const queries = this.$route.query
+      //
+      // this.$router.push({query: {...queries, filter: name}})
 
       this.filteredUsers = this.users
 

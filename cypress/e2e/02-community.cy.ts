@@ -290,6 +290,22 @@ describe('Community', () => {
     assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
   })
 
+  it('keeps filters after reload', () => {
+    cy.visit(`/community/`)
+    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
+      connectionsInCommunityJustMetSortedByNameDescending
+    )
+
+    assertOrder(connectionsInCommunityFilterAll)
+    cy.get('[data-testid=custom-select]').click()
+    cy.get('[data-testid=custom-select-option-Justmet]').click()
+    cy.get('[data-testid=filter-Name-inactive').click()
+    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+
+    cy.reload()
+    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+  })
+
   it('rates an unrated connection', () => {
     cy.visit(`/community/`)
     cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).contains(
