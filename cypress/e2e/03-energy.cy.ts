@@ -201,9 +201,7 @@ describe('Energy', () => {
       connectionsInEnergyFilterAllSortedByRateDescending
     ).to.not.deep.equal(connectionsInEnergyFilterAll)
 
-    connectionsInEnergyFilterAll.forEach((c, i) => {
-      checkConnectionOrderInViewTab(c.id, i)
-    })
+    assertOrder(connectionsInEnergyFilterAll)
 
     cy.get('[data-testid=filter-Rated-inactive]').click()
     assertOrder(connectionsInEnergyFilterAllSortedByRateDescending)
@@ -251,9 +249,7 @@ describe('Energy', () => {
     cy.get(`[data-testid=filter-ExcludeZeros-active]`).should('exist')
 
     // order
-    connectionsInEnergyFilterExcludeZero.forEach((c, i) => {
-      checkConnectionOrderInViewTab(c.id, i)
-    })
+    assertOrder(connectionsInEnergyFilterExcludeZero)
 
     cy.get('[data-testid=filter-Rated-inactive]').click()
     assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateDescending)
