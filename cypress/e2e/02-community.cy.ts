@@ -1,6 +1,7 @@
 import {
   AURA_GENERAL_PROFILE,
   FAKE_BRIGHT_ID,
+  justMet2,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
@@ -210,6 +211,26 @@ describe('Community', () => {
     assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
 
     cy.get('[data-testid=filter-Name-ascending').should('exist')
+  })
+
+  it.only('keeps filters when navigating', () => {
+    cy.visit(`/community/`)
+    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
+      connectionsInCommunityJustMetSortedByNameDescending
+    )
+
+    assertOrder(connectionsInCommunityFilterAll)
+    cy.get('[data-testid=custom-select]').click()
+    cy.get('[data-testid=custom-select-option-Justmet]').click()
+    cy.get('[data-testid=filter-Name-inactive').click()
+    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+
+    cy.get(`[data-testid^=user-item-${justMet2.id}-name]`).click()
+    cy.go(-1)
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500)
+    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
   })
 
   it('rates an unrated connection', () => {
