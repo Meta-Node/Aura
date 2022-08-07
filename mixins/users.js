@@ -71,7 +71,14 @@ export default {
 
         this.users = this.startUsers
 
-        this.onFiltered(this.$route.query?.filter || 'All')
+        const activeFilter = this.filters?.find(
+          filter => filter.type !== 'ordering' && filter.active
+        )
+        if (activeFilter) {
+          this.onFiltered()
+        } else {
+          this.onFiltered(this.$route.query?.filter || 'All')
+        }
       } catch (error) {
         console.log(error)
       } finally {

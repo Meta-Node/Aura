@@ -86,8 +86,6 @@ function tryParse(key) {
   if (!process.client) return null
   const str = localStorage.getItem(key)
   if (!str) return null
-  console.log('str from ls')
-  console.log(str)
   try {
     return JSON.parse(str)
   } catch (_e) {
@@ -176,7 +174,6 @@ export default {
 
   methods: {
     onFiltered(name, value) {
-      console.log('onFiltered')
       this.$refs.search?.resetSearch()
 
       if (name === 'All') {

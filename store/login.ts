@@ -66,7 +66,6 @@ export const actions: ActionTree<LoginState, RootState> = {
   async getProfileData({ commit, state }) {
     try {
       const res = await readChannelPromise(state.brightIdData, this)
-      console.log(res)
       commit('setProfileData', res)
       localStorage.setItem('brightId', state.profileData.profile.id)
       localStorage.setItem('publicKey', state.brightIdData.signingKey)

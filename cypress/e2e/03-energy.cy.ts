@@ -281,6 +281,44 @@ describe('Energy', () => {
     cy.get('[data-testid=filter-ExcludeZeros-active]').should('exist')
   })
 
+  it('keeps filters when navigating', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    assertOrder(connectionsInEnergyFilterAll)
+
+    expect(connectionsInEnergyFilterAll).to.not.deep.equal(
+      connectionsInEnergyFilterExcludeZeroSortedByRateAscending
+    )
+
+    cy.get('[data-testid=filter-Rated-inactive]').click()
+    cy.get(`[data-testid=filter-Rated-descending]`).click()
+    cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).click()
+    assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateAscending)
+
+    cy.get(`[data-testid^=user-item-${ratedConnection.id}-name]`).click()
+    cy.go(-1)
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500)
+    assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateAscending)
+  })
+
+  it('keeps filters after reload', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    assertOrder(connectionsInEnergyFilterAll)
+
+    expect(connectionsInEnergyFilterAll).to.not.deep.equal(
+      connectionsInEnergyFilterExcludeZeroSortedByRateAscending
+    )
+
+    cy.get('[data-testid=filter-Rated-inactive]').click()
+    cy.get(`[data-testid=filter-Rated-descending]`).click()
+    cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).click()
+    assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateAscending)
+
+    cy.reload()
+    assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateAscending)
+  })
+
   it('shows energies in set tab', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
     cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).should(

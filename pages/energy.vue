@@ -73,6 +73,17 @@ import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
 
+function tryParse(key) {
+  if (!process.client) return null
+  const str = localStorage.getItem(key)
+  if (!str) return null
+  try {
+    return JSON.parse(str)
+  } catch (_e) {
+    return null
+  }
+}
+
 export default {
   components: {
     AppSearch,
@@ -86,7 +97,7 @@ export default {
     return {
       isView: true,
 
-      filters: [
+      filters: tryParse('filters') || [
         {
           name: 'Name',
           type: 'ordering',

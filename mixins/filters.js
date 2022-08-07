@@ -22,25 +22,30 @@ export default {
   methods: {
     onFiltered(name) {
       this.users = this.startUsers
-      const filterType = this.filters.find(filter => filter.name === name)?.type
 
-      this.filters = this.filters.map(filter => {
-        if (filter.name === name) {
-          if (filter.type === 'ordering') {
-            if (!filter.active) {
-              filter.active = true
-              filter.reverse = false
+      if (name) {
+        const filterType = this.filters.find(
+          filter => filter.name === name
+        )?.type
+        this.filters = this.filters.map(filter => {
+          if (filter.name === name) {
+            if (filter.type === 'ordering') {
+              if (!filter.active) {
+                filter.active = true
+                filter.reverse = false
+              } else {
+                filter.reverse = !filter.reverse
+              }
             } else {
-              filter.reverse = !filter.reverse
+              filter.active = !filter.active
             }
-          } else {
-            filter.active = !filter.active
+          } else if (filter.type === filterType) {
+            filter.active = false
           }
-        } else if (filter.type === filterType) {
-          filter.active = false
-        }
-        return filter
-      })
+          return filter
+        })
+        localStorage.setItem('filters', JSON.stringify(this.filters))
+      }
 
       const activeFilter = this.filters.find(
         filter => filter.type !== 'ordering' && filter.active
@@ -66,10 +71,6 @@ export default {
           !activeOrder.reverse
         )
       }
-      console.log('activeFilter')
-      console.log(activeFilter)
-      console.log('activeOrder')
-      console.log(activeOrder)
 
       this.users = newUsers
       this.filteredUsers = this.users
