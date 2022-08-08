@@ -13,6 +13,8 @@ import {
   connectionsInEnergyFilterAll,
   connectionsInEnergyFilterAllSortedByRateAscending,
   connectionsInEnergyFilterAllSortedByRateDescending,
+  connectionsInEnergyFilterAllSortedByRecentAscending,
+  connectionsInEnergyFilterAllSortedByRecentDescending,
   connectionsInEnergyFilterExcludeZero,
   connectionsInEnergyFilterExcludeZeroSortedByRateAscending,
   connectionsInEnergyFilterExcludeZeroSortedByRateDescending,
@@ -190,7 +192,7 @@ describe('Energy', () => {
     })
   }
 
-  it('orders connections by rating', () => {
+  it('orders connections by rate', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
 
     // sorting by rate should change the order for the test to be valid
@@ -210,6 +212,28 @@ describe('Energy', () => {
     assertOrder(connectionsInEnergyFilterAllSortedByRateAscending)
 
     cy.get('[data-testid=filter-Rated-ascending]').should('exist')
+  })
+
+  it.only('orders connections by rate', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+
+    // sorting by rate should change the order for the test to be valid
+    expect(
+      connectionsInEnergyFilterAllSortedByRecentAscending
+    ).to.not.deep.equal(connectionsInEnergyFilterAll)
+    expect(
+      connectionsInEnergyFilterAllSortedByRecentDescending
+    ).to.not.deep.equal(connectionsInEnergyFilterAll)
+
+    assertOrder(connectionsInEnergyFilterAll)
+
+    cy.get('[data-testid=filter-Recent-inactive]').click()
+    assertOrder(connectionsInEnergyFilterAllSortedByRecentDescending)
+
+    cy.get('[data-testid=filter-Recent-descending]').click()
+    assertOrder(connectionsInEnergyFilterAllSortedByRecentAscending)
+
+    cy.get('[data-testid=filter-Recent-ascending]').should('exist')
   })
 
   function assertExcludeZerosFilter(isApplied: boolean) {

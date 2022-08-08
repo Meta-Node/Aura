@@ -17,6 +17,7 @@ export const oldRatings: AuraRating[] = [
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '4',
     createdAt: '2021-07-10T20:59:03.036Z',
+    updatedAt: '2021-07-12T20:59:03.036Z',
   },
   {
     id: 5050,
@@ -24,13 +25,15 @@ export const oldRatings: AuraRating[] = [
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '2',
     createdAt: '2021-07-10T20:59:03.036Z',
+    updatedAt: '2021-07-12T23:59:03.036Z',
   },
   {
     id: 5050,
     toBrightId: ratedConnection3.id,
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '3',
-    createdAt: '2021-07-10T20:59:03.036Z',
+    createdAt: '2021-07-11T20:59:03.036Z',
+    updatedAt: '2021-07-11T20:59:03.036Z',
   },
   {
     id: 3040,
@@ -38,6 +41,7 @@ export const oldRatings: AuraRating[] = [
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '1',
     createdAt: '2021-07-13T20:59:03.036Z',
+    updatedAt: '2021-07-15T20:59:03.036Z',
   },
   {
     id: 6070,
@@ -45,6 +49,7 @@ export const oldRatings: AuraRating[] = [
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '-1',
     createdAt: '2021-07-11T20:59:03.036Z',
+    updatedAt: '2021-07-11T10:59:03.036Z',
   },
 ]
 
@@ -58,39 +63,23 @@ export function getRating(brightId: string, ratings: AuraRating[]) {
 
 export const newRatings: AuraRating[] = [
   {
-    id: 5060,
-    toBrightId: ratedConnection.id,
-    fromBrightId: FAKE_BRIGHT_ID,
+    ...getRatingObject(ratedConnection.id, oldRatings)!,
     rating: '-2',
-    createdAt: '2021-07-10T20:59:03.036Z',
+    updatedAt: '2021-07-16T20:59:03.036Z',
   },
   {
-    id: 5050,
-    toBrightId: ratedConnection2.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: String(getRating(ratedConnection2.id, oldRatings)),
-    createdAt: '2021-07-10T20:59:03.036Z',
+    ...getRatingObject(ratedConnection2.id, oldRatings)!,
   },
   {
-    id: 5050,
-    toBrightId: ratedConnection3.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: String(getRating(ratedConnection3.id, oldRatings)),
-    createdAt: '2021-07-10T20:59:03.036Z',
+    ...getRatingObject(ratedConnection3.id, oldRatings)!,
   },
   {
-    id: 3040,
-    toBrightId: ratedConnectionWithoutEnergy.id,
-    fromBrightId: FAKE_BRIGHT_ID,
-    rating: String(getRating(ratedConnectionWithoutEnergy.id, oldRatings)),
-    createdAt: '2021-07-13T20:59:03.036Z',
+    ...getRatingObject(ratedConnection3.id, oldRatings)!,
   },
   {
-    id: 6080,
-    toBrightId: ratedConnectionNegative.id,
-    fromBrightId: FAKE_BRIGHT_ID,
+    ...getRatingObject(ratedConnectionNegative.id, oldRatings)!,
     rating: '0.5',
-    createdAt: '2021-07-11T20:59:03.036Z',
+    updatedAt: '2021-07-13T20:59:03.036Z',
   },
   {
     id: 7080,
@@ -98,6 +87,7 @@ export const newRatings: AuraRating[] = [
     fromBrightId: FAKE_BRIGHT_ID,
     rating: '4',
     createdAt: '2021-07-17T20:59:03.036Z',
+    updatedAt: '2021-07-17T20:59:03.036Z',
   },
 ]
 export const AURA_RATINGS: {

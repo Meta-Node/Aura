@@ -157,7 +157,7 @@ export const ratedConnection3: Connection = {
 
 export const ratedConnectionWithoutEnergy: Connection = {
   id: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb',
-  name: 'Rated No Energy',
+  name: 'Rated Without Energy',
   connectionDate: RANDOM_TIMESTAMP,
   photo: {
     filename: 'Wy75bwx1dQ5r41tTwMj4wVmSymxzwRMM4wuG6jxtUJb.jpg',

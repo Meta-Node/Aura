@@ -29,8 +29,8 @@ export const getByAmount = (users, fromLess) => {
 export const getByRatingDate = (users, fromLess) => {
   const newUsers = [...users.filter(su => su.ratingData)].sort(
     (a, b) =>
-      new Date(b.ratingData.createdAt).getTime() -
-      new Date(a.ratingData.createdAt).getTime()
+      new Date(b.ratingData.updatedAt).getTime() -
+      new Date(a.ratingData.updatedAt).getTime()
   )
   if (fromLess) {
     return newUsers

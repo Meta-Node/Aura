@@ -129,6 +129,18 @@ export const connectionsInEnergyFilterAllSortedByRateDescending = [
   ...connectionsInEnergyFilterAllSortedByRateAscending,
 ].reverse()
 
+export const connectionsInEnergyFilterAllSortedByRecentAscending = [
+  ...connectionsInEnergyFilterAll,
+].sort(
+  (a, b) =>
+    new Date(getRatingObject(a.id, oldRatings)!.updatedAt).getTime() -
+    new Date(getRatingObject(b.id, oldRatings)!.updatedAt).getTime()
+)
+
+export const connectionsInEnergyFilterAllSortedByRecentDescending = [
+  ...connectionsInEnergyFilterAllSortedByRecentAscending,
+].reverse()
+
 export const connectionsInEnergyFilterExcludeZero =
   connectionsInEnergyFilterAll.filter(
     c => +getEnergyAllocationAmount(oldEnergyAllocation, c.id) > 0

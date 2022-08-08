@@ -72,6 +72,7 @@ export type AuraRating = {
   fromBrightId: string
   rating: string
   createdAt: string
+  updatedAt: string
 }
 
 export type ConnectionResponse = {
