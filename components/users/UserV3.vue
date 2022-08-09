@@ -1,42 +1,44 @@
 <template>
   <li class="user-v3__humans-list">
-    <nuxt-link
-      :to="url"
-      class="user-v3__username"
-    >
-      <nuxt-img
-        :src="profileAvatar"
-        :alt="name"
-        class="user-v3__image"
-        width="48"
-        height="48"
-        loading="lazy"
-      />
-      <p class="user-v3__tag">{{ name }}</p>
-      <small class="user-v2__rate">({{ rating }})</small>
-
-    </nuxt-link>
+    <user-item-info :index="index" :user="user"></user-item-info>
     <div class="user-v3__numbers">
-      <user-slider
-        id="quality"
-        type="range"
-        :min="0"
-        :max="100"
-        :step="1"
-        :value="energy"
-        :quota="getQuota"
-        @changeEnergy="changeEnergy"
-      />
+      <template v-if="rating">
+        <user-slider
+          id="quality"
+          v-model="value"
+          :max="100"
+          :min="0"
+          :quota="getQuota"
+          :step="1"
+          :user-id="id"
+          type="range"
+          @input="changeEnergy"
+        />
+      </template>
+      <nuxt-link v-else :to="url">
+        Not Rated Yet
+      </nuxt-link>
     </div>
   </li>
 </template>
 
 <script>
+import UserItemInfo from './UserItemInfo'
 import avatar from '~/mixins/avatar'
 
+
 export default {
+  components: {UserItemInfo},
   mixins: [avatar],
   props: {
+    user: {
+      type: Object,
+      default: () => ({})
+    },
+    index: {
+      type: Number,
+      default: 0,
+    },
     id: {
       type: String,
       default: '',
@@ -60,16 +62,29 @@ export default {
     energy: {
       type: Number,
       default: 0,
-    },
+    }
+  },
+  data() {
+    return {
+      value: 0,
+    }
   },
   computed: {
     getQuota() {
       return this.rating * 25
     },
   },
+  watch: {
+    energy: {
+      immediate: true,
+      handler(newValue, _oldValue) {
+        this.value = Number(newValue);
+      }
+    }
+  },
   methods: {
     changeEnergy(value) {
-      this.$emit('changeEnergy', { amount: value, toBrightId: this.id })
+      this.$emit('changeEnergy', {amount: Number(value), toBrightId: this.id})
     },
   },
 }

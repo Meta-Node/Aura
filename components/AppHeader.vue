@@ -1,13 +1,13 @@
 <template>
   <header class="header navbar">
     <nav class="container header__nav">
-      <nuxt-link :to="homeURL" class="header__img-wrapper" aria-label="logo">
+      <nuxt-link :to="homeURL" aria-label="logo" class="header__img-wrapper">
         <svg
           class="img header__img"
-          width="52"
+          fill="none"
           height="18"
           viewBox="0 0 52 18"
-          fill="none"
+          width="52"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -20,10 +20,10 @@
         <p class="header__title">
           Powered By:
           <a
-            target="_blank"
-            rel="noreferer noopener"
-            href="https://www.brightid.org/"
             class="header__title-link"
+            href="https://www.brightid.org/"
+            rel="noreferer noopener"
+            target="_blank"
           >
             Bright ID
           </a>
@@ -31,43 +31,43 @@
       </div>
       <div v-else class="header__right">
         <button
-          class="nav-button"
           :class="[isPopupOpen && 'nav-button--open']"
           aria-label="Navigation button"
+          class="nav-button"
           @click.stop="togglePopup"
         >
           <span class="nav-button__dot nav-button__dot--1"></span>
           <span class="nav-button__dot nav-button__dot--2">
             <span class="nav-button__close-icon">
               <svg
-                width="10"
+                fill="none"
                 height="10"
                 viewBox="0 0 10 10"
-                fill="none"
+                width="10"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <rect
-                  x="0.934143"
-                  y="0.830566"
-                  width="12"
+                  fill="#333333"
                   height="1"
                   transform="rotate(45 0.934143 0.830566)"
-                  fill="#333333"
+                  width="12"
+                  x="0.934143"
+                  y="0.830566"
                 />
                 <rect
-                  x="0.580597"
-                  y="9.31586"
-                  width="12"
+                  fill="#333333"
                   height="1"
                   transform="rotate(-45 0.580597 9.31586)"
-                  fill="#333333"
+                  width="12"
+                  x="0.580597"
+                  y="9.31586"
                 />
               </svg>
             </span>
           </span>
           <span class="nav-button__dot nav-button__dot--3"></span>
         </button>
-        <div class="popup-menu" :class="[isPopupOpen && 'popup-menu--open']">
+        <div :class="[isPopupOpen && 'popup-menu--open']" class="popup-menu">
           <ul class="popup-menu__reduce">
             <li class="popup-menu__list">
               <nuxt-link :to="homeURL" class="menu-text popup-menu__text">
@@ -75,20 +75,25 @@
               </nuxt-link>
             </li>
             <li class="popup-menu__list">
-              <nuxt-link to="/community/" class="menu-text popup-menu__text">
+              <nuxt-link class="menu-text popup-menu__text" to="/community/">
                 Community
               </nuxt-link>
             </li>
             <li class="popup-menu__list">
-              <nuxt-link to="/energy/" class="menu-text popup-menu__text">
+              <nuxt-link class="menu-text popup-menu__text" to="/energy/">
                 Energy
               </nuxt-link>
             </li>
             <li class="popup-menu__list">
-              <nuxt-link to="/activity/" class="menu-text popup-menu__text">
-                Activity
+              <nuxt-link class="menu-text popup-menu__text" to="/contact-us/">
+                Contact Us
               </nuxt-link>
             </li>
+            <!--            <li class="popup-menu__list">-->
+            <!--              <nuxt-link class="menu-text popup-menu__text" to="/activity/">-->
+            <!--                Activity-->
+            <!--              </nuxt-link>-->
+            <!--            </li>-->
             <li class="popup-menu__list">
               <button
                 class="menu-text popup-menu__text popup-menu__text--red"
@@ -105,6 +110,8 @@
 </template>
 
 <script>
+import {TOAST_SUCCESS} from "~/utils/constants";
+
 export default {
   data() {
     return {
@@ -121,7 +128,7 @@ export default {
   },
 
   async mounted() {
-    const { default: NavbarPos } = await import('~/scripts/utils/navbarPos')
+    const {default: NavbarPos} = await import('~/scripts/utils/navbarPos')
 
     this.navbarPos = new NavbarPos()
     this.navbarPos.init()
@@ -144,7 +151,7 @@ export default {
       this.$router.push('/')
       this.$store.commit('toast/addToast', {
         text: 'You have successfully logged out',
-        color: 'success',
+        color: TOAST_SUCCESS,
       })
     },
   },

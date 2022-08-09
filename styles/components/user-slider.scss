@@ -1,11 +1,28 @@
 .user__slider {
   display: flex;
   align-items: center;
-  width: 118px;
-  height: 22px;
-  border-radius: 80px;
-  background: var(--grey);
   position: relative;
+
+  &__action {
+    background: var(--grey);
+    padding: 5px 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+  }
+
+  &__input {
+    background: #dddddd;
+    padding: 7px;
+    text-align: center;
+    width: 40px;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
 }
 
 .user__input-label {
@@ -15,6 +32,7 @@
   height: 100%;
 
   overflow: hidden;
+
   ::before {
     content: '';
     z-index: 0;

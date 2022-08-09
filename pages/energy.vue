@@ -11,43 +11,49 @@
         v-if="isLoading"
         style="margin-top: 40px"
       >
-        <app-spinner :is-visible="true" />
+        <app-spinner :is-visible="true"/>
       </div>
       <div v-else>
-        <energy-indicator :percent="availableEnergy" />
+        <div class="explorer-energy">
+          <h3 class="explorer-energy__indicator-text">Energy</h3>
+        </div>
+        <!--        <energy-indicator :percent="availableEnergy"/>-->
         <div class="switch">
           <div class="switch__wrapper">
             <button
+              :class="[isView && 'switch__filter-button--active']"
               class="switch__filter-button"
-              :class="[isExplorer && 'switch__filter-button--active']"
+              data-testid="energy-tab-switch-view"
               @click="onExplorerClick"
             >
-              Explorer
+              View
             </button>
             <button
+              :class="[!isView && 'switch__filter-button--active']"
               class="switch__filter-button"
-              :class="[!isExplorer && 'switch__filter-button--active']"
+              data-testid="energy-tab-switch-set"
               @click="onEnergyClick"
             >
-              Energy
+              Set
             </button>
           </div>
           <div class="enegry__screens">
             <transition
-              name="fade"
               mode="out-in"
+              name="fade"
             >
               <app-explorer
-                v-if="isExplorer"
-                :users="users"
+                v-if="isView"
                 :filters="filters"
+                :users="users"
                 @filtered="onFiltered"
               />
               <app-energy
                 v-else
-                :users="users"
                 :filters="filters"
+                :users="users"
                 @filtered="onFiltered"
+                @getTransferedEnergy="getUserData"
               />
             </transition>
           </div>
@@ -62,14 +68,26 @@ import AppSearch from '~/components/AppSearch.vue'
 import AppSpinner from '~/components/AppSpinner.vue'
 import AppEnergy from '~/components/energy/AppEnergy'
 import AppExplorer from '~/components/energy/AppExplorer'
-import EnergyIndicator from '~/components/EnergyIndicator.vue'
+// import EnergyIndicator from '~/components/EnergyIndicator.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
+import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
+
+function tryParse(key) {
+  if (!process.client) return null
+  const str = localStorage.getItem(key)
+  if (!str) return null
+  try {
+    return JSON.parse(str)
+  } catch (_e) {
+    return null
+  }
+}
 
 export default {
   components: {
     AppSearch,
-    EnergyIndicator,
+    // EnergyIndicator,
     AppEnergy,
     AppExplorer,
     AppSpinner,
@@ -77,21 +95,37 @@ export default {
   mixins: [transition, users],
   data() {
     return {
-      isExplorer: true,
+      isView: true,
 
-      filters: [
+      filters: tryParse('filters') || [
         {
           name: 'Name',
-          type: 'reversable',
+          type: 'ordering',
           active: false,
           reverse: false,
         },
         {
-          name: 'Amount',
-          type: 'reversable',
+          name: 'Outbound',
+          type: 'ordering',
           active: false,
           reverse: false,
         },
+        {
+          name: 'Rated',
+          type: 'ordering',
+          active: false,
+          reverse: false,
+        },
+        {
+          name: 'Recent',
+          type: 'ordering',
+          active: false,
+          reverse: false,
+        },
+        {
+          name: 'Exclude Zeros',
+          active: false,
+        }
       ],
     }
   },
@@ -112,10 +146,10 @@ export default {
   },
 
   watch: {
-    isExplorer() {
-      this.isExplorer
-        ? this.updateRouterQuery('Explorer')
-        : this.updateRouterQuery('Energy')
+    isView() {
+      this.isView
+        ? this.updateRouterQuery(ENERGY_TABS.VIEW)
+        : this.updateRouterQuery(ENERGY_TABS.SET)
     },
   },
 
@@ -124,36 +158,38 @@ export default {
     if (queries.tab) {
       delete queries.tab
     }
-    this.$router.push({ query: { ...queries } })
+    this.$router.push({query: {...queries}})
   },
-  async mounted() {
-    try {
-      await this.$store.dispatch('energy/getTransferedEnergy')
-    } catch (error) {
-      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
-      console.log(error)
-    }
+  mounted() {
+    this.getTransferedEnergy()
 
     const routeQuery = this.$route.query?.tab
 
-    if (routeQuery === 'Explorer') {
-      this.isExplorer = true
+    if (routeQuery === ENERGY_TABS.VIEW) {
+      this.isView = true
       return
     }
-    if (routeQuery === 'Energy') {
-      this.isExplorer = false
+    if (routeQuery === ENERGY_TABS.SET) {
+      this.isView = false
     }
   },
   methods: {
+    getTransferedEnergy() {
+      this.$store.dispatch('energy/getTransferedEnergy')
+        .catch(error => {
+          this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+          console.log(error)
+        })
+    },
     onExplorerClick() {
-      this.isExplorer = true
+      this.isView = true
     },
     onEnergyClick() {
-      this.isExplorer = false
+      this.isView = false
     },
     updateRouterQuery(tabName) {
       const queries = this.$route.query
-      this.$router.push({ query: { ...queries, tab: tabName } })
+      this.$router.push({query: {...queries, tab: tabName}})
     },
   },
 }

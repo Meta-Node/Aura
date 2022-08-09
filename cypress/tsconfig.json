@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
+    "strict": true,
     "target": "es5",
     "lib": [
       "es5",
@@ -7,6 +9,7 @@
     ],
     "types": [
       "cypress",
+      "@types/crypto-js",
       "node"
     ]
   },

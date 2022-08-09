@@ -3,9 +3,9 @@
     <filter-button
       v-for="filter in filters"
       :key="filter.name"
-      :name="filter.name"
-      :is-icon="filter.type === 'reversable'"
       :active="filter.active"
+      :name="filter.name"
+      :ordering="filter.type === 'ordering'"
       :reverse="filter.reverse"
       @clicked="onChange"
     />
@@ -14,8 +14,9 @@
 
 <script>
 import FilterButton from './FilterButton.vue'
+
 export default {
-  components: { FilterButton },
+  components: {FilterButton},
   props: {
     filters: {
       type: Array,

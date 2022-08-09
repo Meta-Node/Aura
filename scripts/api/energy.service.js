@@ -1,4 +1,5 @@
-import { backendApi, encryptData } from '.'
+import { backendApi } from '.'
+import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 
 export const transferEnergy = async transfers => {
   try {
@@ -7,12 +8,13 @@ export const transferEnergy = async transfers => {
     const encryptedData = {
       transfers,
     }
-
-    const encryptedTransfers = encryptData(encryptedData)
-
+    const encryptedTransfers = encryptDataWithPrivateKey(encryptedData)
     const res = await backendApi.post('/v1/energy/' + brightId, {
       encryptedTransfers,
     })
+    if (res.status !== 200) {
+      throw res.originalError?.response
+    }
     return res
   } catch (error) {
     console.log(error)

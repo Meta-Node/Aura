@@ -2,7 +2,7 @@
   <div class="app-explorer">
     <div class="app-explorer__statistic">
       <div class="app-explorer__switch-wrapper">
-        <app-filter :filters="filters" @filtered="onFiltered" />
+        <app-filter :filters="filters" @filtered="onFiltered"/>
       </div>
       <div class="app-explorer__humans-stat">
         <lazy-loading-items
@@ -13,14 +13,17 @@
           <small class="app-explorer__table-name">Inbound / Outbound</small>
           <ul class="app-explorer__humans">
             <user-v-2
-              v-for="user in visibleItems"
+              v-for="(user, i) in visibleItems"
+              :id="user.id"
               :key="user.id"
               :img="user.id"
+              :inbound="user.inboundEnergyPercentage + '%'"
+              :index="i"
               :name="user.nickname || user.name"
+              :outbound="user.transferedEnergy"
               :rating="+user.rating"
               :url="`/profile/${user.id}`"
-              :inbound="user.inboundEnergy + '%'"
-              :outbound="user.transferedEnergy + '%'"
+              :user="user"
             />
           </ul>
         </lazy-loading-items>
@@ -36,7 +39,7 @@ import UserV2 from '~/components/users/UserV2.vue'
 import loadItems from '~/mixins/loadItems'
 
 export default {
-  components: { UserV2, AppFilter },
+  components: {UserV2, AppFilter},
   mixins: [loadItems],
   props: {
     users: {

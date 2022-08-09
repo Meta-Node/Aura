@@ -1,32 +1,35 @@
+import { ActionTree, MutationTree } from 'vuex'
 import {
   commitToBackend,
   importBrightID,
   loginByExplorerCode,
-  readChannelPromise,
   pullDecryptedUserData,
+  readChannelPromise,
 } from '~/scripts/api/login.service'
+import { BrightIdData, LoginState, RootState } from '~/types/store'
 
-export const state = () => ({
+export const state = (): LoginState => ({
   isAuth: false,
   brightIdData: {},
   profileData: {},
 })
 
-export const mutations = {
-  setBrightIdData(state, value) {
+export const mutations: MutationTree<LoginState> = {
+  setBrightIdData(state, value: BrightIdData) {
     state.brightIdData = value
   },
-  setProfileData(state, value) {
+  setProfileData(state, value: any) {
     if (value.userData) {
       delete value.userData
     }
     state.profileData = value
+    // @ts-ignore
     this.$localForage.setItem('profileData', value)
   },
 }
 
-export const actions = {
-  async loginByExplorerCode({ commit, state, rootState }, data) {
+export const actions: ActionTree<LoginState, RootState> = {
+  async loginByExplorerCode({ commit }, data) {
     try {
       const brightIdData = await loginByExplorerCode(
         data.explorer,
@@ -51,7 +54,7 @@ export const actions = {
       throw error
     }
   },
-  async getBrightIdData({ commit, state, rootState }) {
+  async getBrightIdData({ commit }) {
     try {
       const data = await importBrightID()
       commit('setBrightIdData', data)
@@ -60,10 +63,9 @@ export const actions = {
       throw error
     }
   },
-  async getProfileData({ commit, state, rootState }) {
+  async getProfileData({ commit, state }) {
     try {
       const res = await readChannelPromise(state.brightIdData, this)
-      console.log(res)
       commit('setProfileData', res)
       localStorage.setItem('brightId', state.profileData.profile.id)
       localStorage.setItem('publicKey', state.brightIdData.signingKey)
@@ -74,7 +76,7 @@ export const actions = {
       throw error
     }
   },
-  async connectToBackend({ commit, state, rootState }) {
+  async connectToBackend(_ctx) {
     try {
       await commitToBackend()
     } catch (error) {
@@ -82,12 +84,13 @@ export const actions = {
       throw error
     }
   },
-  logout({ commit, state, rootState }) {
+  logout({ commit }) {
     localStorage.removeItem('brightId')
     localStorage.removeItem('publicKey')
     localStorage.removeItem('privateKey')
     localStorage.removeItem('timestamp')
     localStorage.removeItem('authKey')
+    // @ts-ignore
     this.$localForage.removeItem('profileData')
     commit('app/setIsAuth', false, { root: true })
   },

@@ -1,5 +1,6 @@
 import { getRatedUsers } from '~/scripts/api/rate.service'
 import filtersMixin from '~/mixins/filters'
+import { toRoundedPercentage } from '~/utils/numbers'
 
 export default {
   mixins: [filtersMixin],
@@ -21,48 +22,72 @@ export default {
       return this.$store.getters['profile/connections']
     },
   },
+  methods: {
+    async getUserData() {
+      try {
+        this.isLoading = true
+        await this.$store.dispatch('connections/getConnectionsData')
+        await this.$store.dispatch('profile/getProfileData')
 
-  async mounted() {
-    try {
-      this.isLoading = true
-      await this.$store.dispatch('connections/getConnectionsData')
-      await this.$store.dispatch('profile/getProfileData')
-
-      if (this.$route.name === 'community') {
-        this.startUsers = this.connections
-        this.users = this.startUsers
-        this.onFiltered(this.$route.query?.filter || 'All')
-        return
-      }
-
-      const ratedUsers = await getRatedUsers()
-      await this.$store.dispatch('energy/getTransferedEnergy')
-      await this.$store.dispatch('energy/getInboundEnergy')
-
-      const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
-
-      const finalUsers = moreThanZero.map(user => {
-        return {
-          rating: +user.rating,
-          transferedEnergy: this.transferedEnergy.find(
-            en => en.toBrightId === user.toBrightId
-          ).amount,
-          inboundEnergy:
-            this.inboundEnergy.find(en => en.fromBrightId === user.toBrightId)
-              ?.amount || 0,
-          ...this.connections.find(conn => conn.id === user.toBrightId),
+        if (this.$route.name === 'community') {
+          this.startUsers = this.connections
+          this.users = this.startUsers
+          if (this.connectionTypeFilter) {
+            this.onFiltered('ConnectionType', this.connectionTypeFilter)
+          } else {
+            this.onFiltered(this.$route.query?.filter || 'All')
+          }
+          return
         }
-      })
 
-      this.startUsers = finalUsers
+        const ratedUsers = await getRatedUsers()
+        await this.$store.dispatch('energy/getTransferedEnergy')
+        await this.$store.dispatch('energy/getInboundEnergy')
 
-      this.users = this.startUsers
+        const finalUsers = this.connections.map(conn => {
+          const ratingData = ratedUsers.find(
+            user => user.toBrightId === conn.id
+          )
+          const inboundEnergyObject = this.inboundEnergy.find(
+            en => en.fromBrightId === conn.id
+          )
+          return {
+            ratingData,
+            rating: ratingData ? +ratingData.rating : undefined,
+            transferedEnergy:
+              this.transferedEnergy.find(en => en.toBrightId === conn.id)
+                ?.amount || 0,
+            inboundEnergyPercentage: inboundEnergyObject
+              ? toRoundedPercentage(
+                  inboundEnergyObject.amount,
+                  inboundEnergyObject.scale
+                )
+              : 0,
+            ...conn,
+          }
+        })
 
-      this.onFiltered(this.$route.query?.filter || 'All')
-    } catch (error) {
-      console.log(error)
-    } finally {
-      this.isLoading = false
-    }
+        this.startUsers = finalUsers
+
+        this.users = this.startUsers
+
+        const activeFilter = this.filters?.find(
+          filter => filter.type !== 'ordering' && filter.active
+        )
+        if (activeFilter) {
+          this.onFiltered()
+        } else {
+          this.onFiltered(this.$route.query?.filter || 'All')
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.isLoading = false
+      }
+    },
+  },
+
+  mounted() {
+    this.getUserData()
   },
 }

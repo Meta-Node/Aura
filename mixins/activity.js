@@ -3,6 +3,7 @@ import {
   getProfileActivity,
   setImportantActivity,
 } from '~/scripts/api/activity.service'
+import { TOAST_ERROR, TOAST_SUCCESS } from '~/utils/constants'
 
 export default {
   data() {
@@ -42,7 +43,10 @@ export default {
         this.onFiltered('All')
       }
     } catch (error) {
-      this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+      this.$store.commit('toast/addToast', {
+        text: 'Error',
+        color: TOAST_ERROR,
+      })
     } finally {
       this.isLoading = false
     }
@@ -144,10 +148,13 @@ export default {
         await setImportantActivity(data.id, data.value)
         this.$store.commit('toast/addToast', {
           text: 'Successfully updated',
-          color: 'success',
+          color: TOAST_SUCCESS,
         })
       } catch (error) {
-        this.$store.commit('toast/addToast', { text: 'Error', color: 'danger' })
+        this.$store.commit('toast/addToast', {
+          text: 'Error',
+          color: TOAST_ERROR,
+        })
       }
     },
   },

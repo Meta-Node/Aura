@@ -3,6 +3,8 @@ import {
   getByAmount,
   getByName,
   getByRating,
+  getByRatingDate,
+  getExcludeZeros,
   getUnrated,
   onSearch,
   trim,
@@ -11,6 +13,7 @@ import {
 export default {
   data() {
     return {
+      searchValue: '',
       filteredUsers: [],
       users: [],
       appliedFilters: [],
@@ -18,47 +21,78 @@ export default {
   },
   methods: {
     onFiltered(name) {
-      this.$refs.search.resetSearch()
-
       this.users = this.startUsers
-      this.filters = this.filters.map(filter => {
-        if (filter.name === name) {
-          if (filter.type === 'reversable') {
-            if (!filter.active) {
-              filter.reverse = false
+
+      if (name) {
+        const filterType = this.filters.find(
+          filter => filter.name === name
+        )?.type
+        this.filters = this.filters.map(filter => {
+          if (filter.name === name) {
+            if (filter.type === 'ordering') {
+              if (!filter.active) {
+                filter.active = true
+                filter.reverse = false
+              } else {
+                filter.reverse = !filter.reverse
+              }
             } else {
-              filter.reverse = !filter.reverse
+              filter.active = !filter.active
             }
+          } else if (filter.type === filterType) {
+            filter.active = false
           }
-          filter.active = true
-        } else {
-          filter.active = false
-        }
-        return filter
-      })
+          return filter
+        })
+        localStorage.setItem('filters', JSON.stringify(this.filters))
+      }
+
+      const activeFilter = this.filters.find(
+        filter => filter.type !== 'ordering' && filter.active
+      )
+      const filterName = activeFilter?.name || 'All'
 
       const queries = this.$route.query
+      this.$router.push({ query: { ...queries, filter: filterName } })
 
-      this.$router.push({ query: { ...queries, filter: name } })
-
-      const fromLess = !this.filters.find(f => f.name === name)?.reverse
-      this.users = this[`get${name.replace(' ', '')}`](
+      const fromLess = !activeFilter?.reverse
+      let newUsers = this[`get${filterName.replace(' ', '')}`](
         this.startUsers,
         fromLess
       )
 
+      const activeOrder = this.filters.find(
+        filter => filter.type === 'ordering' && filter.active
+      )
+      if (activeOrder) {
+        const orderName = activeOrder.name
+        newUsers = this[`get${orderName.replace(' ', '')}`](
+          newUsers,
+          !activeOrder.reverse
+        )
+      }
+
+      this.users = newUsers
       this.filteredUsers = this.users
+      // if there is activeOrder or activeFilter, clear the search bar
+      this.onSearchValue(activeOrder || activeFilter ? '' : this.searchValue)
     },
 
     onSearchValue(value) {
+      this.searchValue = value
       const trimmedValue = trim(value)
-      const foundUsers = onSearch(trimmedValue, this.filteredUsers)
 
-      if (trimmedValue.length) {
-        this.users = foundUsers
-      } else {
-        this.users = this.filteredUsers
+      let usersBase = this.filteredUsers
+      if (this.$route.name === 'energy') {
+        if (trimmedValue) {
+          usersBase = usersBase.filter(
+            user => !user.rating || +user.rating >= 1
+          )
+        } else {
+          usersBase = usersBase.filter(user => +user.rating >= 1)
+        }
       }
+      this.users = onSearch(trimmedValue, usersBase)
     },
 
     getAll() {
@@ -75,11 +109,23 @@ export default {
     getRating(users, fromLess) {
       return getByRating(users, fromLess)
     },
+    getRecent(users, fromLess) {
+      return getByRatingDate(users, fromLess)
+    },
+    getOutbound(users, fromLess) {
+      return getByAmount(users, fromLess)
+    },
     getAmount(users, fromLess) {
       return getByAmount(users, fromLess)
     },
+    getRated(users, fromLess) {
+      return this.getRating(users, fromLess)
+    },
     getAlreadyKnown(users, value) {
       return getAlreadyKnown(users, value)
+    },
+    getExcludeZeros(users, value) {
+      return getExcludeZeros(users, value)
     },
   },
 }

@@ -1,25 +1,27 @@
 <template>
   <div
-    class="custom-select"
     :tabindex="tabindex"
+    class="custom-select"
     @blur="open = false"
   >
     <div
-      class="custom-select__selected"
       :class="{ open: open }"
+      class="custom-select__selected"
+      data-testid="custom-select"
       @click="open = !open"
     >
       {{ name }}
     </div>
     <div
-      class="custom-select__items"
       :class="{ selectHide: !open }"
+      class="custom-select__items"
     >
       <div
         v-for="(option, i) of options"
         :key="i"
-        class="custom-select__item"
         :class="[selected === option && 'custom-select__item--selected']"
+        :data-testid="`custom-select-option-${option.replace(' ' , '')}`"
+        class="custom-select__item"
         @click="onSelect(option)"
       >
         {{ option }}
@@ -31,6 +33,10 @@
 <script>
 export default {
   props: {
+    value: {
+      type: String,
+      default: "",
+    },
     name: {
       type: String,
       required: false,
@@ -52,7 +58,7 @@ export default {
   },
   data() {
     return {
-      selected: this.default
+      selected: this.value ? this.value : this.default
         ? this.default
         : this.options.length > 0
           ? this.options[0]

@@ -51,6 +51,7 @@
 <script>
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
+import {TOAST_ERROR} from "~/utils/constants";
 
 export default {
   components: {AppInput, AppButton},
@@ -92,7 +93,7 @@ export default {
       } catch (error) {
         this.$store.commit('toast/addToast', {
           text: 'Incorrect data',
-          color: 'danger',
+          color: TOAST_ERROR,
         })
       }
     },

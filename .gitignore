@@ -1,3 +1,5 @@
+cypress/screenshots/
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
@@ -55,9 +57,6 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
-
-# dotenv environment variables file
-.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

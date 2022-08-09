@@ -30,6 +30,10 @@ export default {
       type: String,
       default: '/',
     },
+    img: {
+      type: String,
+      default: '/',
+    },
     name: {
       type: String,
       default: 'Name',

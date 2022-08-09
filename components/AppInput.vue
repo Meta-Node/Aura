@@ -1,6 +1,28 @@
 <template>
   <div class="input-wrapper">
+    <textarea
+      v-if="type === 'textarea'"
+      :id="id"
+      ref="input"
+      :class="[
+        isSearch && 'form__input--search',
+        focus && 'js-focus',
+        error && 'js-error',
+      ]"
+      :data-testid="dataTestid"
+      :placeholder="placeholder"
+      :required="required"
+      :type="type"
+      :value="value"
+      class="input form__input"
+      data-validation="required"
+      @blur="onBlur"
+      @focus="onFocus"
+      @input="onInput"
+      rows="5"
+    ></textarea>
     <input
+      v-else
       :id="id"
       ref="input"
       :class="[
@@ -97,7 +119,7 @@ export default {
     },
     dataTestid: {
       type: String,
-    }
+    },
   },
   data() {
     return {
@@ -120,17 +142,17 @@ export default {
           error: this.error,
         })
       }
-      if (this.type === 'textarea') {
-        this.textAreaResize(this.$refs.input)
-      }
+      // if (this.type === 'textarea') {
+      //   this.textAreaResize(this.$refs.input)
+      // }
     },
     onInput(e) {
       const target = e.target
       this.value = target.value
 
-      if (this.type === 'textarea') {
-        this.textAreaResize(target)
-      }
+      // if (this.type === 'textarea') {
+      //   this.textAreaResize(target)
+      // }
 
       this.error = this.validationResult().includes(true)
 
@@ -163,7 +185,7 @@ export default {
       const validators = options.map(option => {
         const method = option.replace(/[\d(].{0,}/gm, '')
         const param = option.replace(/.{0,}\(|\)/gm, '')
-        return {method, param}
+        return { method, param }
       })
 
       return validators.map(

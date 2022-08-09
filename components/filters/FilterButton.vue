@@ -1,23 +1,24 @@
 <template>
   <button
-    class="filter-button"
     :class="[active && 'filter-button--active']"
+    :data-testid="testId"
+    class="filter-button"
     @click="onClick"
   >
     {{ name }}
     <span
-      v-if="isIcon"
-      class="filter-button__icon"
+      v-if="ordering"
       :style="{ transform: reverse ? 'rotate(180deg)' : 'rotate(0deg)' }"
+      class="filter-button__icon"
     >
       <svg
-        width="8"
+        fill="none"
         height="4"
         viewBox="0 0 8 4"
-        fill="none"
+        width="8"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M0 0L4 4L8 0H0Z" fill="#EEEEEE" />
+        <path d="M0 0L4 4L8 0H0Z" fill="#EEEEEE"/>
       </svg>
     </span>
   </button>
@@ -34,7 +35,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    isIcon: {
+    ordering: {
       type: Boolean,
       default: true,
     },
@@ -42,6 +43,15 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  computed: {
+    testId() {
+      const id = `filter-${this.name.replace(' ', '')}`
+      if (!this.active) return `${id}-inactive`
+      if (!this.ordering) return `${id}-active`
+      if (!this.reverse) return `${id}-descending`
+      return `${id}-ascending`
+    }
   },
 
   methods: {

@@ -1,3 +1,10 @@
+import { Configuration as WebpackConfiguration } from 'webpack'
+import { NuxtOptionsLoaders, NuxtWebpackEnv } from '@nuxt/types/config/build'
+
+const DOTENV_PATH =
+  process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
+require('dotenv').config({ path: DOTENV_PATH })
+
 const title = 'Discover & grow your Aura...'
 const description = 'Your Aura represents power & influence upon the Auracle.'
 
@@ -70,6 +77,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     '@nuxtjs/localforage',
@@ -79,6 +87,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/pwa
+    ['@nuxtjs/dotenv', { filename: DOTENV_PATH }],
     '@nuxtjs/pwa',
     '@nuxtjs/axios',
   ],
@@ -108,8 +117,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    extend(config, { isDev, isClient }) {
-      config.module.rules.push({
+    extend(
+      config: WebpackConfiguration,
+      _ctx: {
+        loaders: NuxtOptionsLoaders
+      } & NuxtWebpackEnv
+    ) {
+      config.module?.rules.push({
         test: /\.glsl$/,
         exclude: '/node_modules/',
         loader: 'webpack-glsl-loader',

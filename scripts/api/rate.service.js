@@ -1,4 +1,5 @@
-import { backendApi, encryptData } from '.'
+import { backendApi } from '.'
+import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 
 export const rateUser = async ({ fromBrightId, toBrightId, rating }) => {
   try {
@@ -6,14 +7,17 @@ export const rateUser = async ({ fromBrightId, toBrightId, rating }) => {
       rating,
     }
 
-    const encryptedRating = encryptData(encryptedData)
+    const encryptedRating = encryptDataWithPrivateKey(encryptedData)
 
     const endpoint = '/v1/ratings/'
     const URL = `${endpoint}${fromBrightId}/${toBrightId}`
 
-    await backendApi.post(URL, {
+    const res = await backendApi.post(URL, {
       encryptedRating,
     })
+    if (res.status !== 200) {
+      throw new Error('Could not submit rating')
+    }
   } catch (error) {
     console.log(error)
     throw error

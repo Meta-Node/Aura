@@ -12,7 +12,7 @@
         v-if="isLoading"
         style="margin-top: 40px"
       >
-        <app-spinner :is-visible="true" />
+        <app-spinner :is-visible="true"/>
       </div>
       <div
         v-else
@@ -21,30 +21,30 @@
         <h3 class="community__humans-title">Your Connections</h3>
         <div class="filter switch-wrapper">
           <filter-button
-            name="Name"
-            :is-icon="true"
             :active="nameFilter.active"
+            :is-icon="true"
             :reverse="nameFilter.isReversed"
+            name="Name"
             @clicked="onFiltered('Name')"
           />
           <filter-button
-            name="Rating"
-            :is-icon="true"
             :active="ratingFilter.active"
+            :is-icon="true"
             :reverse="ratingFilter.isReversed"
+            name="Rating"
             @clicked="onFiltered('Rating')"
           />
           <filter-button
-            name="Unrated"
-            :is-icon="false"
             :active="unratedFilter.active"
+            :is-icon="false"
+            name="Unrated"
             @clicked="onFiltered('Unrated')"
           />
           <custom-select
             v-model="connectionTypeFilter"
+            :options="['All', 'Just met', 'Aready known+']"
             default="All"
             name="Connection Type"
-            :options="['All', 'Just met', 'Aready known+']"
           ></custom-select>
 
         </div>
@@ -53,16 +53,13 @@
           :items="users"
           @updateItems="onUpdateItems"
         >
-          <ul class="user-v1-ul">
-            <user-v-1
-              v-for="user in visibleItems"
-              :key="user.id"
-              :is-brightness="true"
-              :brightness="user.rating / 10"
-              :img="user.id"
-              :name="user.nickname || user.name"
-              :url="`/profile/${user.id}`"
-            />
+          <ul class="user-item__list">
+            <li v-for="(user, index) in visibleItems"
+                :key="user.id"
+                class="user-item__container"
+            >
+              <user-item-info :index="index" :user="user"></user-item-info>
+            </li>
           </ul>
         </lazy-loading-items>
         <span
@@ -82,64 +79,102 @@ import loadItems from '~/mixins/loadItems'
 import AppSearch from '~/components/AppSearch.vue'
 
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
-import UserV1 from '~/components/users/UserV1.vue'
 import FilterButton from '~/components/filters/FilterButton.vue'
-export default {
-  computed: {
-    finalUsers() {
-      return this.getUnrated(this.users)
-    },
-    connectionTypeFilter: {
-      get(){
-        return this.$store.state.community.connectionTypeFilter
-      },
-      set(value) {
-        this.$store.commit('community/setConnectionTypeFilter', value)
-      }
-    },
-    nameFilter: {
-      get(){
-        return this.$store.state.community.nameFilter
-      },
-      set(value) {
-        this.$store.commit('community/setNameFilter', value)
-      }
-    },
-    ratingFilter: {
-      get(){
-        return this.$store.state.community.ratingFilter
-      },
-      set(value) {
-        this.$store.commit('community/setRatingFilter', value)
-      }
-    },
-    unratedFilter: {
-      get(){
-        return this.$store.state.community.unratedFilter
-      },
-      set(value) {
-        this.$store.commit('community/setUnratedFilter', value)
-      }
-    },
-  },
-  components: { AppSearch, LazyLoadingItems, UserV1, CustomSelect, FilterButton },
-  mixins: [transition, users, loadItems],
+import UserItemInfo from '~/components/users/UserItemInfo'
 
+function tryParse(key) {
+  if (!process.client) return null
+  const str = localStorage.getItem(key)
+  if (!str) return null
+  try {
+    return JSON.parse(str)
+  } catch (_e) {
+    return null
+  }
+}
+
+export default {
+  components: {AppSearch, LazyLoadingItems, UserItemInfo, CustomSelect, FilterButton},
+  mixins: [transition, users, loadItems],
+  data() {
+    return {
+      connectionTypeFilterData:
+        (process.client && localStorage.getItem('connectionTypeFilter')) || 'All',
+      nameFilterData: tryParse('nameFilter') || {
+        active: false,
+        isReversed: false,
+      },
+      ratingFilterData: tryParse('ratingFilter') || {
+        active: false,
+        isReversed: false,
+      },
+      unratedFilterData: tryParse('unratedFilter') || {
+        active: false,
+      },
+    }
+  },
   head() {
     return {
       title: `Aura | Community`,
     }
   },
+  computed: {
+    finalUsers() {
+      return this.getUnrated(this.users)
+    },
+    connectionTypeFilter: {
+      get() {
+        return this.connectionTypeFilterData
+      },
+      set(value) {
+        if (process.client) localStorage.setItem('connectionTypeFilter', value)
+        this.connectionTypeFilterData = value
+      }
+    },
+    nameFilter: {
+      get() {
+        return this.nameFilterData
+      },
+      set(value) {
+        if (process.client)
+          localStorage.setItem('nameFilter', JSON.stringify(value))
+        this.nameFilterData = value
+      }
+    },
+    ratingFilter: {
+      get() {
+        return this.ratingFilterData
+      },
+      set(value) {
+        if (process.client)
+          localStorage.setItem('ratingFilter', JSON.stringify(value))
+        this.ratingFilterData = value
+      }
+    },
+    unratedFilter: {
+      get() {
+        return this.unratedFilterData
+      },
+      set(value) {
+        if (process.client)
+          localStorage.setItem('unratedFilter', JSON.stringify(value))
+        this.unratedFilterData = value
+      }
+    },
+  },
 
   watch: {
     connectionTypeFilter(value) {
       this.onFiltered('ConnectionType', value)
-    }
+    },
+  },
+  mounted() {
+    this.onFiltered('ConnectionType', this.connectionTypeFilter)
   },
 
   methods: {
     onFiltered(name, value) {
-      this.$refs.search.resetSearch()
+      this.$refs.search?.resetSearch()
 
       if (name === 'All') {
         this.users = this.startUsers
@@ -161,15 +196,15 @@ export default {
         this.onConnectionTypeChange(value)
       }
 
-      const queries = this.$route.query
-
-      this.$router.push({ query: { ...queries, filter: name } })
+      // const queries = this.$route.query
+      //
+      // this.$router.push({query: {...queries, filter: name}})
 
       this.filteredUsers = this.users
 
     },
     onNameClick() {
-      this.ratingFilter = { active: false, isReversed: false }
+      this.ratingFilter = {active: false, isReversed: false}
 
       if (this.nameFilter.active) {
         this.nameFilter = {
@@ -190,7 +225,7 @@ export default {
       }
     },
     onRatingClick() {
-      this.nameFilter = { active: false, isReversed: false }
+      this.nameFilter = {active: false, isReversed: false}
       this.unratedFilter = {
         ...this.unratedFilter,
         active: false
@@ -207,7 +242,7 @@ export default {
           isReversed: false
         }
       }
-      this.users = this.getAlreadyKnown(this.getRating(this.startUsers, this.ratingFilter.isReversed), this.connectionTypeFilter)
+      this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), this.connectionTypeFilter)
 
     },
     onUnratedClick() {
@@ -215,7 +250,7 @@ export default {
         ...this.unratedFilter,
         active: !this.unratedFilter.active
       }
-      this.ratingFilter = { active: false, isReversed: false }
+      this.ratingFilter = {active: false, isReversed: false}
 
 
       if (this.unratedFilter.active) {
@@ -228,8 +263,8 @@ export default {
         this.users = this.getAlreadyKnown(this.getUnrated(this.startUsers), this.connectionTypeFilter)
       } else {
         this.users = this.getAlreadyKnown(this.startUsers, this.connectionTypeFilter)
-        this.ratingFilter = { active: false, isReversed: false }
-        this.nameFilter = { active: false, isReversed: false }
+        this.ratingFilter = {active: false, isReversed: false}
+        this.nameFilter = {active: false, isReversed: false}
       }
     },
     onConnectionTypeChange(value) {
@@ -240,7 +275,7 @@ export default {
           return
         }
         if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(this.getUnrated(this.getRating(this.startUsers, this.ratingFilter.isReversed)), value)
+          this.users = this.getAlreadyKnown(this.getUnrated(this.getRating(this.startUsers, !this.ratingFilter.isReversed)), value)
           return
         }
         this.users = this.getAlreadyKnown(this.getUnrated(this.startUsers), value)
@@ -251,16 +286,15 @@ export default {
           return
         }
         if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(this.getRating(this.startUsers, this.ratingFilter.isReversed), value)
+          this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), value)
           return
         }
         this.users = this.getAlreadyKnown(this.startUsers, value)
-        this.ratingFilter = { active: false, isReversed: false }
-        this.nameFilter = { active: false, isReversed: false }
+        this.ratingFilter = {active: false, isReversed: false}
+        this.nameFilter = {active: false, isReversed: false}
       }
     }
-  },
-
+  }
 
 }
 </script>
