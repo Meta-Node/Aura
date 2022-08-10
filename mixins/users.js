@@ -51,12 +51,18 @@ export default {
           const inboundEnergyObject = this.inboundEnergy.find(
             en => en.fromBrightId === conn.id
           )
+          const outboundEnergyObject = this.transferedEnergy.find(
+            en => en.toBrightId === conn.id
+          )
           return {
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
-            transferedEnergy:
-              this.transferedEnergy.find(en => en.toBrightId === conn.id)
-                ?.amount || 0,
+            transferedEnergy: outboundEnergyObject
+              ? toRoundedPercentage(
+                  outboundEnergyObject.amount,
+                  outboundEnergyObject.scale
+                )
+              : 0,
             inboundEnergyPercentage: inboundEnergyObject
               ? toRoundedPercentage(
                   inboundEnergyObject.amount,

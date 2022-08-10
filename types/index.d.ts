@@ -32,6 +32,7 @@ export type BrightIdBackup = {
 export type EnergyAllocationItem = {
   toBrightId: string
   amount: number
+  scale: number
 }
 export type EnergyAllocation = EnergyAllocationItem[]
 

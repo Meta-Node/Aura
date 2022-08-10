@@ -14,19 +14,25 @@ import {
 } from './data'
 import { getRating, getRatingObject, oldRatings } from './rating'
 
-export const AURA_ENERGIES = {
+export const AURA_ENERGIES: {
+  energy: EnergyAllocation
+} = {
   energy: [
     {
       toBrightId: ratedConnection.id,
       amount: 25,
+      // scale is 100 in test to test the compatibility with the old energy system
+      scale: 100,
     },
     {
-      amount: 50,
       toBrightId: ratedConnection2.id,
+      amount: 50,
+      scale: 100,
     },
     {
-      amount: 5,
       toBrightId: ratedConnection3.id,
+      amount: 5,
+      scale: 100,
     },
   ],
 }
@@ -58,26 +64,37 @@ export const newEnergyAllocation: EnergyAllocation = [
   {
     amount: 100,
     toBrightId: ratedConnectionWithoutEnergy.id,
+    scale: 160,
   },
   {
     amount: 5,
     toBrightId: ratedConnection.id,
+    scale: 160,
   },
   {
     amount: 50,
     toBrightId: ratedConnection2.id,
+    scale: 160,
   },
   {
     amount: 5,
     toBrightId: ratedConnection3.id,
+    scale: 160,
   },
 ]
+
+export function getEnergyAllocationObject(
+  allocation: EnergyAllocation,
+  brightId: string
+) {
+  return allocation.find(e => e.toBrightId === brightId)
+}
 
 export function getEnergyAllocationAmount(
   allocation: EnergyAllocation,
   brightId: string
 ) {
-  return String(allocation.find(e => e.toBrightId === brightId)?.amount || 0)
+  return String(getEnergyAllocationObject(allocation, brightId)?.amount || 0)
 }
 
 export function getEnergyAllocationSum(allocation: EnergyAllocation) {
@@ -88,12 +105,13 @@ export function getEnergyAllocationPercentageString(
   allocation: EnergyAllocation,
   brightId: string
 ) {
-  return (
-    toRoundedPercentage(
-      Number(getEnergyAllocationAmount(allocation, brightId)),
-      getEnergyAllocationSum(allocation)
-    ) + '%'
-  )
+  const energyAllocationObject = getEnergyAllocationObject(allocation, brightId)
+  return energyAllocationObject
+    ? toRoundedPercentage(
+        energyAllocationObject.amount,
+        energyAllocationObject.scale
+      ) + '%'
+    : '0%'
 }
 
 export function getConnectionResponse(

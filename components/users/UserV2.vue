@@ -5,7 +5,7 @@
       <template v-if="rating">
         <p :data-testid="`user-v2-${id}-inbound`" class="user-v2__num user-v2__num-inbound">{{ inbound }}</p>
         <p :data-testid="`user-v2-${id}-outbound`" class="user-v2__num user-v2__num-outbound">{{
-            outboundPercentage
+            outbound
           }}%</p>
       </template>
       <nuxt-link v-else :to="url">

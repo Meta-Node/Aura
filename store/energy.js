@@ -42,19 +42,23 @@ export const mutations = {
 }
 
 export const actions = {
-  async getTransferedEnergy({ commit, state }) {
+  async getTransferedEnergy({ commit }) {
     try {
       const { energy: outboundEnergy } = await getEnergy()
 
       const ratedUsers = await getRatedUsers()
       const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
 
-      const allUsers = moreThanZero.map(user => ({
-        toBrightId: user.toBrightId,
-        amount:
-          outboundEnergy.find(en => en.toBrightId === user.toBrightId)
-            ?.amount || 0,
-      }))
+      const allUsers = moreThanZero.map(user => {
+        const outboundEnergyObject = outboundEnergy.find(
+          en => en.toBrightId === user.toBrightId
+        )
+        return {
+          toBrightId: user.toBrightId,
+          amount: outboundEnergyObject?.amount || 0,
+          scale: outboundEnergyObject?.scale || 0,
+        }
+      })
 
       const totalAmount = allUsers.map(user => user.amount)
 
@@ -80,7 +84,7 @@ export const actions = {
     }
   },
 
-  async updateEnergy({ commit, state }) {
+  async updateEnergy({ state }) {
     try {
       await transferEnergy(state.transferedEnergy)
     } catch (error) {

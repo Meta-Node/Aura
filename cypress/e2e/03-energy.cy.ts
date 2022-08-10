@@ -214,7 +214,7 @@ describe('Energy', () => {
     cy.get('[data-testid=filter-Rated-ascending]').should('exist')
   })
 
-  it.only('orders connections by rate', () => {
+  it('orders connections by rate', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
 
     // sorting by rate should change the order for the test to be valid
