@@ -12,21 +12,21 @@
         style="margin: 0px 0px 10px 0px;"
         type="textarea"
       ></AppInput>
-      <p>Encrypted Data: {{ encrypted }}</p>
+      <p>Encrypted Data:<br/>{{ encrypted }}</p>
       <AppInput
         v-model="d2"
         placeholder="data to encrypt with private key"
         style="margin: 30px 0px 10px 0px;"
         type="textarea"
       ></AppInput>
-      <p>Decrypted Data: {{ decrypted }}</p>
+      <p>Decrypted Data:<br/>{{ decrypted }}</p>
       <AppInput
         v-model="d3"
         placeholder="data to decrypt"
         style="margin: 30px 0px 10px 0px;"
         type="textarea"
       ></AppInput>
-      <p>Encrypted: {{ encryptedWithPrivateKey }}</p>
+      <p>Encrypted:<br/>{{ encryptedWithPrivateKey }}</p>
     </div>
   </section>
 </template>
