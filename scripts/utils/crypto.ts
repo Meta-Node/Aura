@@ -4,8 +4,6 @@ import nacl from 'tweetnacl'
 import { fromByteArray, toByteArray } from 'base64-js'
 import { BrightIdBackup } from '~/types'
 
-const IS_DEV = process.env.NODE_ENV !== 'production'
-
 export function encryptData(data: string, password: string) {
   return CryptoJS.AES.encrypt(data, password).toString()
 }
@@ -57,20 +55,17 @@ export const generateB64Keypair = () => {
   }
 }
 
-export const encryptDataWithPrivateKey = (data: any) => {
-  if (IS_DEV) {
-    console.log('encryptDataWithPrivateKey')
-    console.log(data)
-  }
-  const privateKey = localStorage.getItem('privateKey')
+export const encryptStringWithPrivateKey = (data: string) => {
+  const privateKey = process.client && localStorage.getItem('privateKey')
 
   if (!privateKey) {
     throw new Error('need secret key stored')
   }
 
   const utf8Encode = new TextEncoder()
-  return nacl.sign(
-    utf8Encode.encode(JSON.stringify(data)),
-    toByteArray(privateKey)
-  )
+  return nacl.sign(utf8Encode.encode(data), toByteArray(privateKey))
+}
+
+export const encryptDataWithPrivateKey = (data: any) => {
+  return encryptStringWithPrivateKey(JSON.stringify(data))
 }
