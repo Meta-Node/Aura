@@ -16,10 +16,10 @@
       :value="value"
       class="input form__input"
       data-validation="required"
+      rows="5"
       @blur="onBlur"
       @focus="onFocus"
       @input="onInput"
-      rows="5"
     ></textarea>
     <input
       v-else
@@ -136,7 +136,7 @@ export default {
     updateFields() {
       if (this.value.trim() !== '') {
         this.type !== 'select' && this.$refs.input.focus()
-        this.$emit('inputValue', {
+        this.$emit('input', {
           id: this.id,
           value: this.value,
           error: this.error,
@@ -156,7 +156,7 @@ export default {
 
       this.error = this.validationResult().includes(true)
 
-      this.$emit('inputValue', {
+      this.$emit('input', {
         id: this.id,
         value: this.value,
         error: this.error,
@@ -185,7 +185,7 @@ export default {
       const validators = options.map(option => {
         const method = option.replace(/[\d(].{0,}/gm, '')
         const param = option.replace(/.{0,}\(|\)/gm, '')
-        return { method, param }
+        return {method, param}
       })
 
       return validators.map(
@@ -216,7 +216,7 @@ export default {
     },
     resetSearch() {
       this.reset()
-      this.$emit('inputValue', {
+      this.$emit('input', {
         id: this.id,
         value: '',
         error: this.error,
