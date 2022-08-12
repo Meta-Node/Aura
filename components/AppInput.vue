@@ -229,7 +229,7 @@ export default {
       this.$emit('input', this.localValue)
       this.$emit('inputValue', {
         id: this.id,
-        localValue: this.localValue,
+        value: this.localValue,
         error: this.error,
       })
     }
