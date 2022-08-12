@@ -101,7 +101,7 @@ export function getEnergyAllocationSum(allocation: EnergyAllocation) {
   return allocation.reduce((a, c) => a + c.amount, 0)
 }
 
-export function getEnergyAllocationPercentageString(
+export function getEnergyAllocationPercentageStringInView(
   allocation: EnergyAllocation,
   brightId: string
 ) {
@@ -110,6 +110,19 @@ export function getEnergyAllocationPercentageString(
     ? toRoundedPercentage(
         energyAllocationObject.amount,
         energyAllocationObject.scale
+      ) + '%'
+    : '0%'
+}
+
+export function getEnergyAllocationPercentageStringInSet(
+  allocation: EnergyAllocation,
+  brightId: string
+) {
+  const energyAllocationObject = getEnergyAllocationObject(allocation, brightId)
+  return energyAllocationObject
+    ? toRoundedPercentage(
+        energyAllocationObject.amount,
+        getEnergyAllocationSum(allocation)
       ) + '%'
     : '0%'
 }

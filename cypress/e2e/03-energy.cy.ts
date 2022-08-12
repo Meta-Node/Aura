@@ -19,7 +19,8 @@ import {
   connectionsInEnergyFilterExcludeZeroSortedByRateAscending,
   connectionsInEnergyFilterExcludeZeroSortedByRateDescending,
   getEnergyAllocationAmount,
-  getEnergyAllocationPercentageString,
+  getEnergyAllocationPercentageStringInSet,
+  getEnergyAllocationPercentageStringInView,
   getInboundEnergyPercentage,
   newEnergyAllocation,
   oldEnergyAllocation,
@@ -122,7 +123,7 @@ describe('Energy', () => {
         getInboundEnergyPercentage(connection.id)
       )
       cy.get(`[data-testid^=user-v2-${connection.id}-outbound]`).contains(
-        getEnergyAllocationPercentageString(allocation, connection.id)
+        getEnergyAllocationPercentageStringInView(allocation, connection.id)
       )
     } else {
       cy.get(`[data-testid^=user-item-${connection.id}-rating]`).should(
@@ -141,8 +142,13 @@ describe('Energy', () => {
     cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
       getRating(connection.id, oldRatings)!
     )
-    cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).contains(
-      getEnergyAllocationPercentageString(allocation, connection.id)
+    cy.get(`[data-testid=user-slider-${connection.id}-input]`).should(
+      'have.value',
+      getEnergyAllocationAmount(allocation, connection.id)
+    )
+    cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).should(
+      'have.text',
+      getEnergyAllocationPercentageStringInSet(allocation, connection.id)
     )
   }
 
@@ -350,13 +356,6 @@ describe('Energy', () => {
     )
     showsConnectionInSetTab(ratedConnection, oldEnergyAllocation)
     showsConnectionInSetTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
-    cy.get(
-      `[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`
-    ).should('have.value', 0)
-    cy.get(`[data-testid=user-slider-${ratedConnection.id}-input]`).should(
-      'have.value',
-      getEnergyAllocationAmount(oldEnergyAllocation, ratedConnection.id)
-    )
   })
 
   it('can update energies', () => {
