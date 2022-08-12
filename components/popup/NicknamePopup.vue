@@ -12,7 +12,7 @@
           type="text"
           validation="minLength(2)"
           validation-text="Value must be longer than 2"
-          @input="oninput"
+          @inputValue="onInputValue"
         />
         <app-button class="nickname-form__btn">Submit</app-button>
       </form>
@@ -45,7 +45,7 @@ export default {
     }
   },
   methods: {
-    oninput(val) {
+    onInputValue(val) {
       this[val.id] = {...this[val.id], ...val}
 
       this.hasErrors = this.nickname.error

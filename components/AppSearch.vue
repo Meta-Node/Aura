@@ -7,7 +7,7 @@
     data-testid="top-search"
     placeholder="Search..."
     type="text"
-    @input="oninput"
+    @inputValue="onInputValue"
   />
 </template>
 
@@ -22,7 +22,7 @@ export default {
     }
   },
   methods: {
-    oninput(data) {
+    onInputValue(data) {
       this.value = data.value.trim()
       this.$emit('searchValue', this.value)
     },

@@ -7,10 +7,6 @@ import { BrightIdBackup } from '~/types'
 const IS_DEV = process.env.NODE_ENV !== 'production'
 
 export function encryptData(data: string, password: string) {
-  if (IS_DEV) {
-    console.log('encryptData')
-    console.log(data)
-  }
   return CryptoJS.AES.encrypt(data, password).toString()
 }
 
@@ -19,14 +15,7 @@ export function encryptUserData(userData: BrightIdBackup, password: string) {
 }
 
 export function decryptData(data: string, password: string) {
-  const decrypted = CryptoJS.AES.decrypt(data, password).toString(
-    CryptoJS.enc.Utf8
-  )
-  if (IS_DEV) {
-    console.log('decryptData')
-    console.log(decrypted)
-  }
-  return decrypted
+  return CryptoJS.AES.decrypt(data, password).toString(CryptoJS.enc.Utf8)
 }
 
 export function decryptUserData(encryptedUserData: string, password: string) {

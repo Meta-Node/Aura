@@ -10,7 +10,7 @@
       type="text"
       validation="minLength(88)"
       validation-text="Value length must be equal 88"
-      @input="oninput"
+      @inputValue="onInputValue"
     />
     <app-input
       id="password"
@@ -22,7 +22,7 @@
       type="password"
       validation="required"
       validation-text="Password is required"
-      @input="oninput"
+      @inputValue="onInputValue"
     />
     <div class="checkbox-wrapper">
       <input
@@ -71,7 +71,7 @@ export default {
   },
 
   methods: {
-    oninput(val) {
+    onInputValue(val) {
       this[val.id] = {...this[val.id], ...val}
 
       this.hasErrors = this.explorer.error || this.password.error

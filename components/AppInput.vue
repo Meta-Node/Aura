@@ -13,7 +13,7 @@
       :placeholder="placeholder"
       :required="required"
       :type="type"
-      :value="value"
+      :value="localValue"
       class="input form__input"
       data-validation="required"
       rows="5"
@@ -34,7 +34,7 @@
       :placeholder="placeholder"
       :required="required"
       :type="type"
-      :value="value"
+      :value="localValue"
       class="input form__input"
       data-validation="required"
       @blur="onBlur"
@@ -60,8 +60,8 @@
     </div>
     <transition mode="out-in" name="fade">
       <button
-        v-if="isSearch && value.trim().length"
-        aria-label="reset search value"
+        v-if="isSearch && localValue.trim().length"
+        aria-label="reset search localValue"
         class="reset-search"
         @click="resetSearch"
       >
@@ -90,6 +90,10 @@ import validator from '~/scripts/utils/Validation'
 
 export default {
   props: {
+    value: {
+      type: String,
+      default: ''
+    },
     id: {
       type: String,
       default: '',
@@ -123,24 +127,29 @@ export default {
   },
   data() {
     return {
-      value: '',
       error: false,
       focus: false,
+      localValue: ''
     }
   },
-
+  watch: {
+    value: {
+      immediate: true,
+      handler(newValue, _oldValue) {
+        if (newValue) {
+          this.localValue = newValue
+        }
+      }
+    }
+  },
   mounted() {
     this.updateFields()
   },
   methods: {
     updateFields() {
-      if (this.value.trim() !== '') {
+      if (this.localValue.trim() !== '') {
         this.type !== 'select' && this.$refs.input.focus()
-        this.$emit('input', {
-          id: this.id,
-          value: this.value,
-          error: this.error,
-        })
+        this.emitValue()
       }
       // if (this.type === 'textarea') {
       //   this.textAreaResize(this.$refs.input)
@@ -148,7 +157,7 @@ export default {
     },
     onInput(e) {
       const target = e.target
-      this.value = target.value
+      this.localValue = target.value
 
       // if (this.type === 'textarea') {
       //   this.textAreaResize(target)
@@ -156,18 +165,16 @@ export default {
 
       this.error = this.validationResult().includes(true)
 
-      this.$emit('input', {
-        id: this.id,
-        value: this.value,
-        error: this.error,
-      })
+      this.emitValue()
     },
     onFocus() {
       this.focus = true
     },
 
     onBlur() {
-      if (!this.value.trim().length) {
+      console.log('this.localValue')
+      console.log(this.localValue)
+      if (!this.localValue.trim().length) {
         this.focus = false
       }
     },
@@ -189,7 +196,7 @@ export default {
       })
 
       return validators.map(
-        v => !validator[v.method](this.value, v.param && v.param)
+        v => !validator[v.method](this.localValue, v.param && v.param)
       )
     },
     throwError() {
@@ -206,7 +213,7 @@ export default {
       this.$el.style.setProperty('--height', height)
     },
     reset() {
-      this.value = ''
+      this.localValue = ''
       this.error = false
       this.onBlur()
       this.updateFields()
@@ -216,12 +223,16 @@ export default {
     },
     resetSearch() {
       this.reset()
-      this.$emit('input', {
+      this.emitValue()
+    },
+    emitValue() {
+      this.$emit('input', this.localValue)
+      this.$emit('inputValue', {
         id: this.id,
-        value: '',
+        localValue: this.localValue,
         error: this.error,
       })
-    },
+    }
   },
 }
 </script>
