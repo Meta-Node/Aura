@@ -14,15 +14,20 @@
       ></AppInput>
       <p>Encrypted Data:<br/>{{ encrypted }}</p>
       <AppInput
+        v-model="password"
+        placeholder="password"
+        style="margin: 20px 0px 10px 0px;"
+      ></AppInput>
+      <AppInput
         v-model="d2"
         placeholder="data to decrypt"
-        style="margin: 30px 0px 10px 0px;"
+        style="margin: 0px 0px 10px 0px;"
         type="textarea"
       ></AppInput>
       <p>Decrypted Data:<br/>{{ decrypted }}</p>
       <AppInput
         v-model="d3"
-        placeholder="data to encrypt with private key"
+        placeholder="data to encrypt with private key (must be loggeed in)"
         style="margin: 30px 0px 10px 0px;"
         type="textarea"
       ></AppInput>
@@ -35,7 +40,6 @@
 import {decryptData, encryptData, encryptStringWithPrivateKey} from "~/scripts/utils/crypto";
 
 export default {
-  name: "crypto-debug.vue",
   data: function () {
     return {
       password: '',
