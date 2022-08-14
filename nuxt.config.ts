@@ -90,6 +90,7 @@ export default {
     ['@nuxtjs/dotenv', { filename: DOTENV_PATH }],
     '@nuxtjs/pwa',
     '@nuxtjs/axios',
+    '@nuxtjs/date-fns',
   ],
 
   proxy: {

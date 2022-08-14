@@ -26,7 +26,8 @@
       "@types/node",
       "@types/crypto-js",
       "@nuxt/types",
-      "@nuxtjs/axios"
+      "@nuxtjs/axios",
+      "@nuxt/vue-app"
     ]
   },
   "exclude": [

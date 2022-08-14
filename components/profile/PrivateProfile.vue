@@ -24,6 +24,7 @@
         :name="profile.name"
         :nickname="profile.nickname"
         :rating="profile.rating"
+        :connectionDate="profile.connectionDate"
         @edit="onEdit"
         @share="onShare"
       />

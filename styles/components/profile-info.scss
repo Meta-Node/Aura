@@ -1,3 +1,13 @@
+.profile {
+  &__user-info-left {
+    @include col(1, 4);
+
+    &__last-connection {
+      text-align: center;
+    }
+  }
+}
+
 .profile__block-left {
   width: 100%;
 }

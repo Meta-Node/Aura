@@ -1536,6 +1536,13 @@
     consola "^2.15.3"
     defu "^5.0.0"
 
+"@nuxtjs/date-fns@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/date-fns/-/date-fns-1.5.0.tgz#9a37d97b97b08075f19619ffcb045ef46ce4c19a"
+  integrity sha512-mE+D3+XmmMcn1lhgMlQdQiWiPhW6KO0AW6cwm/jP7fD5CtEtYuNuAxD8iUaeadM1Cw5ZwjkiMlQsnWLiKGe+bQ==
+  dependencies:
+    date-fns "^2.19.0"
+
 "@nuxtjs/dotenv@^1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@nuxtjs/dotenv/-/dotenv-1.4.1.tgz#dd5abb98e22cc7ae27139d3aa606151034293128"
@@ -4080,6 +4087,11 @@ data-uri-to-buffer@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.0.tgz#b5db46aea50f6176428ac05b73be39a57701a64b"
   integrity sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==
+
+date-fns@^2.19.0:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.1.tgz#9667c2615525e552b5135a3116b95b1961456e60"
+  integrity sha512-dlLD5rKaKxpFdnjrs+5azHDFOPEu4ANy/LTh04A1DTzMM7qoajmKCBc8pkKRFT41CNzw+4gQh79X5C+Jq27HAw==
 
 dayjs@^1.10.4:
   version "1.11.3"
