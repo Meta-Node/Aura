@@ -1,9 +1,9 @@
 .profile__card-img {
-  @include col(1, 4);
-  margin-left: 10px;
+  margin-bottom: 0.5rem;
 }
 
 .profile__avatar {
+  margin: 0 auto;
   border-radius: 90px;
   width: 106px;
   height: 106px;

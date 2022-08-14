@@ -15,6 +15,7 @@
         :connections="profile.numOfConnections"
         :brightness="brightness"
         :is-own-profile="isOwn"
+        :connectionDate="profile.connectionDate"
         @share="onShare"
       />
       <aura-sphere class="profile__sphere" :rating="profile.rating" />

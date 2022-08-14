@@ -1,10 +1,11 @@
 <template>
   <div class="grid profile-info">
-    <profile-avatar
-      :brightness="brightness"
-      :img="img"
-      alt="Avatar"
-    />
+    <div class="profile__user-info-left">
+      <profile-avatar :brightness="brightness" :img="img" alt="Avatar" />
+      <p v-if="!isOwnProfile" class="profile__user-info-left__last-connection">
+        last connection<br /><strong>{{ lastConnection }}</strong>
+      </p>
+    </div>
     <div class="profile__user-info">
       <div class="profile__username">
         <div class="profile__block-left" data-testid="profile-user-name">
@@ -86,6 +87,7 @@
 
 <script>
 import ProfileAvatar from './ProfileAvatar.vue'
+import { formatDistance } from 'date-fns'
 
 export default {
   components: {ProfileAvatar},
@@ -126,6 +128,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    connectionDate: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     separatedName() {
@@ -147,6 +153,9 @@ export default {
       }
 
       return 'Gold'
+    },
+    lastConnection() {
+      return formatDistance(new Date(this.connectionDate), new Date(), { addSuffix: true })
     },
   },
   methods: {
