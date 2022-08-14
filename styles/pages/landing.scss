@@ -1,5 +1,18 @@
 .landing {
   margin-top: 108px;
+
+  &__link {
+    @include med;
+    margin: unset !important;
+    margin-top: 30px !important;
+    font-size: 16px;
+    line-height: 150%;
+    color: '#fff';
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 }
 
 .landing__h1 {
@@ -26,9 +39,11 @@
   margin-top: 30px;
   font-size: 16px;
   line-height: 150%;
-  background: linear-gradient(90deg,
-      #ffffff 0.53%,
-      rgba(255, 255, 255, 0.5) 145.92%);
+  background: linear-gradient(
+    90deg,
+    #ffffff 0.53%,
+    rgba(255, 255, 255, 0.5) 145.92%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
