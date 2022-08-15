@@ -1,0 +1,68 @@
+.select-wrapper {
+  position: relative;
+  max-width: 100%;
+  width: 344px;
+  margin: 0 auto;
+}
+
+.select {
+  @include reg;
+  border-radius: 10px;
+  background-color: var(--grey);
+  color: rgba(241, 241, 241, 0.6);
+  width: 100%;
+  padding: 6px 8px 6px;
+  line-height: 150%;
+  font-size: 16px;
+  letter-spacing: -0.03em;
+  cursor: pointer;
+
+  &::selection {
+    background-color: var(--black);
+    color: var(--white);
+  }
+
+  &__options {
+    border-radius: 10px;
+    color: var(--grey);
+    background-color: rgba(241, 241, 241);
+    width: 100%;
+    padding: 6px 8px 6px;
+    line-height: 150%;
+    font-size: 16px;
+    letter-spacing: -0.03em;
+    border: 0;
+    position: absolute;
+    top: 110%;
+    z-index: 10;
+    left: 0;
+
+    &__option {
+      cursor: pointer;
+      &:hover {
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%) rotate(90deg) scaleY(1.5);
+    transition: all 0.3s ease;
+    line-height: 3rem;
+
+    &--rotated {
+      transform: translateY(-50%) rotate(270deg) scaleY(1.5);
+    }
+  }
+
+  &:focus {
+    background-color: rgba(118, 118, 128, 0.4);
+  }
+
+  &::placeholder {
+    color: rgba(241, 241, 241, 0.6);
+  }
+}
