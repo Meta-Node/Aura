@@ -7,7 +7,13 @@
         </p>
         <p v-else class="select__input__placeholder">{{ placeholder }}</p>
       </div>
-        <p class="select__icon" :class="{'select__icon--rotated': showOptions}">></p>
+      <p
+        @click="() => (showOptions = !showOptions)"
+        class="select__icon"
+        :class="{ 'select__icon--rotated': showOptions }"
+      >
+        >
+      </p>
       <div v-if="showOptions" class="select__options">
         <div
           v-for="option in options"
