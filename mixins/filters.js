@@ -32,7 +32,7 @@ export default {
             if (filter.type === 'ordering') {
               if (!filter.active) {
                 filter.active = true
-                filter.reverse = false
+                filter.reverse = filter.defaultAscending
               } else {
                 filter.reverse = !filter.reverse
               }
@@ -41,6 +41,9 @@ export default {
             }
           } else if (filter.type === filterType) {
             filter.active = false
+            if (filter.type === 'ordering') {
+              filter.reverse = filter.defaultAscending
+            }
           }
           return filter
         })

@@ -213,12 +213,12 @@ describe('Community', () => {
     )
 
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityFilterAllSortedByNameDescending)
-
-    cy.get('[data-testid=filter-Name-descending').click()
     assertOrder(connectionsInCommunityFilterAllSortedByNameAscending)
 
-    cy.get('[data-testid=filter-Name-ascending').should('exist')
+    cy.get('[data-testid=filter-Name-ascending').click()
+    assertOrder(connectionsInCommunityFilterAllSortedByNameDescending)
+
+    cy.get('[data-testid=filter-Name-descending').should('exist')
   })
 
   it('orders filtered list', () => {
@@ -240,12 +240,12 @@ describe('Community', () => {
     assertOrder(connectionsInCommunityJustMet)
 
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
-
-    cy.get('[data-testid=filter-Name-descending').click()
     assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
 
-    cy.get('[data-testid=filter-Name-ascending').should('exist')
+    cy.get('[data-testid=filter-Name-ascending').click()
+    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+
+    cy.get('[data-testid=filter-Name-descending').should('exist')
   })
 
   it('filters ordered list', () => {
@@ -260,7 +260,6 @@ describe('Community', () => {
     ).to.not.deep.equal(connectionsInCommunityJustMetSortedByNameAscending)
 
     cy.get('[data-testid=filter-Name-inactive').click()
-    cy.get('[data-testid=filter-Name-descending').click()
     assertOrder(connectionsInCommunityFilterAllSortedByNameAscending)
 
     cy.get('[data-testid=custom-select]').click()
@@ -273,37 +272,37 @@ describe('Community', () => {
   it('keeps filters when navigating', () => {
     cy.visit(`/community/`)
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityJustMetSortedByNameDescending
+      connectionsInCommunityJustMetSortedByNameAscending
     )
 
     assertOrder(connectionsInCommunityFilterAll)
     cy.get('[data-testid=custom-select]').click()
     cy.get('[data-testid=custom-select-option-Justmet]').click()
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
 
     cy.get(`[data-testid^=user-item-${justMet2.id}-name]`).click()
     cy.go(-1)
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500)
-    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
   })
 
   it('keeps filters after reload', () => {
     cy.visit(`/community/`)
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityJustMetSortedByNameDescending
+      connectionsInCommunityJustMetSortedByNameAscending
     )
 
     assertOrder(connectionsInCommunityFilterAll)
     cy.get('[data-testid=custom-select]').click()
     cy.get('[data-testid=custom-select-option-Justmet]').click()
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
 
     cy.reload()
-    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
   })
 
   it('rates an unrated connection', () => {
