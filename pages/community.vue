@@ -37,6 +37,7 @@
           <filter-button
             :active="unratedFilter.active"
             :is-icon="false"
+            :ordering="false"
             name="Unrated"
             @clicked="onFiltered('Unrated')"
           />
@@ -100,16 +101,25 @@ export default {
     return {
       connectionTypeFilterData:
         (process.client && localStorage.getItem('connectionTypeFilter')) || 'All',
-      nameFilterData: tryParse('nameFilter') || {
-        active: false,
-        isReversed: false,
+      nameFilterData: {
+        ...(tryParse('nameFilter') || {
+          active: false,
+          isReversed: false,
+        }),
+        ordering: true
       },
-      ratingFilterData: tryParse('ratingFilter') || {
-        active: false,
-        isReversed: false,
+      ratingFilterData: {
+        ...(tryParse('ratingFilter') || {
+          active: false,
+          isReversed: false,
+        }),
+        ordering: true
       },
-      unratedFilterData: tryParse('unratedFilter') || {
-        active: false,
+      unratedFilterData: {
+        ...(tryParse('unratedFilter') || {
+          active: false,
+        }),
+        ordering: false,
       },
     }
   },
