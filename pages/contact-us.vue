@@ -13,16 +13,16 @@
           style="margin-bottom: 20px"
         ></AppInput>
         <AppSelectInput
+          :options="feedbackOptions"
+          :selected-item="selectedFeedbackOption"
           placeholder="-- feedback type * --"
           style="margin-bottom: 20px"
-          :options="feedbackOptions"
-          :selectedItem="selectedFeedbackOption"
           @handleItemClicked="setSelectedFeedbackOption"
         />
         <AppInput
           placeholder="description *"
-          type="textarea"
           style="margin-bottom: 20px"
+          type="textarea"
         ></AppInput>
         <AppButton @click.native="handleSendFeedback">Send</AppButton>
       </div>
@@ -45,10 +45,10 @@ export default {
     return {
       selectedFeedbackOption: null,
       feedbackOptions: [
-    {
-      id: 0,
-      title: 'Question'
-    },
+        {
+          id: 0,
+          title: 'Question'
+        },
         {
           id: 1,
           title: 'Suggestion',

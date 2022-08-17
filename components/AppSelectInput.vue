@@ -1,16 +1,16 @@
 <template>
   <div class="select-wrapper">
     <div class="select">
-      <div @click="() => (showOptions = !showOptions)" class="select__input">
+      <div class="select__input" @click="() => (showOptions = !showOptions)">
         <p v-if="selectedItem" class="select__input__selected-item">
           {{ selectedItem.title }}
         </p>
         <p v-else class="select__input__placeholder">{{ placeholder }}</p>
       </div>
       <p
-        @click="() => (showOptions = !showOptions)"
-        class="select__icon"
         :class="{ 'select__icon--rotated': showOptions }"
+        class="select__icon"
+        @click="() => (showOptions = !showOptions)"
       >
         >
       </p>
@@ -139,7 +139,7 @@ export default {
       const validators = options.map(option => {
         const method = option.replace(/[\d(].{0,}/gm, '')
         const param = option.replace(/.{0,}\(|\)/gm, '')
-        return { method, param }
+        return {method, param}
       })
 
       return validators.map(
