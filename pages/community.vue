@@ -104,8 +104,9 @@ export default {
       nameFilterData: {
         ...(tryParse('nameFilter') || {
           active: false,
-          isReversed: false,
+          isReversed: true,
         }),
+        defaultAscending: true,
         ordering: true
       },
       ratingFilterData: {
@@ -113,6 +114,7 @@ export default {
           active: false,
           isReversed: false,
         }),
+        defaultAscending: false,
         ordering: true
       },
       unratedFilterData: {
@@ -224,7 +226,7 @@ export default {
       } else {
         this.nameFilter = {
           active: true,
-          isReversed: false
+          isReversed: true
         }
       }
 
@@ -235,7 +237,7 @@ export default {
       }
     },
     onRatingClick() {
-      this.nameFilter = {active: false, isReversed: false}
+      this.nameFilter = {active: false, isReversed: true}
       this.unratedFilter = {
         ...this.unratedFilter,
         active: false
@@ -274,7 +276,7 @@ export default {
       } else {
         this.users = this.getAlreadyKnown(this.startUsers, this.connectionTypeFilter)
         this.ratingFilter = {active: false, isReversed: false}
-        this.nameFilter = {active: false, isReversed: false}
+        this.nameFilter = {active: false, isReversed: true}
       }
     },
     onConnectionTypeChange(value) {
@@ -301,7 +303,7 @@ export default {
         }
         this.users = this.getAlreadyKnown(this.startUsers, value)
         this.ratingFilter = {active: false, isReversed: false}
-        this.nameFilter = {active: false, isReversed: false}
+        this.nameFilter = {active: false, isReversed: true}
       }
     }
   }
