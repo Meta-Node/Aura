@@ -45,9 +45,13 @@ export default {
     return {
       selectedFeedbackOption: null,
       feedbackOptions: [
+    {
+      id: 0,
+      title: 'Question'
+    },
         {
           id: 1,
-          title: 'Feedback',
+          title: 'Suggestion',
         },
         {
           id: 2,
@@ -55,7 +59,7 @@ export default {
         },
         {
           id: 3,
-          title: 'Suggestion',
+          title: 'Other',
         },
       ],
     }
