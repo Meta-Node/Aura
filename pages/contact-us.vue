@@ -12,6 +12,13 @@
           placeholder="email (optional)"
           style="margin-bottom: 20px"
         ></AppInput>
+        <AppSelectInput
+          placeholder="-- feedback type * --"
+          style="margin-bottom: 20px"
+          :options="feedbackOptions"
+          :selectedItem="selectedFeedbackOption"
+          @handleItemClicked="setSelectedFeedbackOption"
+        />
         <AppInput
           placeholder="description *"
           type="textarea"
@@ -26,17 +33,37 @@
 <script>
 import AppInput from '@/components/AppInput.vue'
 import AppButton from '@/components/AppButton.vue'
+import AppSelectInput from '@/components/AppSelectInput.vue'
 
 export default {
   components: {
     AppInput,
     AppButton,
+    AppSelectInput,
   },
   data() {
-    return {}
+    return {
+      selectedFeedbackOption: null,
+      feedbackOptions: [
+        {
+          id: 1,
+          title: 'Feedback',
+        },
+        {
+          id: 2,
+          title: 'Bug',
+        },
+        {
+          id: 3,
+          title: 'Suggestion',
+        },
+      ],
+    }
   },
   methods: {
-    handleSendFeedback() {},
+    setSelectedFeedbackOption(item) {
+      this.selectedFeedbackOption = item
+    },
   },
 }
 </script>
