@@ -5,6 +5,24 @@
   margin: 0 auto;
 }
 
+.form__link {
+  position: relative;
+  max-width: 100%;
+  width: 344px;
+  margin: 0 auto;
+
+  &__text {
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}
+
+
 .form__input-wrapper {
   position: relative;
   color: var(--black);

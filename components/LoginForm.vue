@@ -12,6 +12,18 @@
       validation-text="Value length must be equal 88"
       @inputValue="onInputValue"
     />
+    <div class="form__link">
+      <p
+        class="form__link__text"
+        @click="
+          visitLink(
+            'https://brightid.gitbook.io/aura/getting-started/aura-login'
+          )
+        "
+      >
+        how to find my explorer code
+      </p>
+    </div>
     <app-input
       id="password"
       ref="password"
@@ -40,7 +52,11 @@
       > -->
     </div>
     <div class="form__btn-wrapper">
-      <app-button class="text-button form__btn" data-testid="login-submit" type="submit">
+      <app-button
+        class="text-button form__btn"
+        data-testid="login-submit"
+        type="submit"
+      >
         <span class="form__btn-text">Sign In</span>
       </app-button>
       <!-- <bright-id-login /> -->
@@ -51,10 +67,10 @@
 <script>
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
-import {TOAST_ERROR} from "~/utils/constants";
+import { TOAST_ERROR } from '~/utils/constants'
 
 export default {
-  components: {AppInput, AppButton},
+  components: { AppInput, AppButton },
 
   data() {
     return {
@@ -72,7 +88,7 @@ export default {
 
   methods: {
     onInputValue(val) {
-      this[val.id] = {...this[val.id], ...val}
+      this[val.id] = { ...this[val.id], ...val }
 
       this.hasErrors = this.explorer.error || this.password.error
     },
@@ -108,6 +124,9 @@ export default {
       this.$refs.password.value = ''
 
       this.hasErrors = false
+    },
+    visitLink(link) {
+      window.open(link, '_blank')
     },
   },
 }
