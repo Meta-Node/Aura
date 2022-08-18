@@ -56,15 +56,6 @@ Cypress.Commands.add('blockApiRequests', () => {
 Cypress.Commands.add('profileIntercepts', () => {
   cy.intercept(
     {
-      url: `/v1/connect/explorer-code`,
-      method: 'POST',
-    },
-    {
-      body: 'OK',
-    }
-  ).as('explorerCode')
-  cy.intercept(
-    {
       url: `/brightid/backups/*/*`,
       method: 'GET',
     },

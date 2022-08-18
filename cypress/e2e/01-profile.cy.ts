@@ -7,6 +7,7 @@ import {
   FAKE_USER_EXPLORER_CODE,
   unratedConnection,
 } from '../utils/data'
+import { TOAST_ERROR } from '../../utils/constants'
 
 describe('Login', () => {
   beforeEach(() => {
@@ -24,6 +25,15 @@ describe('Login', () => {
   })
 
   it('login', () => {
+    cy.intercept(
+      {
+        url: `/v1/connect/explorer-code`,
+        method: 'POST',
+      },
+      {
+        body: 'OK',
+      }
+    ).as('explorerCode')
     // @ts-ignore
     cy.clearProfile()
     // @ts-ignore
@@ -48,6 +58,28 @@ describe('Login', () => {
         // expect(data).to.deep.eq(LOCAL_FORAGE_DATA)
       })
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
+  })
+
+  it('handle login failed response', () => {
+    cy.intercept(
+      {
+        url: `/v1/connect/explorer-code`,
+        method: 'POST',
+      },
+      {
+        statusCode: 500,
+      }
+    ).as('explorerCodeError')
+    // @ts-ignore
+    cy.clearProfile()
+    // @ts-ignore
+    cy.profileIntercepts()
+    cy.visit('/')
+    cy.get('[data-testid=login-explorer-code]').type(FAKE_USER_EXPLORER_CODE)
+    cy.get('[data-testid=login-password]').type(FAKE_BRIGHT_ID_PASSWORD)
+    cy.get('[data-testid=login-submit]').click()
+    cy.url().should('not.include', `/profile/${FAKE_BRIGHT_ID}`)
+    cy.get(`.toast--${TOAST_ERROR}`)
   })
 
   it('profile', () => {
