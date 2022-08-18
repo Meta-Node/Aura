@@ -13,7 +13,7 @@ export const transferEnergy = async transfers => {
       encryptedTransfers,
     })
     if (res.status !== 200) {
-      throw res.originalError?.response
+      throw res.originalError
     }
     return res
   } catch (error) {
@@ -22,7 +22,7 @@ export const transferEnergy = async transfers => {
   }
 }
 
-export const getEnergy = async transfers => {
+export const getEnergy = async () => {
   try {
     const brightId = localStorage.getItem('brightId')
 

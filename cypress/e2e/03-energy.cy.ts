@@ -381,4 +381,35 @@ describe('Energy', () => {
     showsConnectionInViewTab(ratedConnection, newEnergyAllocation)
     showsConnectionInViewTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
   })
+
+  function submitEnergyEncryptFailure() {
+    cy.intercept(
+      {
+        url: `/v1/energy/${FAKE_BRIGHT_ID}`,
+        method: 'POST',
+      },
+      {
+        statusCode: 500,
+        body: `Could not decrypt using publicKey: ${FAKE_BRIGHT_ID}`,
+      }
+    ).as('submitEnergyEncryptError')
+    cy.get('[data-testid=update-energy]').click()
+    cy.wait('@submitEnergyEncryptError')
+    cy.get(`.toast--${TOAST_ERROR}`)
+    cy.url().should('not.include', 'energy')
+  }
+
+  it('logs out the user if the privateKey is invalid', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
+    cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
+      .type('{selectAll}')
+      .type(
+        getEnergyAllocationAmount(
+          newEnergyAllocation,
+          ratedConnectionWithoutEnergy.id
+        )
+      )
+
+    submitEnergyEncryptFailure()
+  })
 })
