@@ -1,7 +1,7 @@
 <template>
   <div class="select-wrapper">
     <div class="select">
-      <div class="select__input" @click="() => (showOptions = !showOptions)">
+      <div :data-testid="dataTestid" class="select__input" @click="() => (showOptions = !showOptions)">
         <p v-if="selectedItem" class="select__input__selected-item">
           {{ selectedItem.title }}
         </p>
@@ -18,6 +18,7 @@
         <div
           v-for="option in options"
           :key="option.id"
+          :data-testid="dataTestid + '-' + option.id"
           class="select__options__option"
           @click="handleSelect(option)"
         >

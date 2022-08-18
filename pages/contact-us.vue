@@ -9,22 +9,27 @@
           to you as soon as possible.
         </p>
         <AppInput
+          v-model="email"
+          data-testid="contact-us-email"
           placeholder="email (optional)"
           style="margin-bottom: 20px"
         ></AppInput>
         <AppSelectInput
           :options="feedbackOptions"
           :selected-item="selectedFeedbackOption"
+          data-testid="contact-us-category"
           placeholder="-- feedback type * --"
           style="margin-bottom: 20px"
           @handleItemClicked="setSelectedFeedbackOption"
         />
         <AppInput
+          v-model="body"
+          data-testid="contact-us-text"
           placeholder="description *"
           style="margin-bottom: 20px"
           type="textarea"
         ></AppInput>
-        <AppButton @click.native="handleSendFeedback">Send</AppButton>
+        <AppButton data-testid="contact-us-submit" @click.native="handleSendFeedback">Send</AppButton>
       </div>
     </div>
   </section>
@@ -34,6 +39,9 @@
 import AppInput from '@/components/AppInput.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppSelectInput from '@/components/AppSelectInput.vue'
+import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
+import {encryptDataWithPrivateKey} from "~/scripts/utils/crypto";
+import {backendApi} from "~/scripts/api";
 
 export default {
   components: {
@@ -43,28 +51,71 @@ export default {
   },
   data() {
     return {
+      body: '',
+      email: '',
       selectedFeedbackOption: null,
       feedbackOptions: [
         {
-          id: 0,
+          id: 'Question',
           title: 'Question'
         },
         {
-          id: 1,
+          id: 'Suggestion',
           title: 'Suggestion',
         },
         {
-          id: 2,
+          id: 'Bug',
           title: 'Bug',
         },
         {
-          id: 3,
+          id: 'Other',
           title: 'Other',
         },
       ],
     }
   },
   methods: {
+    async handleSendFeedback() {
+      if (!this.body) {
+        this.$store.commit('toast/addToast', {text: 'Please write your feedback', color: TOAST_ERROR})
+        return
+      }
+      if (!this.selectedFeedbackOption) {
+        this.$store.commit('toast/addToast', {text: 'Please select feedback type', color: TOAST_ERROR})
+        return
+      }
+      try {
+        const brightId = localStorage.getItem('brightId')
+
+        const payload = {
+          category: this.selectedFeedbackOption,
+          text: this.body
+        }
+        if (this.email) {
+          payload.email = this.email
+        }
+
+        const encryptedPayload = encryptDataWithPrivateKey(payload)
+        const res = await backendApi.post('/v1/feedback/' + brightId + '/create', {
+          encryptedPayload,
+        })
+        if (res.status !== 201) {
+          throw res.originalError?.response
+        }
+        this.$store.commit('toast/addToast', {
+          text: 'Message submitted successfully',
+          color: TOAST_SUCCESS,
+        })
+      } catch (error) {
+        if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
+          this.$store.dispatch('login/logout')
+          this.$router.push('/')
+          this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
+        } else {
+          this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+        }
+      }
+    },
     setSelectedFeedbackOption(item) {
       this.selectedFeedbackOption = item
     },
