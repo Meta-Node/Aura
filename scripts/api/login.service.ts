@@ -17,6 +17,7 @@ import {
 import { BrightIdData, RootState } from '~/types/store'
 
 let qrString: string
+// eslint-disable-next-line no-undef
 let intervalID: NodeJS.Timer
 
 const createImportQR = async () => {
@@ -245,7 +246,11 @@ export const loginByExplorerCode = async (
       password,
     }
 
-    await backendApi.post('/v1/connect/explorer-code', body)
+    const res = await backendApi.post('/v1/connect/explorer-code', body)
+
+    if (res.status !== 200) {
+      throw res.originalError?.response
+    }
 
     return {
       publicKey,
