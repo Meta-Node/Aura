@@ -249,7 +249,7 @@ export const loginByExplorerCode = async (
     const res = await backendApi.post('/v1/connect/explorer-code', body)
 
     if (res.status !== 200) {
-      throw res.originalError?.response
+      throw res.originalError
     }
 
     return {

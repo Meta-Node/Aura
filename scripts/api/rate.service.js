@@ -16,7 +16,7 @@ export const rateUser = async ({ fromBrightId, toBrightId, rating }) => {
       encryptedRating,
     })
     if (res.status !== 200) {
-      throw new Error('Could not submit rating')
+      throw res.originalError
     }
   } catch (error) {
     console.log(error)

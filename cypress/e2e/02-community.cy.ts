@@ -137,7 +137,7 @@ describe('Community', () => {
     )
   }
 
-  function doRate(connection: Connection) {
+  function goToRatePage(connection: Connection) {
     cy.intercept(
       {
         url: `/v1/profile/${connection.id}`,
@@ -158,13 +158,22 @@ describe('Community', () => {
     )
     cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
     showsRateValue(connection, oldRatings)
+  }
 
-    // set new rating value
-    const oldRatingValue = Number(getRating(connection.id, oldRatings))
+  function setNewRateValue(connection: Connection) {
     const newRatingValue = Number(getRating(connection.id, newRatings))
     cy.get('[data-testid=feedback-quality-input]')
       .invoke('val', valueToStep[newRatingValue])
       .trigger('input')
+  }
+
+  function doRate(connection: Connection) {
+    goToRatePage(connection)
+    setNewRateValue(connection)
+
+    // set new rating value
+    const oldRatingValue = Number(getRating(connection.id, oldRatings))
+    const newRatingValue = Number(getRating(connection.id, newRatings))
 
     showsRateValue(connection, newRatings)
     if (newRatingValue === oldRatingValue) {
@@ -335,5 +344,32 @@ describe('Community', () => {
       `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
     ).contains(ratedConnectionNegative.name)
     doRate(ratedConnectionNegative)
+  })
+
+  function submitNewRatingEncryptFailure(connection: Connection) {
+    cy.intercept(
+      {
+        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
+        method: 'POST',
+      },
+      {
+        statusCode: 500,
+        body: `Could not decrypt using publicKey: ${FAKE_BRIGHT_ID}`,
+      }
+    ).as('submitRatingEncryptError')
+    cy.get('[data-testid=feedback-quality-confirm]').click()
+    cy.wait('@submitRatingEncryptError')
+    cy.get(`.toast--${TOAST_ERROR}`)
+    cy.url().should('not.include', 'profile')
+  }
+
+  it('logs out the user if the privateKey is invalid', () => {
+    cy.visit(`/community/`)
+    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).contains(
+      unratedConnection.name
+    )
+    goToRatePage(unratedConnection)
+    setNewRateValue(unratedConnection)
+    submitNewRatingEncryptFailure(unratedConnection)
   })
 })

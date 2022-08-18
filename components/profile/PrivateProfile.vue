@@ -142,7 +142,13 @@ export default {
         this.$router.push('/community')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
-        this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+        if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
+          this.$store.dispatch('login/logout')
+          this.$router.push('/')
+          this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
+        } else {
+          this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+        }
       }
     },
     onShare() {
