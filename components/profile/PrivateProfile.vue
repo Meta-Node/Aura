@@ -17,14 +17,15 @@
       class="container feedback__wrapper"
     >
       <profile-info
+        :id="profile.id"
         :brightness="brightness"
+        :connection-date="profile.connectionDate"
         :connections="profile.numOfConnections"
         :date="date"
         :img="profileAvatar"
         :name="profile.name"
         :nickname="profile.nickname"
         :rating="profile.rating"
-        :connectionDate="profile.connectionDate"
         @edit="onEdit"
         @share="onShare"
       />

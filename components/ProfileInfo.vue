@@ -78,7 +78,8 @@
       <div class="profile__about">
         <p class="profile__info" data-testid="profile-user-info">
           {{ date }}<br/>
-          {{ connections }} Connections
+          {{ connections }} Connections<br/>
+          <a :href="`https://explorer.brightid.org/?u=${id}`" target="_blank">View on Explorer</a>
         </p>
       </div>
     </div>
@@ -92,6 +93,10 @@ import ProfileAvatar from './ProfileAvatar.vue'
 export default {
   components: {ProfileAvatar},
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
     img: {
       type: String,
       default: '/',
