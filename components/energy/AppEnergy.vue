@@ -11,6 +11,9 @@
           @updateItems="onUpdateItems"
         >
           <ul class="app-energy__humans">
+            <div class="app-energy__total-amount__container">
+              <p class="app-energy__total-amount__text">Total {{ totalAmount }}</p>
+            </div>
             <user-v-3
               v-for="(user, i) in visibleItems"
               :id="user.id"
@@ -75,6 +78,14 @@ export default {
   data() {
     return {
       energyData: [],
+    }
+  },
+  computed: {
+    totalAmount() {
+      return this.energyData.map(user => user.amount).reduce(
+        (prev, cur) => prev + cur,
+        0
+      )
     }
   },
   mounted() {

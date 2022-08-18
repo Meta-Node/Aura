@@ -82,6 +82,22 @@
   margin-top: 42px;
 }
 
+.app-energy {
+  &__total-amount {
+    &__container {
+      display: flex;
+      flex-direction: row-reverse
+    }
+
+    &__text {
+      text-align: center;
+      width: 130px;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+
 .app-energy__circle-wrapper {
   display: flex;
   justify-content: flex-end;
