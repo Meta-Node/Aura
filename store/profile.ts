@@ -1,14 +1,36 @@
+import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { getProfile } from '~/scripts/api/connections.service'
 import { pullProfilePhoto } from '~/scripts/api/login.service'
 import { getRatedUsers } from '~/scripts/api/rate.service'
+import { ProfileState, RootState } from '~/types/store'
+import { LocalForageBrightIdBackup } from '~/types'
 
-export const state = () => ({
-  profileData: {},
+export const state = (): ProfileState => ({
+  profileData: null,
   connections: [],
   ratedUsers: [],
 })
 
-export const mutations = {
+export const getters: GetterTree<ProfileState, RootState> = {
+  profileData: state => state.profileData,
+  connections: state => state.connections,
+  ratedUsers: state => state.ratedUsers,
+  fourUnrated: state => {
+    let fourUnrated = state.profileData?.fourUnrated
+    fourUnrated = fourUnrated?.map(profile => {
+      const brightId = profile.conn?._to.replace('users/', '')
+      const connectionInfo = state.connections.find(
+        conn => conn.id === brightId
+      )
+      return {
+        ...connectionInfo,
+      }
+    })
+    return fourUnrated
+  },
+}
+
+export const mutations: MutationTree<ProfileState> = {
   setProfileData(state, value) {
     state.profileData = value
   },
@@ -20,10 +42,12 @@ export const mutations = {
   },
 }
 
-export const actions = {
-  async getProfileData({ commit, state, rootState }, isPublic) {
+export const actions: ActionTree<ProfileState, RootState> = {
+  async getProfileData({ commit }, isPublic) {
     try {
-      const profileData = await this.$localForage.getItem('profileData')
+      const profileData: LocalForageBrightIdBackup =
+        // @ts-ignore
+        await this.$localForage.getItem('profileData')
 
       if (!profileData) {
         return
@@ -35,7 +59,9 @@ export const actions = {
       const res = await getProfile(profileData.profile.id, isPublic)
       const ratedUsers = await getRatedUsers()
 
-      const nicknames = res?.data?.nicknames
+      // TODO: fix the issues with aura public and private profile types
+      // @ts-ignore
+      const nicknames: any[] = res?.data?.nicknames
 
       if (!nicknames) {
         return
@@ -55,41 +81,19 @@ export const actions = {
     }
   },
 
-  async getProfilePhoto({ commit, state, rootState }, brightId) {
-    const privateKey = localStorage.getItem('authKey')
+  async getProfilePhoto(_ctx, brightId) {
+    const privateKey = localStorage.getItem('authKey')!
+    // @ts-ignore
     const profileInfo = await this.$localForage.getItem('profileData')
     if (!profileInfo) {
       return
     }
 
-    const profilePhoto = await pullProfilePhoto(
+    return pullProfilePhoto(
       privateKey,
       brightId,
       profileInfo.profile.password,
       this
     )
-
-    return profilePhoto
-  },
-}
-
-export const getters = {
-  profileData: state => state.profileData,
-  connections: state => state.connections,
-  ratedUsers: state => state.ratedUsers,
-  fourUnrated: state => {
-    let fourUnrated = state.profileData.fourUnrated
-    fourUnrated = fourUnrated?.map(profile => {
-      const brightId = profile.conn._to.replace('users/', '')
-      const connectionInfo = state.connections.find(
-        conn => conn.id === brightId
-      )
-
-      const obj = {
-        ...connectionInfo,
-      }
-      return obj
-    })
-    return fourUnrated
   },
 }

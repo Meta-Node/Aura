@@ -1,17 +1,19 @@
+import { ActionTree, MutationTree } from 'vuex'
 import { getConnections } from '~/scripts/api/connections.service'
+import { ConnectionsState, RootState } from '~/types/store'
 
-export const state = () => ({
-  connectionsData: {},
+export const state = (): ConnectionsState => ({
+  connectionsData: [],
 })
 
-export const mutations = {
+export const mutations: MutationTree<ConnectionsState> = {
   setConnectionsData(state, value) {
     state.connectionsData = value
   },
 }
 
-export const actions = {
-  async getConnectionsData({ commit, state, rootState }) {
+export const actions: ActionTree<ConnectionsState, RootState> = {
+  async getConnectionsData({ commit }) {
     try {
       const brightId = localStorage.getItem('brightId')
       if (!brightId) {
@@ -21,10 +23,10 @@ export const actions = {
       if (res?.data?.connections) {
         let conn = res.data.connections
         conn = conn.sort(con => {
-          if (con.conn.level === 'just met') {
+          if (con.conn?.level === 'just met') {
             return -1
           }
-          if (con.conn.level === 'already known') {
+          if (con.conn?.level === 'already known') {
             return 1
           }
           return 0

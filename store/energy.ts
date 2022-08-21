@@ -1,24 +1,26 @@
+import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import {
   getEnergy,
   getInboundEnergy,
   transferEnergy,
 } from '~/scripts/api/energy.service'
 import { getRatedUsers } from '~/scripts/api/rate.service'
+import { EnergyState, RootState } from '~/types/store'
 
-export const state = () => ({
+export const state = (): EnergyState => ({
   transferedEnergy: [],
   inboundEnergy: [],
   availableEnergy: 100,
 })
 
-export const getters = {
+export const getters: GetterTree<EnergyState, RootState> = {
   transferedEnergyAmount: state => {
     const totalAmount = state.transferedEnergy.map(user => user.amount)
     return totalAmount.reduce((prev, cur) => prev + cur, 0)
   },
 }
 
-export const mutations = {
+export const mutations: MutationTree<EnergyState> = {
   setAvailableEnergy(state, value) {
     state.availableEnergy = value
   },
@@ -31,9 +33,7 @@ export const mutations = {
       0
     )
 
-    const availableEnergy = +(100 - transferedEnergyAmount).toFixed(2)
-
-    state.availableEnergy = availableEnergy
+    state.availableEnergy = +(100 - transferedEnergyAmount).toFixed(2)
   },
 
   setInboundEnergy(state, value) {
@@ -41,7 +41,7 @@ export const mutations = {
   },
 }
 
-export const actions = {
+export const actions: ActionTree<EnergyState, RootState> = {
   async getTransferedEnergy({ commit }) {
     try {
       const { energy: outboundEnergy } = await getEnergy()

@@ -1,13 +1,13 @@
 import { backendApi } from '.'
 import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 import {
-  EnergyAllocation,
+  EnergyAllocationList,
   EnergyAllocationRetrieveResponse,
   EnergyAllocationUpdateResponse,
   InboundEnergyAllocationRetrieveResponse,
 } from '~/types'
 
-export const transferEnergy = async (transfers: EnergyAllocation) => {
+export const transferEnergy = async (transfers: EnergyAllocationList) => {
   try {
     const brightId = localStorage.getItem('brightId')
 
