@@ -3,6 +3,7 @@ import {
   Connection,
   ConnectionResponse,
   EnergyAllocation,
+  InboundEnergyAllocationRetrieveResponse,
 } from '../../types'
 import { toRoundedPercentage } from '../../utils/numbers'
 import {
@@ -36,7 +37,7 @@ export const AURA_ENERGIES: {
     },
   ],
 }
-export const AURA_INBOUND_ENERGIES = {
+export const AURA_INBOUND_ENERGIES: InboundEnergyAllocationRetrieveResponse = {
   energy: [
     {
       fromBrightId: ratedConnection.id,

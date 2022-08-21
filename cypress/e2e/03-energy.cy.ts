@@ -6,7 +6,13 @@ import {
   unratedConnection,
 } from '../utils/data'
 import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
-import { Connection, EnergyAllocation } from '../../types'
+import {
+  Connection,
+  EnergyAllocation,
+  EnergyAllocationRetrieveResponse,
+  EnergyAllocationUpdateResponse,
+  InboundEnergyAllocationRetrieveResponse,
+} from '../../types'
 import {
   AURA_ENERGIES,
   AURA_INBOUND_ENERGIES,
@@ -37,22 +43,25 @@ describe('Energy', () => {
     cy.blockApiRequests()
     // @ts-ignore
     cy.setupProfile()
+    const retrieveResponse: EnergyAllocationRetrieveResponse = AURA_ENERGIES
     cy.intercept(
       {
         url: `/v1/energy/${FAKE_BRIGHT_ID}`,
         method: 'GET',
       },
       {
-        body: AURA_ENERGIES,
+        body: retrieveResponse,
       }
     )
+    const inboundEnergyResponse: InboundEnergyAllocationRetrieveResponse =
+      AURA_INBOUND_ENERGIES
     cy.intercept(
       {
         url: `/v1/energy/inbound/${FAKE_BRIGHT_ID}`,
         method: 'GET',
       },
       {
-        body: AURA_INBOUND_ENERGIES,
+        body: inboundEnergyResponse,
       }
     )
   })
@@ -78,23 +87,29 @@ describe('Energy', () => {
   }
 
   function submitEnergySuccess() {
+    const updateResponse: EnergyAllocationUpdateResponse = {
+      energyAllocation: newEnergyAllocation,
+    }
     cy.intercept(
       {
         url: `/v1/energy/${FAKE_BRIGHT_ID}`,
         method: 'POST',
       },
       {
-        body: { energyAllocation: newEnergyAllocation },
+        body: updateResponse,
         statusCode: 200,
       }
     ).as('submitEnergy')
+    const retrieveResponse: EnergyAllocationRetrieveResponse = {
+      energy: newEnergyAllocation,
+    }
     cy.intercept(
       {
         url: `/v1/energy/${FAKE_BRIGHT_ID}`,
         method: 'GET',
       },
       {
-        body: { energy: newEnergyAllocation },
+        body: retrieveResponse,
       }
     )
 
@@ -358,7 +373,7 @@ describe('Energy', () => {
     showsConnectionInSetTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
   })
 
-  it('can update energies', () => {
+  it.only('can update energies', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')
