@@ -1,7 +1,16 @@
 import { backendApi } from '.'
 import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
+import { AuraRatingRetrieveResponse } from '~/types'
 
-export const rateUser = async ({ fromBrightId, toBrightId, rating }) => {
+export const rateUser = async ({
+  fromBrightId,
+  toBrightId,
+  rating,
+}: {
+  fromBrightId: string
+  toBrightId: string
+  rating: number
+}) => {
   try {
     const encryptedData = {
       rating,
@@ -12,9 +21,10 @@ export const rateUser = async ({ fromBrightId, toBrightId, rating }) => {
     const endpoint = '/v1/ratings/'
     const URL = `${endpoint}${fromBrightId}/${toBrightId}`
 
-    const res = await backendApi.post(URL, {
+    const res = await backendApi.post<null>(URL, {
       encryptedRating,
     })
+    console.log(res)
     if (res.status !== 200) {
       throw res.originalError
     }
@@ -30,7 +40,9 @@ export const getRatedUsers = async () => {
     throw new Error('BrightId is not defined')
   }
   try {
-    const res = await backendApi.get('/v1/ratings/' + brightId)
+    const res = await backendApi.get<AuraRatingRetrieveResponse>(
+      '/v1/ratings/' + brightId
+    )
     if (!res?.data?.ratings) {
       throw new Error('Data is not defined')
     }

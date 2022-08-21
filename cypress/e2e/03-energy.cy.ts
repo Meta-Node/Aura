@@ -373,7 +373,7 @@ describe('Energy', () => {
     showsConnectionInSetTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
   })
 
-  it.only('can update energies', () => {
+  it('can update energies', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')

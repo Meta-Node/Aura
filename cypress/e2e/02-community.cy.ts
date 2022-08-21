@@ -7,7 +7,7 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import { AuraRating, Connection } from '../../types'
+import { AuraRating, AuraRatingRetrieveResponse, Connection } from '../../types'
 import { getStepName, valueToStep } from '../../utils/rating'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 import { getConnectionResponse } from '../utils/energy'
@@ -50,13 +50,16 @@ describe('Community', () => {
         newRating,
       ]
     }
+    const ratingResponse: AuraRatingRetrieveResponse = {
+      ratings: currentRatings,
+    }
     cy.intercept(
       {
         url: `/v1/ratings/${FAKE_BRIGHT_ID}`,
         method: 'GET',
       },
       {
-        body: { ratings: currentRatings },
+        body: ratingResponse,
       }
     )
     cy.intercept(
