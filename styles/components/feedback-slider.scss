@@ -21,15 +21,15 @@
   z-index: 2;
   width: 220px;
   appearance: none;
-  height: 16px;
+  height: 24px;
   border-radius: 80px;
   background: rgba(255, 255, 255, 0.2);
   outline: none;
 
-  &.feedback__quality-input::-webkit-slider-thumb {
+  &::-webkit-slider-thumb {
     appearance: none;
-    width: 14px;
-    height: 14px;
+    width: 22px;
+    height: 22px;
     border-radius: 80px;
     background-color: var(--b-grey);
     border: 2px solid var(--b-grey);
