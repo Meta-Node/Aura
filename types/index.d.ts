@@ -94,6 +94,9 @@ export type AuraRating = {
   createdAt: string
   updatedAt: string
 }
+export type AuraRatingRetrieveResponse = {
+  ratings: AuraRating[]
+}
 
 export type ConnectionResponse = {
   connectedTimestamp: number
