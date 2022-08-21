@@ -4,6 +4,7 @@ export const brightIdBaseURL = 'http://184.72.224.75'
 
 export const brightIdApi = create({
   headers: { 'Cache-Control': 'no-cache' },
+  // @ts-ignore
   mode: 'no-cors',
 })
 

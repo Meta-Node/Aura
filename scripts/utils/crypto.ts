@@ -67,5 +67,8 @@ export const encryptStringWithPrivateKey = (data: string) => {
 }
 
 export const encryptDataWithPrivateKey = (data: any) => {
+  console.log({
+    encryptDataWithPrivateKey: data,
+  })
   return encryptStringWithPrivateKey(JSON.stringify(data))
 }

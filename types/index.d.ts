@@ -29,19 +29,38 @@ export type BrightIdBackup = {
   connections: Connection[]
   groups: any[]
 }
+
+export type InboundEnergyAllocationItem = {
+  fromBrightId: string
+  amount: number
+  scale: number
+}
+export type InboundEnergyAllocation = InboundEnergyAllocationItem[]
+export type InboundEnergyAllocationRetrieveResponse = {
+  energy: InboundEnergyAllocation
+}
+
 export type EnergyAllocationItem = {
   toBrightId: string
   amount: number
   scale: number
 }
 export type EnergyAllocation = EnergyAllocationItem[]
+export type EnergyAllocationRetrieveResponse = {
+  energy: EnergyAllocation
+}
+export type EnergyAllocationUpdateResponse = {
+  energyAllocation: EnergyAllocation
+}
 
 export type AuraConnection = {
   _id: string
   _key: string
   _rev: string
   createdAt: number
+  // eslint-disable-next-line camelcase
   eligible_groups: []
+  // eslint-disable-next-line camelcase
   eligible_timestamp: number
   parent: string
   signingKeys: string[]
