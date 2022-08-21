@@ -5,7 +5,7 @@ import {
   hash,
 } from '../../scripts/utils/crypto'
 import {
-  AuraConnection,
+  AuraConnectionsResponse,
   AuraProfile,
   BrightIdBackup,
   Connection,
@@ -228,9 +228,7 @@ export const BRIGHT_ID_BACKUP_ENCRYPTED = encryptUserData(
   FAKE_BRIGHT_ID_PASSWORD
 )
 
-export const AURA_CONNECTIONS: {
-  connections: AuraConnection[]
-} = {
+export const AURA_CONNECTIONS: AuraConnectionsResponse = {
   connections: BRIGHT_ID_BACKUP.connections.map(connection => ({
     _id: `users/${connection.id}`,
     _key: connection.id,

@@ -77,12 +77,18 @@ export type AuraConnection = {
     timestamp: number
   }
 }
+export type AuraConnectionsResponse = {
+  connections: AuraConnection[]
+}
 
-export type AuraProfile = {
-  numOfConnections: number
+export type AuraPublicProfile = {
   brightIdDate: number
-  fourUnrated: AuraConnection[]
+  numOfConnections: number
   rating: number
+}
+
+export type AuraProfile = AuraPublicProfile & {
+  fourUnrated: AuraConnection[]
   nicknames: string[]
 }
 
