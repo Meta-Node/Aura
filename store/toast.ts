@@ -1,7 +1,10 @@
-export const state = () => ({
-  /** 
+import { MutationTree } from 'vuex'
+import { ToastState } from '~/types/store'
+
+export const state = (): ToastState => ({
+  /**
    *@params
-    {
+   {
       @text String,
       @color 'primary' | 'danger' | 'success',
       @id String
@@ -10,7 +13,7 @@ export const state = () => ({
   toasts: [],
 })
 
-export const mutations = {
+export const mutations: MutationTree<ToastState> = {
   addToast(state, value) {
     const updatedValue = { ...value, id: Date.now() }
     state.toasts = [updatedValue, ...state.toasts]

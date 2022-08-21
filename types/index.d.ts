@@ -30,14 +30,27 @@ export type BrightIdBackup = {
   groups: any[]
 }
 
+export type LocalForageBrightIdBackup = {
+  connections: Connection[]
+  groups: any[]
+  profile: {
+    id: string
+    name: string
+    photo: {
+      filename: string
+    }
+    password: string
+  }
+}
+
 export type InboundEnergyAllocationItem = {
   fromBrightId: string
   amount: number
   scale: number
 }
-export type InboundEnergyAllocation = InboundEnergyAllocationItem[]
+export type InboundEnergyAllocationList = InboundEnergyAllocationItem[]
 export type InboundEnergyAllocationRetrieveResponse = {
-  energy: InboundEnergyAllocation
+  energy: InboundEnergyAllocationList
 }
 
 export type EnergyAllocationItem = {
@@ -45,12 +58,12 @@ export type EnergyAllocationItem = {
   amount: number
   scale: number
 }
-export type EnergyAllocation = EnergyAllocationItem[]
+export type EnergyAllocationList = EnergyAllocationItem[]
 export type EnergyAllocationRetrieveResponse = {
-  energy: EnergyAllocation
+  energy: EnergyAllocationList
 }
 export type EnergyAllocationUpdateResponse = {
-  energyAllocation: EnergyAllocation
+  energyAllocation: EnergyAllocationList
 }
 
 export type AuraConnection = {
@@ -89,7 +102,7 @@ export type AuraPublicProfile = {
 
 export type AuraProfile = AuraPublicProfile & {
   fourUnrated: AuraConnection[]
-  nicknames: string[]
+  nicknames: any[]
 }
 
 export type AuraRating = {
@@ -111,4 +124,9 @@ export type ConnectionResponse = {
   }
   fourUnrated: AuraConnection[]
   previousRating?: AuraRating
+}
+
+export type AppToast = {
+  text: string
+  color: 'success' | 'danger'
 }

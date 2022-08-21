@@ -8,7 +8,7 @@ import {
 import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 import {
   Connection,
-  EnergyAllocation,
+  EnergyAllocationList,
   EnergyAllocationRetrieveResponse,
   EnergyAllocationUpdateResponse,
   InboundEnergyAllocationRetrieveResponse,
@@ -124,7 +124,7 @@ describe('Energy', () => {
 
   function showsConnectionInViewTab(
     connection: Connection,
-    allocation: EnergyAllocation
+    allocation: EnergyAllocationList
   ) {
     cy.get(`[data-testid^=user-item-${connection.id}-name]`).contains(
       connection.name
@@ -149,7 +149,7 @@ describe('Energy', () => {
 
   function showsConnectionInSetTab(
     connection: Connection,
-    allocation: EnergyAllocation
+    allocation: EnergyAllocationList
   ) {
     cy.get(`[data-testid^=user-item-${connection.id}-name]`).contains(
       connection.name

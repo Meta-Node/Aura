@@ -9,6 +9,7 @@ import {
   AuraProfile,
   BrightIdBackup,
   Connection,
+  LocalForageBrightIdBackup,
 } from '../../types'
 
 const { publicKey, privateKey } = generateB64Keypair()
@@ -212,10 +213,11 @@ export const BRIGHT_ID_BACKUP: BrightIdBackup = {
 }
 
 // TODO: move this logic and 'setProfileData' logic to utils file after migrating nuxt to typescript
-export const LOCAL_FORAGE_DATA = {
+// @ts-ignore
+export const LOCAL_FORAGE_DATA: LocalForageBrightIdBackup = {
   // remove userData key
   ...Object.fromEntries(
-    Object.entries(BRIGHT_ID_BACKUP).filter(([k, v]) => k !== 'userData')
+    Object.entries(BRIGHT_ID_BACKUP).filter(([k, _v]) => k !== 'userData')
   ),
   profile: {
     ...BRIGHT_ID_BACKUP.userData,

@@ -2,7 +2,7 @@ import {
   AuraRating,
   Connection,
   ConnectionResponse,
-  EnergyAllocation,
+  EnergyAllocationList,
   InboundEnergyAllocationRetrieveResponse,
 } from '../../types'
 import { toRoundedPercentage } from '../../utils/numbers'
@@ -16,7 +16,7 @@ import {
 import { getRating, getRatingObject, oldRatings } from './rating'
 
 export const AURA_ENERGIES: {
-  energy: EnergyAllocation
+  energy: EnergyAllocationList
 } = {
   energy: [
     {
@@ -60,8 +60,8 @@ export function getInboundEnergyPercentage(brightId: string) {
   return toRoundedPercentage(inboundEnergy.amount, inboundEnergy.scale) + '%'
 }
 
-export const oldEnergyAllocation: EnergyAllocation = AURA_ENERGIES.energy
-export const newEnergyAllocation: EnergyAllocation = [
+export const oldEnergyAllocation: EnergyAllocationList = AURA_ENERGIES.energy
+export const newEnergyAllocation: EnergyAllocationList = [
   {
     amount: 100,
     toBrightId: ratedConnectionWithoutEnergy.id,
@@ -85,25 +85,25 @@ export const newEnergyAllocation: EnergyAllocation = [
 ]
 
 export function getEnergyAllocationObject(
-  allocation: EnergyAllocation,
+  allocation: EnergyAllocationList,
   brightId: string
 ) {
   return allocation.find(e => e.toBrightId === brightId)
 }
 
 export function getEnergyAllocationAmount(
-  allocation: EnergyAllocation,
+  allocation: EnergyAllocationList,
   brightId: string
 ) {
   return String(getEnergyAllocationObject(allocation, brightId)?.amount || 0)
 }
 
-export function getEnergyAllocationSum(allocation: EnergyAllocation) {
+export function getEnergyAllocationSum(allocation: EnergyAllocationList) {
   return allocation.reduce((a, c) => a + c.amount, 0)
 }
 
 export function getEnergyAllocationPercentageStringInView(
-  allocation: EnergyAllocation,
+  allocation: EnergyAllocationList,
   brightId: string
 ) {
   const energyAllocationObject = getEnergyAllocationObject(allocation, brightId)
@@ -116,7 +116,7 @@ export function getEnergyAllocationPercentageStringInView(
 }
 
 export function getEnergyAllocationPercentageStringInSet(
-  allocation: EnergyAllocation,
+  allocation: EnergyAllocationList,
   brightId: string
 ) {
   const energyAllocationObject = getEnergyAllocationObject(allocation, brightId)

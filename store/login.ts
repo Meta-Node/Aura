@@ -7,6 +7,7 @@ import {
   readChannelPromise,
 } from '~/scripts/api/login.service'
 import { BrightIdData, LoginState, RootState } from '~/types/store'
+import { LocalForageBrightIdBackup } from '~/types'
 
 export const state = (): LoginState => ({
   isAuth: false,
@@ -67,7 +68,11 @@ export const actions: ActionTree<LoginState, RootState> = {
     try {
       const res = await readChannelPromise(state.brightIdData, this)
       commit('setProfileData', res)
-      localStorage.setItem('brightId', state.profileData.profile.id)
+      // TODO: set initial profileData to null to remove this type cast
+      localStorage.setItem(
+        'brightId',
+        (state.profileData as LocalForageBrightIdBackup).profile.id
+      )
       localStorage.setItem('publicKey', state.brightIdData.signingKey)
       localStorage.setItem('privateKey', state.brightIdData.privateKey)
       localStorage.setItem('timestamp', state.brightIdData.timestamp)
