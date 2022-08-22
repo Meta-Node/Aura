@@ -88,7 +88,7 @@ export default {
         const brightId = localStorage.getItem('brightId')
 
         const payload = {
-          category: this.selectedFeedbackOption,
+          category: this.selectedFeedbackOption.id,
           text: this.body
         }
         if (this.email) {
