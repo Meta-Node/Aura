@@ -172,8 +172,6 @@ export default {
     },
 
     onBlur() {
-      console.log('this.localValue')
-      console.log(this.localValue)
       if (!this.localValue.trim().length) {
         this.focus = false
       }
