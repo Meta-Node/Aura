@@ -79,7 +79,8 @@
         <p class="profile__info" data-testid="profile-user-info">
           {{ date }}<br/>
           {{ connections }} Connections<br/>
-          <a :href="`https://explorer.brightid.org/?u=${id}`" target="_blank">View on Explorer</a>
+          <a :href="`https://explorer.brightid.org/?aura=c94be433d2b36362302fad3065d9c29e&u=${id}`" target="_blank">View
+            on Explorer</a>
         </p>
       </div>
     </div>
