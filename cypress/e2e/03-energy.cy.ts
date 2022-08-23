@@ -184,23 +184,23 @@ describe('Energy', () => {
     ).should('not.exist')
   })
 
-  it('can search connections', () => {
+  it('shows unrated connections when searching, but not negative rated ones', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
 
-    // shows unrated connections when searching, but not negative rated ones
     cy.get('[data-testid=top-search]').type('ra')
     showsConnectionInViewTab(unratedConnection, oldEnergyAllocation)
     cy.get(
       `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
     ).should('not.exist')
-    cy.get('[data-testid=top-search]').clear()
+  })
 
-    // filters based on search value
+  it('filters based on search value', () => {
+    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+
     cy.get('[data-testid=top-search]').type(unratedConnection.name)
     cy.get(
       `[data-testid^=user-item-${ratedConnectionWithoutEnergy.id}-name]`
     ).should('not.exist')
-    cy.get('[data-testid=top-search]').clear()
   })
 
   function checkConnectionOrderInViewTab(brightId: string, index: number) {

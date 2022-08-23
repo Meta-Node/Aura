@@ -29,7 +29,8 @@
             />
           </ul>
         </lazy-loading-items>
-        <span v-else class="users-not-found">Users not found</span>
+        <span v-else
+              class="users-not-found">To give your connections energy, first visit community page and rate them.</span>
       </div>
       <!-- <load-more text="Load More..." /> -->
       <div class="app-energy__circle-wrapper">
