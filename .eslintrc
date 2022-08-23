@@ -14,7 +14,20 @@
     "plugin:nuxt/recommended",
     "plugin:cypress/recommended"
   ],
-  "plugins": [],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  },
+    "plugins": [],
   // add your custom rules here
   "rules": {
     "arrow-parens": [
