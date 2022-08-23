@@ -6,12 +6,10 @@
         @click="decrease">-
       </div>
       <input
+        v-model="localValue"
         :data-testid="`user-slider-${userId}-input`"
-        :max="values[values.length - 1]"
-        :min="values[0]"
-        :value="value"
         class="user__slider__input"
-        type="number" @input="$emit('input', Number($event.target.value))"/>
+        type="number"/>
       <div
         class="user__slider__action"
         @click="increase">+
@@ -61,15 +59,35 @@ export default {
   },
   data() {
     return {
-      values: [0, 1, 2, 5, 25, 100]
+      values: [0, 1, 2, 5, 25, 100],
+      localValue: 0,
     }
   },
-
   computed: {
     // used in energy mixin
     outbound() {
       return this.value
     },
+  },
+  watch: {
+    value: {
+      immediate: true,
+      handler(newValue, _oldValue) {
+        console.log('watch ' + newValue)
+        this.localValue = newValue
+      }
+    },
+    localValue(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        let finalValue = Math.min(newValue, this.max);
+        finalValue = Math.max(finalValue, this.min);
+        if (newValue !== finalValue) {
+          this.localValue = finalValue
+        } else {
+          this.$emit('input', newValue)
+        }
+      }
+    }
   },
   methods: {
     increase() {

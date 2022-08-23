@@ -22,18 +22,18 @@ export const AURA_ENERGIES: {
     {
       toBrightId: ratedConnection.id,
       amount: 25,
-      // scale is 100 in test to test the compatibility with the old energy system
-      scale: 100,
+      // scale is not the actual sum (80) in test to test the compatibility with the old energy system
+      scale: 90,
     },
     {
       toBrightId: ratedConnection2.id,
       amount: 50,
-      scale: 100,
+      scale: 90,
     },
     {
       toBrightId: ratedConnection3.id,
       amount: 5,
-      scale: 100,
+      scale: 90,
     },
   ],
 }

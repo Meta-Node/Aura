@@ -57,12 +57,13 @@ export default {
           return {
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
-            transferedEnergy: outboundEnergyObject
+            transferedEnergyPercentage: outboundEnergyObject
               ? toRoundedPercentage(
                   outboundEnergyObject.amount,
                   outboundEnergyObject.scale
                 )
               : 0,
+            transferedEnergy: outboundEnergyObject?.amount || 0,
             inboundEnergyPercentage: inboundEnergyObject
               ? toRoundedPercentage(
                   inboundEnergyObject.amount,

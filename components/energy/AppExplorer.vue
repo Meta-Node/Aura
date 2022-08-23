@@ -20,14 +20,15 @@
               :inbound="user.inboundEnergyPercentage + '%'"
               :index="i"
               :name="user.nickname || user.name"
-              :outbound="user.transferedEnergy"
+              :outbound="user.transferedEnergyPercentage"
               :rating="+user.rating"
               :url="`/profile/${user.id}`"
               :user="user"
             />
           </ul>
         </lazy-loading-items>
-        <span v-else class="users-not-found">To give your connections energy, first visit community page and rate them.</span>
+        <span v-else
+              class="users-not-found">To give your connections energy, first visit community page and rate them.</span>
       </div>
     </div>
   </div>
