@@ -20,6 +20,17 @@
   color: var(--b-grey);
 }
 
+.mutual-connections {
+  &__title {
+    @include semi;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+    text-align: center;
+    color: var(--b-grey);
+    margin: 40px 0 25px 0;
+  }
+}
+
 .profile__login-cta {
   display: flex;
   padding: 4px;

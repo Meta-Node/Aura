@@ -1,6 +1,4 @@
-import { getRatedUsers } from '~/scripts/api/rate.service'
 import filtersMixin from '~/mixins/filters'
-import { toRoundedPercentage } from '~/utils/numbers'
 
 export default {
   mixins: [filtersMixin],
@@ -23,66 +21,18 @@ export default {
     },
   },
   methods: {
+    async loadUserProfile() {
+      // await this.$store.dispatch('connections/getConnectionsData')
+      await this.$store.dispatch('profile/getProfileData')
+    },
     async getUserData() {
       try {
         this.isLoading = true
-        await this.$store.dispatch('connections/getConnectionsData')
-        await this.$store.dispatch('profile/getProfileData')
-
-        if (this.$route.name === 'community') {
-          this.startUsers = this.connections
-          this.users = this.startUsers
-          if (this.connectionTypeFilter) {
-            this.onFiltered('ConnectionType', this.connectionTypeFilter)
-          } else {
-            this.onFiltered(this.$route.query?.filter || 'All')
-          }
-          return
-        }
-
-        const ratedUsers = await getRatedUsers()
-        await this.$store.dispatch('energy/getTransferedEnergy')
-        await this.$store.dispatch('energy/getInboundEnergy')
-
-        const finalUsers = this.connections.map(conn => {
-          const ratingData = ratedUsers.find(
-            user => user.toBrightId === conn.id
-          )
-          const inboundEnergyObject = this.inboundEnergy.find(
-            en => en.fromBrightId === conn.id
-          )
-          const outboundEnergyObject = this.transferedEnergy.find(
-            en => en.toBrightId === conn.id
-          )
-          return {
-            ratingData,
-            rating: ratingData ? +ratingData.rating : undefined,
-            transferedEnergyPercentage: outboundEnergyObject
-              ? toRoundedPercentage(
-                  outboundEnergyObject.amount,
-                  outboundEnergyObject.scale
-                )
-              : 0,
-            transferedEnergy: outboundEnergyObject?.amount || 0,
-            inboundEnergyPercentage: inboundEnergyObject
-              ? toRoundedPercentage(
-                  inboundEnergyObject.amount,
-                  inboundEnergyObject.scale
-                )
-              : 0,
-            ...conn,
-          }
-        })
-
-        this.startUsers = finalUsers
-
+        await this.loadUserProfile()
+        this.startUsers = this.connections
         this.users = this.startUsers
-
-        const activeFilter = this.filters?.find(
-          filter => filter.type !== 'ordering' && filter.active
-        )
-        if (activeFilter) {
-          this.onFiltered()
+        if (this.connectionTypeFilter) {
+          this.onFiltered('ConnectionType', this.connectionTypeFilter)
         } else {
           this.onFiltered(this.$route.query?.filter || 'All')
         }

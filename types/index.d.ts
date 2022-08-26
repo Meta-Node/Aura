@@ -72,9 +72,9 @@ export type AuraConnection = {
   _rev: string
   createdAt: number
   // eslint-disable-next-line camelcase
-  eligible_groups: []
+  eligible_groups?: []
   // eslint-disable-next-line camelcase
-  eligible_timestamp: number
+  eligible_timestamp?: number
   parent: string
   signingKeys: string[]
   conn?: {

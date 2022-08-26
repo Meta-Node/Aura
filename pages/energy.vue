@@ -72,6 +72,7 @@ import AppExplorer from '~/components/energy/AppExplorer'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
+import {toRoundedPercentage} from "~/utils/numbers";
 
 function tryParse(key) {
   if (!process.client) return null
@@ -178,6 +179,63 @@ export default {
     }
   },
   methods: {
+    async getUserData() {
+      try {
+        this.isLoading = true
+        await this.loadUserProfile()
+
+        const ratedUsers = this.$store.getters['profile/ratedUsers']
+        await this.$store.dispatch('energy/getTransferedEnergy')
+        await this.$store.dispatch('energy/getInboundEnergy')
+
+        const finalUsers = this.connections.map(conn => {
+          const ratingData = ratedUsers.find(
+            user => user.toBrightId === conn.id
+          )
+          const inboundEnergyObject = this.inboundEnergy.find(
+            en => en.fromBrightId === conn.id
+          )
+          const outboundEnergyObject = this.transferedEnergy.find(
+            en => en.toBrightId === conn.id
+          )
+          return {
+            ratingData,
+            rating: ratingData ? +ratingData.rating : undefined,
+            transferedEnergyPercentage: outboundEnergyObject
+              ? toRoundedPercentage(
+                outboundEnergyObject.amount,
+                outboundEnergyObject.scale
+              )
+              : 0,
+            transferedEnergy: outboundEnergyObject?.amount || 0,
+            inboundEnergyPercentage: inboundEnergyObject
+              ? toRoundedPercentage(
+                inboundEnergyObject.amount,
+                inboundEnergyObject.scale
+              )
+              : 0,
+            ...conn,
+          }
+        })
+
+        this.startUsers = finalUsers
+
+        this.users = this.startUsers
+
+        const activeFilter = this.filters?.find(
+          filter => filter.type !== 'ordering' && filter.active
+        )
+        if (activeFilter) {
+          this.onFiltered()
+        } else {
+          this.onFiltered(this.$route.query?.filter || 'All')
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.isLoading = false
+      }
+    },
     getTransferedEnergy() {
       this.$store.dispatch('energy/getTransferedEnergy')
         .catch(error => {
