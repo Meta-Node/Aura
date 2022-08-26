@@ -29,7 +29,7 @@
           style="margin-bottom: 20px"
           type="textarea"
         ></AppInput>
-        <AppButton data-testid="contact-us-submit" @click.native="handleSendFeedback">Send</AppButton>
+        <AppButton data-testid="contact-us-submit" @click.native="handleSendFeedback" :loading="loading">Send</AppButton>
       </div>
     </div>
   </section>
@@ -84,35 +84,41 @@ export default {
         this.$store.commit('toast/addToast', {text: 'Please select feedback type', color: TOAST_ERROR})
         return
       }
-      try {
-        const brightId = localStorage.getItem('brightId')
+      if (!this.$store.state.app.loading) {
+        try {
+          const brightId = localStorage.getItem('brightId')
+  
+          const payload = {
+            category: this.selectedFeedbackOption.id,
+            text: this.body
+          }
+          if (this.email) {
+            payload.email = this.email
+          }
+  
+          const encryptedPayload = encryptDataWithPrivateKey(payload)
 
-        const payload = {
-          category: this.selectedFeedbackOption.id,
-          text: this.body
-        }
-        if (this.email) {
-          payload.email = this.email
-        }
-
-        const encryptedPayload = encryptDataWithPrivateKey(payload)
-        const res = await backendApi.post('/v1/feedback/' + brightId + '/create', {
-          encryptedPayload,
-        })
-        if (res.status !== 201) {
-          throw res.originalError?.response
-        }
-        this.$store.commit('toast/addToast', {
-          text: 'Message submitted successfully',
-          color: TOAST_SUCCESS,
-        })
-      } catch (error) {
-        if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
-          this.$store.dispatch('login/logout')
-          this.$router.push('/')
-          this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
-        } else {
-          this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+          this.$store.commit('app/setLoading', true);
+          const res = await backendApi.post('/v1/feedback/' + brightId + '/create', {
+            encryptedPayload,
+          })
+          this.$store.commit('app/setLoading', false);
+          
+          if (res.status !== 201) {
+            throw res.originalError?.response
+          }
+          this.$store.commit('toast/addToast', {
+            text: 'Message submitted successfully',
+            color: TOAST_SUCCESS,
+          })
+        } catch (error) {
+          if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
+            this.$store.dispatch('login/logout')
+            this.$router.push('/')
+            this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
+          } else {
+            this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+          }
         }
       }
     },
@@ -120,5 +126,10 @@ export default {
       this.selectedFeedbackOption = item
     },
   },
+  computed: {
+    loading() {
+      return this.$store.state.app.loading
+    }
+  }
 }
 </script>
