@@ -27,7 +27,7 @@
       }
     }
   },
-    "plugins": [],
+  "plugins": [],
   // add your custom rules here
   "rules": {
     "arrow-parens": [
