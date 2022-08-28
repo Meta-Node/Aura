@@ -15,3 +15,11 @@
   width: fit-content;
   display: block;
 }
+
+.app-explorer {
+  &__link {
+    text-decoration: underline;
+    font-weight: 500;
+    color: #ffffff;
+  }
+}
