@@ -339,6 +339,15 @@ export default {
           )
           return
         }
+        if (this.recentFilter.active) {
+          this.users = this.getAlreadyKnown(
+            this.getUnrated(
+              this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed)
+            ),
+            this.connectionTypeFilter
+          )
+          return
+        }
 
         this.users = this.getAlreadyKnown(
           this.getUnrated(this.startUsers),
@@ -351,6 +360,7 @@ export default {
         )
         this.ratingFilter = {active: false, isReversed: false}
         this.nameFilter = {active: false, isReversed: true}
+        this.recentFilter = {active: false, isReversed: true}
       }
     },
     onConnectionTypeChange(value) {
@@ -359,6 +369,15 @@ export default {
           this.users = this.getAlreadyKnown(
             this.getUnrated(
               this.getName(this.startUsers, !this.nameFilter.isReversed)
+            ),
+            value
+          )
+          return
+        }
+        if (this.recentFilter.active) {
+          this.users = this.getAlreadyKnown(
+            this.getRecentConnection(
+              this.getRating(this.startUsers, !this.recentFilter.isReversed)
             ),
             value
           )
@@ -385,6 +404,13 @@ export default {
           )
           return
         }
+        if (this.recentFilter.active) {
+          this.users = this.getAlreadyKnown(
+            this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed),
+            value
+          )
+          return
+        }
         if (this.ratingFilter.active) {
           this.users = this.getAlreadyKnown(
             this.getRating(this.startUsers, !this.ratingFilter.isReversed),
@@ -395,6 +421,7 @@ export default {
         this.users = this.getAlreadyKnown(this.startUsers, value)
         this.ratingFilter = {active: false, isReversed: false}
         this.nameFilter = {active: false, isReversed: true}
+        this.recentFilter = {active: false, isReversed: true}
       }
     },
   },
