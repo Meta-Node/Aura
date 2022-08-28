@@ -3,6 +3,12 @@
     <div class="container contact-us__wrapper">
       <h3 class="contact-us__title">Contact Us</h3>
       <div class="contact-us__body">
+        <div class="contact-us__link-with-icon"> 
+          <p class="contact-us__link-with-icon__link" @click="visitLink('https://discord.gg/zFXKG77vq3')">
+            Join Aura's Discord Channel 
+          </p> 
+        </div>
+
         <p class="contact-us__text">
           If you have any questions, feedbacks, bugs, or suggestions, please
           feel free to contact us. fill out the form below and we will get back
@@ -12,21 +18,21 @@
           v-model="email"
           data-testid="contact-us-email"
           placeholder="email (optional)"
-          style="margin-bottom: 20px"
+          style="margin: 0 0 20px 0; width: 100%"
         ></AppInput>
         <AppSelectInput
           :options="feedbackOptions"
           :selected-item="selectedFeedbackOption"
           data-testid="contact-us-category"
           placeholder="-- feedback type * --"
-          style="margin-bottom: 20px"
+          style="margin: 0 0 20px 0; width: 100%"
           @handleItemClicked="setSelectedFeedbackOption"
         />
         <AppInput
           v-model="body"
           data-testid="contact-us-text"
           placeholder="description *"
-          style="margin-bottom: 20px"
+          style="margin: 0 0 20px 0; width: 100%"
           type="textarea"
         ></AppInput>
         <AppButton :loading="loading" data-testid="contact-us-submit" @click="handleSendFeedback">Send</AppButton>
@@ -126,6 +132,9 @@ export default {
           }
         }
       }
+    },
+    visitLink(link) {
+      window.open(link, '_blank');
     },
     setSelectedFeedbackOption(item) {
       this.selectedFeedbackOption = item

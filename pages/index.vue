@@ -17,7 +17,8 @@
           But take care, for making poor decisions will drain your power and
           harm those around you.
         </p>
-        <p class="landing__link" @click="visitLink('https://www.brightid.org/about-us')"> Learn More about BrightID </p>
+        <p class="landing__link" style="margin-top: 30px;" @click="visitLink('https://www.brightid.org/about-us')"> Learn More about BrightID </p>
+        <p class="landing__link" @click="visitLink('https://discord.gg/zFXKG77vq3')"> Join Aura's Discord community</p>
       </div>
       <div class="landing__input-form">
         <h3 class="landing__input-name">Early Access</h3>

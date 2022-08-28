@@ -18,7 +18,7 @@
     @include semi;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     font-size: 24px;
     line-height: 130%;
     letter-spacing: -0.03em;
@@ -39,7 +39,37 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-align: center;
+    text-align: start;
     margin-bottom: 32px;
+  }
+
+  &__link-with-icon {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    float: left;
+    align-self: flex-start;
+    align-items: flex-start;
+    justify-content: left;
+    column-gap: 0.5rem;
+    cursor: pointer;
+
+    &__link {
+      @include med;
+      font-size: 16px;
+      line-height: 150%;
+      color: #dfdfdf;
+      display: flex;
+      column-gap: 0.3rem;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &__icon {
+      width: 25px;
+      height: auto;
+    }
   }
 }
