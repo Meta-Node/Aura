@@ -29,7 +29,7 @@
           style="margin-bottom: 20px"
           type="textarea"
         ></AppInput>
-        <AppButton data-testid="contact-us-submit" @click.native="handleSendFeedback" :loading="loading">Send</AppButton>
+        <AppButton :loading="loading" data-testid="contact-us-submit" @click="handleSendFeedback">Send</AppButton>
       </div>
     </div>
   </section>
@@ -74,6 +74,11 @@ export default {
       ],
     }
   },
+  computed: {
+    loading() {
+      return this.$store.state.app.loading
+    }
+  },
   methods: {
     async handleSendFeedback() {
       if (!this.body) {
@@ -87,7 +92,7 @@ export default {
       if (!this.$store.state.app.loading) {
         try {
           const brightId = localStorage.getItem('brightId')
-  
+
           const payload = {
             category: this.selectedFeedbackOption.id,
             text: this.body
@@ -95,7 +100,7 @@ export default {
           if (this.email) {
             payload.email = this.email
           }
-  
+
           const encryptedPayload = encryptDataWithPrivateKey(payload)
 
           this.$store.commit('app/setLoading', true);
@@ -103,7 +108,7 @@ export default {
             encryptedPayload,
           })
           this.$store.commit('app/setLoading', false);
-          
+
           if (res.status !== 201) {
             throw res.originalError?.response
           }
@@ -125,11 +130,6 @@ export default {
     setSelectedFeedbackOption(item) {
       this.selectedFeedbackOption = item
     },
-  },
-  computed: {
-    loading() {
-      return this.$store.state.app.loading
-    }
   }
 }
 </script>

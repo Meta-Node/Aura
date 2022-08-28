@@ -1,7 +1,7 @@
 <template>
-  <button :data-testid="dataTestid" class="btn">
-    <slot v-if="!loading" />
-    <span v-else><ButtonSpinner /></span>
+  <button :data-testid="dataTestid" class="btn" @click="handleClick">
+    <slot v-if="!loading"/>
+    <span v-else><ButtonSpinner/></span>
   </button>
 </template>
 
@@ -18,7 +18,15 @@ export default {
     },
     loading: {
       type: Boolean,
+      default: false,
     },
   },
+  methods: {
+    handleClick(event) {
+      if (!this.loading) {
+        this.$emit('click', event)
+      }
+    }
+  }
 }
 </script>
