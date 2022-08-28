@@ -39,6 +39,19 @@ export const getByRatingDate = (users, fromLess) => {
   }
 }
 
+export const getRecentConnection = (users, fromLess) => {
+  const newUsers = [...users].sort(
+    (a, b) =>
+      new Date(b.connectionDate).getTime() -
+      new Date(a.connectionDate).getTime()
+  )
+  if (fromLess) {
+    return newUsers
+  } else {
+    return newUsers.reverse()
+  }
+}
+
 export const getExcludeZeros = (users, _value) => {
   return users.filter(su => su.transferedEnergy)
 }
