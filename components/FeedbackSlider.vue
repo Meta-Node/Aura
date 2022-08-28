@@ -23,7 +23,7 @@
         <span id="percents" class="feedback__percents">{{ percents }}</span>
       </p>
     </div>
-    <app-button class="feedback__btn" data-testid="feedback-quality-confirm" @click.native="onAfterChange">
+    <app-button class="feedback__btn" data-testid="feedback-quality-confirm" @click="onAfterChange">
       Confirm
     </app-button>
   </div>

@@ -3,19 +3,19 @@
     <div class="energy-slider__wrapper">
       <input
         :id="id"
-        class="energy-slider__energy-input"
-        :type="type"
-        :min="min"
         :max="max"
+        :min="min"
         :step="step"
+        :type="type"
         :value="percents"
+        class="energy-slider__energy-input"
         @input="onRange"
       />
       <div class="energy-slider__block"></div>
       <div class="energy-slider__division"></div>
     </div>
     <small id="percents" class="energy-slider__percents">{{ percents }}%</small>
-    <app-button class="energy-slider__btn" @click.native="onAfterChange">
+    <app-button class="energy-slider__btn" @click="onAfterChange">
       Confirm
     </app-button>
   </div>

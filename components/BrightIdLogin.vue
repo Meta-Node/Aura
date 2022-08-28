@@ -2,7 +2,7 @@
   <div>
     <app-button
       class="text-button form__btn brightid__btn"
-      @click.native="onBrightIdClick"
+      @click="onBrightIdClick"
     >
       <span class="form__btn-icon"
       ><svg
