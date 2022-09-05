@@ -5,6 +5,7 @@ import {
   getByRating,
   getByRatingDate,
   getExcludeZeros,
+  getRecentConnection,
   getUnrated,
   onSearch,
   trim,
@@ -105,6 +106,9 @@ export default {
     },
     getUnrated(users) {
       return getUnrated(users)
+    },
+    getRecentConnection(users, fromLess) {
+      return getRecentConnection(users, fromLess)
     },
     getName(users, fromLess) {
       return getByName(users, fromLess)
