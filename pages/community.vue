@@ -280,7 +280,7 @@ export default {
       } else {
         this.recentFilter = {
           active: true,
-          isReversed: true,
+          isReversed: false,
         }
       }
 
