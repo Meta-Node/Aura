@@ -19,7 +19,7 @@
         :rating="profile.rating"
         @share="onShare"
       />
-      <aura-sphere :rating="profile.rating" class="profile__sphere"/>
+      <!--      <aura-sphere :rating="profile.rating" class="profile__sphere"/>-->
       <four-unrated :users="fourUnrated"/>
     </div>
   </section>
@@ -27,14 +27,17 @@
 
 <script>
 import ProfileInfo from '~/components/ProfileInfo.vue'
-import AuraSphere from '~/components/AuraSphere.vue'
-
+// import AuraSphere from '~/components/AuraSphere.vue'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
 import FourUnrated from '~/components/FourUnrated.vue'
 
 export default {
-  components: {ProfileInfo, AuraSphere, FourUnrated},
+  components: {
+    ProfileInfo,
+    // AuraSphere,
+    FourUnrated
+  },
   mixins: [transition, avatar],
   props: {
     profile: {
