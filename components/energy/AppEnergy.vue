@@ -30,10 +30,11 @@
           </ul>
         </lazy-loading-items>
         <span v-else
-              class="users-not-found">To give your connections energy, first visit <nuxt-link to="/community/" class="app-energy__link">the community page</nuxt-link> and rate them.</span>
+              class="users-not-found">To give your connections energy, first visit <nuxt-link class="app-energy__link"
+                                                                                              to="/community/">the community page</nuxt-link> and rate them.</span>
       </div>
       <!-- <load-more text="Load More..." /> -->
-      <div class="app-energy__circle-wrapper">
+      <div v-if="users.length" class="app-energy__circle-wrapper">
         <button class="app-energy__circle-button" data-testid="update-energy" @click="updateEnergy">
           <span class="app-energy__check-mark"
           ><svg
