@@ -3,10 +3,10 @@
     <div class="container contact-us__wrapper">
       <h3 class="contact-us__title">Contact Us</h3>
       <div class="contact-us__body">
-        <div class="contact-us__link-with-icon"> 
+        <div class="contact-us__link-with-icon">
           <p class="contact-us__link-with-icon__link" @click="visitLink('https://discord.gg/zFXKG77vq3')">
-            Join Aura's Discord Channel 
-          </p> 
+            Join Aura's Discord Channel
+          </p>
         </div>
 
         <p class="contact-us__text">
@@ -57,6 +57,7 @@ export default {
   },
   data() {
     return {
+      canSendRequest: true,
       body: '',
       email: '',
       selectedFeedbackOption: null,
@@ -87,6 +88,7 @@ export default {
   },
   methods: {
     async handleSendFeedback() {
+      if (!this.canSendRequest) return
       if (!this.body) {
         this.$store.commit('toast/addToast', {text: 'Please write your feedback', color: TOAST_ERROR})
         return
@@ -96,6 +98,10 @@ export default {
         return
       }
       if (!this.$store.state.app.loading) {
+        this.canSendRequest = false
+        setTimeout(() => {
+          this.canSendRequest = true
+        }, 5000)
         try {
           const brightId = localStorage.getItem('brightId')
 
