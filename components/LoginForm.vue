@@ -56,6 +56,7 @@
         class="text-button form__btn"
         data-testid="login-submit"
         type="submit"
+        :loading="$store.state.app.loading"
       >
         <span class="form__btn-text">Sign In</span>
       </app-button>
@@ -97,23 +98,25 @@ export default {
         this.emmitError()
         return
       }
+      if (!this.$store.state.app.loading) {
+        try {
+          this.$store.commit('app/setLoading', true);
+          await this.$store.dispatch('login/loginByExplorerCode', {
+            explorer: this.explorer.value,
+            password: this.password.value,
+          })
+          this.$store.commit('app/setLoading', false);
 
-      try {
-        await this.$store.dispatch('login/loginByExplorerCode', {
-          explorer: this.explorer.value,
-          password: this.password.value,
-        })
-
-        this.$store.commit('app/setIsAuth', true)
-        this.$router.push('/profile/')
-      } catch (error) {
-        this.$store.commit('toast/addToast', {
-          text: 'Incorrect data',
-          color: TOAST_ERROR,
-        })
+          this.$store.commit('app/setIsAuth', true);
+          this.$router.push('/profile/');
+        } catch (error) {
+          this.$store.commit('toast/addToast', {
+            text: 'Incorrect data',
+            color: TOAST_ERROR,
+          })
+        }
       }
     },
-
     emmitError() {
       this.$refs.explorer.throwError()
       this.$refs.password.throwError()

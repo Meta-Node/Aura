@@ -3,21 +3,12 @@
     <div class="container community__wrapper">
       <div class="community__search">
         <h3 class="community__search-title">Find A Connection</h3>
-        <app-search
-          ref="search"
-          @searchValue="onSearchValue"
-        />
+        <app-search ref="search" @searchValue="onSearchValue"/>
       </div>
-      <div
-        v-if="isLoading"
-        style="margin-top: 40px"
-      >
+      <div v-if="isLoading" style="margin-top: 40px">
         <app-spinner :is-visible="true"/>
       </div>
-      <div
-        v-else
-        class="community__users"
-      >
+      <div v-else class="community__users">
         <h3 class="community__humans-title">Your Connections</h3>
         <div class="filter switch-wrapper">
           <filter-button
@@ -26,6 +17,13 @@
             :reverse="nameFilter.isReversed"
             name="Name"
             @clicked="onFiltered('Name')"
+          />
+          <filter-button
+            :active="recentFilter.active"
+            :is-icon="true"
+            :reverse="recentFilter.isReversed"
+            name="Recent"
+            @clicked="onFiltered('Recent')"
           />
           <filter-button
             :active="ratingFilter.active"
@@ -47,7 +45,6 @@
             default="All"
             name="Connection Type"
           ></custom-select>
-
         </div>
         <lazy-loading-items
           v-if="users.length"
@@ -55,18 +52,16 @@
           @updateItems="onUpdateItems"
         >
           <ul class="user-item__list">
-            <li v-for="(user, index) in visibleItems"
-                :key="user.id"
-                class="user-item__container"
+            <li
+              v-for="(user, index) in visibleItems"
+              :key="user.id"
+              class="user-item__container"
             >
               <user-item-info :index="index" :user="user"></user-item-info>
             </li>
           </ul>
         </lazy-loading-items>
-        <span
-          v-else
-          class="users-not-found"
-        >Users not found</span>
+        <span v-else class="users-not-found">Users not found</span>
       </div>
     </div>
   </section>
@@ -95,19 +90,34 @@ function tryParse(key) {
 }
 
 export default {
-  components: {AppSearch, LazyLoadingItems, UserItemInfo, CustomSelect, FilterButton},
+  components: {
+    AppSearch,
+    LazyLoadingItems,
+    UserItemInfo,
+    CustomSelect,
+    FilterButton,
+  },
   mixins: [transition, users, loadItems],
   data() {
     return {
       connectionTypeFilterData:
-        (process.client && localStorage.getItem('connectionTypeFilter')) || 'All',
+        (process.client && localStorage.getItem('connectionTypeFilter')) ||
+        'All',
       nameFilterData: {
         ...(tryParse('nameFilter') || {
           active: false,
           isReversed: true,
         }),
         defaultAscending: true,
-        ordering: true
+        ordering: true,
+      },
+      recentFilterData: {
+        ...(tryParse('recentFilter') || {
+          active: false,
+          isReversed: false,
+        }),
+        defaultAscending: false,
+        ordering: true,
       },
       ratingFilterData: {
         ...(tryParse('ratingFilter') || {
@@ -115,7 +125,7 @@ export default {
           isReversed: false,
         }),
         defaultAscending: false,
-        ordering: true
+        ordering: true,
       },
       unratedFilterData: {
         ...(tryParse('unratedFilter') || {
@@ -141,7 +151,7 @@ export default {
       set(value) {
         if (process.client) localStorage.setItem('connectionTypeFilter', value)
         this.connectionTypeFilterData = value
-      }
+      },
     },
     nameFilter: {
       get() {
@@ -151,7 +161,17 @@ export default {
         if (process.client)
           localStorage.setItem('nameFilter', JSON.stringify(value))
         this.nameFilterData = value
-      }
+      },
+    },
+    recentFilter: {
+      get() {
+        return this.recentFilterData
+      },
+      set(value) {
+        if (process.client)
+          localStorage.setItem('recentFilter', JSON.stringify(value))
+        this.recentFilterData = value
+      },
     },
     ratingFilter: {
       get() {
@@ -161,7 +181,7 @@ export default {
         if (process.client)
           localStorage.setItem('ratingFilter', JSON.stringify(value))
         this.ratingFilterData = value
-      }
+      },
     },
     unratedFilter: {
       get() {
@@ -171,7 +191,7 @@ export default {
         if (process.client)
           localStorage.setItem('unratedFilter', JSON.stringify(value))
         this.unratedFilterData = value
-      }
+      },
     },
   },
 
@@ -194,16 +214,20 @@ export default {
 
       if (name === 'Name') {
         this.onNameClick()
-
       }
+
+      if (name === 'Recent') {
+        this.onRecentClick()
+      }
+
       if (name === 'Rating') {
         this.onRatingClick()
-
       }
+
       if (name === 'Unrated') {
         this.onUnratedClick()
-
       }
+
       if (name === 'ConnectionType') {
         this.onConnectionTypeChange(value)
       }
@@ -213,10 +237,10 @@ export default {
       // this.$router.push({query: {...queries, filter: name}})
 
       this.filteredUsers = this.users
-
     },
     onNameClick() {
       this.ratingFilter = {active: false, isReversed: false}
+      this.recentFilter = {active: false, isReversed: false}
 
       if (this.nameFilter.active) {
         this.nameFilter = {
@@ -226,87 +250,180 @@ export default {
       } else {
         this.nameFilter = {
           active: true,
-          isReversed: true
+          isReversed: true,
         }
       }
 
       if (this.unratedFilter.active) {
-        this.users = this.getAlreadyKnown(this.getUnrated(this.getName(this.startUsers, !this.nameFilter.isReversed)), this.connectionTypeFilter)
+        this.users = this.getAlreadyKnown(
+          this.getUnrated(
+            this.getName(this.startUsers, !this.nameFilter.isReversed)
+          ),
+          this.connectionTypeFilter
+        )
       } else {
-        this.users = this.getAlreadyKnown(this.getName(this.startUsers, !this.nameFilter.isReversed), this.connectionTypeFilter)
+        this.users = this.getAlreadyKnown(
+          this.getName(this.startUsers, !this.nameFilter.isReversed),
+          this.connectionTypeFilter
+        )
+      }
+    },
+    onRecentClick() {
+      this.ratingFilter = {active: false, isReversed: false}
+      this.nameFilter = {active: false, isReversed: false}
+
+      if (this.recentFilter.active) {
+        this.recentFilter = {
+          ...this.recentFilter,
+          isReversed: !this.recentFilter.isReversed,
+        }
+      } else {
+        this.recentFilter = {
+          active: true,
+          isReversed: false,
+        }
+      }
+
+      if (this.unratedFilter.active) {
+        this.users = this.getAlreadyKnown(
+          this.getUnrated(
+            this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed)
+          ),
+          this.connectionTypeFilter
+        )
+      } else {
+        this.users = this.getAlreadyKnown(
+          this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed),
+          this.connectionTypeFilter
+        )
       }
     },
     onRatingClick() {
       this.nameFilter = {active: false, isReversed: true}
+      this.recentFilter = {active: false, isReversed: false}
       this.unratedFilter = {
         ...this.unratedFilter,
-        active: false
+        active: false,
       }
 
       if (this.ratingFilter.active) {
         this.ratingFilter = {
           ...this.ratingFilter,
-          isReversed: !this.ratingFilter.isReversed
+          isReversed: !this.ratingFilter.isReversed,
         }
       } else {
         this.ratingFilter = {
           active: true,
-          isReversed: false
+          isReversed: false,
         }
       }
-      this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), this.connectionTypeFilter)
-
+      this.users = this.getAlreadyKnown(
+        this.getRating(this.startUsers, !this.ratingFilter.isReversed),
+        this.connectionTypeFilter
+      )
     },
     onUnratedClick() {
       this.unratedFilter = {
         ...this.unratedFilter,
-        active: !this.unratedFilter.active
+        active: !this.unratedFilter.active,
       }
       this.ratingFilter = {active: false, isReversed: false}
 
-
       if (this.unratedFilter.active) {
-
         if (this.nameFilter.active) {
-          this.users = this.getAlreadyKnown(this.getUnrated(this.getName(this.startUsers, !this.nameFilter.isReversed)), this.connectionTypeFilter)
+          this.users = this.getAlreadyKnown(
+            this.getUnrated(
+              this.getName(this.startUsers, !this.nameFilter.isReversed)
+            ),
+            this.connectionTypeFilter
+          )
+          return
+        }
+        if (this.recentFilter.active) {
+          this.users = this.getAlreadyKnown(
+            this.getUnrated(
+              this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed)
+            ),
+            this.connectionTypeFilter
+          )
           return
         }
 
-        this.users = this.getAlreadyKnown(this.getUnrated(this.startUsers), this.connectionTypeFilter)
+        this.users = this.getAlreadyKnown(
+          this.getUnrated(this.startUsers),
+          this.connectionTypeFilter
+        )
       } else {
-        this.users = this.getAlreadyKnown(this.startUsers, this.connectionTypeFilter)
+        this.users = this.getAlreadyKnown(
+          this.startUsers,
+          this.connectionTypeFilter
+        )
         this.ratingFilter = {active: false, isReversed: false}
         this.nameFilter = {active: false, isReversed: true}
+        this.recentFilter = {active: false, isReversed: true}
       }
     },
     onConnectionTypeChange(value) {
-
       if (this.unratedFilter.active) {
         if (this.nameFilter.active) {
-          this.users = this.getAlreadyKnown(this.getUnrated(this.getName(this.startUsers, !this.nameFilter.isReversed)), value)
+          this.users = this.getAlreadyKnown(
+            this.getUnrated(
+              this.getName(this.startUsers, !this.nameFilter.isReversed)
+            ),
+            value
+          )
+          return
+        }
+        if (this.recentFilter.active) {
+          this.users = this.getAlreadyKnown(
+            this.getRecentConnection(
+              this.getRating(this.startUsers, !this.recentFilter.isReversed)
+            ),
+            value
+          )
           return
         }
         if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(this.getUnrated(this.getRating(this.startUsers, !this.ratingFilter.isReversed)), value)
+          this.users = this.getAlreadyKnown(
+            this.getUnrated(
+              this.getRating(this.startUsers, !this.ratingFilter.isReversed)
+            ),
+            value
+          )
           return
         }
-        this.users = this.getAlreadyKnown(this.getUnrated(this.startUsers), value)
+        this.users = this.getAlreadyKnown(
+          this.getUnrated(this.startUsers),
+          value
+        )
       } else {
-
         if (this.nameFilter.active) {
-          this.users = this.getAlreadyKnown(this.getName(this.startUsers, !this.nameFilter.isReversed), value)
+          this.users = this.getAlreadyKnown(
+            this.getName(this.startUsers, !this.nameFilter.isReversed),
+            value
+          )
+          return
+        }
+        if (this.recentFilter.active) {
+          this.users = this.getAlreadyKnown(
+            this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed),
+            value
+          )
           return
         }
         if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(this.getRating(this.startUsers, !this.ratingFilter.isReversed), value)
+          this.users = this.getAlreadyKnown(
+            this.getRating(this.startUsers, !this.ratingFilter.isReversed),
+            value
+          )
           return
         }
         this.users = this.getAlreadyKnown(this.startUsers, value)
         this.ratingFilter = {active: false, isReversed: false}
         this.nameFilter = {active: false, isReversed: true}
+        this.recentFilter = {active: false, isReversed: true}
       }
-    }
-  }
-
+    },
+  },
 }
 </script>

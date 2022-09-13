@@ -1,7 +1,7 @@
 import { FAKE_BRIGHT_ID } from '../utils/data'
 import { TOAST_SUCCESS } from '../../utils/constants'
 
-describe('Energy', () => {
+describe('Contact us', () => {
   beforeEach(() => {
     cy.on('window:before:load', win => {
       cy.spy(win.console, 'error').as('spyWinConsoleError')

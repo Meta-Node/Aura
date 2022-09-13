@@ -1,12 +1,29 @@
 .four-unrated {
-  margin-top: 302px;
-}
+  margin-top: 120px;
 
-.four-unrated__title {
-  @include semi;
-  font-size: 24px;
-  line-height: 130%;
-  letter-spacing: -0.03em;
-  text-align: center;
-  color: var(--b-grey);
+  &__title {
+    &__text {
+      padding-top: 5px;
+    }
+
+    &__refresh {
+      enable-background: new 0 0 512 512;
+      fill: white;
+      width: 45px;
+      padding-left: 10px;
+      cursor: pointer;
+    }
+
+    @include semi;
+    font-size: 24px;
+    line-height: 130%;
+    letter-spacing: -0.03em;
+    text-align: center;
+    color: var(--b-grey);
+    display: flex;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+  }
+
 }
