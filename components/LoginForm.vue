@@ -1,6 +1,24 @@
 <template>
   <form class="form" novalidate @submit.prevent="onSubmit">
+    <div style="display: flex; width: 100%; margin-bottom: 16px;">
+      <app-button
+        v-for="l in LoginMethods"
+        :key="l"
+        :class="{
+          'text-button form__btn-select__selected': loginMethod === l
+        }"
+        class="text-button form__btn-select"
+        @click.prevent="loginMethod = l"
+      >
+        <span
+          :class="{
+             'form__btn-select-text__selected':loginMethod === l
+           }"
+          class="form__btn-select-text">{{ l }}</span>
+      </app-button>
+    </div>
     <app-input
+      v-show="loginMethod === LoginMethods.explorerCode"
       id="explorer"
       ref="explorer"
       :required="true"
@@ -12,7 +30,8 @@
       validation-text="Value length must be equal 88"
       @inputValue="onInputValue"
     />
-    <div class="form__link">
+    <div v-show="loginMethod === LoginMethods.explorerCode"
+         class="form__link">
       <p
         class="form__link__text"
         @click="
@@ -24,6 +43,19 @@
         how to find my explorer code
       </p>
     </div>
+    <app-input
+      v-show="loginMethod === LoginMethods.localServer"
+      id="localserver"
+      ref="localserver"
+      :required="true"
+      class="form__input-wrapper"
+      data-testid="login-local-server"
+      placeholder="Local BrightID Server Address 192.168..."
+      type="text"
+      validation="minLength(10)"
+      validation-text="Server address is required"
+      @inputValue="onInputValue"
+    />
     <app-input
       id="password"
       ref="password"
@@ -53,10 +85,11 @@
     </div>
     <div class="form__btn-wrapper">
       <app-button
+        :loading="$store.state.app.loading"
         class="text-button form__btn"
         data-testid="login-submit"
         type="submit"
-        :loading="$store.state.app.loading"
+        @click="onSubmit"
       >
         <span class="form__btn-text">Sign In</span>
       </app-button>
@@ -66,17 +99,28 @@
 </template>
 
 <script>
+import {create} from "apisauce";
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
-import { TOAST_ERROR } from '~/utils/constants'
+import {TOAST_ERROR} from '~/utils/constants'
 
+const LoginMethods = Object.freeze({
+  localServer: 'Local Server',
+  explorerCode: 'Explorer Code',
+})
 export default {
-  components: { AppInput, AppButton },
+  components: {AppInput, AppButton},
 
   data() {
     return {
+      LoginMethods,
+      loginMethod: LoginMethods.localServer,
       hasErrors: true,
       explorer: {
+        value: '',
+        error: true,
+      },
+      localserver: {
         value: '',
         error: true,
       },
@@ -89,11 +133,11 @@ export default {
 
   methods: {
     onInputValue(val) {
-      this[val.id] = { ...this[val.id], ...val }
+      this[val.id] = {...this[val.id], ...val}
 
       this.hasErrors = this.explorer.error || this.password.error
     },
-    async onSubmit() {
+    async loginByExplorerCode() {
       if (this.hasErrors) {
         this.emmitError()
         return
@@ -105,7 +149,6 @@ export default {
             explorer: this.explorer.value,
             password: this.password.value,
           })
-          this.$store.commit('app/setLoading', false);
 
           this.$store.commit('app/setIsAuth', true);
           this.$router.push('/profile/');
@@ -115,6 +158,35 @@ export default {
             color: TOAST_ERROR,
           })
         }
+        this.$store.commit('app/setLoading', false);
+      }
+    },
+    async loginByLocalServer() {
+      let explorer = '';
+      const localServerUrl = `${this.localserver.value.startsWith('http://') ? '' : 'http://'}${this.localserver.value}`
+      const localServer = create({
+        baseURL: localServerUrl,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+      explorer = (await localServer.get('/v1/explorer-code')).data
+      console.log({explorer})
+      if (explorer) {
+        this.onInputValue({
+          id: 'explorer',
+          value: explorer,
+          error: false,
+        })
+        console.log(this.explorer)
+        await this.loginByExplorerCode();
+      }
+    },
+    onSubmit() {
+      if (this.loginMethod === LoginMethods.explorerCode) {
+        this.loginByExplorerCode()
+      } else if (this.loginMethod === LoginMethods.localServer) {
+        this.loginByLocalServer();
       }
     },
     emmitError() {
