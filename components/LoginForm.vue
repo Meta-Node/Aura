@@ -50,13 +50,14 @@
       :required="true"
       class="form__input-wrapper"
       data-testid="login-local-server"
-      placeholder="Local BrightID Server Address 192.168..."
+      placeholder="WiFi Sharing url 192.168..."
       type="text"
       validation="minLength(10)"
       validation-text="Server address is required"
       @inputValue="onInputValue"
     />
     <app-input
+      v-show="loginMethod === LoginMethods.explorerCode"
       id="password"
       ref="password"
       :required="true"
@@ -105,7 +106,7 @@ import AppButton from '~/components/AppButton.vue'
 import {TOAST_ERROR} from '~/utils/constants'
 
 const LoginMethods = Object.freeze({
-  localServer: 'Local Server',
+  localServer: 'WiFi Sharing',
   explorerCode: 'Explorer Code',
 })
 export default {
@@ -162,7 +163,6 @@ export default {
       }
     },
     async loginByLocalServer() {
-      let explorer = '';
       const localServerUrl = `${this.localserver.value.startsWith('http://') ? '' : 'http://'}${this.localserver.value}`
       const localServer = create({
         baseURL: localServerUrl,
@@ -170,15 +170,22 @@ export default {
           'Access-Control-Allow-Origin': '*',
         },
       })
-      explorer = (await localServer.get('/v1/explorer-code')).data
-      console.log({explorer})
-      if (explorer) {
+      const explorerData = (await localServer.get('/v1/explorer-code')).data
+      if (explorerData) {
+        const {
+          explorerCode,
+          password
+        } = explorerData
         this.onInputValue({
           id: 'explorer',
-          value: explorer,
+          value: explorerCode,
           error: false,
         })
-        console.log(this.explorer)
+        this.onInputValue({
+          id: 'password',
+          value: password,
+          error: false,
+        })
         await this.loginByExplorerCode();
       }
     },
