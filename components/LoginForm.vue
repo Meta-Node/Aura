@@ -1,22 +1,22 @@
 <template>
   <form class="form" novalidate @submit.prevent="onSubmit">
-    <div style="display: flex; width: 100%; margin-bottom: 16px;">
-      <app-button
-        v-for="l in LoginMethods"
-        :key="l"
-        :class="{
-          'text-button form__btn-select__selected': loginMethod === l
-        }"
-        class="text-button form__btn-select"
-        @click.prevent="loginMethod = l"
-      >
-        <span
-          :class="{
-             'form__btn-select-text__selected':loginMethod === l
-           }"
-          class="form__btn-select-text">{{ l }}</span>
-      </app-button>
-    </div>
+    <!--    <div style="display: flex; width: 100%; margin-bottom: 16px;">-->
+    <!--      <app-button-->
+    <!--        v-for="l in LoginMethods"-->
+    <!--        :key="l"-->
+    <!--        :class="{-->
+    <!--          'text-button form__btn-select__selected': loginMethod === l-->
+    <!--        }"-->
+    <!--        class="text-button form__btn-select"-->
+    <!--        @click.prevent="loginMethod = l"-->
+    <!--      >-->
+    <!--        <span-->
+    <!--          :class="{-->
+    <!--             'form__btn-select-text__selected':loginMethod === l-->
+    <!--           }"-->
+    <!--          class="form__btn-select-text">{{ l }}</span>-->
+    <!--      </app-button>-->
+    <!--    </div>-->
     <app-input
       v-show="loginMethod === LoginMethods.explorerCode"
       id="explorer"
@@ -115,7 +115,7 @@ export default {
   data() {
     return {
       LoginMethods,
-      loginMethod: LoginMethods.localServer,
+      loginMethod: LoginMethods.explorerCode,
       hasErrors: true,
       explorer: {
         value: '',
