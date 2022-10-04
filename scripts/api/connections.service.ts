@@ -1,5 +1,5 @@
 import { ApiResponse } from 'apisauce'
-import { backendApi } from '.'
+import { backendApi, brightIdNodeApi } from '.'
 import { CONNECTION_SEARCH_SEED } from '~/utils/constants'
 import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 import {
@@ -7,6 +7,7 @@ import {
   AuraProfile,
   AuraPublicProfile,
   ConnectionResponse,
+  IncomingConnectionsResponse,
 } from '~/types'
 
 export const getConnections = (fromBrightId: string) => {
@@ -14,6 +15,12 @@ export const getConnections = (fromBrightId: string) => {
     fromBrightId,
     seed: CONNECTION_SEARCH_SEED,
   })
+}
+
+export const getIncomingConnections = (toBrightId: string) => {
+  return brightIdNodeApi.get<IncomingConnectionsResponse>(
+    `/node/v6/users/${toBrightId}/connections/inbound`
+  )
 }
 
 export const getConnection = async (toBrightId: string) => {

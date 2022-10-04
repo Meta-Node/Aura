@@ -51,7 +51,7 @@
               :key="user.id"
               class="user-item__container"
           >
-            <user-item-info :index="index" :user="user"></user-item-info>
+            <mutual-connection :index="index" :user="user"></mutual-connection>
           </li>
         </ul>
       </lazy-loading-items>
@@ -70,9 +70,9 @@ import loadItems from '~/mixins/loadItems'
 
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
 import FilterButton from '~/components/filters/FilterButton.vue'
-import UserItemInfo from '~/components/users/UserItemInfo'
+import MutualConnection from '~/components/users/MutualConnection'
 import {toRoundedPercentage} from "~/utils/numbers";
-import {getConnections} from "~/scripts/api/connections.service";
+import {getIncomingConnections} from "~/scripts/api/connections.service";
 
 function tryParse(key) {
   if (!process.client) return null
@@ -87,7 +87,7 @@ function tryParse(key) {
 
 export default {
   components: {
-    LazyLoadingItems, UserItemInfo,
+    LazyLoadingItems, MutualConnection,
     // CustomSelect,
     FilterButton
   },
@@ -193,20 +193,22 @@ export default {
         await this.loadUserProfile()
 
         const ratedUsers = this.$store.getters['profile/ratedUsers']
-        const myConnectionConnections = (await getConnections(this.profile.id)).data?.connections
-        const finalUsers = this.connections.filter(
-          conn => !!myConnectionConnections.find(c => c._id.replace('users/', '') === conn.id)
-        ).map(conn => {
+        const myConnectionConnections = (await getIncomingConnections(this.profile.id)).data?.data.connections
+        const finalUsers = myConnectionConnections.reduce((a, c) => {
+          const connectionId = c.id
+          const conn = this.connections.find(cn => connectionId === cn.id)
+          if (!conn) return a
           const ratingData = ratedUsers.find(
-            user => user.toBrightId === conn.id
+            user => user.toBrightId === connectionId
           )
           const inboundEnergyObject = this.inboundEnergy.find(
-            en => en.fromBrightId === conn.id
+            en => en.fromBrightId === connectionId
           )
           const outboundEnergyObject = this.transferedEnergy.find(
-            en => en.toBrightId === conn.id
+            en => en.toBrightId === connectionId
           )
-          return {
+          return a.concat({
+            incomingConnectionLevel: c.level,
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
             transferedEnergyPercentage: outboundEnergyObject
@@ -223,8 +225,8 @@ export default {
               )
               : 0,
             ...conn,
-          }
-        })
+          })
+        }, [])
 
         this.startUsers = finalUsers
 

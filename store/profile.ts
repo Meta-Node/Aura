@@ -16,8 +16,8 @@ export const getters: GetterTree<ProfileState, RootState> = {
   connections: state => state.connections,
   ratedUsers: state => state.ratedUsers,
   fourUnrated: state => {
-    let fourUnrated = state.profileData?.fourUnrated
-    fourUnrated = fourUnrated?.map(profile => {
+    let fourUnrated: any = Object.assign([], state.profileData?.fourUnrated)
+    fourUnrated = fourUnrated?.map((profile: any) => {
       const brightId = profile.conn?._to.replace('users/', '')
       const connectionInfo = state.connections.find(
         conn => conn.id === brightId
