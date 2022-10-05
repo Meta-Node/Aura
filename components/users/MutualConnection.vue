@@ -4,6 +4,11 @@
     <div class="user-v2__numbers">
       <p :data-testid="`mutual-connection--${id}-incoming-level`" class="user-v2__num user-v2__num-outbound">
         {{ user.incomingConnectionLevel }}</p>
+      <p :data-testid="`mutual-connection--${id}-incoming-rating`" class="user-v2__num user-v2__num-outbound"
+         style="margin: 0px 10px;">
+        ({{ user.incomingRatingToConnection }})</p>
+      <p :data-testid="`mutual-connection--${id}-aura-verification-level`" class="user-v2__num user-v2__num-outbound">
+        Not Verified</p>
     </div>
   </li>
 </template>

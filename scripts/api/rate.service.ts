@@ -52,3 +52,18 @@ export const getRatedUsers = async () => {
     throw error
   }
 }
+
+export const getIncomingRatings = async (toBrightId: string) => {
+  try {
+    const res = await backendApi.get<AuraRatingRetrieveResponse>(
+      '/v1/ratings/inbound/' + toBrightId
+    )
+    if (!res?.data?.ratings) {
+      throw new Error('Data is not defined')
+    }
+    return res?.data?.ratings
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}

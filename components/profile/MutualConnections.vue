@@ -46,7 +46,9 @@
         :items="users"
         @updateItems="onUpdateItems"
       >
-        <ul class="user-item__list" style="margin-top: 30px">
+        <small class="app-explorer__table-name" style="margin-top: 30px">Level / Rate /
+          Aura verification</small>
+        <ul class="user-item__list" style="margin-top: 0px">
           <li v-for="(user, index) in visibleItems"
               :key="user.id"
               class="user-item__container"
@@ -73,6 +75,7 @@ import FilterButton from '~/components/filters/FilterButton.vue'
 import MutualConnection from '~/components/users/MutualConnection'
 import {toRoundedPercentage} from "~/utils/numbers";
 import {getIncomingConnections} from "~/scripts/api/connections.service";
+import {getIncomingRatings} from "~/scripts/api/rate.service";
 
 function tryParse(key) {
   if (!process.client) return null
@@ -194,6 +197,7 @@ export default {
 
         const ratedUsers = this.$store.getters['profile/ratedUsers']
         const myConnectionConnections = (await getIncomingConnections(this.profile.id)).data?.data.connections
+        const myConnectionIncomingRatings = (await getIncomingRatings(this.profile.id))
         const finalUsers = myConnectionConnections.reduce((a, c) => {
           const connectionId = c.id
           const conn = this.connections.find(cn => connectionId === cn.id)
@@ -207,10 +211,14 @@ export default {
           const outboundEnergyObject = this.transferedEnergy.find(
             en => en.toBrightId === connectionId
           )
+          const incomingRatingDataToConnection = myConnectionIncomingRatings.find(
+            en => en.fromBrightId === connectionId
+          )
           return a.concat({
             incomingConnectionLevel: c.level,
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
+            incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : '-',
             transferedEnergyPercentage: outboundEnergyObject
               ? toRoundedPercentage(
                 outboundEnergyObject.amount,
