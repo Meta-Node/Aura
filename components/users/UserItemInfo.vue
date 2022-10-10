@@ -8,7 +8,13 @@
       loading="lazy"
       width="48"
     />
-    <p :data-testid="`user-item-${user.id}-name-${index}`" class="user-item__tag">{{ user.name }}</p>
+    <div class="user-item__tag">
+      <div :data-testid="`user-item-${user.id}-name-${index}`" class="user-item__tag__name">{{ user.name }}</div>
+      <div v-if="showAuraVerification" :data-testid="`user-item-${user.id}-name-${index}`"
+           class="user-item__tag__aura-verification">Not
+        yet
+      </div>
+    </div>
     <small v-if="user.rating" :data-testid="`user-item-${user.id}-rating`" class="user-item__rate">({{
         user.rating
       }})</small>
@@ -22,6 +28,10 @@ export default {
   name: "UserItemInfo",
   mixins: [avatar],
   props: {
+    showAuraVerification: {
+      type: Boolean,
+      default: false,
+    },
     user: {
       type: Object,
       default: () => ({}),

@@ -46,8 +46,7 @@
         :items="users"
         @updateItems="onUpdateItems"
       >
-        <small class="app-explorer__table-name" style="margin-top: 30px">Level / Rate /
-          Aura verification</small>
+        <small class="app-explorer__table-name" style="margin-top: 30px">Opinion about {{ profile.name }}</small>
         <ul class="user-item__list" style="margin-top: 0px">
           <li v-for="(user, index) in visibleItems"
               :key="user.id"

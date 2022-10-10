@@ -1,14 +1,12 @@
 <template>
   <li class="user-v2__humans-list" style="width: 100%">
-    <user-item-info :index="index" :user="user"></user-item-info>
+    <user-item-info :index="index" :user="user" show-aura-verification></user-item-info>
     <div class="user-v2__numbers">
       <p :data-testid="`mutual-connection--${id}-incoming-level`" class="user-v2__num user-v2__num-outbound">
         {{ user.incomingConnectionLevel }}</p>
       <p :data-testid="`mutual-connection--${id}-incoming-rating`" class="user-v2__num user-v2__num-outbound"
          style="margin: 0px 10px;">
         ({{ user.incomingRatingToConnection }})</p>
-      <p :data-testid="`mutual-connection--${id}-aura-verification-level`" class="user-v2__num user-v2__num-outbound">
-        Not Verified</p>
     </div>
   </li>
 </template>
