@@ -53,7 +53,7 @@ export default {
   },
   created() {
     if (this.showAuraVerification) {
-      auraBrightIdNodeApi.get(`/brightid/v6/users/${this.user.id}/profile`).then(res => {
+      auraBrightIdNodeApi.get(`/brightid/v6/users/${this.user.id}/verifications`).then(res => {
         const auraVerification = res.data.data.verifications.find(verification => verification.name === 'Aura')
         this.auraVerification = auraVerification?.level || 'Not yet'
       })
