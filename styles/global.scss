@@ -34,7 +34,25 @@ svg {
 .fade-leave-active {
   transition: opacity 0.25s;
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+
+.aura-verification-color {
+  color: var(--s-grey);
+
+  &--bronze {
+    color: var(--aura-verification-bronze);
+  }
+
+  &--silver {
+    color: var(--aura-verification-silver);
+  }
+
+  &--gold {
+    color: var(--aura-verification-gold);
+  }
 }

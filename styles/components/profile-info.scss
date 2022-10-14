@@ -49,19 +49,6 @@
   font-size: 16px;
   line-height: 125%;
   letter-spacing: -0.03em;
-  color: var(--s-grey);
-
-  &--bronze {
-    color: var(--red);
-  }
-
-  &--silver {
-    color: var(--amber);
-  }
-
-  &--gold {
-    color: var(--green);
-  }
 }
 
 .profile__functions {

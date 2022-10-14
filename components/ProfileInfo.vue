@@ -21,10 +21,10 @@
         </div>
         <div class="profile__block-right">
           <p
-            :class="`profile__rating--${auraVerification.toLowerCase()}`"
-            class="profile__rating"
+            :class="auraVerification ? `aura-verification-color--${auraVerification.toLowerCase()}` : ''"
+            class="profile__rating aura-verification-color"
           >
-            {{ auraVerification }}
+            {{ auraVerification || 'loading' }}
           </p>
           <div class="profile__functions">
             <button
@@ -142,7 +142,7 @@ export default {
   },
   data() {
     return {
-      auraVerification: 'loading...'
+      auraVerification: null
     }
   },
   computed: {

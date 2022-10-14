@@ -10,8 +10,9 @@
     />
     <div class="user-item__tag">
       <div :data-testid="`user-item-${user.id}-name-${index}`" class="user-item__tag__name">{{ user.name }}</div>
-      <div v-if="showAuraVerification" :data-testid="`user-item-${user.id}-name-${index}`"
-           class="user-item__tag__aura-verification">{{ auraVerification }}
+      <div v-if="showAuraVerification"
+           :class="auraVerification ? `aura-verification-color--${auraVerification.toLowerCase()}` : ''"
+           class="user-item__tag__aura-verification aura-verification-color">{{ auraVerification || 'loading...' }}
       </div>
     </div>
     <small v-if="user.rating" :data-testid="`user-item-${user.id}-rating`" class="user-item__rate">({{
@@ -30,7 +31,7 @@ export default {
   props: {
     showAuraVerification: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     user: {
       type: Object,
@@ -43,7 +44,7 @@ export default {
   },
   data() {
     return {
-      auraVerification: 'loading...',
+      auraVerification: null,
     }
   },
   computed: {
