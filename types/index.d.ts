@@ -1,6 +1,6 @@
 // TODO: add typescript eslint to fix linter problems
 // TODO: update values
-
+export type ConnectionLevel = 'already known' | 'just met' | 'recovery'
 export type Connection = {
   id: string
   name: string
@@ -10,12 +10,12 @@ export type Connection = {
   }
   status: 'verified'
   notificationToken: string
-  level: 'already known' | 'just met' | 'recovery'
+  level: ConnectionLevel
   socialMedia: any[]
   verifications: any[]
   reportReason: string | null
   timestamp: number
-  incomingLevel: 'already known' | 'just met' | 'recovery'
+  incomingLevel: ConnectionLevel
 }
 
 export type BrightIdBackup = {
@@ -72,9 +72,9 @@ export type AuraConnection = {
   _rev: string
   createdAt: number
   // eslint-disable-next-line camelcase
-  eligible_groups: []
+  eligible_groups?: []
   // eslint-disable-next-line camelcase
-  eligible_timestamp: number
+  eligible_timestamp?: number
   parent: string
   signingKeys: string[]
   conn?: {
@@ -129,4 +129,17 @@ export type ConnectionResponse = {
 export type AppToast = {
   text: string
   color: 'success' | 'danger'
+}
+
+export type IncomingConnection = {
+  id: string
+  level: ConnectionLevel
+  reportReason: string | null
+  timestamp: number
+}
+
+export type IncomingConnectionsResponse = {
+  data: {
+    connections: IncomingConnection[]
+  }
 }

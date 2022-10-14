@@ -31,16 +31,34 @@
   margin-right: 30px;
 }
 
-.user-item__tag {
-  @include semi;
-  font-size: 16px;
-  line-height: 175%;
-  color: var(--b-grey);
-  letter-spacing: -0.03em;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-right: 10px;
+.user-item {
+  &__tag {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    &__name {
+      @include semi;
+      font-size: 16px;
+      line-height: 150%;
+      color: var(--b-grey);
+      letter-spacing: -0.03em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin-right: 10px;
+    }
+
+    &__aura-verification {
+      @include semi;
+      font-size: 13px;
+      color: var(--s-grey);
+      letter-spacing: -0.03em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .user-item__rate {

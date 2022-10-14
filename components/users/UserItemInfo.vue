@@ -8,7 +8,12 @@
       loading="lazy"
       width="48"
     />
-    <p :data-testid="`user-item-${user.id}-name-${index}`" class="user-item__tag">{{ user.name }}</p>
+    <div class="user-item__tag">
+      <div :data-testid="`user-item-${user.id}-name-${index}`" class="user-item__tag__name">{{ user.name }}</div>
+      <div v-if="showAuraVerification" :data-testid="`user-item-${user.id}-name-${index}`"
+           class="user-item__tag__aura-verification">{{ auraVerification }}
+      </div>
+    </div>
     <small v-if="user.rating" :data-testid="`user-item-${user.id}-rating`" class="user-item__rate">({{
         user.rating
       }})</small>
@@ -17,11 +22,16 @@
 
 <script>
 import avatar from '~/mixins/avatar'
+import {auraBrightIdNodeApi} from "~/scripts/api";
 
 export default {
   name: "UserItemInfo",
   mixins: [avatar],
   props: {
+    showAuraVerification: {
+      type: Boolean,
+      default: false,
+    },
     user: {
       type: Object,
       default: () => ({}),
@@ -31,9 +41,22 @@ export default {
       default: 0,
     },
   },
+  data() {
+    return {
+      auraVerification: 'loading...',
+    }
+  },
   computed: {
     img() {
       return this.user?.id
+    }
+  },
+  created() {
+    if (this.showAuraVerification) {
+      auraBrightIdNodeApi.get(`/brightid/v6/users/${this.user.id}/verifications`).then(res => {
+        const auraVerification = res.data.data.verifications.find(verification => verification.name === 'Aura')
+        this.auraVerification = auraVerification?.level || 'Not yet'
+      })
     }
   }
 }

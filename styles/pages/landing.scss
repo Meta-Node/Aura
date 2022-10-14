@@ -19,7 +19,7 @@
     font-weight: 500;
     text-decoration: underline;
     cursor: pointer;
-    
+
   }
 }
 
@@ -48,9 +48,9 @@
   font-size: 16px;
   line-height: 150%;
   background: linear-gradient(
-    90deg,
-    #ffffff 0.53%,
-    rgba(255, 255, 255, 0.5) 145.92%
+      90deg,
+      #ffffff 0.53%,
+      rgba(255, 255, 255, 0.5) 145.92%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -98,6 +98,33 @@
   &:disabled {
     cursor: not-allowed;
     color: var(--s-grey);
+  }
+}
+
+.form__btn-select {
+  display: block;
+  border: none;
+  background-color: var(--grey);
+  justify-content: center;
+  align-items: center;
+  padding: 14px;
+  border-radius: 14px;
+  width: 100%;
+
+  &-text {
+    @include semi;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: -0.03em;
+    color: var(--b-grey);
+
+    &__selected {
+      color: var(--grey);
+    }
+  }
+
+  &__selected {
+    background-color: var(--b-grey);
   }
 }
 

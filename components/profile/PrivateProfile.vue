@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-      <four-unrated :users="fourUnrated"/>
+      <mutual-connections :profile="profile"/>
     </div>
     <nickname-popup
       v-if="profile && profile.id"
@@ -57,13 +57,13 @@
 </template>
 
 <script>
+import MutualConnections from './MutualConnections'
 import AppSpinner from '~/components/AppSpinner.vue'
 
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
 import NicknamePopup from '~/components/popup/NicknamePopup.vue'
 import ProfileInfo from '~/components/ProfileInfo.vue'
 import {rateUser} from '~/scripts/api/rate.service'
-import FourUnrated from '~/components/FourUnrated.vue'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
 import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
@@ -74,8 +74,7 @@ export default {
     ProfileInfo,
     AppSpinner,
     NicknamePopup,
-
-    FourUnrated,
+    MutualConnections,
   },
   mixins: [transition, avatar],
   props: {
