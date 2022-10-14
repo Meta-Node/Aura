@@ -22,7 +22,7 @@
 
 <script>
 import avatar from '~/mixins/avatar'
-import {auraBrightIdNodeApi} from "~/scripts/api";
+import {getAuraVerificationString} from "~/scripts/api/auranode.service";
 
 export default {
   name: "UserItemInfo",
@@ -53,9 +53,8 @@ export default {
   },
   created() {
     if (this.showAuraVerification) {
-      auraBrightIdNodeApi.get(`/brightid/v6/users/${this.user.id}/verifications`).then(res => {
-        const auraVerification = res.data.data.verifications.find(verification => verification.name === 'Aura')
-        this.auraVerification = auraVerification?.level || 'Not yet'
+      getAuraVerificationString(this.user.id).then(auraVerification => {
+        this.auraVerification = auraVerification
       })
     }
   }

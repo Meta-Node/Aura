@@ -21,10 +21,10 @@
         </div>
         <div class="profile__block-right">
           <p
-            :class="`profile__rating--${ratingText.toLowerCase()}`"
+            :class="`profile__rating--${auraVerification.toLowerCase()}`"
             class="profile__rating"
           >
-            {{ ratingText }}
+            {{ auraVerification }}
           </p>
           <div class="profile__functions">
             <button
@@ -90,6 +90,7 @@
 <script>
 import {formatDistance} from 'date-fns'
 import ProfileAvatar from './ProfileAvatar.vue'
+import {getAuraVerificationString} from "~/scripts/api/auranode.service";
 
 export default {
   components: {ProfileAvatar},
@@ -139,30 +140,24 @@ export default {
       default: 0,
     },
   },
+  data() {
+    return {
+      auraVerification: 'loading...'
+    }
+  },
   computed: {
     separatedName() {
       const name = this.nickname ? this.nickname : this.name
       return name.replace(' ', '<br />')
     },
-    ratingText() {
-
-      if (this.rating === 0) {
-        return 'Unrated'
-      }
-
-      if (this.rating <= 33) {
-        return 'Bronze'
-      }
-
-      if (this.rating <= 66 && this.rating > 33) {
-        return 'Silver'
-      }
-
-      return 'Gold'
-    },
     lastConnection() {
       return formatDistance(new Date(this.connectionDate), new Date(), {addSuffix: true})
     },
+  },
+  created() {
+    getAuraVerificationString(this.id).then(auraVerification => {
+      this.auraVerification = auraVerification
+    })
   },
   methods: {
     onShareClick() {
@@ -171,6 +166,6 @@ export default {
     onEditClick() {
       this.$emit('edit')
     },
-  },
+  }
 }
 </script>
