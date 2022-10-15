@@ -17,7 +17,7 @@ export const brightIdNodeApi = create({
 
 export const auraBrightIdNodeApi = create({
   headers: { 'Cache-Control': 'no-cache' },
-  baseURL: 'https://aura-node.brightid.org/',
+  baseURL: process.env.AURA_NODE_URL,
   // @ts-ignore
   mode: 'no-cors',
 })
