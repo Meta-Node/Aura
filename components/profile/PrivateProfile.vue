@@ -1,5 +1,6 @@
 <template>
   <section class="feedback">
+    <div v-if="debugError" style="margin: 30px;">debug error: {{ debugError }}</div>
     <div
       v-if="isLoading"
       style="margin-top: 40px"
@@ -109,6 +110,7 @@ export default {
   data() {
     return {
       isAlreadyRated: false,
+      debugError: null,
     }
   },
 
@@ -141,6 +143,9 @@ export default {
         this.$router.push('/community')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
+        if (process.env.NODE_ENV !== 'production') {
+          this.debugError = JSON.stringify(error.response?.data)
+        }
         if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
           this.$store.dispatch('login/logout')
           this.$router.push('/')
