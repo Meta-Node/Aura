@@ -1,5 +1,6 @@
 <template>
   <div class="app-energy">
+    <div v-if="debugError" class="debug-error">debug error: {{ debugError }}</div>
     <div class="app-energy__statistic">
       <div class="app-energy__switch-wrapper">
         <app-filter :filters="filters" @filtered="onFiltered"/>
@@ -80,6 +81,7 @@ export default {
   data() {
     return {
       energyData: [],
+      debugError: null
     }
   },
   computed: {
@@ -96,7 +98,9 @@ export default {
   methods: {
     async updateEnergy() {
       try {
+        this.$store.commit('app/setLoading', true)
         await this.$store.dispatch('energy/updateEnergy')
+        this.$store.commit('app/setLoading', false)
         this.$store.commit('toast/addToast', {
           text: 'Energy successfully updated',
           color: TOAST_SUCCESS,
@@ -104,6 +108,10 @@ export default {
         // this.$router.push('/community?filter=Unrated')
         this.$emit('getTransferedEnergy')
       } catch (error) {
+        this.$store.commit('app/setLoading', false)
+        if (process.env.NODE_ENV !== 'production') {
+          this.debugError = JSON.stringify(error.response?.data)
+        }
         if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
           this.$store.dispatch('login/logout')
           this.$router.push('/')

@@ -1,6 +1,6 @@
 <template>
   <section class="feedback">
-    <div v-if="debugError" style="margin: 30px;">debug error: {{ debugError }}</div>
+    <div v-if="debugError" class="debug-error">debug error: {{ debugError }}</div>
     <div
       v-if="isLoading"
       style="margin-top: 40px"
