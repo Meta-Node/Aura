@@ -74,17 +74,6 @@ import users from '~/mixins/users'
 import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 
-function tryParse(key) {
-  if (!process.client) return null
-  const str = localStorage.getItem(key)
-  if (!str) return null
-  try {
-    return JSON.parse(str)
-  } catch (_e) {
-    return null
-  }
-}
-
 const filterKey = 'energyFilters'
 export default {
   components: {
@@ -99,7 +88,7 @@ export default {
     return {
       isView: true,
       filterKey,
-      filters: tryParse(filterKey) || [
+      filters: [
         {
           name: 'Name',
           type: 'ordering',

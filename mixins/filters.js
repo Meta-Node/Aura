@@ -39,11 +39,13 @@ export default {
     const finalFilters = this.filters
     if (this.filterKey) {
       const filters = tryParse(this.filterKey)
-      for (const filter of filters) {
-        const existingFilter = this.filters.find(f => f.name === filter.name)
-        if (existingFilter) {
-          Vue.set(existingFilter, 'active', filter.active)
-          Vue.set(existingFilter, 'reverse', filter.reverse)
+      if (filters) {
+        for (const filter of filters) {
+          const existingFilter = this.filters.find(f => f.name === filter.name)
+          if (existingFilter) {
+            Vue.set(existingFilter, 'active', filter.active)
+            Vue.set(existingFilter, 'reverse', filter.reverse)
+          }
         }
       }
     }
