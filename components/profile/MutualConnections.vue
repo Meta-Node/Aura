@@ -45,7 +45,6 @@ import loadItems from '~/mixins/loadItems'
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
 import AppFilter from '~/components/filters/AppFilter.vue'
 import MutualConnection from '~/components/users/MutualConnection'
-import {toRoundedPercentage} from "~/utils/numbers";
 import {getIncomingConnections} from "~/scripts/api/connections.service";
 import {getIncomingRatings} from "~/scripts/api/rate.service";
 
@@ -84,6 +83,22 @@ export default {
           active: false,
           reverse: false,
         },
+        {
+          name: 'IncomingRatingToConnection',
+          type: 'ordering',
+          label: 'Their Rating',
+          defaultAscending: false,
+          active: false,
+          reverse: false,
+        },
+        {
+          name: 'IncomingConnectionLevel',
+          type: 'ordering',
+          label: 'Connection Level',
+          defaultAscending: false,
+          active: false,
+          reverse: false,
+        },
       ],
     }
   },
@@ -104,12 +119,6 @@ export default {
           const ratingData = ratedUsers.find(
             user => user.toBrightId === connectionId
           )
-          const inboundEnergyObject = this.inboundEnergy.find(
-            en => en.fromBrightId === connectionId
-          )
-          const outboundEnergyObject = this.transferedEnergy.find(
-            en => en.toBrightId === connectionId
-          )
           const incomingRatingDataToConnection = myConnectionIncomingRatings.find(
             en => en.fromBrightId === connectionId
           )
@@ -118,19 +127,6 @@ export default {
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
             incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : '-',
-            transferedEnergyPercentage: outboundEnergyObject
-              ? toRoundedPercentage(
-                outboundEnergyObject.amount,
-                outboundEnergyObject.scale
-              )
-              : 0,
-            transferedEnergy: outboundEnergyObject?.amount || 0,
-            inboundEnergyPercentage: inboundEnergyObject
-              ? toRoundedPercentage(
-                inboundEnergyObject.amount,
-                inboundEnergyObject.scale
-              )
-              : 0,
             ...conn,
           })
         }, [])

@@ -1,3 +1,5 @@
+import { connectionLevelMap } from '~/utils/constants'
+
 export const getUnrated = users => {
   const unratedUsers = users.filter(user => !user.rating)
 
@@ -7,6 +9,30 @@ export const getUnrated = users => {
 export const getByRating = (users, fromLess) => {
   const newUsers = [...users.filter(su => su.rating)].sort(
     (a, b) => +b.rating - a.rating
+  )
+  if (fromLess) {
+    return newUsers
+  } else {
+    return newUsers.reverse()
+  }
+}
+
+export const getByIncomingRatingToConnection = (users, fromLess) => {
+  const newUsers = [...users.filter(su => su.incomingRatingToConnection)].sort(
+    (a, b) => +b.incomingRatingToConnection - a.incomingRatingToConnection
+  )
+  if (fromLess) {
+    return newUsers
+  } else {
+    return newUsers.reverse()
+  }
+}
+
+export const getByIncomingConnectionLevel = (users, fromLess) => {
+  const newUsers = [...users].sort(
+    (a, b) =>
+      connectionLevelMap[b.incomingConnectionLevel] -
+      connectionLevelMap[a.incomingConnectionLevel]
   )
   if (fromLess) {
     return newUsers

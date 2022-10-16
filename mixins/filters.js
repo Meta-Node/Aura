@@ -2,6 +2,8 @@ import Vue from 'vue'
 import {
   getAlreadyKnown,
   getByAmount,
+  getByIncomingConnectionLevel,
+  getByIncomingRatingToConnection,
   getByName,
   getByRating,
   getByRatingDate,
@@ -144,6 +146,12 @@ export default {
     },
     getRating(users, fromLess) {
       return getByRating(users, fromLess)
+    },
+    getIncomingRatingToConnection(users, fromLess) {
+      return getByIncomingRatingToConnection(users, fromLess)
+    },
+    getIncomingConnectionLevel(users, fromLess) {
+      return getByIncomingConnectionLevel(users, fromLess)
     },
     getRecent(users, fromLess) {
       return getByRatingDate(users, fromLess)

@@ -1,6 +1,12 @@
 // TODO: add typescript eslint to fix linter problems
 // TODO: update values
-export type ConnectionLevel = 'already known' | 'just met' | 'recovery'
+export type ConnectionLevel =
+  | 'reported'
+  | 'suspicious'
+  | 'already known'
+  | 'just met'
+  | 'recovery'
+
 export type Connection = {
   id: string
   name: string
