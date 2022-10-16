@@ -4,6 +4,7 @@
       v-for="filter in filters"
       :key="filter.name"
       :active="filter.active"
+      :label="filter.label"
       :name="filter.name"
       :ordering="filter.type === 'ordering'"
       :reverse="filter.reverse"

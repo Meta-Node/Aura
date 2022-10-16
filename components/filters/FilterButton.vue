@@ -5,7 +5,7 @@
     class="filter-button"
     @click="onClick"
   >
-    {{ name }}
+    {{ label || name }}
     <span
       v-if="ordering"
       :style="{ transform: reverse ? 'rotate(180deg)' : 'rotate(0deg)' }"
@@ -30,6 +30,9 @@ export default {
     name: {
       type: String,
       default: 'Name',
+    },
+    label: {
+      type: String,
     },
     active: {
       type: Boolean,

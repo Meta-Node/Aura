@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   getAlreadyKnown,
   getByAmount,
@@ -11,6 +12,17 @@ import {
   trim,
 } from '~/scripts/utils/filters'
 
+function tryParse(key) {
+  if (!process.client) return null
+  const str = localStorage.getItem(key)
+  if (!str) return null
+  try {
+    return JSON.parse(str)
+  } catch (_e) {
+    return null
+  }
+}
+
 export default {
   data() {
     return {
@@ -18,7 +30,22 @@ export default {
       filteredUsers: [],
       users: [],
       appliedFilters: [],
+      filterKey: null,
     }
+  },
+  created() {
+    const finalFilters = this.filters
+    if (this.filterKey) {
+      const filters = tryParse(this.filterKey)
+      for (const filter of filters) {
+        const existingFilter = this.filters.find(f => f.name === filter.name)
+        if (existingFilter) {
+          Vue.set(existingFilter, 'active', filter.active)
+          Vue.set(existingFilter, 'reverse', filter.reverse)
+        }
+      }
+    }
+    this.filters = finalFilters
   },
   methods: {
     onFiltered(name) {
@@ -48,7 +75,9 @@ export default {
           }
           return filter
         })
-        localStorage.setItem('filters', JSON.stringify(this.filters))
+        if (this.filterKey) {
+          localStorage.setItem(this.filterKey, JSON.stringify(this.filters))
+        }
       }
 
       const activeFilter = this.filters.find(

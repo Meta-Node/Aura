@@ -85,6 +85,7 @@ function tryParse(key) {
   }
 }
 
+const filterKey = 'energyFilters'
 export default {
   components: {
     AppSearch,
@@ -97,8 +98,8 @@ export default {
   data() {
     return {
       isView: true,
-
-      filters: tryParse('filters') || [
+      filterKey,
+      filters: tryParse(filterKey) || [
         {
           name: 'Name',
           type: 'ordering',
