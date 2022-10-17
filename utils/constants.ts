@@ -12,7 +12,7 @@ export const ENERGY_TABS = Object.freeze({
 export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
   reported: 0,
   suspicious: 1,
-  'already known': 2,
-  'just met': 3,
+  'just met': 4,
+  'already known': 3,
   recovery: 4,
 }
