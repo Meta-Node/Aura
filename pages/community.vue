@@ -201,10 +201,7 @@ export default {
     },
   },
   mounted() {
-    console.log({env: process.env.VERCEL_ENV})
-    console.log({env: process.env.VUE_APP_VERCEL_ENV})
-    console.log({env: process.env.NODE_ENV})
-    console.log({env: process.env.VERCEL_ENV ?? process.env.NODE_ENV})
+    console.log({env: process.env.NUXT_ENV_VERCEL_ENV})
     this.onFiltered('ConnectionType', this.connectionTypeFilter)
   },
 
