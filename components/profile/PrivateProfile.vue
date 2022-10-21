@@ -67,7 +67,7 @@ import ProfileInfo from '~/components/ProfileInfo.vue'
 import {rateUser} from '~/scripts/api/rate.service'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
-import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
+import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 
 export default {
   components: {
@@ -143,7 +143,7 @@ export default {
         this.$router.push('/community')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
-        if (process.env.NODE_ENV !== 'production') {
+        if (!IS_PRODUCTION) {
           this.debugError = JSON.stringify(error.response?.data)
         }
         if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {

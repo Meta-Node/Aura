@@ -93,6 +93,7 @@
 import {formatDistance} from 'date-fns'
 import ProfileAvatar from './ProfileAvatar.vue'
 import {getAuraVerificationString} from "~/scripts/api/auranode.service";
+import {IS_PRODUCTION} from "~/utils/constants";
 
 export default {
   components: {ProfileAvatar},
@@ -149,7 +150,7 @@ export default {
   },
   computed: {
     auraIdentifier() {
-      return process.env.NODE_ENV !== 'production' ? 'aura-test' : 'aura';
+      return IS_PRODUCTION ? 'aura' : 'aura-test';
     },
     separatedName() {
       const name = this.nickname ? this.nickname : this.name

@@ -16,3 +16,5 @@ export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
   'already known': 3,
   recovery: 4,
 }
+
+export const IS_PRODUCTION = process.env.VERCEL_ENV === 'production'

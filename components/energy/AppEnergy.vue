@@ -63,7 +63,7 @@
 import AppFilter from '../filters/AppFilter.vue'
 import UserV3 from '~/components/users/UserV3.vue'
 import loadItems from '~/mixins/loadItems'
-import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
+import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 
 export default {
   components: {UserV3, AppFilter},
@@ -109,7 +109,7 @@ export default {
         this.$emit('getTransferedEnergy')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
-        if (process.env.NODE_ENV !== 'production') {
+        if (!IS_PRODUCTION) {
           this.debugError = JSON.stringify(error.response?.data)
         }
         if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
