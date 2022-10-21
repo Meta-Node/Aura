@@ -18,4 +18,4 @@ export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
 }
 
 export const IS_PRODUCTION =
-  (process.env.VERCEL_ENV || process.env.NODE_ENV) === 'production'
+  (process.env.NUXT_ENV_VERCEL_ENV || process.env.NODE_ENV) === 'production'
