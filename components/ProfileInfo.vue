@@ -79,7 +79,9 @@
         <p class="profile__info" data-testid="profile-user-info">
           {{ date }}<br/>
           {{ connections }} Connections<br/>
-          <a :href="`https://explorer.brightid.org/?aura=c94be433d2b36362302fad3065d9c29e&u=${id}`" target="_blank">View
+          <a
+            :href="`https://explorer.brightid.org/?aura=${auraIdentifier}&u=${id}`"
+            target="_blank">View
             on Explorer</a>
         </p>
       </div>
@@ -146,6 +148,9 @@ export default {
     }
   },
   computed: {
+    auraIdentifier() {
+      return process.env.NODE_ENV !== 'production' ? 'aura-test' : 'aura';
+    },
     separatedName() {
       const name = this.nickname ? this.nickname : this.name
       return name.replace(' ', '<br />')
