@@ -35,7 +35,7 @@
 import transition from '~/mixins/transition'
 import PrivateProfile from '~/components/profile/PrivateProfile.vue'
 import PublicProfile from '~/components/profile/PublicProfile.vue'
-import {getConnection, getProfile} from '~/scripts/api/connections.service'
+import {getProfile} from '~/scripts/api/connections.service'
 import {TOAST_ERROR} from "~/utils/constants";
 
 export default {
@@ -50,7 +50,6 @@ export default {
       isPrivate: true,
       isOwn: false,
       profile: {},
-      connections: [],
       isLoading: true,
     }
   },
@@ -154,17 +153,11 @@ export default {
         const connections = this.$store.getters['profile/connections']
 
         this.profile = connections.find(con => con.id === this.brightId)
-        this.connections = connections.filter(con => con.id !== this.brightId)
 
         const res = await getProfile(this.brightId, this.isPublicRouteQuery)
         this.profile = {...this.profile, ...res.data}
 
-        const connectionRes = await getConnection(this.brightId)
         this.isPrivate = !this.isPublicRouteQuery
-
-        if (connectionRes?.previousRating) {
-          this.profile.previousRating = connectionRes.previousRating.rating
-        }
       } catch (error) {
         console.log(error)
         this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
@@ -177,7 +170,6 @@ export default {
         await this.$store.dispatch('profile/getProfileData')
 
         this.profile = this.$store.getters['profile/profileData']
-        this.connections = this.$store.getters['profile/connections']
       } catch (error) {
         console.log(error)
         this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})

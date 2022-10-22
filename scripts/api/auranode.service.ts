@@ -14,14 +14,27 @@ export type VerificationsResponse = {
   }
 }
 
+export const getAuraVerificationStringFromVerificationsResponse = (
+  data?: VerificationsResponse
+) => {
+  const auraVerification = data?.data.verifications.find(
+    verification => verification.name === 'Aura'
+  )
+  return auraVerification?.level || 'Not yet'
+}
+
 export const getAuraVerificationString = async (
   userId: string
 ): Promise<AuraVerificationString> => {
   const res = await auraBrightIdNodeApi.get<VerificationsResponse>(
     `/brightid/v6/users/${userId}/verifications`
   )
-  const auraVerification = res.data?.data.verifications.find(
-    verification => verification.name === 'Aura'
+  return getAuraVerificationStringFromVerificationsResponse(res.data)
+}
+
+export const getVerifications = async (userId: string) => {
+  const res = await auraBrightIdNodeApi.get<VerificationsResponse>(
+    `/brightid/v6/users/${userId}/verifications`
   )
-  return auraVerification?.level || 'Not yet'
+  return res.data
 }

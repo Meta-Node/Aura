@@ -78,7 +78,10 @@
       <div class="profile__about">
         <p class="profile__info" data-testid="profile-user-info">
           {{ date }}<br/>
-          {{ connections }} Connections<br/>
+          {{ numOfConnections }} Connections<br/>
+          <span v-if="!isOwnProfile">{{
+              userHasRecovery === null ? 'loading...' : userHasRecovery ? 'user has recovery' : 'recovery not set up'
+            }}</span><br/>
           <a
             :href="`https://explorer.brightid.org/?aura=${auraIdentifier}&u=${id}`"
             target="_blank">View
@@ -92,7 +95,7 @@
 <script>
 import {formatDistance} from 'date-fns'
 import ProfileAvatar from './ProfileAvatar.vue'
-import {getAuraVerificationString} from "~/scripts/api/auranode.service";
+import {getAuraVerificationStringFromVerificationsResponse, getVerifications} from "~/scripts/api/auranode.service";
 import {IS_PRODUCTION} from "~/utils/constants";
 
 export default {
@@ -126,7 +129,7 @@ export default {
       type: String,
       default: '',
     },
-    connections: {
+    numOfConnections: {
       type: Number,
       default: 0,
     },
@@ -145,6 +148,7 @@ export default {
   },
   data() {
     return {
+      userHasRecovery: null,
       auraVerification: null
     }
   },
@@ -161,8 +165,11 @@ export default {
     },
   },
   created() {
-    getAuraVerificationString(this.id).then(auraVerification => {
-      this.auraVerification = auraVerification
+    getVerifications(this.id).then(verificationsResponse => {
+      this.auraVerification = getAuraVerificationStringFromVerificationsResponse(verificationsResponse)
+      this.userHasRecovery = verificationsResponse ? verificationsResponse.data.verifications.find(
+        verification => verification.name === 'SocialRecoverySetup'
+      ) : null
     })
   },
   methods: {

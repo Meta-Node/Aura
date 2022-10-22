@@ -11,11 +11,11 @@
         :id="profile.id"
         :brightness="brightness"
         :connection-date="profile.connectionDate"
-        :connections="profile.numOfConnections"
         :date="date"
         :img="profileAvatar"
         :is-own-profile="isOwn"
         :name="profile.name || 'Unknown'"
+        :num-of-connections="profile.numOfConnections"
         :rating="profile.rating"
         @share="onShare"
       />
