@@ -110,16 +110,16 @@ export default {
         await this.loadUserProfile()
 
         const ratedUsers = this.$store.getters['profile/ratedUsers']
-        const myConnectionConnections = (await getIncomingConnections(this.profile.id)).data?.data.connections
-        const myConnectionIncomingRatings = (await getIncomingRatings(this.profile.id))
-        const finalUsers = myConnectionConnections.reduce((a, c) => {
+        const profileIncomingConnections = (await getIncomingConnections(this.profile.id)).data?.data.connections
+        const profileIncomingRatings = (await getIncomingRatings(this.profile.id))
+        const finalUsers = profileIncomingConnections.reduce((a, c) => {
           const connectionId = c.id
           const conn = this.connections.find(cn => connectionId === cn.id)
           if (!conn) return a
           const ratingData = ratedUsers.find(
             user => user.toBrightId === connectionId
           )
-          const incomingRatingDataToConnection = myConnectionIncomingRatings.find(
+          const incomingRatingDataToConnection = profileIncomingRatings.find(
             en => en.fromBrightId === connectionId
           )
           return a.concat({
