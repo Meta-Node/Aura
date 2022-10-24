@@ -32,7 +32,7 @@
         </lazy-loading-items>
         <span v-else
               class="users-not-found">To give your connections energy, first visit <nuxt-link class="app-energy__link"
-                                                                                              to="/community/">the community page</nuxt-link> and rate them.</span>
+                                                                                              to="/connections/">the connections page</nuxt-link> and rate them.</span>
       </div>
       <!-- <load-more text="Load More..." /> -->
       <div v-if="users.length" class="app-energy__circle-wrapper">
@@ -105,7 +105,7 @@ export default {
           text: 'Energy successfully updated',
           color: TOAST_SUCCESS,
         })
-        // this.$router.push('/community?filter=Unrated')
+        // this.$router.push('/connections?filter=Unrated')
         this.$emit('getTransferedEnergy')
       } catch (error) {
         this.$store.commit('app/setLoading', false)

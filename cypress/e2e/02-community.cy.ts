@@ -126,7 +126,7 @@ describe('Community', () => {
     cy.get('@submitRatingError.all').should('have.length', 0)
     cy.get(`.toast--${TOAST_SUCCESS}`, { timeout: 1 }).should('not.exist')
     cy.get(`.toast--${TOAST_ERROR}`, { timeout: 1 }).should('not.exist')
-    cy.url().should('include', `/community`)
+    cy.url().should('include', `/connections`)
   }
 
   function showsRateValue(connection: Connection, ratings: AuraRating[]) {
@@ -201,7 +201,7 @@ describe('Community', () => {
   }
 
   it('filters and sorts connections', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     assertOrder(connectionsInCommunityFilterAll)
 
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
@@ -214,7 +214,7 @@ describe('Community', () => {
   })
 
   it('sorts connections', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     assertOrder(connectionsInCommunityFilterAll)
 
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
@@ -234,7 +234,7 @@ describe('Community', () => {
   })
 
   it('orders filtered list', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     assertOrder(connectionsInCommunityFilterAll)
 
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
@@ -261,7 +261,7 @@ describe('Community', () => {
   })
 
   it('filters ordered list', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     assertOrder(connectionsInCommunityFilterAll)
 
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
@@ -282,7 +282,7 @@ describe('Community', () => {
   })
 
   it('keeps filters when navigating', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
       connectionsInCommunityJustMetSortedByNameAscending
     )
@@ -302,7 +302,7 @@ describe('Community', () => {
   })
 
   it('keeps filters after reload', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     expect(connectionsInCommunityFilterAll).to.not.deep.equal(
       connectionsInCommunityJustMetSortedByNameAscending
     )
@@ -318,7 +318,7 @@ describe('Community', () => {
   })
 
   it('rates an unrated connection', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).contains(
       unratedConnection.name
     )
@@ -326,7 +326,7 @@ describe('Community', () => {
   })
 
   it('rates a rated connection', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     cy.get(`[data-testid^=user-item-${ratedConnection.id}-name]`).contains(
       ratedConnection.name
     )
@@ -334,7 +334,7 @@ describe('Community', () => {
   })
 
   it('does not send request for an unchanged rate', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     cy.get(
       `[data-testid^=user-item-${ratedConnectionWithoutEnergy.id}-name]`
     ).contains(ratedConnectionWithoutEnergy.name)
@@ -342,7 +342,7 @@ describe('Community', () => {
   })
 
   it('can change a negative rate', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     cy.get(
       `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
     ).contains(ratedConnectionNegative.name)
@@ -367,7 +367,7 @@ describe('Community', () => {
   }
 
   it('logs out the user if the privateKey is invalid', () => {
-    cy.visit(`/community/`)
+    cy.visit(`/connections/`)
     cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).contains(
       unratedConnection.name
     )

@@ -28,7 +28,8 @@
           </ul>
         </lazy-loading-items>
         <span v-else
-              class="users-not-found">To give your connections energy, first visit <nuxt-link to="/community/" class="app-explorer__link">the community page</nuxt-link> and rate them.</span>
+              class="users-not-found">To give your connections energy, first visit <nuxt-link class="app-explorer__link"
+                                                                                              to="/connections/">the connections page</nuxt-link> and rate them.</span>
       </div>
     </div>
   </div>

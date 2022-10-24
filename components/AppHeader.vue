@@ -75,8 +75,8 @@
               </nuxt-link>
             </li>
             <li class="popup-menu__list">
-              <nuxt-link class="menu-text popup-menu__text" to="/community/">
-                Community
+              <nuxt-link class="menu-text popup-menu__text" to="/connections/">
+                Connections
               </nuxt-link>
             </li>
             <li class="popup-menu__list">

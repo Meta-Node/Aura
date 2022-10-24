@@ -140,7 +140,7 @@ export default {
             color: TOAST_SUCCESS,
           })
         }
-        this.$router.push('/community')
+        this.$router.push('/connections')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
         if (!IS_PRODUCTION) {
