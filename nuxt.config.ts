@@ -93,6 +93,11 @@ export default {
     '@nuxtjs/date-fns',
   ],
 
+  middleware: ['redirects'],
+  router: {
+    middleware: 'redirects',
+  },
+
   proxy: {
     '/brightid': {
       target: 'https://recovery.brightid.org',
