@@ -23,7 +23,7 @@ import {
   oldRatings,
 } from '../utils/rating'
 
-describe('Community', () => {
+describe('Connections Page', () => {
   beforeEach(() => {
     cy.on('window:before:load', win => {
       cy.spy(win.console, 'error').as('spyWinConsoleError')
