@@ -118,6 +118,16 @@ export const getAlreadyKnown = (users, value) => {
   return newUsers
 }
 
+export const getAlreadyKnownPlus = users => {
+  return [...users].filter(
+    user => user.level === 'already known' || user.level === 'recovery'
+  )
+}
+
+export const getJustMet = users => {
+  return [...users].filter(user => user.level === 'just met')
+}
+
 export const trim = str => {
   return str.trim().toLowerCase()
 }

@@ -10,7 +10,7 @@
       data-testid="custom-select"
       @click="open = !open"
     >
-      {{ name }}
+      {{ label }}
     </div>
     <div
       :class="{ selectHide: !open }"
@@ -19,12 +19,12 @@
       <div
         v-for="(option, i) of options"
         :key="i"
-        :class="[selected === option && 'custom-select__item--selected']"
-        :data-testid="`custom-select-option-${option.replace(' ' , '')}`"
+        :class="[option.active && 'custom-select__item--selected']"
+        :data-testid="`custom-select-option-${(option.label || option.name).replace(' ' , '')}`"
         class="custom-select__item"
         @click="onSelect(option)"
       >
-        {{ option }}
+        {{ option.label || option.name }}
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ export default {
       type: String,
       default: "",
     },
-    name: {
+    label: {
       type: String,
       required: false,
     },
@@ -73,7 +73,7 @@ export default {
     onSelect(option) {
       this.selected = option
       this.open = false
-      this.$emit('input', option)
+      this.$emit('input', option.name)
     }
   },
 }

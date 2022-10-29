@@ -119,6 +119,7 @@ export default {
         },
         {
           name: 'Exclude Zeros',
+          type: 'filter',
           active: false,
         }
       ],

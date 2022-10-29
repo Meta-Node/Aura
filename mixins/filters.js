@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {
   getAlreadyKnown,
+  getAlreadyKnownPlus,
   getByAmount,
   getByIncomingConnectionLevel,
   getByIncomingRatingToConnection,
@@ -8,6 +9,7 @@ import {
   getByRating,
   getByRatingDate,
   getExcludeZeros,
+  getJustMet,
   getRecentConnection,
   getUnrated,
   onSearch,
@@ -55,27 +57,57 @@ export default {
     onFiltered(name) {
       this.users = this.startUsers
 
+      let filterObj = null
+      for (const filter of this.filters) {
+        if (filter.type === 'select') {
+          for (const nestedFilter of filter.options) {
+            if (nestedFilter.name === name) {
+              filterObj = nestedFilter
+            }
+          }
+        }
+        if (filter.name === name) {
+          filterObj = filter
+        }
+        if (filterObj) break
+      }
+
+      function toggleFilter(filter) {
+        if (filter.type === 'ordering') {
+          if (!filter.active) {
+            filter.active = true
+            filter.reverse = filter.defaultAscending
+          } else {
+            filter.reverse = !filter.reverse
+          }
+        } else {
+          filter.active = !filter.active
+        }
+      }
+
+      function deactivateFilter(filter) {
+        filter.active = false
+        if (filter.type === 'ordering') {
+          filter.reverse = filter.defaultAscending
+        }
+      }
+
       if (name) {
-        const filterType = this.filters.find(
-          filter => filter.name === name
-        )?.type
+        const filterType = filterObj?.type
         this.filters = this.filters.map(filter => {
-          if (filter.name === name) {
-            if (filter.type === 'ordering') {
-              if (!filter.active) {
-                filter.active = true
-                filter.reverse = filter.defaultAscending
-              } else {
-                filter.reverse = !filter.reverse
+          if (filter.type === 'select') {
+            filter.options = filter.options.map(nestedFilter => {
+              if (nestedFilter.name === name) {
+                toggleFilter(nestedFilter)
+              } else if (nestedFilter.type === filterType) {
+                deactivateFilter(nestedFilter)
               }
-            } else {
-              filter.active = !filter.active
-            }
+              return nestedFilter
+            })
+          } else if (filter.name === name) {
+            toggleFilter(filter)
           } else if (filter.type === filterType) {
-            filter.active = false
-            if (filter.type === 'ordering') {
-              filter.reverse = filter.defaultAscending
-            }
+            deactivateFilter(filter)
           }
           return filter
         })
@@ -84,9 +116,22 @@ export default {
         }
       }
 
-      const activeFilter = this.filters.find(
-        filter => filter.type !== 'ordering' && filter.active
-      )
+      let activeFilter = null
+
+      for (const filter of this.filters) {
+        if (filter.type === 'select') {
+          for (const nestedFilter of filter.options) {
+            if (nestedFilter.type !== 'ordering' && nestedFilter.active) {
+              activeFilter = nestedFilter
+            }
+          }
+        }
+        if (filter.type !== 'ordering' && filter.active) {
+          activeFilter = filter
+        }
+        if (activeFilter) break
+      }
+
       const filterName = activeFilter?.name || 'All'
 
       const queries = this.$route.query
@@ -169,6 +214,12 @@ export default {
     },
     getAlreadyKnown(users, value) {
       return getAlreadyKnown(users, value)
+    },
+    getAlreadyKnownPlus(users, value) {
+      return getAlreadyKnownPlus(users, value)
+    },
+    getJustMet(users, value) {
+      return getJustMet(users, value)
     },
     getExcludeZeros(users, value) {
       return getExcludeZeros(users, value)

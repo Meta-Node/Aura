@@ -11,40 +11,13 @@
       <div v-else class="community__users">
         <h3 class="community__humans-title">Your Connections</h3>
         <div class="filter switch-wrapper">
-          <filter-button
-            :active="nameFilter.active"
-            :is-icon="true"
-            :reverse="nameFilter.isReversed"
-            name="Name"
-            @clicked="onFiltered('Name')"
-          />
-          <filter-button
-            :active="recentFilter.active"
-            :is-icon="true"
-            :reverse="recentFilter.isReversed"
-            name="Recent"
-            @clicked="onFiltered('Recent')"
-          />
-          <filter-button
-            :active="ratingFilter.active"
-            :is-icon="true"
-            :reverse="ratingFilter.isReversed"
-            name="Rating"
-            @clicked="onFiltered('Rating')"
-          />
-          <filter-button
-            :active="unratedFilter.active"
-            :is-icon="false"
-            :ordering="false"
-            name="Unrated"
-            @clicked="onFiltered('Unrated')"
-          />
-          <custom-select
-            v-model="connectionTypeFilter"
-            :options="['All', 'Just met', 'Aready known+']"
-            default="All"
-            name="Connection Type"
-          ></custom-select>
+          <app-filter :filters="filters" @filtered="onFiltered"/>
+          <!--          <custom-select-->
+          <!--            v-model="connectionTypeFilter"-->
+          <!--            :options="['All', 'Just met', 'Aready known+']"-->
+          <!--            default="All"-->
+          <!--            name="Connection Type"-->
+          <!--          ></custom-select>-->
         </div>
         <lazy-loading-items
           v-if="users.length"
@@ -68,71 +41,74 @@
 </template>
 
 <script>
-import CustomSelect from '../components/CustomSelect.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 import loadItems from '~/mixins/loadItems'
 import AppSearch from '~/components/AppSearch.vue'
 
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
-import FilterButton from '~/components/filters/FilterButton.vue'
 import UserItemInfo from '~/components/users/UserItemInfo'
+import AppFilter from "~/components/filters/AppFilter";
 
-function tryParse(key) {
-  if (!process.client) return null
-  const str = localStorage.getItem(key)
-  if (!str) return null
-  try {
-    return JSON.parse(str)
-  } catch (_e) {
-    return null
-  }
-}
+const filterKey = 'connectionsPageFilters'
 
 export default {
   components: {
     AppSearch,
     LazyLoadingItems,
     UserItemInfo,
-    CustomSelect,
-    FilterButton,
+    AppFilter,
   },
   mixins: [transition, users, loadItems],
   data() {
     return {
-      connectionTypeFilterData:
-        (process.client && localStorage.getItem('connectionTypeFilter')) ||
-        'All',
-      nameFilterData: {
-        ...(tryParse('nameFilter') || {
+      filterKey,
+      filters: [
+        {
+          name: 'Name',
+          type: 'ordering',
+          defaultAscending: true,
           active: false,
-          isReversed: true,
-        }),
-        defaultAscending: true,
-        ordering: true,
-      },
-      recentFilterData: {
-        ...(tryParse('recentFilter') || {
+          reverse: true,
+        },
+        {
+          name: 'RecentConnection',
+          label: 'Recent',
+          type: 'ordering',
+          defaultAscending: false,
           active: false,
-          isReversed: false,
-        }),
-        defaultAscending: false,
-        ordering: true,
-      },
-      ratingFilterData: {
-        ...(tryParse('ratingFilter') || {
+          reverse: false,
+        },
+        {
+          name: 'Unrated',
+          type: 'filter',
           active: false,
-          isReversed: false,
-        }),
-        defaultAscending: false,
-        ordering: true,
-      },
-      unratedFilterData: {
-        ...(tryParse('unratedFilter') || {
-          active: false,
-        }),
-        ordering: false,
-      },
+        },
+        {
+          label: "Connection Type",
+          type: "select",
+          options: [
+            {
+              name: 'All',
+              type: 'filter',
+            },
+            {
+              name: 'Just Met',
+              label: 'Just met',
+              type: 'filter',
+            },
+            {
+              name: 'AlreadyKnownPlus',
+              label: "Already known+",
+              type: 'filter',
+            }
+          ]
+        }
+      ]
+      // TODO: enable this
+      // connectionTypeFilterData:
+      //   (process.client && localStorage.getItem('connectionTypeFilter')) ||
+      //   'All',
     }
   },
   head() {
@@ -140,290 +116,10 @@ export default {
       title: `Aura | Connections`,
     }
   },
-  computed: {
-    finalUsers() {
-      return this.getUnrated(this.users)
-    },
-    connectionTypeFilter: {
-      get() {
-        return this.connectionTypeFilterData
-      },
-      set(value) {
-        if (process.client) localStorage.setItem('connectionTypeFilter', value)
-        this.connectionTypeFilterData = value
-      },
-    },
-    nameFilter: {
-      get() {
-        return this.nameFilterData
-      },
-      set(value) {
-        if (process.client)
-          localStorage.setItem('nameFilter', JSON.stringify(value))
-        this.nameFilterData = value
-      },
-    },
-    recentFilter: {
-      get() {
-        return this.recentFilterData
-      },
-      set(value) {
-        if (process.client)
-          localStorage.setItem('recentFilter', JSON.stringify(value))
-        this.recentFilterData = value
-      },
-    },
-    ratingFilter: {
-      get() {
-        return this.ratingFilterData
-      },
-      set(value) {
-        if (process.client)
-          localStorage.setItem('ratingFilter', JSON.stringify(value))
-        this.ratingFilterData = value
-      },
-    },
-    unratedFilter: {
-      get() {
-        return this.unratedFilterData
-      },
-      set(value) {
-        if (process.client)
-          localStorage.setItem('unratedFilter', JSON.stringify(value))
-        this.unratedFilterData = value
-      },
-    },
-  },
 
-  watch: {
-    connectionTypeFilter(value) {
-      this.onFiltered('ConnectionType', value)
-    },
-  },
-  mounted() {
-    this.onFiltered('ConnectionType', this.connectionTypeFilter)
-  },
+  // mounted() {
+  //   this.onFiltered('ConnectionType', this.connectionTypeFilter)
+  // },
 
-  methods: {
-    onFiltered(name, value) {
-      this.$refs.search?.resetSearch()
-
-      if (name === 'All') {
-        this.users = this.startUsers
-      }
-
-      if (name === 'Name') {
-        this.onNameClick()
-      }
-
-      if (name === 'Recent') {
-        this.onRecentClick()
-      }
-
-      if (name === 'Rating') {
-        this.onRatingClick()
-      }
-
-      if (name === 'Unrated') {
-        this.onUnratedClick()
-      }
-
-      if (name === 'ConnectionType') {
-        this.onConnectionTypeChange(value)
-      }
-
-      // const queries = this.$route.query
-      //
-      // this.$router.push({query: {...queries, filter: name}})
-
-      this.filteredUsers = this.users
-    },
-    onNameClick() {
-      this.ratingFilter = {active: false, isReversed: false}
-      this.recentFilter = {active: false, isReversed: false}
-
-      if (this.nameFilter.active) {
-        this.nameFilter = {
-          ...this.nameFilter,
-          isReversed: !this.nameFilter.isReversed,
-        }
-      } else {
-        this.nameFilter = {
-          active: true,
-          isReversed: true,
-        }
-      }
-
-      if (this.unratedFilter.active) {
-        this.users = this.getAlreadyKnown(
-          this.getUnrated(
-            this.getName(this.startUsers, !this.nameFilter.isReversed)
-          ),
-          this.connectionTypeFilter
-        )
-      } else {
-        this.users = this.getAlreadyKnown(
-          this.getName(this.startUsers, !this.nameFilter.isReversed),
-          this.connectionTypeFilter
-        )
-      }
-    },
-    onRecentClick() {
-      this.ratingFilter = {active: false, isReversed: false}
-      this.nameFilter = {active: false, isReversed: false}
-
-      if (this.recentFilter.active) {
-        this.recentFilter = {
-          ...this.recentFilter,
-          isReversed: !this.recentFilter.isReversed,
-        }
-      } else {
-        this.recentFilter = {
-          active: true,
-          isReversed: false,
-        }
-      }
-
-      if (this.unratedFilter.active) {
-        this.users = this.getAlreadyKnown(
-          this.getUnrated(
-            this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed)
-          ),
-          this.connectionTypeFilter
-        )
-      } else {
-        this.users = this.getAlreadyKnown(
-          this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed),
-          this.connectionTypeFilter
-        )
-      }
-    },
-    onRatingClick() {
-      this.nameFilter = {active: false, isReversed: true}
-      this.recentFilter = {active: false, isReversed: false}
-      this.unratedFilter = {
-        ...this.unratedFilter,
-        active: false,
-      }
-
-      if (this.ratingFilter.active) {
-        this.ratingFilter = {
-          ...this.ratingFilter,
-          isReversed: !this.ratingFilter.isReversed,
-        }
-      } else {
-        this.ratingFilter = {
-          active: true,
-          isReversed: false,
-        }
-      }
-      this.users = this.getAlreadyKnown(
-        this.getRating(this.startUsers, !this.ratingFilter.isReversed),
-        this.connectionTypeFilter
-      )
-    },
-    onUnratedClick() {
-      this.unratedFilter = {
-        ...this.unratedFilter,
-        active: !this.unratedFilter.active,
-      }
-      this.ratingFilter = {active: false, isReversed: false}
-
-      if (this.unratedFilter.active) {
-        if (this.nameFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getUnrated(
-              this.getName(this.startUsers, !this.nameFilter.isReversed)
-            ),
-            this.connectionTypeFilter
-          )
-          return
-        }
-        if (this.recentFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getUnrated(
-              this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed)
-            ),
-            this.connectionTypeFilter
-          )
-          return
-        }
-
-        this.users = this.getAlreadyKnown(
-          this.getUnrated(this.startUsers),
-          this.connectionTypeFilter
-        )
-      } else {
-        this.users = this.getAlreadyKnown(
-          this.startUsers,
-          this.connectionTypeFilter
-        )
-        this.ratingFilter = {active: false, isReversed: false}
-        this.nameFilter = {active: false, isReversed: true}
-        this.recentFilter = {active: false, isReversed: true}
-      }
-    },
-    onConnectionTypeChange(value) {
-      if (this.unratedFilter.active) {
-        if (this.nameFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getUnrated(
-              this.getName(this.startUsers, !this.nameFilter.isReversed)
-            ),
-            value
-          )
-          return
-        }
-        if (this.recentFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getRecentConnection(
-              this.getRating(this.startUsers, !this.recentFilter.isReversed)
-            ),
-            value
-          )
-          return
-        }
-        if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getUnrated(
-              this.getRating(this.startUsers, !this.ratingFilter.isReversed)
-            ),
-            value
-          )
-          return
-        }
-        this.users = this.getAlreadyKnown(
-          this.getUnrated(this.startUsers),
-          value
-        )
-      } else {
-        if (this.nameFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getName(this.startUsers, !this.nameFilter.isReversed),
-            value
-          )
-          return
-        }
-        if (this.recentFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getRecentConnection(this.startUsers, !this.recentFilter.isReversed),
-            value
-          )
-          return
-        }
-        if (this.ratingFilter.active) {
-          this.users = this.getAlreadyKnown(
-            this.getRating(this.startUsers, !this.ratingFilter.isReversed),
-            value
-          )
-          return
-        }
-        this.users = this.getAlreadyKnown(this.startUsers, value)
-        this.ratingFilter = {active: false, isReversed: false}
-        this.nameFilter = {active: false, isReversed: true}
-        this.recentFilter = {active: false, isReversed: true}
-      }
-    },
-  },
 }
 </script>
