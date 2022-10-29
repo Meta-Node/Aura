@@ -137,7 +137,7 @@ export default {
   },
   head() {
     return {
-      title: `Aura | Community`,
+      title: `Aura | Connections`,
     }
   },
   computed: {

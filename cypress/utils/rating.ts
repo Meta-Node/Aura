@@ -96,28 +96,32 @@ export const AURA_RATINGS: {
   ratings: oldRatings,
 }
 
-export const connectionsInCommunityFilterAll = [...BRIGHT_ID_BACKUP.connections]
+export const connectionsInConnectionsPageFilterAll = [
+  ...BRIGHT_ID_BACKUP.connections,
+]
 
-export const connectionsInCommunityFilterAllSortedByNameAscending = [
-  ...connectionsInCommunityFilterAll,
+export const connectionsInConnectionsPageFilterAllSortedByNameAscending = [
+  ...connectionsInConnectionsPageFilterAll,
 ].sort((a, b) => a.name.localeCompare(b.name))
 
-export const connectionsInCommunityFilterAllSortedByNameDescending = [
-  ...connectionsInCommunityFilterAllSortedByNameAscending,
+export const connectionsInConnectionsPageFilterAllSortedByNameDescending = [
+  ...connectionsInConnectionsPageFilterAllSortedByNameAscending,
 ].reverse()
 
-export const connectionsInCommunityAlreadyKnownPlus =
-  connectionsInCommunityFilterAll.filter(
+export const connectionsInConnectionsPageAlreadyKnownPlus =
+  connectionsInConnectionsPageFilterAll.filter(
     user => user.level === 'already known' || user.level === 'recovery'
   )
 
-export const connectionsInCommunityJustMet =
-  connectionsInCommunityFilterAll.filter(user => user.level === 'just met')
+export const connectionsInConnectionsPageJustMet =
+  connectionsInConnectionsPageFilterAll.filter(
+    user => user.level === 'just met'
+  )
 
-export const connectionsInCommunityJustMetSortedByNameAscending = [
-  ...connectionsInCommunityJustMet,
+export const connectionsInConnectionsPageJustMetSortedByNameAscending = [
+  ...connectionsInConnectionsPageJustMet,
 ].sort((a, b) => a.name.localeCompare(b.name))
 
-export const connectionsInCommunityJustMetSortedByNameDescending = [
-  ...connectionsInCommunityJustMetSortedByNameAscending,
+export const connectionsInConnectionsPageJustMetSortedByNameDescending = [
+  ...connectionsInConnectionsPageJustMetSortedByNameAscending,
 ].reverse()

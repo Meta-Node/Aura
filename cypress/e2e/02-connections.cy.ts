@@ -12,12 +12,12 @@ import { getStepName, valueToStep } from '../../utils/rating'
 import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 import { getConnectionResponse } from '../utils/energy'
 import {
-  connectionsInCommunityFilterAll,
-  connectionsInCommunityFilterAllSortedByNameAscending,
-  connectionsInCommunityFilterAllSortedByNameDescending,
-  connectionsInCommunityJustMet,
-  connectionsInCommunityJustMetSortedByNameAscending,
-  connectionsInCommunityJustMetSortedByNameDescending,
+  connectionsInConnectionsPageFilterAll,
+  connectionsInConnectionsPageFilterAllSortedByNameAscending,
+  connectionsInConnectionsPageFilterAllSortedByNameDescending,
+  connectionsInConnectionsPageJustMet,
+  connectionsInConnectionsPageJustMetSortedByNameAscending,
+  connectionsInConnectionsPageJustMetSortedByNameDescending,
   getRating,
   newRatings,
   oldRatings,
@@ -202,119 +202,121 @@ describe('Connections Page', () => {
 
   it('filters and sorts connections', () => {
     cy.visit(`/connections/`)
-    assertOrder(connectionsInCommunityFilterAll)
+    assertOrder(connectionsInConnectionsPageFilterAll)
 
-    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityJustMet
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMet
     )
 
     cy.get('[data-testid=custom-select]').click()
     cy.get('[data-testid=custom-select-option-Justmet]').click()
-    assertOrder(connectionsInCommunityJustMet)
+    assertOrder(connectionsInConnectionsPageJustMet)
   })
 
   it('sorts connections', () => {
     cy.visit(`/connections/`)
-    assertOrder(connectionsInCommunityFilterAll)
+    assertOrder(connectionsInConnectionsPageFilterAll)
 
-    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityFilterAllSortedByNameAscending
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageFilterAllSortedByNameAscending
     )
-    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityFilterAllSortedByNameDescending
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageFilterAllSortedByNameDescending
     )
 
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityFilterAllSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageFilterAllSortedByNameAscending)
 
     cy.get('[data-testid=filter-Name-ascending').click()
-    assertOrder(connectionsInCommunityFilterAllSortedByNameDescending)
+    assertOrder(connectionsInConnectionsPageFilterAllSortedByNameDescending)
 
     cy.get('[data-testid=filter-Name-descending').should('exist')
   })
 
   it('orders filtered list', () => {
     cy.visit(`/connections/`)
-    assertOrder(connectionsInCommunityFilterAll)
+    assertOrder(connectionsInConnectionsPageFilterAll)
 
-    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityJustMet
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMet
     )
-    expect(connectionsInCommunityJustMet).to.not.deep.equal(
-      connectionsInCommunityJustMetSortedByNameAscending
+    expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByNameAscending
     )
-    expect(connectionsInCommunityJustMet).to.not.deep.equal(
-      connectionsInCommunityJustMetSortedByNameDescending
+    expect(connectionsInConnectionsPageJustMet).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByNameDescending
     )
 
     cy.get('[data-testid=custom-select]').click()
     cy.get('[data-testid=custom-select-option-Justmet]').click()
-    assertOrder(connectionsInCommunityJustMet)
+    assertOrder(connectionsInConnectionsPageJustMet)
 
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending)
 
     cy.get('[data-testid=filter-Name-ascending').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameDescending)
+    assertOrder(connectionsInConnectionsPageJustMetSortedByNameDescending)
 
     cy.get('[data-testid=filter-Name-descending').should('exist')
   })
 
   it('filters ordered list', () => {
     cy.visit(`/connections/`)
-    assertOrder(connectionsInCommunityFilterAll)
+    assertOrder(connectionsInConnectionsPageFilterAll)
 
-    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityFilterAllSortedByNameAscending
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageFilterAllSortedByNameAscending
     )
     expect(
-      connectionsInCommunityFilterAllSortedByNameAscending
-    ).to.not.deep.equal(connectionsInCommunityJustMetSortedByNameAscending)
+      connectionsInConnectionsPageFilterAllSortedByNameAscending
+    ).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByNameAscending
+    )
 
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityFilterAllSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageFilterAllSortedByNameAscending)
 
     cy.get('[data-testid=custom-select]').click()
     cy.get('[data-testid=custom-select-option-Justmet]').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending)
 
     cy.get('[data-testid=filter-Name-ascending').should('exist')
   })
 
   it('keeps filters when navigating', () => {
     cy.visit(`/connections/`)
-    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityJustMetSortedByNameAscending
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByNameAscending
     )
 
-    assertOrder(connectionsInCommunityFilterAll)
+    assertOrder(connectionsInConnectionsPageFilterAll)
     cy.get('[data-testid=custom-select]').click()
     cy.get('[data-testid=custom-select-option-Justmet]').click()
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending)
 
     cy.get(`[data-testid^=user-item-${justMet2.id}-name]`).click()
     cy.go(-1)
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(500)
-    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending)
   })
 
   it('keeps filters after reload', () => {
     cy.visit(`/connections/`)
-    expect(connectionsInCommunityFilterAll).to.not.deep.equal(
-      connectionsInCommunityJustMetSortedByNameAscending
+    expect(connectionsInConnectionsPageFilterAll).to.not.deep.equal(
+      connectionsInConnectionsPageJustMetSortedByNameAscending
     )
 
-    assertOrder(connectionsInCommunityFilterAll)
+    assertOrder(connectionsInConnectionsPageFilterAll)
     cy.get('[data-testid=custom-select]').click()
     cy.get('[data-testid=custom-select-option-Justmet]').click()
     cy.get('[data-testid=filter-Name-inactive').click()
-    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending)
 
     cy.reload()
-    assertOrder(connectionsInCommunityJustMetSortedByNameAscending)
+    assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending)
   })
 
   it('rates an unrated connection', () => {
