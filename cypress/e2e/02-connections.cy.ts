@@ -198,6 +198,9 @@ describe('Connections Page', () => {
     orderedConnections.forEach((r, i) => {
       checkConnectionOrderInViewTab(r.id, i)
     })
+    cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
+      'not.exist'
+    )
   }
 
   it('filters and sorts connections', () => {

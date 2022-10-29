@@ -38,31 +38,36 @@ export default {
     }
   },
   created() {
-    const finalFilters = this.filters
     if (this.filterKey) {
       const filters = tryParse(this.filterKey)
       if (filters) {
         for (const filter of filters) {
-          const existingFilter = this.filters.find(f => f.name === filter.name)
-          if (existingFilter) {
-            Vue.set(existingFilter, 'active', filter.active)
-            Vue.set(existingFilter, 'reverse', filter.reverse)
+          if (filter.type === 'select') {
+            for (const nestedFilter of filter.options) {
+              this.setFilterFromLocalStorageData(nestedFilter)
+            }
           }
+          this.setFilterFromLocalStorageData(filter)
         }
       }
     }
-    this.filters = finalFilters
   },
   methods: {
-    onFiltered(name) {
-      this.users = this.startUsers
-
+    setFilterFromLocalStorageData(filterData) {
+      const existingFilter = this.findFilterByName(filterData.name)
+      if (existingFilter) {
+        Vue.set(existingFilter, 'active', filterData.active)
+        Vue.set(existingFilter, 'reverse', filterData.reverse)
+      }
+    },
+    findFilterByName(name) {
       let filterObj = null
       for (const filter of this.filters) {
         if (filter.type === 'select') {
           for (const nestedFilter of filter.options) {
             if (nestedFilter.name === name) {
               filterObj = nestedFilter
+              break
             }
           }
         }
@@ -71,6 +76,12 @@ export default {
         }
         if (filterObj) break
       }
+      return filterObj
+    },
+    onFiltered(name) {
+      this.users = this.startUsers
+
+      const filterObj = this.findFilterByName(name)
 
       function toggleFilter(filter) {
         if (filter.type === 'ordering') {
@@ -116,21 +127,7 @@ export default {
         }
       }
 
-      let activeFilter = null
-
-      for (const filter of this.filters) {
-        if (filter.type === 'select') {
-          for (const nestedFilter of filter.options) {
-            if (nestedFilter.type !== 'ordering' && nestedFilter.active) {
-              activeFilter = nestedFilter
-            }
-          }
-        }
-        if (filter.type !== 'ordering' && filter.active) {
-          activeFilter = filter
-        }
-        if (activeFilter) break
-      }
+      const activeFilter = this.getActiveFilter()
 
       const filterName = activeFilter?.name || 'All'
 
@@ -159,7 +156,32 @@ export default {
       // if there is activeOrder or activeFilter, clear the search bar
       this.onSearchValue(activeOrder || activeFilter ? '' : this.searchValue)
     },
-
+    setInitialFilter() {
+      this.users = this.startUsers
+      const activeFilter = this.getActiveFilter()
+      if (activeFilter) {
+        this.onFiltered()
+      } else {
+        this.onFiltered(this.$route.query?.filter || 'All')
+      }
+    },
+    getActiveFilter() {
+      let activeFilter = null
+      for (const filter of this.filters) {
+        if (filter.type === 'select') {
+          for (const nestedFilter of filter.options) {
+            if (nestedFilter.type !== 'ordering' && nestedFilter.active) {
+              activeFilter = nestedFilter
+            }
+          }
+        }
+        if (filter.type !== 'ordering' && filter.active) {
+          activeFilter = filter
+        }
+        if (activeFilter) break
+      }
+      return activeFilter
+    },
     onSearchValue(value) {
       this.searchValue = value
       const trimmedValue = trim(value)
@@ -181,6 +203,9 @@ export default {
       this.filteredUsers = this.startUsers
 
       return this.filteredUsers
+    },
+    getAllConnections() {
+      return this.getAll()
     },
     getUnrated(users) {
       return getUnrated(users)

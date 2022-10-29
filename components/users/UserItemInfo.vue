@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/profile/${user.id}`" class="user-item__username">
+  <nuxt-link :data-testid="`user-item-${index}`" :to="`/profile/${user.id}`" class="user-item__username">
     <nuxt-img
       :alt="user.name"
       :src="profileAvatar"

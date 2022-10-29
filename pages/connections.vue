@@ -89,7 +89,8 @@ export default {
           type: "select",
           options: [
             {
-              name: 'All',
+              name: 'AllConnections',
+              label: 'All',
               type: 'filter',
             },
             {

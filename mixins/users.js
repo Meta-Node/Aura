@@ -30,12 +30,7 @@ export default {
         this.isLoading = true
         await this.loadUserProfile()
         this.startUsers = this.connections
-        this.users = this.startUsers
-        if (this.connectionTypeFilter) {
-          this.onFiltered('ConnectionType', this.connectionTypeFilter)
-        } else {
-          this.onFiltered(this.$route.query?.filter || 'All')
-        }
+        this.setInitialFilter()
       } catch (error) {
         console.log(error)
       } finally {
