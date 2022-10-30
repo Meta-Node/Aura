@@ -113,10 +113,5 @@ export default {
       title: `Aura | Connections`,
     }
   },
-
-  // mounted() {
-  //   this.onFiltered('ConnectionType', this.connectionTypeFilter)
-  // },
-
 }
 </script>
