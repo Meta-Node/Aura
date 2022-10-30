@@ -106,10 +106,6 @@ export default {
           ]
         }
       ]
-      // TODO: enable this
-      // connectionTypeFilterData:
-      //   (process.client && localStorage.getItem('connectionTypeFilter')) ||
-      //   'All',
     }
   },
   head() {
