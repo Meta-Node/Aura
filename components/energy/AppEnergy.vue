@@ -35,24 +35,9 @@
                                                                                               to="/connections/">the connections page</nuxt-link> and rate them.</span>
       </div>
       <!-- <load-more text="Load More..." /> -->
-      <div v-if="users.length" class="app-energy__circle-wrapper">
-        <button class="app-energy__circle-button" data-testid="update-energy" @click="updateEnergy">
-          <span class="app-energy__check-mark"
-          ><svg
-            fill="none"
-            height="10"
-            viewBox="0 0 14 10"
-            width="14"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-              <path
-                d="M1.66699 5L5.66699 9L12.3337 1"
-                stroke="#EEEEEE"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              /></svg
-          ></span>
+      <div v-if="changedEnergies.length && users.length" class="app-energy__save">
+        <button class="app-energy__save__button" data-testid="update-energy" @click="updateEnergy">
+          save changes
         </button>
       </div>
     </div>
@@ -69,6 +54,10 @@ export default {
   components: {UserV3, AppFilter},
   mixins: [loadItems],
   props: {
+    changedEnergies: {
+      type: Array,
+      default: () => []
+    },
     users: {
       type: Array,
       default: () => [],

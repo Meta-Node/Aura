@@ -25,6 +25,7 @@ export type ConnectionsState = {
 }
 export type EnergyState = {
   transferedEnergy: EnergyAllocationList
+  prevTransferedEnergy: EnergyAllocationList
   inboundEnergy: InboundEnergyAllocationList
   availableEnergy: number
 }

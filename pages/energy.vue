@@ -50,6 +50,7 @@
               />
               <app-energy
                 v-else
+                :changed-energies="changedEnergies"
                 :filters="filters"
                 :users="users"
                 @filtered="onFiltered"
@@ -84,6 +85,19 @@ export default {
     AppSpinner,
   },
   mixins: [transition, users],
+
+  beforeRouteLeave(_to, _from, next) {
+    if (this.changedEnergies.length) {
+      const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+      if (answer) {
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
+  },
   data() {
     return {
       isView: false,
@@ -125,7 +139,6 @@ export default {
       ],
     }
   },
-
   head() {
     return {
       title: `Aura | Energy`,
@@ -135,6 +148,18 @@ export default {
   computed: {
     transferedEnergy() {
       return this.$store.state.energy.transferedEnergy
+    },
+    changedEnergies() {
+      const prev = this.$store.state.energy.prevTransferedEnergy
+      if (!prev) return []
+      const current = this.$store.state.energy.transferedEnergy
+      return prev.filter(ep => {
+        const cur = current.find(ec => ec.toBrightId === ep.toBrightId)
+        return !cur || cur.amount !== ep.amount
+      }).concat(current.filter(ec => {
+        const p = prev.find(ep => ep.toBrightId === ec.toBrightId)
+        return !p || p.amount !== ec.amount
+      }))
     },
     availableEnergy() {
       return this.$store.state.energy.availableEnergy || 0
@@ -149,6 +174,12 @@ export default {
     },
   },
   mounted() {
+    const vinst = this
+    window.onbeforeunload = function () {
+      if (vinst.changedEnergies.length) {
+        return "Are you sure you want to navigate away?";
+      }
+    }
     this.getTransferedEnergy()
 
     const routeQuery = this.$route.query?.tab

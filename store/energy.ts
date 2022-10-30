@@ -9,6 +9,7 @@ import { EnergyState, RootState } from '~/types/store'
 
 export const state = (): EnergyState => ({
   transferedEnergy: [],
+  prevTransferedEnergy: [],
   inboundEnergy: [],
   availableEnergy: 100,
 })
@@ -23,6 +24,9 @@ export const getters: GetterTree<EnergyState, RootState> = {
 export const mutations: MutationTree<EnergyState> = {
   setAvailableEnergy(state, value) {
     state.availableEnergy = value
+  },
+  setPrevTransferedEnergy(state, value) {
+    state.prevTransferedEnergy = value
   },
   setTransferedEnergy(state, value) {
     state.transferedEnergy = value
@@ -67,6 +71,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
 
       commit('setAvailableEnergy', availableEnergy)
       commit('setTransferedEnergy', allUsers)
+      commit('setPrevTransferedEnergy', allUsers)
     } catch (error) {
       console.log(error)
       throw error
