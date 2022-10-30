@@ -75,6 +75,8 @@ import users from '~/mixins/users'
 import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 
+const unsavedChangesConfirmation = () => window.confirm('You have unsaved changes.\nClick Cancel to go back to save\nClick OK to leave without saving');
+
 const filterKey = 'energyFilters'
 export default {
   components: {
@@ -88,7 +90,7 @@ export default {
 
   beforeRouteLeave(_to, _from, next) {
     if (this.changedEnergies.length) {
-      const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+      const answer = unsavedChangesConfirmation()
       if (answer) {
         next()
       } else {
@@ -177,7 +179,7 @@ export default {
     const vinst = this
     window.onbeforeunload = function () {
       if (vinst.changedEnergies.length) {
-        return "Are you sure you want to navigate away?";
+        return "You have unsaved changes.\nDo you want to leave without saving?";
       }
     }
     this.getTransferedEnergy()
@@ -247,7 +249,14 @@ export default {
         })
     },
     onExplorerClick() {
-      this.isView = true
+      if (this.changedEnergies.length) {
+        const answer = unsavedChangesConfirmation()
+        if (answer) {
+          this.isView = true
+        }
+      } else {
+        this.isView = true
+      }
     },
     onEnergyClick() {
       this.isView = false
