@@ -148,14 +148,6 @@ export default {
         : this.updateRouterQuery(ENERGY_TABS.SET)
     },
   },
-
-  beforeDestroy() {
-    const queries = this.$route.query
-    if (queries.tab) {
-      delete queries.tab
-    }
-    this.$router.push({query: {...queries}})
-  },
   mounted() {
     this.getTransferedEnergy()
 
