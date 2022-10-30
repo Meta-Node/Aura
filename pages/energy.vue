@@ -86,7 +86,7 @@ export default {
   mixins: [transition, users],
   data() {
     return {
-      isView: true,
+      isView: false,
       filterKey,
       filters: [
         {
