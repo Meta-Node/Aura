@@ -68,6 +68,7 @@ import {rateUser} from '~/scripts/api/rate.service'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
 import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
+import {isThereProblemWithEncryption} from "~/utils";
 
 export default {
   components: {
@@ -146,7 +147,7 @@ export default {
         if (!IS_PRODUCTION) {
           this.debugError = JSON.stringify(error.response?.data)
         }
-        if (error.response?.data?.includes('TypeError [ERR_INVALID_ARG_TYPE]') || error.response?.data?.includes('Could not decrypt using publicKey')) {
+        if (isThereProblemWithEncryption(error.response?.data)) {
           this.$store.dispatch('login/logout')
           this.$router.push('/')
           this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
