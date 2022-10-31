@@ -50,6 +50,7 @@
               />
               <app-energy
                 v-else
+                :changed-energies="changedEnergies"
                 :filters="filters"
                 :users="users"
                 @filtered="onFiltered"
@@ -74,6 +75,8 @@ import users from '~/mixins/users'
 import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 
+const unsavedChangesConfirmation = () => window.confirm('You have unsaved changes.\nClick Cancel to go back to save\nClick OK to leave without saving');
+
 const filterKey = 'energyFilters'
 export default {
   components: {
@@ -84,6 +87,19 @@ export default {
     AppSpinner,
   },
   mixins: [transition, users],
+
+  beforeRouteLeave(_to, _from, next) {
+    if (this.changedEnergies.length) {
+      const answer = unsavedChangesConfirmation()
+      if (answer) {
+        next()
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
+  },
   data() {
     return {
       isView: false,
@@ -125,7 +141,6 @@ export default {
       ],
     }
   },
-
   head() {
     return {
       title: `Aura | Energy`,
@@ -135,6 +150,18 @@ export default {
   computed: {
     transferedEnergy() {
       return this.$store.state.energy.transferedEnergy
+    },
+    changedEnergies() {
+      const prev = this.$store.state.energy.prevTransferedEnergy
+      if (!prev) return []
+      const current = this.$store.state.energy.transferedEnergy
+      return prev.filter(ep => {
+        const cur = current.find(ec => ec.toBrightId === ep.toBrightId)
+        return !cur || cur.amount !== ep.amount
+      }).concat(current.filter(ec => {
+        const p = prev.find(ep => ep.toBrightId === ec.toBrightId)
+        return !p || p.amount !== ec.amount
+      }))
     },
     availableEnergy() {
       return this.$store.state.energy.availableEnergy || 0
@@ -149,6 +176,12 @@ export default {
     },
   },
   mounted() {
+    const vinst = this
+    window.onbeforeunload = function () {
+      if (vinst.changedEnergies.length) {
+        return "You have unsaved changes.\nDo you want to leave without saving?";
+      }
+    }
     this.getTransferedEnergy()
 
     const routeQuery = this.$route.query?.tab
@@ -216,7 +249,14 @@ export default {
         })
     },
     onExplorerClick() {
-      this.isView = true
+      if (this.changedEnergies.length) {
+        const answer = unsavedChangesConfirmation()
+        if (answer) {
+          this.isView = true
+        }
+      } else {
+        this.isView = true
+      }
     },
     onEnergyClick() {
       this.isView = false

@@ -104,20 +104,22 @@
 }
 
 
-.app-energy__circle-wrapper {
+.app-energy__save {
   display: flex;
-  justify-content: flex-end;
-}
+  justify-content: center;
 
-.app-energy__circle-button {
-  display: block;
-  position: fixed;
-  bottom: 4%;
-  width: 40px;
-  height: 40px;
-  background-color: var(--grey);
-  border-radius: 50%;
-  box-shadow: 0px -1px 14px 2px rgba(255, 252, 252, 0.5);
+  &__button {
+    font-size: 15px;
+    color: white;
+    display: block;
+    position: fixed;
+    bottom: 4%;
+    height: 40px;
+    padding: 0px 20px;
+    background-color: var(--light-gray);
+    border-radius: 10px;
+    box-shadow: 0px -1px 14px 2px rgba(255, 252, 252, 0.4);
+  }
 }
 
 .app-energy__check-mark {
