@@ -149,7 +149,7 @@ export default {
       try {
         !this.isPublicRouteQuery &&
         (await this.$store.dispatch('connections/getConnectionsData'))
-        await this.$store.dispatch('profile/getProfileData')
+        await this.$store.dispatch('profile/loadProfileData')
         const connections = this.$store.getters['profile/connections']
 
         this.profile = connections.find(con => con.id === this.brightId)
@@ -170,7 +170,7 @@ export default {
     },
     async loadOwnProfile() {
       try {
-        await this.$store.dispatch('profile/getProfileData')
+        await this.$store.dispatch('profile/loadProfileData')
 
         this.profile = this.$store.getters['profile/profileData']
       } catch (error) {

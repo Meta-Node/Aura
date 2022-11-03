@@ -55,7 +55,7 @@ export default {
   methods: {
     async getPersonalActivity() {
       await this.$store.dispatch('connections/getConnectionsData')
-      await this.$store.dispatch('profile/getProfileData')
+      await this.$store.dispatch('profile/loadProfileData')
       const connections = this.$store.getters['profile/connections']
       const profile = this.$store.getters['profile/profileData']
       const brightId = profile?.id
@@ -84,7 +84,7 @@ export default {
     },
     async getGlobalActivity() {
       await this.$store.dispatch('connections/getConnectionsData')
-      await this.$store.dispatch('profile/getProfileData')
+      await this.$store.dispatch('profile/loadProfileData')
       const connections = this.$store.getters['profile/connections']
       const profile = this.$store.getters['profile/profileData']
       const brightId = profile?.id
