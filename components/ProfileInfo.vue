@@ -23,6 +23,7 @@
           <p
             :class="auraVerification ? `aura-verification-color--${auraVerification.toLowerCase()}` : ''"
             class="profile__rating aura-verification-color"
+            data-testid="profile-info-aura-level"
           >
             {{ auraVerification || 'loading' }}
           </p>

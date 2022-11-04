@@ -1,4 +1,5 @@
 import {
+  AURA_LEVEL,
   AURA_PROFILE,
   BRIGHT_ID_BACKUP,
   FAKE_AUTH_KEY,
@@ -82,19 +83,29 @@ describe('Login', () => {
     cy.get(`.toast--${TOAST_ERROR}`)
   })
 
-  it('profile', () => {
-    // @ts-ignore
-    cy.setupProfile()
-    cy.visit('/')
-    cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
+  function showsProfileInfo() {
     BRIGHT_ID_BACKUP.userData.name.split(' ').forEach(s => {
       cy.get(`[data-testid=profile-user-name]`).contains(s)
     })
     cy.get(`[data-testid=profile-user-info]`).contains(
       `${AURA_PROFILE.numOfConnections} Connections`
     )
+  }
+
+  function showsYetToBeRated() {
     cy.get(`[data-testid=user-v1-${unratedConnection.id}-name]`).contains(
       unratedConnection.name
     )
+  }
+
+  it.only('profile', () => {
+    // @ts-ignore
+    cy.setupProfile()
+
+    cy.visit('/')
+    cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
+    showsProfileInfo()
+    showsYetToBeRated()
+    cy.get('[data-testid=profile-info-aura-level]').contains(AURA_LEVEL)
   })
 })

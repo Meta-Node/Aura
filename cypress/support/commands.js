@@ -9,6 +9,7 @@ import {
   FAKE_PUBLIC_KEY,
   LOCAL_FORAGE_DATA,
   PROFILE_PICTURE,
+  verificationsResponse,
 } from '../utils/data'
 import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
 import { AURA_RATINGS } from '../utils/rating'
@@ -97,6 +98,16 @@ Cypress.Commands.add('profileIntercepts', () => {
     },
     {
       body: AURA_CONNECTIONS,
+    }
+  )
+  // node api
+  cy.intercept(
+    {
+      url: `/brightid/v6/users/${FAKE_BRIGHT_ID}/verifications`,
+      method: 'GET',
+    },
+    {
+      body: verificationsResponse,
     }
   )
 })

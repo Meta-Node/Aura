@@ -15,13 +15,13 @@
       </tr>
       <tr>
         <td>energy transfer</td>
-        <td id="energyIn">{{ inboundEnergy.length }}</td>
-        <td id="energyOut">{{ transferedEnergy.length }}</td>
+        <td id="energyIn" data-testid="aura-statistics-energy-in">{{ inboundEnergy.length }}</td>
+        <td id="energyOut" data-testid="aura-statistics-energy-out">{{ transferedEnergy.length }}</td>
       </tr>
       <tr>
         <td>honesty</td>
-        <td id="honestyIn">{{ incomingRatings.length }}</td>
-        <td id="honestyOut">{{ ratedUsers.length }}</td>
+        <td id="honestyIn" data-testid="aura-statistics-honesty-in">{{ incomingRatings.length }}</td>
+        <td id="honestyOut" data-testid="aura-statistics-honesty-out">{{ ratedUsers.length }}</td>
       </tr>
       </tbody>
     </table>
