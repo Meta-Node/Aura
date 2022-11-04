@@ -1,11 +1,13 @@
-import {
-  AURA_GENERAL_PROFILE,
-  FAKE_BRIGHT_ID,
-  unratedConnection,
-} from '../utils/data'
-import { Connection } from '../../types'
+import { AURA_GENERAL_PROFILE, FAKE_BRIGHT_ID } from '../utils/data'
 import { getConnectionResponse } from '../utils/energy'
 import { oldRatings } from '../utils/rating'
+import {
+  connectionIncomingConnections,
+  connectionIncomingConnectionsResponse,
+  connectionIncomingRatingsResponse,
+  connectionToVisit,
+} from '../utils/mutual-connections'
+import { IncomingConnection } from '../../types'
 
 describe('Mutual Connections', () => {
   beforeEach(() => {
@@ -17,17 +19,10 @@ describe('Mutual Connections', () => {
     cy.blockApiRequests()
     // @ts-ignore
     cy.setupProfile()
-  })
 
-  afterEach(() => {
-    cy.get('@spyWinConsoleError').should('have.callCount', 0)
-    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
-  })
-
-  function goToConnectionProfile(connection: Connection) {
     cy.intercept(
       {
-        url: `/v1/profile/${connection.id}`,
+        url: `/v1/profile/${connectionToVisit.id}`,
         method: 'GET',
       },
       {
@@ -36,18 +31,49 @@ describe('Mutual Connections', () => {
     )
     cy.intercept(
       {
-        url: `/v1/connections/${FAKE_BRIGHT_ID}/${connection.id}`,
+        url: `/v1/connections/${FAKE_BRIGHT_ID}/${connectionToVisit.id}`,
         method: 'GET',
       },
       {
-        body: getConnectionResponse(connection, oldRatings),
+        body: getConnectionResponse(connectionToVisit, oldRatings),
       }
     )
-    cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
+    cy.intercept(
+      {
+        url: `/node/v6/users/${connectionToVisit.id}/connections/inbound`,
+        method: 'GET',
+      },
+      {
+        body: connectionIncomingConnectionsResponse,
+      }
+    )
+    cy.intercept(
+      {
+        url: `/v1/ratings/inbound/${connectionToVisit.id}`,
+        method: 'GET',
+      },
+      {
+        body: connectionIncomingRatingsResponse,
+      }
+    )
+  })
+
+  function assertOrder(orderedConnections: IncomingConnection[]) {
+    orderedConnections.forEach((r, i) => {
+      cy.get(`[data-testid=user-item-${r.id}-name-${i}]`).should('exist')
+    })
+    cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
+      'not.exist'
+    )
   }
 
+  afterEach(() => {
+    cy.get('@spyWinConsoleError').should('have.callCount', 0)
+    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
+  })
+
   it('shows mutual connections', () => {
-    cy.visit(`/connections/`)
-    goToConnectionProfile(unratedConnection)
+    cy.visit(`/profile/` + connectionToVisit.id)
+    assertOrder(connectionIncomingConnections)
   })
 })

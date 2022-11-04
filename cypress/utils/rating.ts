@@ -109,13 +109,13 @@ export const newRatings: AuraRating[] = [
     updatedAt: '2021-07-17T20:59:03.036Z',
   },
 ]
-export const auraRatingsResponse: {
+export const userRatingsResponse: {
   ratings: AuraRating[]
 } = {
   ratings: oldRatings,
 }
 
-export const auraIncomingRatingsResponse: {
+export const userIncomingRatingsResponse: {
   ratings: AuraRating[]
 } = {
   ratings: incomingRatings,

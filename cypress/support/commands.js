@@ -13,8 +13,8 @@ import {
 } from '../utils/data'
 import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
 import {
-  auraIncomingRatingsResponse,
-  auraRatingsResponse,
+  userIncomingRatingsResponse,
+  userRatingsResponse,
 } from '../utils/rating'
 import { AURA_ENERGIES, AURA_INBOUND_ENERGIES } from '../utils/energy'
 
@@ -92,7 +92,7 @@ Cypress.Commands.add('profileIntercepts', () => {
       method: 'GET',
     },
     {
-      body: auraRatingsResponse,
+      body: userRatingsResponse,
     }
   )
   cy.intercept(
@@ -101,7 +101,7 @@ Cypress.Commands.add('profileIntercepts', () => {
       method: 'GET',
     },
     {
-      body: auraIncomingRatingsResponse,
+      body: userIncomingRatingsResponse,
     }
   )
   cy.intercept(
