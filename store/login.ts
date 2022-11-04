@@ -1,30 +1,14 @@
 import { ActionTree, MutationTree } from 'vuex'
-import {
-  commitToBackend,
-  importBrightID,
-  loginByExplorerCode,
-  readChannelPromise,
-} from '~/scripts/api/login.service'
-import { BrightIdData, LoginState, RootState } from '~/types/store'
-import { LocalForageBrightIdBackup } from '~/types'
+import { loginByExplorerCode } from '~/scripts/api/login.service'
+import { LoginState, RootState } from '~/types/store'
 
 export const state = (): LoginState => ({
   isAuth: false,
-  brightIdData: {},
-  profileData: {}, // TODO: remove this item
 })
 
 export const mutations: MutationTree<LoginState> = {
-  setBrightIdData(state, value: BrightIdData) {
-    state.brightIdData = value
-  },
-  setProfileData(state, value: any) {
-    if (value.userData) {
-      delete value.userData
-    }
-    state.profileData = value
-    // @ts-ignore
-    this.$localForage.setItem('profileData', value)
+  setIsAuth(state, value) {
+    state.isAuth = value
   },
 }
 
@@ -48,40 +32,6 @@ export const actions: ActionTree<LoginState, RootState> = {
         },
         { root: true }
       )
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-  },
-  async getBrightIdData({ commit }) {
-    try {
-      const data = await importBrightID()
-      commit('setBrightIdData', data)
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-  },
-  async getProfileData({ commit, state }) {
-    try {
-      const res = await readChannelPromise(state.brightIdData, this)
-      commit('setProfileData', res)
-      // TODO: set initial profileData to null to remove this type cast
-      localStorage.setItem(
-        'brightId',
-        (state.profileData as LocalForageBrightIdBackup).profile.id
-      )
-      localStorage.setItem('publicKey', state.brightIdData.signingKey)
-      localStorage.setItem('privateKey', state.brightIdData.privateKey)
-      localStorage.setItem('timestamp', state.brightIdData.timestamp)
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-  },
-  async connectToBackend(_ctx) {
-    try {
-      await commitToBackend()
     } catch (error) {
       console.log(error)
       throw error
