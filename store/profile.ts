@@ -4,7 +4,7 @@ import {
   pullDecryptedUserData,
   pullProfilePhoto,
 } from '~/scripts/api/login.service'
-import { getRatedUsers } from '~/scripts/api/rate.service'
+import { getIncomingRatings, getRatedUsers } from '~/scripts/api/rate.service'
 import { ProfileState, RootState } from '~/types/store'
 import { LocalForageBrightIdBackup } from '~/types'
 
@@ -13,12 +13,14 @@ export const state = (): ProfileState => ({
   profileData: null,
   connections: [],
   ratedUsers: [],
+  incomingRatings: [],
 })
 
 export const getters: GetterTree<ProfileState, RootState> = {
   profileData: state => state.profileData,
   connections: state => state.connections,
   ratedUsers: state => state.ratedUsers,
+  incomingRatings: state => state.incomingRatings,
   fourUnrated: state => {
     let fourUnrated: any = Object.assign([], state.profileData?.fourUnrated)
     fourUnrated = fourUnrated?.map((profile: any) => {
@@ -43,6 +45,9 @@ export const mutations: MutationTree<ProfileState> = {
   },
   setRatedUsers(state, value) {
     state.ratedUsers = value
+  },
+  setIncomingRatings(state, value) {
+    state.incomingRatings = value
   },
   setAndSaveLocalForageBrightIdBackup(state, value: any) {
     if (value.userData) {
@@ -128,5 +133,17 @@ export const actions: ActionTree<ProfileState, RootState> = {
       profileInfo.profile.password,
       this
     )
+  },
+
+  async getIncomingRatings({ commit }) {
+    try {
+      const brightId = localStorage.getItem('brightId')
+      if (!brightId) return
+      const ratings = await getIncomingRatings(brightId)
+      commit('setIncomingRatings', ratings)
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
   },
 }

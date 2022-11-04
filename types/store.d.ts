@@ -2,6 +2,7 @@ import {
   AppToast,
   AuraConnection,
   AuraProfile,
+  AuraRating,
   Connection,
   EnergyAllocationList,
   InboundEnergyAllocationList,
@@ -29,13 +30,15 @@ export type EnergyState = {
   inboundEnergy: InboundEnergyAllocationList
   availableEnergy: number
 }
-// TODO: determine the types
+
 export type ProfileState = {
   localForageBrightIdBackup: LocalForageBrightIdBackup | null
   profileData: (LocalForageBrightIdBackup['profile'] & AuraProfile) | null
   connections: Connection[]
-  ratedUsers: any[]
+  ratedUsers: AuraRating[]
+  incomingRatings: AuraRating[]
 }
+
 export type ToastState = {
   toasts: (AppToast & {
     id: Date

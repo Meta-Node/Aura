@@ -1,0 +1,86 @@
+.aura-statistics-title {
+  @include semi;
+  font-size: 24px;
+  line-height: 130%;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: var(--b-grey);
+  display: flex;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.aura-statistics {
+  text-align: left;
+  width: 100%;
+  color: #212529;
+  margin: 1.5rem 0;
+}
+
+.aura-statistics th,
+.aura-statistics td {
+  min-width: 50px;
+  padding: 0.3rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.aura-statistics thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.aura-statistics tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+.aura-statistics,
+.aura-statistics > th,
+.aura-statistics > td {
+  background-color: #b8b8b8;
+}
+
+.aura-statistics th,
+.aura-statistics td,
+.aura-statistics thead th,
+.aura-statistics tbody + tbody {
+  border-color: #7a7a7a;
+}
+
+.aura-statistics .thead-dark th {
+  color: #fff;
+  background-color: #343a40;
+  border-color: #454d55;
+}
+
+.aura-statistics .thead-light th {
+  color: #495057;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.aura-statistics {
+  color: #fff;
+  background-color: #343a40;
+}
+
+.aura-statistics th,
+.aura-statistics td,
+.aura-statistics thead th {
+  border-color: #454d55;
+}
+
+.aura-statistics .table-bordered {
+  border: 0;
+}
+
+.aura-statistics .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.aura-statistics .table-hover tbody tr:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.075);
+}
