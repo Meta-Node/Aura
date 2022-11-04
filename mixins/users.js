@@ -21,9 +21,19 @@ export default {
     },
   },
   methods: {
-    async loadUserProfile() {
-      // await this.$store.dispatch('connections/getConnectionsData')
-      await this.$store.dispatch('profile/getProfileData')
+    async refreshConnections() {
+      try {
+        this.isLoading = true
+        await this.$store.dispatch('profile/refreshLocalForageBrightIdBackup')
+        await this.getUserData()
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.isLoading = false
+      }
+    },
+    loadUserProfile() {
+      return this.$store.dispatch('profile/loadProfileData')
     },
     async getUserData() {
       try {

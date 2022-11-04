@@ -3,7 +3,6 @@ import {
   commitToBackend,
   importBrightID,
   loginByExplorerCode,
-  pullDecryptedUserData,
   readChannelPromise,
 } from '~/scripts/api/login.service'
 import { BrightIdData, LoginState, RootState } from '~/types/store'
@@ -12,7 +11,7 @@ import { LocalForageBrightIdBackup } from '~/types'
 export const state = (): LoginState => ({
   isAuth: false,
   brightIdData: {},
-  profileData: {},
+  profileData: {}, // TODO: remove this item
 })
 
 export const mutations: MutationTree<LoginState> = {
@@ -30,7 +29,7 @@ export const mutations: MutationTree<LoginState> = {
 }
 
 export const actions: ActionTree<LoginState, RootState> = {
-  async loginByExplorerCode({ commit }, data) {
+  async loginByExplorerCode({ dispatch }, data) {
     try {
       const brightIdData = await loginByExplorerCode(
         data.explorer,
@@ -41,15 +40,14 @@ export const actions: ActionTree<LoginState, RootState> = {
       localStorage.setItem('privateKey', brightIdData.privateKey)
       localStorage.setItem('authKey', brightIdData.authKey)
 
-      const profileData = await pullDecryptedUserData(
-        brightIdData.authKey,
-        brightIdData.password,
-        this
+      await dispatch(
+        'profile/getLocalForageBrightIdBackup',
+        {
+          authKey: brightIdData.authKey,
+          password: brightIdData.password,
+        },
+        { root: true }
       )
-      commit('setProfileData', {
-        ...profileData,
-        profile: { ...profileData.userData, password: brightIdData.password },
-      })
     } catch (error) {
       console.log(error)
       throw error

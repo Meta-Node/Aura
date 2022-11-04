@@ -31,7 +31,8 @@ export type EnergyState = {
 }
 // TODO: determine the types
 export type ProfileState = {
-  profileData: (LocalForageBrightIdBackup & AuraProfile) | null
+  localForageBrightIdBackup: LocalForageBrightIdBackup | null
+  profileData: (LocalForageBrightIdBackup['profile'] & AuraProfile) | null
   connections: Connection[]
   ratedUsers: any[]
 }

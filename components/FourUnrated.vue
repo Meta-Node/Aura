@@ -80,7 +80,7 @@ export default {
   methods: {
     refresh() {
       this.isLoading = true
-      this.$store.dispatch('profile/getProfileData').finally(() => {
+      this.$store.dispatch('profile/loadProfileData').finally(() => {
         this.isLoading = false
       })
     },
