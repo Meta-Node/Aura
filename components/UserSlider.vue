@@ -43,7 +43,6 @@ export default {
     },
     max: {
       type: Number,
-      default: 0,
     },
     step: {
       type: Number,
@@ -78,8 +77,13 @@ export default {
     },
     localValue(newValue, oldValue) {
       if (newValue !== oldValue) {
-        let finalValue = Math.min(newValue, this.max);
-        finalValue = Math.max(finalValue, this.min);
+        let finalValue = newValue
+        if (this.max !== undefined) {
+          finalValue = Math.min(finalValue, this.max);
+        }
+        if (this.min !== undefined) {
+          finalValue = Math.max(finalValue, this.min);
+        }
         if (newValue !== finalValue) {
           this.localValue = finalValue
         } else {

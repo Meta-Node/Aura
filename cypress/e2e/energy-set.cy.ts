@@ -143,12 +143,8 @@ describe('Energy Set', () => {
     showsConnectionInSetTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
   })
 
-  it('can not set value more than 100 or less than 0', () => {
+  it('can not set value more less than 0', () => {
     cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
-    cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
-      .type('{selectAll}')
-      .type('9999999')
-      .should('have.value', 100)
 
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')

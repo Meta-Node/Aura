@@ -6,7 +6,6 @@
         <user-slider
           id="quality"
           v-model="value"
-          :max="100"
           :min="0"
           :quota="getQuota"
           :step="1"
