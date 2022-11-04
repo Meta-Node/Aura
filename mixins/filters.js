@@ -131,12 +131,6 @@ export default {
 
       const filterName = activeFilter?.name || 'All'
 
-      const queries = this.$route.query
-
-      if (this.$route.query?.filter !== filterName) {
-        this.$router.replace({ query: { ...queries, filter: filterName } })
-      }
-
       const fromLess = !activeFilter?.reverse
       let newUsers = this[`get${filterName.replace(' ', '')}`](
         this.startUsers,
@@ -165,7 +159,7 @@ export default {
       if (activeFilter) {
         this.onFiltered()
       } else {
-        this.onFiltered(this.$route.query?.filter || 'All')
+        this.onFiltered('All')
       }
     },
     getActiveFilter() {
