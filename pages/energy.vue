@@ -92,11 +92,13 @@ export default {
     if (this.changedEnergies.length) {
       const answer = unsavedChangesConfirmation()
       if (answer) {
+        window.onbeforeunload = null
         next()
       } else {
         next(false)
       }
     } else {
+      window.onbeforeunload = null
       next()
     }
   },
