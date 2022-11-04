@@ -2,6 +2,7 @@ import {
   AuraProfile,
   AuraRating,
   Connection,
+  ConnectionLevel,
   IncomingConnection,
   IncomingConnectionsResponse,
 } from '../../types'
@@ -12,28 +13,30 @@ import {
   ratedConnection,
   ratedConnection2,
   ratedConnection3,
+  ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from './data'
-import { incomingRatings } from './rating'
 
 export const connectionToVisit = unratedConnection
 
 const toIncomingConnectionFormat = (
-  connection: Connection
+  connection: Connection,
+  level: ConnectionLevel
 ): IncomingConnection => ({
   id: connection.id,
-  level: connection.level,
+  level,
   reportReason: connection.reportReason,
   timestamp: RANDOM_TIMESTAMP,
 })
 
 export const connectionIncomingConnections: IncomingConnection[] = [
-  toIncomingConnectionFormat(justMet3),
-  toIncomingConnectionFormat(ratedConnection),
-  toIncomingConnectionFormat(ratedConnection2),
-  toIncomingConnectionFormat(ratedConnection3),
-  toIncomingConnectionFormat(ratedConnectionWithoutEnergy),
+  toIncomingConnectionFormat(ratedConnection, 'suspicious'),
+  toIncomingConnectionFormat(ratedConnection2, 'already known'),
+  toIncomingConnectionFormat(ratedConnection3, 'just met'),
+  toIncomingConnectionFormat(ratedConnectionNegative, 'suspicious'),
+  toIncomingConnectionFormat(ratedConnectionWithoutEnergy, 'recovery'),
+  toIncomingConnectionFormat(justMet3, 'reported'),
 ]
 
 export const connectionIncomingConnectionsResponse: IncomingConnectionsResponse =
@@ -57,33 +60,33 @@ export const connectionIncomingRatings: AuraRating[] = [
     id: 5050,
     toBrightId: unratedConnection.id,
     fromBrightId: justMet3.id,
-    rating: '4',
+    rating: '-1',
     createdAt: '2021-07-10T20:59:03.036Z',
     updatedAt: '2021-07-12T20:59:03.036Z',
   },
   {
-    id: 5050,
+    id: 5090,
     toBrightId: unratedConnection.id,
     fromBrightId: ratedConnection.id,
-    rating: '2',
+    rating: '-4',
     createdAt: '2021-07-10T20:59:03.036Z',
     updatedAt: '2021-07-12T23:59:03.036Z',
-  },
-  {
-    id: 5050,
-    toBrightId: unratedConnection.id,
-    fromBrightId: ratedConnection3.id,
-    rating: '3',
-    createdAt: '2021-07-11T20:59:03.036Z',
-    updatedAt: '2021-07-11T20:59:03.036Z',
   },
   {
     id: 3040,
     toBrightId: unratedConnection.id,
     fromBrightId: ratedConnectionWithoutEnergy.id,
-    rating: '1',
+    rating: '4',
     createdAt: '2021-07-13T20:59:03.036Z',
     updatedAt: '2021-07-15T20:59:03.036Z',
+  },
+  {
+    id: 6000,
+    toBrightId: unratedConnection.id,
+    fromBrightId: ratedConnectionNegative.id,
+    rating: '-1',
+    createdAt: '2021-07-11T20:59:03.036Z',
+    updatedAt: '2021-07-11T10:59:03.036Z',
   },
   {
     id: 6070,
@@ -98,5 +101,5 @@ export const connectionIncomingRatings: AuraRating[] = [
 export const connectionIncomingRatingsResponse: {
   ratings: AuraRating[]
 } = {
-  ratings: incomingRatings,
+  ratings: connectionIncomingRatings,
 }
