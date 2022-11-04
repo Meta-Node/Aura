@@ -53,6 +53,25 @@ export const oldRatings: AuraRating[] = [
   },
 ]
 
+export const incomingRatings: AuraRating[] = [
+  {
+    id: 6040,
+    toBrightId: FAKE_BRIGHT_ID,
+    fromBrightId: ratedConnection.id,
+    rating: '4',
+    createdAt: '2021-07-10T20:59:03.036Z',
+    updatedAt: '2021-07-12T20:59:03.036Z',
+  },
+  {
+    id: 2030,
+    toBrightId: FAKE_BRIGHT_ID,
+    fromBrightId: ratedConnection2.id,
+    rating: '2',
+    createdAt: '2021-07-10T20:59:03.036Z',
+    updatedAt: '2021-07-12T23:59:03.036Z',
+  },
+]
+
 export function getRatingObject(brightId: string, ratings: AuraRating[]) {
   return ratings.find(r => r.toBrightId === brightId)
 }
@@ -90,10 +109,16 @@ export const newRatings: AuraRating[] = [
     updatedAt: '2021-07-17T20:59:03.036Z',
   },
 ]
-export const AURA_RATINGS: {
+export const auraRatingsResponse: {
   ratings: AuraRating[]
 } = {
   ratings: oldRatings,
+}
+
+export const auraIncomingRatingsResponse: {
+  ratings: AuraRating[]
+} = {
+  ratings: incomingRatings,
 }
 
 export const connectionsInConnectionsPageFilterAll = [

@@ -11,11 +11,8 @@ import {
   EnergyAllocationList,
   EnergyAllocationRetrieveResponse,
   EnergyAllocationUpdateResponse,
-  InboundEnergyAllocationRetrieveResponse,
 } from '../../types'
 import {
-  AURA_ENERGIES,
-  AURA_INBOUND_ENERGIES,
   connectionsInEnergyFilterAll,
   connectionsInEnergyFilterAllSortedByRateAscending,
   connectionsInEnergyFilterAllSortedByRateDescending,
@@ -43,27 +40,6 @@ describe('Energy', () => {
     cy.blockApiRequests()
     // @ts-ignore
     cy.setupProfile()
-    const retrieveResponse: EnergyAllocationRetrieveResponse = AURA_ENERGIES
-    cy.intercept(
-      {
-        url: `/v1/energy/${FAKE_BRIGHT_ID}`,
-        method: 'GET',
-      },
-      {
-        body: retrieveResponse,
-      }
-    )
-    const inboundEnergyResponse: InboundEnergyAllocationRetrieveResponse =
-      AURA_INBOUND_ENERGIES
-    cy.intercept(
-      {
-        url: `/v1/energy/inbound/${FAKE_BRIGHT_ID}`,
-        method: 'GET',
-      },
-      {
-        body: inboundEnergyResponse,
-      }
-    )
   })
 
   afterEach(() => {
@@ -339,7 +315,8 @@ describe('Energy', () => {
     cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).click()
     assertOrder(connectionsInEnergyFilterExcludeZeroSortedByRateAscending)
 
-    cy.get(`[data-testid^=user-item-${ratedConnection.id}-name]`).click()
+    // navigate to another page
+    cy.visit('/contact-us/')
     cy.go(-1)
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting

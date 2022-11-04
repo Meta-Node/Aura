@@ -73,7 +73,6 @@ export default {
     value: {
       immediate: true,
       handler(newValue, _oldValue) {
-        console.log('watch ' + newValue)
         this.localValue = newValue
       }
     },

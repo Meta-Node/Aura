@@ -12,7 +12,11 @@ import {
   verificationsResponse,
 } from '../utils/data'
 import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
-import { AURA_RATINGS } from '../utils/rating'
+import {
+  auraIncomingRatingsResponse,
+  auraRatingsResponse,
+} from '../utils/rating'
+import { AURA_ENERGIES, AURA_INBOUND_ENERGIES } from '../utils/energy'
 
 Cypress.Commands.add('shouldBeCalled', (alias, timesCalled) => {
   expect(
@@ -88,7 +92,16 @@ Cypress.Commands.add('profileIntercepts', () => {
       method: 'GET',
     },
     {
-      body: AURA_RATINGS,
+      body: auraRatingsResponse,
+    }
+  )
+  cy.intercept(
+    {
+      url: `/v1/ratings/inbound/${FAKE_BRIGHT_ID}`,
+      method: 'GET',
+    },
+    {
+      body: auraIncomingRatingsResponse,
     }
   )
   cy.intercept(
@@ -100,10 +113,28 @@ Cypress.Commands.add('profileIntercepts', () => {
       body: AURA_CONNECTIONS,
     }
   )
+  cy.intercept(
+    {
+      url: `/v1/energy/${FAKE_BRIGHT_ID}`,
+      method: 'GET',
+    },
+    {
+      body: AURA_ENERGIES,
+    }
+  )
+  cy.intercept(
+    {
+      url: `/v1/energy/inbound/${FAKE_BRIGHT_ID}`,
+      method: 'GET',
+    },
+    {
+      body: AURA_INBOUND_ENERGIES,
+    }
+  )
   // node api
   cy.intercept(
     {
-      url: `/brightid/v6/users/${FAKE_BRIGHT_ID}/verifications`,
+      url: `/brightid/v6/users/*/verifications`,
       method: 'GET',
     },
     {

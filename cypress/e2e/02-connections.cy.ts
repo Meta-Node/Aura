@@ -1,7 +1,6 @@
 import {
   AURA_GENERAL_PROFILE,
   FAKE_BRIGHT_ID,
-  justMet2,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
@@ -298,7 +297,8 @@ describe('Connections Page', () => {
     cy.get('[data-testid=filter-Name-inactive').click()
     assertOrder(connectionsInConnectionsPageJustMetSortedByNameAscending)
 
-    cy.get(`[data-testid^=user-item-${justMet2.id}-name]`).click()
+    // navigate to another page
+    cy.visit('/contact-us/')
     cy.go(-1)
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting

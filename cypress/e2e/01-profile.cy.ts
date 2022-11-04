@@ -9,6 +9,8 @@ import {
   unratedConnection,
 } from '../utils/data'
 import { TOAST_ERROR } from '../../utils/constants'
+import { AURA_ENERGIES, AURA_INBOUND_ENERGIES } from '../utils/energy'
+import { incomingRatings, oldRatings } from '../utils/rating'
 
 describe('Login', () => {
   beforeEach(() => {
@@ -98,7 +100,22 @@ describe('Login', () => {
     )
   }
 
-  it.only('profile', () => {
+  function showsAuraStatistics() {
+    cy.get('[data-testid=aura-statistics-energy-in]').contains(
+      AURA_INBOUND_ENERGIES.energy.length
+    )
+    cy.get('[data-testid=aura-statistics-energy-out]').contains(
+      AURA_ENERGIES.energy.length
+    )
+    cy.get('[data-testid=aura-statistics-honesty-in]').contains(
+      incomingRatings.length
+    )
+    cy.get('[data-testid=aura-statistics-honesty-out]').contains(
+      oldRatings.length
+    )
+  }
+
+  it('profile', () => {
     // @ts-ignore
     cy.setupProfile()
 
@@ -107,5 +124,6 @@ describe('Login', () => {
     showsProfileInfo()
     showsYetToBeRated()
     cy.get('[data-testid=profile-info-aura-level]').contains(AURA_LEVEL)
+    showsAuraStatistics()
   })
 })

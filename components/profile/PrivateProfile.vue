@@ -26,7 +26,7 @@
         :name="profile.name"
         :nickname="profile.nickname"
         :num-of-connections="profile.numOfConnections"
-        :rating="profile.rating"
+        :rating="Number(profile.rating)"
         @edit="onEdit"
         @share="onShare"
       />

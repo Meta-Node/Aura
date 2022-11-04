@@ -43,7 +43,7 @@ export default {
       return this.callsDone < 4
     },
     transferedEnergy() {
-      return this.$store.state.energy.transferedEnergy
+      return this.$store.state.energy.transferedEnergy.filter(e => e.amount > 0)
     },
     inboundEnergy() {
       return this.$store.state.energy.inboundEnergy
