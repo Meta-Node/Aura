@@ -9,8 +9,8 @@
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "yarn lint:js",
-    "cypress": "start-server-and-test 'yarn dev' http://localhost:3000 'cypress open'",
-    "cypress:headless": "yarn generate && start-server-and-test 'yarn start' http://localhost:3000 'cypress run'"
+    "cypress": "start-server-and-test 'yarn dev' http://localhost:3000 'cypress open --browser chrome --e2e'",
+    "cypress:headless": "yarn generate && start-server-and-test 'yarn start' http://localhost:3000 'cypress run --browser chrome'"
   },
   "dependencies": {
     "@emotionagency/utils": "^1.0.2",
