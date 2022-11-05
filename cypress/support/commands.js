@@ -152,18 +152,5 @@ Cypress.Commands.add('setupProfile', () => {
     window.localStorage.setItem('brightId', FAKE_BRIGHT_ID)
     window.localStorage.setItem('publicKey', FAKE_PUBLIC_KEY)
     window.localStorage.setItem('privateKey', FAKE_PRIVATE_KEY)
-    window.localStorage.setItem('isAuth', '{"value":true}')
-  })
-})
-
-Cypress.Commands.add('clearProfile', () => {
-  localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
-  localforage.removeItem('profileData')
-  cy.on('window:before:load', _win => {
-    window.localStorage.removeItem('authKey')
-    window.localStorage.removeItem('brightId')
-    window.localStorage.removeItem('publicKey')
-    window.localStorage.removeItem('privateKey')
-    window.localStorage.removeItem('isAuth')
   })
 })

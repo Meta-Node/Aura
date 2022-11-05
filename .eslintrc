@@ -27,7 +27,7 @@
       }
     }
   },
-    "plugins": [],
+  "plugins": [],
   // add your custom rules here
   "rules": {
     "arrow-parens": [
@@ -54,5 +54,13 @@
         "endOfLine": "auto"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": "*.cy.ts",
+      "rules": {
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
 }

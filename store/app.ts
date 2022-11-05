@@ -16,6 +16,5 @@ export const mutations: MutationTree<AppState> = {
   },
   setIsAuth(state, value) {
     state.isAuth = value
-    localStorage.setItem('isAuth', JSON.stringify({ value }))
   },
 }

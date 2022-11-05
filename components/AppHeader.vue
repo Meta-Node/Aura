@@ -34,6 +34,7 @@
           :class="[isPopupOpen && 'nav-button--open']"
           aria-label="Navigation button"
           class="nav-button"
+          data-testid="nav-button"
           @click.stop="togglePopup"
         >
           <span class="nav-button__dot nav-button__dot--1"></span>
@@ -97,6 +98,7 @@
             <li class="popup-menu__list">
               <button
                 class="menu-text popup-menu__text popup-menu__text--red"
+                data-testid="nav-logout-btn"
                 @click="logout"
               >
                 Logout
