@@ -144,10 +144,10 @@ Cypress.Commands.add('profileIntercepts', () => {
 })
 
 Cypress.Commands.add('setupProfile', () => {
+  localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+  localforage.setItem('profileData', LOCAL_FORAGE_DATA)
   cy.profileIntercepts()
-  cy.on('window:before:load', async win => {
-    localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
-    await localforage.setItem('profileData', LOCAL_FORAGE_DATA)
+  cy.on('window:before:load', _win => {
     window.localStorage.setItem('authKey', FAKE_AUTH_KEY)
     window.localStorage.setItem('brightId', FAKE_BRIGHT_ID)
     window.localStorage.setItem('publicKey', FAKE_PUBLIC_KEY)
@@ -157,9 +157,9 @@ Cypress.Commands.add('setupProfile', () => {
 })
 
 Cypress.Commands.add('clearProfile', () => {
-  cy.on('window:before:load', async win => {
-    localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
-    await localforage.removeItem('profileData')
+  localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+  localforage.removeItem('profileData')
+  cy.on('window:before:load', _win => {
     window.localStorage.removeItem('authKey')
     window.localStorage.removeItem('brightId')
     window.localStorage.removeItem('publicKey')
