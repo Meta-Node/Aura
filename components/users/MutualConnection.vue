@@ -6,7 +6,7 @@
         {{ user.incomingConnectionLevel }}</p>
       <p :data-testid="`mutual-connection--${id}-incoming-rating`" class="user-v2__num user-v2__num-outbound"
          style="margin: 0px 10px;">
-        ({{ user.incomingRatingToConnection }})</p>
+        ({{ user.incomingRatingToConnection !== undefined ? user.incomingRatingToConnection : '-' }})</p>
     </div>
   </li>
 </template>

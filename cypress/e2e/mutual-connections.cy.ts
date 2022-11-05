@@ -4,6 +4,8 @@ import { oldRatings } from '../utils/rating'
 import {
   connectionIncomingConnections,
   connectionIncomingConnectionsResponse,
+  connectionIncomingConnectionsSortByConnectionLevelDescending,
+  connectionIncomingConnectionsSortByTheirRatingDescending,
   connectionIncomingRatingsResponse,
   connectionToVisit,
 } from '../utils/mutual-connections'
@@ -56,6 +58,12 @@ describe('Mutual Connections', () => {
         body: connectionIncomingRatingsResponse,
       }
     )
+    cy.visit(`/profile/` + connectionToVisit.id)
+  })
+
+  afterEach(() => {
+    cy.get('@spyWinConsoleError').should('have.callCount', 0)
+    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
   function assertOrder(orderedConnections: IncomingConnection[]) {
@@ -67,13 +75,17 @@ describe('Mutual Connections', () => {
     )
   }
 
-  afterEach(() => {
-    cy.get('@spyWinConsoleError').should('have.callCount', 0)
-    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
+  it('shows mutual connections', () => {
+    assertOrder(connectionIncomingConnections)
   })
 
-  it('shows mutual connections', () => {
-    cy.visit(`/profile/` + connectionToVisit.id)
-    assertOrder(connectionIncomingConnections)
+  it('sorts by incoming connection level', () => {
+    cy.get('[data-testid=filter-IncomingConnectionLevel-inactive]').click()
+    assertOrder(connectionIncomingConnectionsSortByConnectionLevelDescending)
+  })
+
+  it('sorts by their ratings', () => {
+    cy.get('[data-testid=filter-IncomingRatingToConnection-inactive]').click()
+    assertOrder(connectionIncomingConnectionsSortByTheirRatingDescending)
   })
 })

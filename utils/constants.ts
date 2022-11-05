@@ -9,10 +9,12 @@ export const ENERGY_TABS = Object.freeze({
   VIEW: 'View',
   SET: 'Set',
 })
+
+// eslint-disable-next-line no-unused-vars
 export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
   reported: 0,
   suspicious: 1,
-  'just met': 4,
+  'just met': 2,
   'already known': 3,
   recovery: 4,
 }

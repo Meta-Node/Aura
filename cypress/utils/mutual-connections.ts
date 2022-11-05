@@ -6,6 +6,7 @@ import {
   IncomingConnection,
   IncomingConnectionsResponse,
 } from '../../types'
+import { connectionLevelMap } from '../../utils/constants'
 import {
   justMet2,
   justMet3,
@@ -103,3 +104,17 @@ export const connectionIncomingRatingsResponse: {
 } = {
   ratings: connectionIncomingRatings,
 }
+
+export const connectionIncomingConnectionsSortByConnectionLevelDescending = [
+  ...connectionIncomingConnections,
+].sort((a, b) => connectionLevelMap[b.level] - connectionLevelMap[a.level])
+
+const getIncomingRatingFrom = (connection: IncomingConnection) =>
+  Number(
+    connectionIncomingRatings.find(r => r.fromBrightId === connection.id)
+      ?.rating || 0
+  )
+
+export const connectionIncomingConnectionsSortByTheirRatingDescending = [
+  ...connectionIncomingConnections,
+].sort((a, b) => getIncomingRatingFrom(b) - getIncomingRatingFrom(a))

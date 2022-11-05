@@ -18,8 +18,10 @@ export const getByRating = (users, fromLess) => {
 }
 
 export const getByIncomingRatingToConnection = (users, fromLess) => {
-  const newUsers = [...users.filter(su => su.incomingRatingToConnection)].sort(
-    (a, b) => +b.incomingRatingToConnection - a.incomingRatingToConnection
+  const newUsers = [...users].sort(
+    (a, b) =>
+      Number(b.incomingRatingToConnection || 0) -
+      Number(a.incomingRatingToConnection || 0)
   )
   if (fromLess) {
     return newUsers

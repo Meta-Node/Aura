@@ -113,21 +113,21 @@ export default {
         const profileIncomingConnections = (await getIncomingConnections(this.profile.id)).data?.data.connections
         const profileIncomingRatings = (await getIncomingRatings(this.profile.id))
         const finalUsers = profileIncomingConnections.reduce((a, c) => {
-          const connectionId = c.id
-          const conn = this.connections.find(cn => connectionId === cn.id)
-          if (!conn) return a
+          const mutualConnectionId = c.id
+          const mutualConnectionFromOurConnectionsList = this.connections.find(cn => mutualConnectionId === cn.id)
+          if (!mutualConnectionFromOurConnectionsList) return a
           const ratingData = ratedUsers.find(
-            user => user.toBrightId === connectionId
+            user => user.toBrightId === mutualConnectionId
           )
           const incomingRatingDataToConnection = profileIncomingRatings.find(
-            en => en.fromBrightId === connectionId
+            en => en.fromBrightId === mutualConnectionId
           )
           return a.concat({
             incomingConnectionLevel: c.level,
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
-            incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : '-',
-            ...conn,
+            incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined,
+            ...mutualConnectionFromOurConnectionsList,
           })
         }, [])
 
