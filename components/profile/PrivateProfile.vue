@@ -68,7 +68,6 @@ import {rateUser} from '~/scripts/api/rate.service'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
 import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
-import {isThereProblemWithEncryption} from "~/utils";
 
 export default {
   components: {
@@ -129,7 +128,7 @@ export default {
       this.$store.commit('app/setLoading', true)
       try {
         if (rating !== this.previousRating) {
-          await rateUser({
+          await rateUser(this.$backendApi, {
             rating,
             fromBrightId: localStorage.getItem('brightId'),
             toBrightId: this.profile.id,
@@ -147,10 +146,8 @@ export default {
         if (!IS_PRODUCTION) {
           this.debugError = JSON.stringify(error.response?.data)
         }
-        if (isThereProblemWithEncryption(error.response?.data)) {
-          this.$store.dispatch('login/logout')
-          this.$router.push('/')
-          this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
+        if (error.message === 'retryRequest') {
+          this.onFeedbackChanged(rating)
         } else {
           this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
         }

@@ -1,6 +1,8 @@
 import {
   AURA_GENERAL_PROFILE,
+  FAKE_AUTH_KEY,
   FAKE_BRIGHT_ID,
+  FAKE_BRIGHT_ID_PASSWORD,
   ratedConnection,
   ratedConnectionNegative,
   ratedConnectionWithoutEnergy,
@@ -205,28 +207,58 @@ describe('Rating', () => {
     doRate(ratedConnectionNegative)
   })
 
-  function submitNewRatingEncryptFailure(connection: Connection) {
+  it('regenerates keypair if the user if the privateKey is invalid', () => {
     cy.intercept(
       {
-        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
+        url: `/v1/connect/explorer-code`,
         method: 'POST',
       },
       {
-        statusCode: 500,
-        body: `Could not decrypt using publicKey: ${FAKE_BRIGHT_ID}`,
+        body: 'OK',
       }
-    ).as('submitRatingEncryptError')
-    cy.get('[data-testid=feedback-quality-confirm]').click()
-    cy.wait('@submitRatingEncryptError')
-    cy.get(`.toast--${TOAST_ERROR}`)
-    cy.url().should('not.include', 'profile')
-  }
-
-  it('logs out the user if the privateKey is invalid', () => {
+    ).as('explorerCode')
+    const publicKey1 = localStorage.getItem('publicKey')
+    const privateKey1 = localStorage.getItem('privateKey')
     ratePageIntercepts(unratedConnection)
     cy.visit(`/profile/` + unratedConnection.id)
     showsRateValue(unratedConnection, oldRatings)
     setNewRateValue(unratedConnection)
-    submitNewRatingEncryptFailure(unratedConnection)
+
+    let firstTime = true
+    cy.intercept(
+      {
+        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${unratedConnection.id}`,
+        method: 'POST',
+      },
+      req => {
+        if (firstTime) {
+          firstTime = false
+          req.reply({
+            statusCode: 500,
+            body: `Could not decrypt using publicKey: ${FAKE_BRIGHT_ID}`,
+          })
+        } else {
+          req.reply({
+            statusCode: 200,
+          })
+        }
+      }
+    ).as('submitRatingEncryptErrorFirstTime')
+    cy.get('[data-testid=feedback-quality-confirm]').click()
+
+    cy.wait('@explorerCode')
+      .its('request.body')
+      .should(body => {
+        expect(body.brightId).to.eq(FAKE_BRIGHT_ID)
+        expect(body.password).to.eq(FAKE_BRIGHT_ID_PASSWORD)
+        expect(body.key).to.eq(FAKE_AUTH_KEY)
+        expect(body.publicKey).to.be.not.null
+      })
+      .then(() => {
+        expect(localStorage.getItem('publicKey')).to.not.eq(publicKey1)
+        expect(localStorage.getItem('privateKey')).to.not.eq(privateKey1)
+      })
+    cy.get(`.toast--${TOAST_SUCCESS}`).should('exist')
+    cy.get('@submitRatingEncryptErrorFirstTime.all').should('have.length', 2)
   })
 })
