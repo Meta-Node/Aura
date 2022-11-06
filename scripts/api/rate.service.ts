@@ -4,7 +4,7 @@ import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 import { AuraRatingRetrieveResponse } from '~/types'
 
 export const rateUser = async (
-  api: AxiosInstance,
+  backendApi: AxiosInstance,
   {
     fromBrightId,
     toBrightId,
@@ -25,7 +25,7 @@ export const rateUser = async (
     const endpoint = '/v1/ratings/'
     const URL = `${endpoint}${fromBrightId}/${toBrightId}`
 
-    await api.post<null>(URL, {
+    await backendApi.post<null>(URL, {
       encryptedRating,
     })
   } catch (error) {

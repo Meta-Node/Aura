@@ -9,7 +9,7 @@ import {
 } from '~/types'
 
 export const transferEnergy = async (
-  api: AxiosInstance,
+  backendApi: AxiosInstance,
   transfers: EnergyAllocationList
 ) => {
   try {
@@ -19,7 +19,7 @@ export const transferEnergy = async (
       transfers,
     }
     const encryptedTransfers = encryptDataWithPrivateKey(encryptedData)
-    return await api.post<EnergyAllocationUpdateResponse>(
+    return await backendApi.post<EnergyAllocationUpdateResponse>(
       '/v1/energy/' + brightId,
       {
         encryptedTransfers,
