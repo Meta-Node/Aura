@@ -18,7 +18,7 @@ describe('Contact us', () => {
     cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
-  it('can update energies', () => {
+  it('can send feedback', () => {
     const contactMessage = {
       category: 'Question',
       text: 'Sample contact message',

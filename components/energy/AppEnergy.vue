@@ -89,7 +89,6 @@ export default {
       try {
         this.$store.commit('app/setLoading', true)
         await this.$store.dispatch('energy/updateEnergy')
-        this.$store.commit('app/setLoading', false)
         this.$store.commit('toast/addToast', {
           text: 'Energy successfully updated',
           color: TOAST_SUCCESS,
@@ -97,7 +96,6 @@ export default {
         // this.$router.push('/connections?filter=Unrated')
         this.$emit('getTransferedEnergy')
       } catch (error) {
-        this.$store.commit('app/setLoading', false)
         if (!IS_PRODUCTION) {
           this.debugError = JSON.stringify(error.response?.data)
         }
@@ -106,6 +104,8 @@ export default {
         } else {
           this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
         }
+      } finally {
+        this.$store.commit('app/setLoading', false)
       }
     },
     onChangeEnergy(data) {

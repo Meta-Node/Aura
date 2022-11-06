@@ -47,8 +47,6 @@ import AppButton from '@/components/AppButton.vue'
 import AppSelectInput from '@/components/AppSelectInput.vue'
 import {TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 import {encryptDataWithPrivateKey} from "~/scripts/utils/crypto";
-import {backendApi} from "~/scripts/api";
-import {isThereProblemWithEncryption} from "~/utils";
 
 export default {
   components: {
@@ -117,26 +115,21 @@ export default {
           const encryptedPayload = encryptDataWithPrivateKey(payload)
 
           this.$store.commit('app/setLoading', true);
-          const res = await backendApi.post('/v1/feedback/' + brightId + '/create', {
+          await this.$backendApi.post('/v1/feedback/' + brightId + '/create', {
             encryptedPayload,
           })
-          this.$store.commit('app/setLoading', false);
-
-          if (res.status !== 201) {
-            throw res.originalError?.response
-          }
           this.$store.commit('toast/addToast', {
             text: 'Message submitted successfully',
             color: TOAST_SUCCESS,
           })
         } catch (error) {
-          if (isThereProblemWithEncryption(error.response?.data)) {
-            this.$store.dispatch('login/logout')
-            this.$router.push('/')
-            this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
+          if (error.message === 'retryRequest') {
+            this.handleSendFeedback()
           } else {
             this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
           }
+        } finally {
+          this.$store.commit('app/setLoading', false);
         }
       }
     },
