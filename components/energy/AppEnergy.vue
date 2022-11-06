@@ -49,7 +49,6 @@ import AppFilter from '../filters/AppFilter.vue'
 import UserV3 from '~/components/users/UserV3.vue'
 import loadItems from '~/mixins/loadItems'
 import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
-import {isThereProblemWithEncryption} from "~/utils";
 
 export default {
   components: {UserV3, AppFilter},
@@ -102,10 +101,8 @@ export default {
         if (!IS_PRODUCTION) {
           this.debugError = JSON.stringify(error.response?.data)
         }
-        if (isThereProblemWithEncryption(error.response?.data)) {
-          this.$store.dispatch('login/logout')
-          this.$router.push('/')
-          this.$store.commit('toast/addToast', {text: 'Please login again', color: TOAST_ERROR})
+        if (error.message === 'retryRequest') {
+          this.updateEnergy()
         } else {
           this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
         }

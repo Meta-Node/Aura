@@ -1,3 +1,4 @@
+import { AxiosInstance } from 'axios'
 import { backendApi } from '.'
 import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 import {
@@ -7,7 +8,10 @@ import {
   InboundEnergyAllocationRetrieveResponse,
 } from '~/types'
 
-export const transferEnergy = async (transfers: EnergyAllocationList) => {
+export const transferEnergy = async (
+  api: AxiosInstance,
+  transfers: EnergyAllocationList
+) => {
   try {
     const brightId = localStorage.getItem('brightId')
 
@@ -15,16 +19,12 @@ export const transferEnergy = async (transfers: EnergyAllocationList) => {
       transfers,
     }
     const encryptedTransfers = encryptDataWithPrivateKey(encryptedData)
-    const res = await backendApi.post<EnergyAllocationUpdateResponse>(
+    return await api.post<EnergyAllocationUpdateResponse>(
       '/v1/energy/' + brightId,
       {
         encryptedTransfers,
       }
     )
-    if (res.status !== 200) {
-      throw res.originalError
-    }
-    return res
   } catch (error) {
     console.log(error)
     throw error

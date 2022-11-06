@@ -91,7 +91,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
 
   async updateEnergy({ state }) {
     try {
-      await transferEnergy(state.transferedEnergy)
+      await transferEnergy(this.$backendApi, state.transferedEnergy)
     } catch (error) {
       console.log(error)
       throw error
