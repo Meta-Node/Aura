@@ -5,9 +5,11 @@
                     show-aura-verification></user-item-info>
     <template v-if="isInbound">
       <div class="user-v2__numbers">
-        <p :data-testid="`mutual-connection--${id}-incoming-level`" class="user-v2__num user-v2__num-outbound">
+        <p :data-testid="`mutual-connection--${id}-incoming-level`" class="user-v2__num user-v2__num-outbound"
+           :class="{'user-v2__num-alert-rating-difference': user.alertDifference}">
           {{ user.incomingConnectionLevel }}</p>
         <p :data-testid="`mutual-connection--${id}-incoming-rating`" class="user-v2__num user-v2__num-outbound"
+           :class="{'user-v2__num-alert-rating-difference': user.alertDifference}"
            style="margin: 0px 10px;">
           ({{ user.incomingRatingToConnection !== undefined ? user.incomingRatingToConnection : '-' }})</p>
       </div>

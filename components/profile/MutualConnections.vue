@@ -91,6 +91,7 @@ export default {
       isInbound: true,
       isLoading: true,
       filterKey,
+      defaultFilter: 'AllMutual',
       filters: [
         {
           name: 'Name',
@@ -161,15 +162,18 @@ export default {
         const outgoingRatingToMutualConnection = profileOutboundRatings.find(
           en => en.toBrightId === mutualConnectionId
         )
+        const rating = ratingData ? +ratingData.rating : undefined
+        const incomingRatingToConnection = incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined
+        const alertDifference = (rating > 0 && incomingRatingToConnection < 0)
         return a.concat({
           incomingConnectionLevel: c.level,
           outboundConnectionLevel: profileOutboundConnections.find(cn => mutualConnectionId === cn.id)?.level || '-',
           ratingData,
-          rating: ratingData ? +ratingData.rating : undefined,
-
-          incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined,
+          rating,
+          incomingRatingToConnection,
           outgoingRatingToMutualConnection: outgoingRatingToMutualConnection ? +outgoingRatingToMutualConnection.rating : undefined,
-          ...mutualConnectionFromOurConnectionsList
+          ...mutualConnectionFromOurConnectionsList,
+          alertDifference
         })
       }, [])
       this.setInitialFilter()

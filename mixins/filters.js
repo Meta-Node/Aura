@@ -222,6 +222,13 @@ export default {
       }
       this.users = onSearch(value, usersBase)
     },
+    getAllMutual() {
+      this.filteredUsers = [...this.startUsers].sort((a, _b) =>
+        a.alertDifference ? -1 : 1
+      )
+
+      return this.filteredUsers
+    },
     getAll() {
       this.filteredUsers = this.startUsers
 
