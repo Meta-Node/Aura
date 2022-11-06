@@ -32,8 +32,8 @@ const toIncomingConnectionFormat = (
 })
 
 export const connectionIncomingConnections: IncomingConnection[] = [
-  toIncomingConnectionFormat(ratedConnection, 'suspicious'),
   toIncomingConnectionFormat(ratedConnection2, 'already known'),
+  toIncomingConnectionFormat(ratedConnection, 'suspicious'),
   toIncomingConnectionFormat(ratedConnection3, 'just met'),
   toIncomingConnectionFormat(ratedConnectionNegative, 'suspicious'),
   toIncomingConnectionFormat(ratedConnectionWithoutEnergy, 'recovery'),

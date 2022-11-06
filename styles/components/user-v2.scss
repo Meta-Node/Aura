@@ -24,6 +24,12 @@
   font-size: 14px;
   line-height: 100%;
   letter-spacing: -0.03em;
+
+  &-alert-rating-difference {
+    color: var(--red) !important;
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 
 .user-v2__num-inbound {

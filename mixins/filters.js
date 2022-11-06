@@ -35,6 +35,7 @@ export default {
       users: [],
       appliedFilters: [],
       filterKey: null,
+      defaultFilter: 'All',
     }
   },
   created() {
@@ -129,7 +130,7 @@ export default {
 
       const activeFilter = this.getActiveFilter()
 
-      const filterName = activeFilter?.name || 'All'
+      const filterName = activeFilter?.name || this.defaultFilter
 
       const fromLess = !activeFilter?.reverse
       let newUsers = this[`get${filterName.replace(' ', '')}`](
@@ -156,10 +157,11 @@ export default {
     setInitialFilter() {
       this.users = this.startUsers
       const activeFilter = this.getActiveFilter()
+
       if (activeFilter) {
         this.onFiltered()
       } else {
-        this.onFiltered('All')
+        this.onFiltered(this.defaultFilter)
       }
     },
     getActiveFilter() {
@@ -195,7 +197,13 @@ export default {
       }
       this.users = onSearch(trimmedValue, usersBase)
     },
+    getAllMutual() {
+      this.filteredUsers = [...this.startUsers].sort((a, _b) =>
+        a.alertDifference ? -1 : 1
+      )
 
+      return this.filteredUsers
+    },
     getAll() {
       this.filteredUsers = this.startUsers
 

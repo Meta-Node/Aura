@@ -2,7 +2,6 @@ import { AURA_GENERAL_PROFILE, FAKE_BRIGHT_ID } from '../utils/data'
 import { getConnectionResponse } from '../utils/energy'
 import { oldRatings } from '../utils/rating'
 import {
-  connectionIncomingConnections,
   connectionIncomingConnectionsResponse,
   connectionIncomingConnectionsSortByConnectionLevelDescending,
   connectionIncomingConnectionsSortByTheirRatingDescending,
@@ -74,10 +73,6 @@ describe('Mutual Connections', () => {
       'not.exist'
     )
   }
-
-  it('shows mutual connections', () => {
-    assertOrder(connectionIncomingConnections)
-  })
 
   it('sorts by incoming connection level', () => {
     cy.get('[data-testid=filter-IncomingConnectionLevel-inactive]').click()
