@@ -129,7 +129,7 @@ describe('Rating', () => {
     )
   }
 
-  function goToRatePage(connection: Connection) {
+  function ratePageIntercepts(connection: Connection) {
     cy.intercept(
       {
         url: `/v1/profile/${connection.id}`,
@@ -148,8 +148,6 @@ describe('Rating', () => {
         body: getConnectionResponse(connection, oldRatings),
       }
     )
-    cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
-    showsRateValue(connection, oldRatings)
   }
 
   function setNewRateValue(connection: Connection) {
@@ -160,7 +158,6 @@ describe('Rating', () => {
   }
 
   function doRate(connection: Connection) {
-    goToRatePage(connection)
     setNewRateValue(connection)
 
     // set new rating value
@@ -179,35 +176,32 @@ describe('Rating', () => {
     cy.go(-1)
   }
 
-  it('rates an unrated connection', () => {
+  it('visits profile from connections and rates an unrated connection', () => {
+    ratePageIntercepts(unratedConnection)
     cy.visit(`/connections/`)
-    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).contains(
-      unratedConnection.name
-    )
+    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).click()
+    showsRateValue(unratedConnection, oldRatings)
     doRate(unratedConnection)
   })
 
   it('rates a rated connection', () => {
-    cy.visit(`/connections/`)
-    cy.get(`[data-testid^=user-item-${ratedConnection.id}-name]`).contains(
-      ratedConnection.name
-    )
+    ratePageIntercepts(ratedConnection)
+    cy.visit(`/profile/` + ratedConnection.id)
+    showsRateValue(ratedConnection, oldRatings)
     doRate(ratedConnection)
   })
 
   it('does not send request for an unchanged rate', () => {
-    cy.visit(`/connections/`)
-    cy.get(
-      `[data-testid^=user-item-${ratedConnectionWithoutEnergy.id}-name]`
-    ).contains(ratedConnectionWithoutEnergy.name)
+    ratePageIntercepts(ratedConnectionWithoutEnergy)
+    cy.visit(`/profile/` + ratedConnectionWithoutEnergy.id)
+    showsRateValue(ratedConnectionWithoutEnergy, oldRatings)
     doRate(ratedConnectionWithoutEnergy)
   })
 
   it('can change a negative rate', () => {
-    cy.visit(`/connections/`)
-    cy.get(
-      `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
-    ).contains(ratedConnectionNegative.name)
+    ratePageIntercepts(ratedConnectionNegative)
+    cy.visit(`/profile/` + ratedConnectionNegative.id)
+    showsRateValue(ratedConnectionNegative, oldRatings)
     doRate(ratedConnectionNegative)
   })
 
@@ -229,11 +223,9 @@ describe('Rating', () => {
   }
 
   it('logs out the user if the privateKey is invalid', () => {
-    cy.visit(`/connections/`)
-    cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).contains(
-      unratedConnection.name
-    )
-    goToRatePage(unratedConnection)
+    ratePageIntercepts(unratedConnection)
+    cy.visit(`/profile/` + unratedConnection.id)
+    showsRateValue(unratedConnection, oldRatings)
     setNewRateValue(unratedConnection)
     submitNewRatingEncryptFailure(unratedConnection)
   })
