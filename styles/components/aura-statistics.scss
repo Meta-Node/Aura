@@ -1,22 +1,19 @@
-.aura-statistics-title {
-  @include semi;
-  font-size: 24px;
-  line-height: 130%;
-  letter-spacing: -0.03em;
-  text-align: center;
-  color: var(--b-grey);
-  display: flex;
-  text-align: center;
-  width: 100%;
-  justify-content: center;
-  margin-top: 3rem;
-}
-
 .aura-statistics {
   text-align: left;
   width: 100%;
   color: #212529;
-  margin: 1.5rem 0;
+  margin: 0.5rem 0;
+
+  &-title {
+    @include semi;
+    font-size: 20px;
+    line-height: 130%;
+    letter-spacing: -0.03em;
+    text-align: left;
+    color: var(--b-grey);
+    width: 100%;
+    margin-top: 0.5rem;
+  }
 }
 
 .aura-statistics th,
