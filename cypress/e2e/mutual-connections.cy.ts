@@ -13,13 +13,6 @@ import { IncomingConnection } from '../../types'
 
 describe('Mutual Connections', () => {
   beforeEach(() => {
-    cy.on('window:before:load', win => {
-      cy.spy(win.console, 'error').as('spyWinConsoleError')
-      cy.spy(win.console, 'warn').as('spyWinConsoleWarn')
-    })
-    // @ts-ignore
-    cy.blockApiRequests()
-    // @ts-ignore
     cy.setupProfile()
 
     cy.intercept(
@@ -59,11 +52,6 @@ describe('Mutual Connections', () => {
       }
     )
     cy.visit(`/profile/` + connectionToVisit.id)
-  })
-
-  afterEach(() => {
-    cy.get('@spyWinConsoleError').should('have.callCount', 0)
-    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
   function assertOrder(orderedConnections: IncomingConnection[]) {

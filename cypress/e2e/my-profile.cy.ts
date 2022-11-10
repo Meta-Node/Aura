@@ -10,23 +10,10 @@ import { incomingRatings, oldRatings } from '../utils/rating'
 
 describe('Login', () => {
   beforeEach(() => {
-    cy.on('window:before:load', win => {
-      cy.spy(win.console, 'error').as('spyWinConsoleError')
-      cy.spy(win.console, 'warn').as('spyWinConsoleWarn')
-    })
-    // @ts-ignore
-    cy.blockApiRequests()
-  })
-
-  afterEach(() => {
-    cy.get('@spyWinConsoleError').should('have.callCount', 0)
-    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
+    cy.setupProfile()
   })
 
   it('profile info', () => {
-    // @ts-ignore
-    cy.setupProfile()
-
     cy.visit('/')
     cy.url().should('include', `/profile/${FAKE_BRIGHT_ID}`)
     BRIGHT_ID_BACKUP.userData.name.split(' ').forEach(s => {
@@ -39,9 +26,6 @@ describe('Login', () => {
   })
 
   it('yet to be rated', () => {
-    // @ts-ignore
-    cy.setupProfile()
-
     cy.visit('/')
     cy.get(`[data-testid=user-v1-${unratedConnection.id}-name]`).contains(
       unratedConnection.name
@@ -49,9 +33,6 @@ describe('Login', () => {
   })
 
   it('aura statistics', () => {
-    // @ts-ignore
-    cy.setupProfile()
-
     cy.visit('/')
     cy.get('[data-testid=aura-statistics-energy-in]').contains(
       AURA_INBOUND_ENERGIES.energy.length

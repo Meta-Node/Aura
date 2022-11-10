@@ -16,19 +16,7 @@ import { getRating, newRatings, oldRatings } from '../utils/rating'
 
 describe('Rating', () => {
   beforeEach(() => {
-    cy.on('window:before:load', win => {
-      cy.spy(win.console, 'error').as('spyWinConsoleError')
-      cy.spy(win.console, 'warn').as('spyWinConsoleWarn')
-    })
-    // @ts-ignore
-    cy.blockApiRequests()
-    // @ts-ignore
     cy.setupProfile()
-  })
-
-  afterEach(() => {
-    cy.get('@spyWinConsoleError').should('have.callCount', 0)
-    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
   })
 
   let currentRatings: AuraRating[] = Object.assign([], oldRatings)
