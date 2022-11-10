@@ -117,6 +117,13 @@ export default {
           reverse: false,
         },
         {
+          name: 'Rating',
+          type: 'ordering',
+          defaultAscending: false,
+          active: false,
+          reverse: false,
+        },
+        {
           name: 'Unrated',
           type: 'filter',
           active: false,
