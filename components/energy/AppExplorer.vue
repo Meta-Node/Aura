@@ -2,7 +2,7 @@
   <div class="app-explorer">
     <div class="app-explorer__statistic">
       <div class="app-explorer__switch-wrapper">
-        <app-filter :filters="filters" @filtered="onFiltered"/>
+        <app-filter :filters="filters" @clearFilters="clearFilters" @filtered="onFiltered"/>
       </div>
       <div class="app-explorer__humans-stat">
         <lazy-loading-items
@@ -55,6 +55,9 @@ export default {
   },
 
   methods: {
+    clearFilters() {
+      this.$emit('clearFilters')
+    },
     onFiltered(name) {
       this.$emit('filtered', name)
     },

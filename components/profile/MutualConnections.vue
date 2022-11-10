@@ -12,7 +12,7 @@
     >
       <h3 class="mutual-connections__title">Mutual Connections</h3>
       <div class="filter switch-wrapper">
-        <app-filter :filters="filters" @filtered="onFiltered"/>
+        <app-filter :filters="filters" @clearFilters="clearFilters" @filtered="onFiltered"/>
       </div>
       <lazy-loading-items
         v-if="users.length"

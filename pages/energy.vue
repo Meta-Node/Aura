@@ -46,6 +46,7 @@
                 v-if="isView"
                 :filters="filters"
                 :users="users"
+                @clearFilters="clearFilters"
                 @filtered="onFiltered"
               />
               <app-energy
@@ -53,6 +54,7 @@
                 :changed-energies="changedEnergies"
                 :filters="filters"
                 :users="users"
+                @clearFilters="clearFilters"
                 @filtered="onFiltered"
                 @getTransferedEnergy="getUserData"
               />

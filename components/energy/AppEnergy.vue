@@ -3,7 +3,7 @@
     <div v-if="debugError" class="debug-error">debug error: {{ debugError }}</div>
     <div class="app-energy__statistic">
       <div class="app-energy__switch-wrapper">
-        <app-filter :filters="filters" @filtered="onFiltered"/>
+        <app-filter :filters="filters" @clearFilters="clearFilters" @filtered="onFiltered"/>
       </div>
       <div class="app-energy__humans-stat">
         <lazy-loading-items
@@ -85,6 +85,9 @@ export default {
     this.energyData = this.$store.state.energy.transferedEnergy
   },
   methods: {
+    clearFilters() {
+      this.$emit('clearFilters')
+    },
     async updateEnergy() {
       try {
         this.$store.commit('app/setLoading', true)

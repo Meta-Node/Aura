@@ -35,6 +35,7 @@ export default {
       users: [],
       appliedFilters: [],
       filterKey: null,
+      defaultFilter: 'All',
     }
   },
   created() {
@@ -78,6 +79,12 @@ export default {
       }
       return filterObj
     },
+    deactivateFilter(filter) {
+      filter.active = false
+      if (filter.type === 'ordering') {
+        filter.reverse = filter.defaultAscending
+      }
+    },
     onFiltered(name) {
       this.users = this.startUsers
 
@@ -96,13 +103,6 @@ export default {
         }
       }
 
-      function deactivateFilter(filter) {
-        filter.active = false
-        if (filter.type === 'ordering') {
-          filter.reverse = filter.defaultAscending
-        }
-      }
-
       if (name) {
         const filterType = filterObj?.type
         this.filters = this.filters.map(filter => {
@@ -111,14 +111,14 @@ export default {
               if (nestedFilter.name === name) {
                 toggleFilter(nestedFilter)
               } else if (nestedFilter.type === filterType) {
-                deactivateFilter(nestedFilter)
+                this.deactivateFilter(nestedFilter)
               }
               return nestedFilter
             })
           } else if (filter.name === name) {
             toggleFilter(filter)
           } else if (filter.type === filterType) {
-            deactivateFilter(filter)
+            this.deactivateFilter(filter)
           }
           return filter
         })
@@ -129,7 +129,7 @@ export default {
 
       const activeFilter = this.getActiveFilter()
 
-      const filterName = activeFilter?.name || 'All'
+      const filterName = activeFilter?.name || this.defaultFilter
 
       const fromLess = !activeFilter?.reverse
       let newUsers = this[`get${filterName.replace(' ', '')}`](
@@ -156,11 +156,26 @@ export default {
     setInitialFilter() {
       this.users = this.startUsers
       const activeFilter = this.getActiveFilter()
+
       if (activeFilter) {
         this.onFiltered()
       } else {
-        this.onFiltered('All')
+        this.onFiltered(this.defaultFilter)
       }
+    },
+    clearFilters() {
+      this.filters = this.filters.map(filter => {
+        if (filter.type === 'select') {
+          filter.options = filter.options.map(nestedFilter => {
+            this.deactivateFilter(nestedFilter)
+            return nestedFilter
+          })
+        } else {
+          this.deactivateFilter(filter)
+        }
+        return filter
+      })
+      this.onFiltered(this.defaultFilter)
     },
     getActiveFilter() {
       let activeFilter = null
@@ -195,7 +210,6 @@ export default {
       }
       this.users = onSearch(trimmedValue, usersBase)
     },
-
     getAll() {
       this.filteredUsers = this.startUsers
 

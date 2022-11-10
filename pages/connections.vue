@@ -48,7 +48,7 @@
       </svg>
         </h3>
         <div class="filter switch-wrapper">
-          <app-filter :filters="filters" @filtered="onFiltered"/>
+          <app-filter :filters="filters" @clearFilters="clearFilters" @filtered="onFiltered"/>
           <!--          <custom-select-->
           <!--            v-model="connectionTypeFilter"-->
           <!--            :options="['All', 'Just met', 'Aready known+']"-->

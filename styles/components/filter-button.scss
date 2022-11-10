@@ -38,6 +38,22 @@
     background-color: var(--grey);
     // border: 2px solid var(--b-grey);
     opacity: 1;
+
+    &--clear {
+      @include bold;
+      font-size: 12px;
+      line-height: 100%;
+      color: white;
+      padding: 5px 16px 4px 16px;
+      background-color: #111111;
+      border: 1px solid #3f3f3f;
+      border-radius: 20px;
+    }
+
+    &--clear:hover {
+      border: 1px solid var(--light-gray);
+      background-color: #1f1f1f;
+    }
   }
 }
 

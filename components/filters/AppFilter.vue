@@ -20,6 +20,8 @@
         @clicked="onChange"
       />
     </template>
+    <button v-if="hasActiveFilter" class="filter-button--active--clear" @click="clearFilters">Clear
+    </button>
   </div>
 </template>
 
@@ -35,10 +37,28 @@ export default {
       default: () => [],
     },
   },
+  computed: {
+    hasActiveFilter() {
+      let hasActiveFilter = false;
+      this.filters.forEach(filter => {
+        if (filter.type === 'select') {
+          filter.options.forEach(nestedFilter => {
+            hasActiveFilter = hasActiveFilter || nestedFilter.active
+          })
+        } else {
+          hasActiveFilter = hasActiveFilter || filter.active
+        }
+      })
+      return hasActiveFilter;
+    }
+  },
   methods: {
     onChange(name) {
       this.$emit('filtered', name)
     },
+    clearFilters() {
+      this.$emit('clearFilters')
+    }
   },
 }
 </script>
