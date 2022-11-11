@@ -20,7 +20,7 @@
         @clicked="onChange"
       />
     </template>
-    <button v-if="hasActiveFilter" class="filter-button--active--clear" @click="clearFilters">Clear
+    <button v-show="hasActiveFilter" class="filter-button--active--clear" @click="clearFilters">Clear
     </button>
   </div>
 </template>

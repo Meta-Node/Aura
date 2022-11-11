@@ -12,8 +12,9 @@
           @updateItems="onUpdateItems"
         >
           <ul class="app-energy__humans">
-            <div class="app-energy__total-amount__container">
-              <p class="app-energy__total-amount__text">Total {{ totalAmount }}</p>
+            <div class="app-energy__labels__container">
+              <div class="app-energy__labels__total-amount">Total {{ totalAmount }}</div>
+              <div class="app-energy__labels__inbound">Inbound</div>
             </div>
             <user-v-3
               v-for="(user, i) in visibleItems"

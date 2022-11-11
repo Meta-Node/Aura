@@ -3,7 +3,6 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import { ENERGY_TABS } from '../../utils/constants'
 import { Connection, EnergyAllocationList } from '../../types'
 import {
   connectionsInEnergyFilterAll,
@@ -14,7 +13,9 @@ import {
   connectionsInEnergyFilterExcludeZero,
   connectionsInEnergyFilterExcludeZeroSortedByRateAscending,
   connectionsInEnergyFilterExcludeZeroSortedByRateDescending,
-  getEnergyAllocationPercentageStringInView,
+  getEnergyAllocationAmount,
+  getEnergyAllocationPercentageStringInSet,
+  getInboundEnergyAmount,
   getInboundEnergyPercentage,
   oldEnergyAllocation,
 } from '../utils/energy'
@@ -25,7 +26,7 @@ describe('Energy View', () => {
     cy.setupProfile()
   })
 
-  function showsConnectionInViewTab(
+  function showsConnectionInEnergyPage(
     connection: Connection,
     allocation: EnergyAllocationList
   ) {
@@ -37,11 +38,19 @@ describe('Energy View', () => {
       cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
         rating
       )
-      cy.get(`[data-testid^=user-v2-${connection.id}-inbound]`).contains(
-        getInboundEnergyPercentage(connection.id)
+      cy.get(`[data-testid^=user-v3-${connection.id}-inbound]`).contains(
+        getInboundEnergyAmount(connection.id)
       )
-      cy.get(`[data-testid^=user-v2-${connection.id}-outbound]`).contains(
-        getEnergyAllocationPercentageStringInView(allocation, connection.id)
+      cy.get(
+        `[data-testid^=user-v3-${connection.id}-inbound-percentage]`
+      ).contains(getInboundEnergyPercentage(connection.id))
+      cy.get(`[data-testid=user-slider-${connection.id}-input]`).should(
+        'have.value',
+        getEnergyAllocationAmount(allocation, connection.id)
+      )
+      cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).should(
+        'have.text',
+        getEnergyAllocationPercentageStringInSet(allocation, connection.id)
       )
     } else {
       cy.get(`[data-testid^=user-item-${connection.id}-rating]`).should(
@@ -51,11 +60,11 @@ describe('Energy View', () => {
   }
 
   it('shows energies in the view tab', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
 
     // shows rated connections
     connectionsInEnergyFilterAll.forEach(c => {
-      showsConnectionInViewTab(c, oldEnergyAllocation)
+      showsConnectionInEnergyPage(c, oldEnergyAllocation)
     })
 
     // does not show unrated or negative rated connections
@@ -68,17 +77,17 @@ describe('Energy View', () => {
   })
 
   it('shows unrated connections when searching, but not negative rated ones', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
 
     cy.get('[data-testid=top-search]').type('ra')
-    showsConnectionInViewTab(unratedConnection, oldEnergyAllocation)
+    showsConnectionInEnergyPage(unratedConnection, oldEnergyAllocation)
     cy.get(
       `[data-testid^=user-item-${ratedConnectionNegative.id}-name]`
     ).should('not.exist')
   })
 
   it('filters based on search value', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
 
     cy.get('[data-testid=top-search]').type(unratedConnection.name)
     cy.get(
@@ -97,7 +106,7 @@ describe('Energy View', () => {
   }
 
   it('orders connections by rate', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
 
     // sorting by rate should change the order for the test to be valid
     expect(connectionsInEnergyFilterAllSortedByRateAscending).to.not.deep.equal(
@@ -119,7 +128,7 @@ describe('Energy View', () => {
   })
 
   it('orders connections by rate', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
 
     // sorting by rate should change the order for the test to be valid
     expect(
@@ -147,7 +156,7 @@ describe('Energy View', () => {
   }
 
   it('exclude zeros filter', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
     assertExcludeZerosFilter(false)
     cy.get(`[data-testid=filter-ExcludeZeros-inactive]`).click()
     assertExcludeZerosFilter(true)
@@ -157,7 +166,7 @@ describe('Energy View', () => {
   })
 
   it('can order filtered list', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
 
     expect(connectionsInEnergyFilterAll).to.not.deep.equal(
       connectionsInEnergyFilterExcludeZero
@@ -189,7 +198,7 @@ describe('Energy View', () => {
   })
 
   it('can filter ordered list', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
 
     expect(connectionsInEnergyFilterAll).to.not.deep.equal(
       connectionsInEnergyFilterAllSortedByRateAscending
@@ -210,7 +219,7 @@ describe('Energy View', () => {
   })
 
   it('keeps filters when navigating', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
     assertOrder(connectionsInEnergyFilterAll)
 
     expect(connectionsInEnergyFilterAll).to.not.deep.equal(
@@ -232,7 +241,7 @@ describe('Energy View', () => {
   })
 
   it('keeps filters after reload', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.VIEW}`)
+    cy.visit('/energy/')
     assertOrder(connectionsInEnergyFilterAll)
 
     expect(connectionsInEnergyFilterAll).to.not.deep.equal(
