@@ -48,9 +48,14 @@ export const mutations: MutationTree<EnergyState> = {
 export const actions: ActionTree<EnergyState, RootState> = {
   async getTransferedEnergy({ commit }) {
     try {
-      const { energy: outboundEnergy } = await getEnergy()
+      const brightId = localStorage.getItem('brightId')
+      if (!brightId) {
+        throw new Error('BrightId is not defined')
+      }
 
-      const ratedUsers = await getRatedUsers()
+      const { energy: outboundEnergy } = await getEnergy(brightId)
+      const ratedUsers = await getRatedUsers(brightId)
+
       const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
 
       const allUsers = moreThanZero.map(user => {
@@ -80,7 +85,12 @@ export const actions: ActionTree<EnergyState, RootState> = {
 
   async getInboundEnergy({ commit }) {
     try {
-      const { energy: inboundEnergy } = await getInboundEnergy()
+      const brightId = localStorage.getItem('brightId')
+      if (!brightId) {
+        throw new Error('BrightId is not defined')
+      }
+
+      const { energy: inboundEnergy } = await getInboundEnergy(brightId)
 
       commit('setInboundEnergy', inboundEnergy)
     } catch (error) {
