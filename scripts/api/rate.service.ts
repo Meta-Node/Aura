@@ -34,14 +34,10 @@ export const rateUser = async (
   }
 }
 
-export const getRatedUsers = async () => {
-  const brightId = localStorage.getItem('brightId')
-  if (!brightId) {
-    throw new Error('BrightId is not defined')
-  }
+export const getRatedUsers = async (fromBrightId: string) => {
   try {
     const res = await backendApi.get<AuraRatingRetrieveResponse>(
-      '/v1/ratings/' + brightId
+      '/v1/ratings/' + fromBrightId
     )
     if (!res?.data?.ratings) {
       throw new Error('Data is not defined')

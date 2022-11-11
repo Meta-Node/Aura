@@ -19,9 +19,6 @@
         :rating="profile.rating"
         @share="onShare"
       />
-      <h3 class="aura-statistics-title">
-        Aura Statistics
-      </h3>
       <aura-statistics/>
       <four-unrated :users="fourUnrated"/>
     </div>

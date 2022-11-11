@@ -1,7 +1,7 @@
 <template>
   <div class="feedback__quality-slider">
     <h3 class="feedback__quality-title" data-testid="feedback-quality-value">{{ qualityValue }}</h3>
-    <div class="range-slider feedback__quality-slider">
+    <div class="range-slider feedback__quality-slider-slider">
       <label :for="id" class="feedback__quality-label">
         <span
           :style="{ width: prevPercent + '%' }"

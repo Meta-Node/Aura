@@ -95,7 +95,7 @@ export const actions: ActionTree<ProfileState, RootState> = {
       const connections = profileData?.connections
 
       const res = await getProfile(profileData.profile.id, isPublic)
-      const ratedUsers = await getRatedUsers()
+      const ratedUsers = await getRatedUsers(profileData.profile.id)
 
       // TODO: fix the issues with aura public and private profile types
       // @ts-ignore

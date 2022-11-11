@@ -30,6 +30,7 @@
         @edit="onEdit"
         @share="onShare"
       />
+      <aura-statistics :user-id="profile.id"/>
       <div class="feedback__questions">
         <div class="feedback__quality-wrapper">
           <div class="feedback__transition">
@@ -68,9 +69,11 @@ import {rateUser} from '~/scripts/api/rate.service'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
 import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
+import AuraStatistics from "~/components/profile/AuraStatistics";
 
 export default {
   components: {
+    AuraStatistics,
     FeedbackSlider,
     ProfileInfo,
     AppSpinner,
