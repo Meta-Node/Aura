@@ -1,6 +1,7 @@
 .feedback__quality-slider {
   &-slider {
     margin-top: 20px !important;
+    display: flex;
   }
 
   display: flex;
@@ -14,10 +15,6 @@
   font-size: 24px;
   line-height: 115%;
   letter-spacing: -0.03em;
-}
-
-.range-slider {
-  margin-top: 42px;
 }
 
 .feedback__quality-input {
@@ -69,4 +66,25 @@
   line-height: 125%;
   letter-spacing: -0.03em;
   margin-top: 10px;
+}
+
+.feedback__circle-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.feedback__circle-button {
+  margin-left: 10px;
+  display: block;
+  width: 32px;
+  height: 32px;
+  background-color: var(--grey);
+  border-radius: 50%;
+  box-shadow: 0px -1px 1px 1.5px rgba(255, 252, 252, 0.35);
+}
+
+.feedback__check-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
