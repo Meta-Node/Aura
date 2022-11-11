@@ -1,40 +1,57 @@
 <template>
   <div class="feedback__quality-slider">
     <h3 class="feedback__quality-title" data-testid="feedback-quality-value">{{ qualityValue }}</h3>
-    <div class="range-slider feedback__quality-slider-slider">
-      <label :for="id" class="feedback__quality-label">
+    <div class="feedback__quality-slider">
+      <div class="feedback__quality-slider-slider">
+        <label :for="id" class="feedback__quality-label">
         <span
           :style="{ width: prevPercent + '%' }"
           class="feedback__quality-prev-value"
         ></span>
-        <input
-          :id="id"
-          :max="max"
-          :min="min"
-          :step="step"
-          :type="type"
-          :value="newValue"
-          class="feedback__quality-input"
-          data-testid="feedback-quality-input"
-          @input="onRange"
-        />
-      </label>
+          <input
+            :id="id"
+            :max="max"
+            :min="min"
+            :step="step"
+            :type="type"
+            :value="newValue"
+            class="feedback__quality-input"
+            data-testid="feedback-quality-input"
+            @input="onRange"
+          />
+        </label>
+        <div class="feedback__circle-wrapper">
+          <button class="feedback__circle-button" data-testid="feedback-quality-confirm" @click="onAfterChange">
+          <span class="feedback__check-mark"
+          ><svg
+            fill="none"
+            height="10"
+            viewBox="0 0 14 10"
+            width="14"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+              <path
+                d="M1.66699 5L5.66699 9L12.3337 1"
+                stroke="#EEEEEE"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              /></svg
+          ></span>
+          </button>
+        </div>
+      </div>
       <p>
         <span id="percents" class="feedback__percents">{{ percents }}</span>
       </p>
     </div>
-    <app-button class="feedback__btn" data-testid="feedback-quality-confirm" @click="onAfterChange">
-      Confirm
-    </app-button>
   </div>
 </template>
 
 <script>
-import AppButton from './AppButton.vue'
 import {getStepName, getStepValue, valueToStep} from "~/utils/rating";
 
 export default {
-  components: {AppButton},
   props: {
     id: {
       type: String,
