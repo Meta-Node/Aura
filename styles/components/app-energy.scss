@@ -83,16 +83,21 @@
 }
 
 .app-energy {
-  &__total-amount {
+  &__labels {
     &__container {
       display: flex;
-      flex-direction: row-reverse
+      flex-direction: row-reverse;
+      margin-bottom: 5px;
     }
 
-    &__text {
+    &__total-amount {
       text-align: center;
-      width: 130px;
-      margin-bottom: 5px;
+      width: 120px;
+    }
+
+    &__inbound {
+      text-align: center;
+      width: 105px;
     }
   }
 

@@ -17,49 +17,15 @@
         <div class="explorer-energy">
           <h3 class="explorer-energy__indicator-text">Energy</h3>
         </div>
-        <!--        <energy-indicator :percent="availableEnergy"/>-->
-        <div class="switch">
-          <div class="switch__wrapper">
-            <button
-              :class="[isView && 'switch__filter-button--active']"
-              class="switch__filter-button"
-              data-testid="energy-tab-switch-view"
-              @click="onExplorerClick"
-            >
-              View
-            </button>
-            <button
-              :class="[!isView && 'switch__filter-button--active']"
-              class="switch__filter-button"
-              data-testid="energy-tab-switch-set"
-              @click="onEnergyClick"
-            >
-              Set
-            </button>
-          </div>
-          <div class="enegry__screens">
-            <transition
-              mode="out-in"
-              name="fade"
-            >
-              <app-explorer
-                v-if="isView"
-                :filters="filters"
-                :users="users"
-                @clearFilters="clearFilters"
-                @filtered="onFiltered"
-              />
-              <app-energy
-                v-else
-                :changed-energies="changedEnergies"
-                :filters="filters"
-                :users="users"
-                @clearFilters="clearFilters"
-                @filtered="onFiltered"
-                @getTransferedEnergy="getUserData"
-              />
-            </transition>
-          </div>
+        <div class="enegry__screens">
+          <app-energy
+            :changed-energies="changedEnergies"
+            :filters="filters"
+            :users="users"
+            @clearFilters="clearFilters"
+            @filtered="onFiltered"
+            @getTransferedEnergy="getUserData"
+          />
         </div>
       </div>
     </div>
@@ -70,11 +36,9 @@
 import AppSearch from '~/components/AppSearch.vue'
 import AppSpinner from '~/components/AppSpinner.vue'
 import AppEnergy from '~/components/energy/AppEnergy'
-import AppExplorer from '~/components/energy/AppExplorer'
-// import EnergyIndicator from '~/components/EnergyIndicator.vue'
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
-import {ENERGY_TABS, TOAST_ERROR} from "~/utils/constants";
+import {TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 
 const unsavedChangesConfirmation = () => window.confirm('You have unsaved changes.\nClick Cancel to go back to save\nClick OK to leave without saving');
@@ -85,7 +49,6 @@ export default {
     AppSearch,
     // EnergyIndicator,
     AppEnergy,
-    AppExplorer,
     AppSpinner,
   },
   mixins: [transition, users],
@@ -106,7 +69,6 @@ export default {
   },
   data() {
     return {
-      isView: false,
       filterKey,
       filters: [
         {
@@ -172,13 +134,6 @@ export default {
     },
   },
 
-  watch: {
-    isView() {
-      this.isView
-        ? this.updateRouterQuery(ENERGY_TABS.VIEW)
-        : this.updateRouterQuery(ENERGY_TABS.SET)
-    },
-  },
   mounted() {
     const vinst = this
     window.onbeforeunload = function () {
@@ -187,16 +142,6 @@ export default {
       }
     }
     this.getTransferedEnergy()
-
-    const routeQuery = this.$route.query?.tab
-
-    if (routeQuery === ENERGY_TABS.VIEW) {
-      this.isView = true
-      return
-    }
-    if (routeQuery === ENERGY_TABS.SET) {
-      this.isView = false
-    }
   },
   methods: {
     async getUserData() {
@@ -228,6 +173,7 @@ export default {
               )
               : 0,
             transferedEnergy: outboundEnergyObject?.amount || 0,
+            inboundEnergyAmount: inboundEnergyObject?.amount || 0,
             inboundEnergyPercentage: inboundEnergyObject
               ? toRoundedPercentage(
                 inboundEnergyObject.amount,
@@ -251,23 +197,6 @@ export default {
           this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
           console.log(error)
         })
-    },
-    onExplorerClick() {
-      if (this.changedEnergies.length) {
-        const answer = unsavedChangesConfirmation()
-        if (answer) {
-          this.isView = true
-        }
-      } else {
-        this.isView = true
-      }
-    },
-    onEnergyClick() {
-      this.isView = false
-    },
-    updateRouterQuery(tabName) {
-      const queries = this.$route.query
-      this.$router.push({query: {...queries, tab: tabName}})
     },
   },
 }
