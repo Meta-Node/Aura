@@ -36,9 +36,10 @@
           tag="button"
           to="/connections/"
         >
-          <span class="material-symbols-rounded" style="color:white">
+          <span class="material-symbols-rounded">
             groups
           </span>
+          <span class="nav-button__label">Connections</span>
         </nuxt-link>
         <nuxt-link
           aria-label="Navigation button"
@@ -46,9 +47,10 @@
           tag="button"
           to="/energy/"
         >
-          <span class="material-symbols-rounded" style="color:white">
+          <span class="material-symbols-rounded">
             electric_bolt
           </span>
+          <span class="nav-button__label">Energy</span>
         </nuxt-link>
         <button
           :class="[isPopupOpen && 'nav-button--open']"
