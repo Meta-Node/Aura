@@ -42,11 +42,9 @@ const api: Plugin = ({ store }, inject) => {
           store
             .dispatch('login/refreshKeyPair')
             .then(() => {
-              console.log('refreshed!')
               reject(new Error('retryRequest'))
             })
             .catch(_e => {
-              console.log('refreshed error!')
               console.log(_e)
               reject(error)
             })

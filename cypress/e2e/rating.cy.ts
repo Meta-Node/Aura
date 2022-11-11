@@ -205,10 +205,13 @@ describe('Rating', () => {
         body: 'OK',
       }
     ).as('explorerCode')
-    const publicKey1 = localStorage.getItem('publicKey')
-    const privateKey1 = localStorage.getItem('privateKey')
+    let publicKey1: string | null
+    let privateKey1: string | null
     ratePageIntercepts(unratedConnection)
-    cy.visit(`/profile/` + unratedConnection.id)
+    cy.visit(`/profile/` + unratedConnection.id).then(() => {
+      publicKey1 = window.localStorage.getItem('publicKey')
+      privateKey1 = window.localStorage.getItem('privateKey')
+    })
     showsRateValue(unratedConnection, oldRatings)
     setNewRateValue(unratedConnection)
 
@@ -243,8 +246,8 @@ describe('Rating', () => {
         expect(body.publicKey).to.be.not.null
       })
       .then(() => {
-        expect(localStorage.getItem('publicKey')).to.not.eq(publicKey1)
-        expect(localStorage.getItem('privateKey')).to.not.eq(privateKey1)
+        expect(window.localStorage.getItem('publicKey')).to.not.eq(publicKey1)
+        expect(window.localStorage.getItem('privateKey')).to.not.eq(privateKey1)
       })
     cy.get(`.toast--${TOAST_SUCCESS}`).should('exist')
     cy.get('@submitRatingEncryptErrorFirstTime.all').should('have.length', 2)
