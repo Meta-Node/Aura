@@ -63,7 +63,21 @@ export default {
       },
       { hid: 'theme-color', name: 'theme-color', content: '#333333' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'dns-prefetch',
+        href: 'https://fonts.gstatic.com/',
+      },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com/',
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0',
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
