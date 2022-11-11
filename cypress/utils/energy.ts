@@ -52,6 +52,13 @@ export const AURA_INBOUND_ENERGIES: InboundEnergyAllocationRetrieveResponse = {
   ],
 }
 
+export function getInboundEnergyAmount(brightId: string) {
+  const inboundEnergy = AURA_INBOUND_ENERGIES.energy.find(
+    e => e.fromBrightId === brightId
+  )
+  return inboundEnergy?.amount || 0
+}
+
 export function getInboundEnergyPercentage(brightId: string) {
   const inboundEnergy = AURA_INBOUND_ENERGIES.energy.find(
     e => e.fromBrightId === brightId

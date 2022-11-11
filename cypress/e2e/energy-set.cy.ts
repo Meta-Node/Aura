@@ -6,7 +6,7 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import { ENERGY_TABS, TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
+import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
 import {
   Connection,
   EnergyAllocationList,
@@ -16,7 +16,7 @@ import {
 import {
   getEnergyAllocationAmount,
   getEnergyAllocationPercentageStringInSet,
-  getEnergyAllocationPercentageStringInView,
+  getInboundEnergyAmount,
   getInboundEnergyPercentage,
   newEnergyAllocation,
   oldEnergyAllocation,
@@ -80,7 +80,7 @@ describe('Energy Set', () => {
     cy.get(`.toast--${TOAST_SUCCESS}`)
   }
 
-  function showsConnectionInViewTab(
+  function showsConnectionInEnergyPage(
     connection: Connection,
     allocation: EnergyAllocationList
   ) {
@@ -92,11 +92,19 @@ describe('Energy Set', () => {
       cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
         rating
       )
-      cy.get(`[data-testid^=user-v2-${connection.id}-inbound]`).contains(
-        getInboundEnergyPercentage(connection.id)
+      cy.get(`[data-testid^=user-v3-${connection.id}-inbound]`).contains(
+        getInboundEnergyAmount(connection.id)
       )
-      cy.get(`[data-testid^=user-v2-${connection.id}-outbound]`).contains(
-        getEnergyAllocationPercentageStringInView(allocation, connection.id)
+      cy.get(
+        `[data-testid^=user-v3-${connection.id}-inbound-percentage]`
+      ).contains(getInboundEnergyPercentage(connection.id))
+      cy.get(`[data-testid=user-slider-${connection.id}-input]`).should(
+        'have.value',
+        getEnergyAllocationAmount(allocation, connection.id)
+      )
+      cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).should(
+        'have.text',
+        getEnergyAllocationPercentageStringInSet(allocation, connection.id)
       )
     } else {
       cy.get(`[data-testid^=user-item-${connection.id}-rating]`).should(
@@ -105,37 +113,20 @@ describe('Energy Set', () => {
     }
   }
 
-  function showsConnectionInSetTab(
-    connection: Connection,
-    allocation: EnergyAllocationList
-  ) {
-    cy.get(`[data-testid^=user-item-${connection.id}-name]`).contains(
-      connection.name
-    )
-    cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
-      getRating(connection.id, oldRatings)!
-    )
-    cy.get(`[data-testid=user-slider-${connection.id}-input]`).should(
-      'have.value',
-      getEnergyAllocationAmount(allocation, connection.id)
-    )
-    cy.get(`[data-testid=user-slider-${connection.id}-percentage]`).should(
-      'have.text',
-      getEnergyAllocationPercentageStringInSet(allocation, connection.id)
-    )
-  }
-
   it('shows energies in set tab', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
+    cy.visit('/energy/')
     cy.get(`[data-testid^=user-item-${unratedConnection.id}-name]`).should(
       'not.exist'
     )
-    showsConnectionInSetTab(ratedConnection, oldEnergyAllocation)
-    showsConnectionInSetTab(ratedConnectionWithoutEnergy, oldEnergyAllocation)
+    showsConnectionInEnergyPage(ratedConnection, oldEnergyAllocation)
+    showsConnectionInEnergyPage(
+      ratedConnectionWithoutEnergy,
+      oldEnergyAllocation
+    )
   })
 
   it('can not set value more less than 0', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
+    cy.visit('/energy/')
 
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')
@@ -146,7 +137,7 @@ describe('Energy Set', () => {
   })
 
   it('can update energies', () => {
-    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
+    cy.visit('/energy/')
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')
       .type(
@@ -160,13 +151,13 @@ describe('Energy Set', () => {
       .type('{selectAll}')
       .type(getEnergyAllocationAmount(newEnergyAllocation, ratedConnection.id))
 
-    showsConnectionInSetTab(ratedConnection, newEnergyAllocation)
-    showsConnectionInSetTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
+    showsConnectionInEnergyPage(ratedConnection, newEnergyAllocation)
+    showsConnectionInEnergyPage(
+      ratedConnectionWithoutEnergy,
+      newEnergyAllocation
+    )
     submitEnergyFailure()
     submitEnergySuccess()
-    cy.get('[data-testid=energy-tab-switch-view]').click()
-    showsConnectionInViewTab(ratedConnection, newEnergyAllocation)
-    showsConnectionInViewTab(ratedConnectionWithoutEnergy, newEnergyAllocation)
   })
 
   it('regenerates keypair if the privateKey is invalid', () => {
@@ -181,7 +172,7 @@ describe('Energy Set', () => {
     ).as('explorerCode')
     const publicKey1 = localStorage.getItem('publicKey')
     const privateKey1 = localStorage.getItem('privateKey')
-    cy.visit(`/energy/?tab=${ENERGY_TABS.SET}`)
+    cy.visit('/energy/')
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')
       .type(

@@ -1,7 +1,9 @@
 <template>
   <li class="user-v3__humans-list">
     <user-item-info :index="index" :user="user"></user-item-info>
-    <span style="font-size: 12px;">{{ user.inboundEnergyAmount }} ({{ user.inboundEnergyPercentage }}%)</span>
+    <span style="font-size: 12px;"><span :data-testid="`user-v3-${id}-inbound`">
+      {{ user.inboundEnergyAmount }}</span> <span
+      :data-testid="`user-v3-${id}-inbound-percentage`">({{ user.inboundEnergyPercentage }}%)</span></span>
     <div class="user-v3__numbers">
       <template v-if="rating">
         <user-slider
