@@ -5,7 +5,7 @@
       :data-testid="`user-v3-${id}-inbound-percentage`">{{ user.inboundEnergyPercentage }}%</span></span>
     <div class="user-v3__numbers">
       <template v-if="rating">
-        <user-slider
+        <energy-slider
           id="quality"
           v-model="value"
           :min="0"
@@ -24,12 +24,12 @@
 </template>
 
 <script>
+import EnergySlider from '../EnergySlider'
 import UserItemInfo from './UserItemInfo'
 import avatar from '~/mixins/avatar'
 
-
 export default {
-  components: {UserItemInfo},
+  components: {UserItemInfo, EnergySlider},
   mixins: [avatar],
   props: {
     user: {

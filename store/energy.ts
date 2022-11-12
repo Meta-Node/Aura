@@ -53,7 +53,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
         throw new Error('BrightId is not defined')
       }
 
-      const { energy: outboundEnergy } = await getEnergy(brightId)
+      const outboundEnergy = await getEnergy(brightId)
       const ratedUsers = await getRatedUsers(brightId)
 
       const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
@@ -90,7 +90,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
         throw new Error('BrightId is not defined')
       }
 
-      const { energy: inboundEnergy } = await getInboundEnergy(brightId)
+      const inboundEnergy = await getInboundEnergy(brightId)
 
       commit('setInboundEnergy', inboundEnergy)
     } catch (error) {

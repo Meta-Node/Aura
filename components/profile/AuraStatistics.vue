@@ -84,7 +84,6 @@ export default {
         console.log(error)
       }
       if (this.userId) {
-        console.log(this.userId)
         getIncomingRatings(this.userId).then(ratings => {
           this.profileIncomingRatings = ratings;
           onDone()
@@ -93,12 +92,12 @@ export default {
           this.profileRatedUsers = ratings;
           onDone()
         })
-        getEnergy(this.userId).then(res => {
-          this.profileTransferedEnergy = res.energy;
+        getEnergy(this.userId).then(energy => {
+          this.profileTransferedEnergy = energy;
           onDone()
         })
-        getInboundEnergy(this.userId).then(res => {
-          this.profileInboundEnergy = res.energy;
+        getInboundEnergy(this.userId).then(energy => {
+          this.profileInboundEnergy = energy;
           onDone()
         })
       } else {
