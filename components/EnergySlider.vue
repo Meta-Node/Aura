@@ -44,14 +44,6 @@ export default {
     max: {
       type: Number,
     },
-    step: {
-      type: Number,
-      default: 0,
-    },
-    quota: {
-      type: Number,
-      default: 100,
-    },
     value: {
       type: Number,
     },
