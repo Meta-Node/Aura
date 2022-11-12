@@ -47,6 +47,19 @@
           </div>
         </div>
       </div>
+      <div style="width: 165px; margin: 20px auto; display: flex">
+        <span class="material-symbols-rounded">
+          electric_bolt
+        </span>
+        <energy-slider
+          id="quality"
+          v-model="energyValue"
+          :min="0"
+          :user-id="profile ? profile.id : undefined"
+          type="range"
+          @input="changeEnergy"
+        />
+      </div>
       <mutual-connections :profile="profile"/>
     </div>
     <nickname-popup
@@ -70,6 +83,7 @@ import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
 import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 import AuraStatistics from "~/components/profile/AuraStatistics";
+import energySet from "~/mixins/energySet";
 
 export default {
   components: {
@@ -80,7 +94,7 @@ export default {
     NicknamePopup,
     MutualConnections,
   },
-  mixins: [transition, avatar],
+  mixins: [transition, avatar, energySet],
   props: {
     profile: {
       type: Object,
@@ -112,11 +126,11 @@ export default {
 
   data() {
     return {
+      energyValue: 0,
       isAlreadyRated: false,
       debugError: null,
     }
   },
-
   computed: {
     previousRating() {
       return +this.profile.previousRating || 0
@@ -124,6 +138,27 @@ export default {
     img() {
       return this.$route.params.id
     },
+    transferedEnergyToProfile() {
+      return Number(this.$store.state.energy.transferedEnergy?.find(
+        en => en.toBrightId === this.profile?.id
+      )?.amount || 0)
+    }
+  },
+  watch: {
+    transferedEnergyToProfile: {
+      immediate: true,
+      handler(newValue, _oldValue) {
+        this.energyValue = Number(newValue);
+      }
+    },
+    isLoading: {
+      immediate: true,
+      handler(newValue, _oldValue) {
+        if (!newValue) {
+          this.energyData = this.$store.state.energy.transferedEnergy
+        }
+      }
+    }
   },
 
   methods: {
@@ -136,13 +171,12 @@ export default {
             fromBrightId: localStorage.getItem('brightId'),
             toBrightId: this.profile.id,
           })
-          this.$store.commit('app/setLoading', false)
-
           this.$store.commit('toast/addToast', {
-            text: 'Successfully updated',
+            text: 'Rating Successfully updated',
             color: TOAST_SUCCESS,
           })
         }
+        await this.updateEnergy()
         this.$router.push('/connections')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
@@ -165,6 +199,9 @@ export default {
     updateNickname(value) {
       this.$emit('updateNickname', value)
     },
+    changeEnergy(value) {
+      this.onChangeEnergy({amount: Number(value), toBrightId: this.profile.id})
+    }
   },
 }
 </script>

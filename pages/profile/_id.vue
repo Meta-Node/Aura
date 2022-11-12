@@ -37,6 +37,7 @@ import PrivateProfile from '~/components/profile/PrivateProfile.vue'
 import PublicProfile from '~/components/profile/PublicProfile.vue'
 import {getConnection, getProfile} from '~/scripts/api/connections.service'
 import {TOAST_ERROR} from "~/utils/constants";
+import {toRoundedPercentage} from "~/utils/numbers";
 
 export default {
   components: {
@@ -61,6 +62,9 @@ export default {
   },
 
   computed: {
+    transferedEnergy() {
+      return this.$store.state.energy.transferedEnergy
+    },
     brightness() {
       return this.profile?.rating / 10
     },
@@ -150,12 +154,27 @@ export default {
         !this.isPublicRouteQuery &&
         (await this.$store.dispatch('connections/getConnectionsData'))
         await this.$store.dispatch('profile/loadProfileData')
+        await this.$store.dispatch('energy/getTransferedEnergy')
         const connections = this.$store.getters['profile/connections']
 
         this.profile = connections.find(con => con.id === this.brightId)
 
         const res = await getProfile(this.brightId, this.isPublicRouteQuery)
-        this.profile = {...this.profile, ...res.data}
+
+        const outboundEnergyObject = this.transferedEnergy.find(
+          en => en.toBrightId === this.brightId
+        )
+
+        this.profile = {
+          ...this.profile, ...res.data,
+          transferedEnergyPercentage: outboundEnergyObject
+            ? toRoundedPercentage(
+              outboundEnergyObject.amount,
+              outboundEnergyObject.scale
+            )
+            : 0,
+          transferedEnergy: outboundEnergyObject?.amount || 0
+        }
         const connectionRes = await getConnection(this.brightId)
         this.isPrivate = !this.isPublicRouteQuery
         if (connectionRes?.previousRating) {
