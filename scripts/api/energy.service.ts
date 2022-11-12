@@ -5,6 +5,7 @@ import {
   EnergyAllocationList,
   EnergyAllocationRetrieveResponse,
   EnergyAllocationUpdateResponse,
+  InboundEnergyAllocationList,
   InboundEnergyAllocationRetrieveResponse,
 } from '~/types'
 
@@ -31,30 +32,46 @@ export const transferEnergy = async (
   }
 }
 
-export const getEnergy = async (fromBrightId: string) => {
+export const getEnergy = async (
+  fromBrightId: string
+): Promise<EnergyAllocationList> => {
   try {
     const res = await backendApi.get<EnergyAllocationRetrieveResponse>(
       '/v1/energy/' + fromBrightId
     )
-    if (!res.data) {
+    if (
+      res?.originalError?.response?.data ===
+      'No public key defined for brightId'
+    ) {
+      return []
+    }
+    if (!res?.data?.energy) {
       throw new Error('Energy data in not defined')
     }
-    return res.data
+    return res.data.energy
   } catch (error) {
     console.log(error)
     throw error
   }
 }
 
-export const getInboundEnergy = async (toBrightId: string) => {
+export const getInboundEnergy = async (
+  toBrightId: string
+): Promise<InboundEnergyAllocationList> => {
   try {
     const res = await backendApi.get<InboundEnergyAllocationRetrieveResponse>(
       '/v1/energy/inbound/' + toBrightId
     )
-    if (!res.data) {
+    if (
+      res?.originalError?.response?.data ===
+      'No public key defined for brightId'
+    ) {
+      return []
+    }
+    if (!res?.data?.energy) {
       throw new Error('Energy data in not defined')
     }
-    return res.data
+    return res.data.energy
   } catch (error) {
     console.log(error)
     throw error

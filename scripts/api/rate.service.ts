@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios'
 import { backendApi } from '.'
 import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
-import { AuraRatingRetrieveResponse } from '~/types'
+import { AuraRating, AuraRatingRetrieveResponse } from '~/types'
 
 export const rateUser = async (
   backendApi: AxiosInstance,
@@ -34,30 +34,46 @@ export const rateUser = async (
   }
 }
 
-export const getRatedUsers = async (fromBrightId: string) => {
+export const getRatedUsers = async (
+  fromBrightId: string
+): Promise<AuraRating[]> => {
   try {
     const res = await backendApi.get<AuraRatingRetrieveResponse>(
       '/v1/ratings/' + fromBrightId
     )
+    if (
+      res?.originalError?.response?.data ===
+      'No public key defined for brightId'
+    ) {
+      return []
+    }
     if (!res?.data?.ratings) {
       throw new Error('Data is not defined')
     }
-    return res?.data?.ratings
+    return res.data.ratings
   } catch (error) {
     console.log(error)
     throw error
   }
 }
 
-export const getIncomingRatings = async (toBrightId: string) => {
+export const getIncomingRatings = async (
+  toBrightId: string
+): Promise<AuraRating[]> => {
   try {
     const res = await backendApi.get<AuraRatingRetrieveResponse>(
       '/v1/ratings/inbound/' + toBrightId
     )
+    if (
+      res?.originalError?.response?.data ===
+      'No public key defined for brightId'
+    ) {
+      return []
+    }
     if (!res?.data?.ratings) {
       throw new Error('Data is not defined')
     }
-    return res?.data?.ratings
+    return res.data.ratings
   } catch (error) {
     console.log(error)
     throw error
