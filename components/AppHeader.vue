@@ -33,7 +33,6 @@
         <nuxt-link
           aria-label="Navigation button"
           class="nav-button"
-          tag="button"
           to="/connections/"
         >
           <span class="material-symbols-rounded">
@@ -44,7 +43,6 @@
         <nuxt-link
           aria-label="Navigation button"
           class="nav-button"
-          tag="button"
           to="/energy/"
         >
           <span class="material-symbols-rounded">
@@ -103,7 +101,7 @@
               </nuxt-link>
             </li>
             <li class="popup-menu__list">
-              <a 
+              <a
                 class="menu-text popup-menu__text"
                 href="https://brightid.gitbook.io/aura/"
                 target="_blank"
