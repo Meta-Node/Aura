@@ -36,13 +36,13 @@
           <div class="feedback__transition">
             <feedback-slider
               id="quality"
+              v-model="ratingValue"
               :max="5"
               :min="-5"
               :prev-value="+profile.previousRating"
               :step="1"
-              :value="previousRating"
               type="range"
-              @changed="onFeedbackChanged"
+              @submit="onFeedbackChanged"
             />
           </div>
         </div>
@@ -59,6 +59,7 @@
           <energy-slider
             id="quality"
             v-model="energyValue"
+            :disabled="ratingValue < 1"
             :min="0"
             :user-id="profile ? profile.id : undefined"
             type="range"
@@ -90,6 +91,7 @@ import avatar from '~/mixins/avatar'
 import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 import AuraStatistics from "~/components/profile/AuraStatistics";
 import energySet from "~/mixins/energySet";
+import {deepCopy} from "~/utils";
 
 export default {
   components: {
@@ -132,6 +134,7 @@ export default {
 
   data() {
     return {
+      ratingValue: 0,
       energyValue: 0,
       isAlreadyRated: false,
       debugError: null,
@@ -144,6 +147,11 @@ export default {
     img() {
       return this.$route.params.id
     },
+    prevTransferedEnergyToProfile() {
+      return Number(this.$store.state.energy.prevTransferedEnergy?.find(
+        en => en.toBrightId === this.profile?.id
+      )?.amount || 0)
+    },
     transferedEnergyToProfile() {
       return Number(this.$store.state.energy.transferedEnergy?.find(
         en => en.toBrightId === this.profile?.id
@@ -151,6 +159,16 @@ export default {
     }
   },
   watch: {
+    ratingValue: {
+      immediate: true,
+      handler(value, oldValue) {
+        if (value < 1) {
+          this.changeEnergy(0)
+        } else if (oldValue < 1) {
+          this.changeEnergy(this.prevTransferedEnergyToProfile)
+        }
+      }
+    },
     transferedEnergyToProfile: {
       immediate: true,
       handler(newValue, _oldValue) {
@@ -161,7 +179,8 @@ export default {
       immediate: true,
       handler(newValue, _oldValue) {
         if (!newValue) {
-          this.energyData = this.$store.state.energy.transferedEnergy
+          this.energyData = deepCopy(this.$store.state.energy.prevTransferedEnergy)
+          this.ratingValue = this.previousRating
         }
       }
     }
@@ -182,7 +201,7 @@ export default {
             color: TOAST_SUCCESS,
           })
         }
-        if (rating >= 1) {
+        if (rating >= 1 && this.prevTransferedEnergyToProfile !== this.transferedEnergyToProfile) {
           await this.updateEnergy()
         } else {
           this.$store.commit('app/setLoading', false)

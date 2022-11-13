@@ -124,11 +124,12 @@ export default {
     onAfterChange() {
       this.updatedPercent = this.percents
 
-      this.$emit('changed', this.updatedPercent)
+      this.$emit('submit', this.updatedPercent)
     },
     updateValue(val) {
       this.newValue = val
       this.percents = getStepValue(val)
+      this.$emit('input', this.percents)
       this.qualityValue = getStepName(this.percents)
     },
   },

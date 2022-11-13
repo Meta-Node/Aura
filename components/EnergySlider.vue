@@ -1,16 +1,19 @@
 <template>
-  <div class="user">
+  <div :class="{user__slider__wrapper__disabled: disabled}">
     <div class="user__slider">
       <div
+        :class="{user__slider__action__disabled: disabled}"
         class="user__slider__action"
         @click="decrease">-
       </div>
       <input
         v-model="localValue"
         :data-testid="`user-slider-${userId}-input`"
+        :disabled="disabled"
         class="user__slider__input"
         type="number"/>
       <div
+        :class="{user__slider__action__disabled: disabled}"
         class="user__slider__action"
         @click="increase">+
       </div>
@@ -26,6 +29,10 @@ import energy from '~/mixins/energy'
 export default {
   mixins: [energy],
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     userId: {
       type: String,
     },
@@ -86,6 +93,7 @@ export default {
   },
   methods: {
     increase() {
+      if (this.disabled) return;
       for (let i = 0; i < this.values.length; i++) {
         if (this.values[i] > this.value) {
           this.$emit('input', this.values[i])
@@ -94,6 +102,7 @@ export default {
       }
     },
     decrease() {
+      if (this.disabled) return;
       for (let i = this.values.length - 1; i >= 0; i--) {
         if (this.values[i] < this.value) {
           this.$emit('input', this.values[i])
