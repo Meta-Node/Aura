@@ -74,7 +74,8 @@
             </span><span>energize</span>
         </button>
       </div>
-      <mutual-connections :profile="profile"/>
+      <mutual-connections
+        :profile="profile" :safe-navigate-to="safeNavigateTo"/>
     </div>
     <nickname-popup
       v-if="profile && profile.id"
@@ -128,6 +129,9 @@ export default {
     date: {
       type: String,
       default: '',
+    },
+    safeNavigateTo: {
+      type: Function,
     },
     brightness: {
       type: Number,

@@ -8,6 +8,7 @@
       :four-unrated="fourUnrated"
       :is-loading="isLoading"
       :profile="profile"
+      :safe-navigate-to="safeNavigateTo"
       @share="onShare"
       @updateNickname="updateNickname"
     />
@@ -38,13 +39,14 @@ import PublicProfile from '~/components/profile/PublicProfile.vue'
 import {getConnection, getProfile} from '~/scripts/api/connections.service'
 import {TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
+import unsavedChanges from "~/mixins/unsavedChanges";
 
 export default {
   components: {
     PrivateProfile,
     PublicProfile,
   },
-  mixins: [transition],
+  mixins: [transition, unsavedChanges],
 
   data() {
     return {
