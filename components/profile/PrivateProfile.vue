@@ -47,18 +47,24 @@
           </div>
         </div>
       </div>
-      <div style="width: 165px; margin: 20px auto; display: flex">
-        <span class="material-symbols-rounded">
-          electric_bolt
-        </span>
-        <energy-slider
-          id="quality"
-          v-model="energyValue"
-          :min="0"
-          :user-id="profile ? profile.id : undefined"
-          type="range"
-          @input="changeEnergy"
-        />
+      <div class="feedback__energy__wrapper">
+        <div class="feedback__energy__container">
+          <div class="feedback__energy__label__wrapper">
+            <span class="material-symbols-rounded">
+              electric_bolt
+            </span>
+            <span class="feedback__energy__label__text"
+            >Energy</span>
+          </div>
+          <energy-slider
+            id="quality"
+            v-model="energyValue"
+            :min="0"
+            :user-id="profile ? profile.id : undefined"
+            type="range"
+            @input="changeEnergy"
+          />
+        </div>
       </div>
       <mutual-connections :profile="profile"/>
     </div>
@@ -176,7 +182,11 @@ export default {
             color: TOAST_SUCCESS,
           })
         }
-        await this.updateEnergy()
+        if (rating >= 1) {
+          await this.updateEnergy()
+        } else {
+          this.$store.commit('app/setLoading', false)
+        }
         this.$router.push('/connections')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
