@@ -20,26 +20,6 @@
             @input="onRange"
           />
         </label>
-        <div class="feedback__circle-wrapper">
-          <button class="feedback__circle-button" data-testid="feedback-quality-confirm" @click="onAfterChange">
-          <span class="feedback__check-mark"
-          ><svg
-            fill="none"
-            height="10"
-            viewBox="0 0 14 10"
-            width="14"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-              <path
-                d="M1.66699 5L5.66699 9L12.3337 1"
-                stroke="#EEEEEE"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              /></svg
-          ></span>
-          </button>
-        </div>
       </div>
       <p>
         <span id="percents" class="feedback__percents">{{ percents }}</span>

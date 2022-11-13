@@ -15,17 +15,18 @@ export default {
     },
     unsavedChangedEnergies() {
       const prev = this.$store.state.energy.prevTransferedEnergy
-      if (!prev) return []
       const current = this.$store.state.energy.transferedEnergy
       return prev
         .filter(ep => {
-          const cur = current.find(ec => ec.toBrightId === ep.toBrightId)
-          return !cur || cur.amount !== ep.amount
+          const curAmount =
+            current.find(ec => ec.toBrightId === ep.toBrightId)?.amount || 0
+          return curAmount !== ep.amount
         })
         .concat(
           current.filter(ec => {
-            const p = prev.find(ep => ep.toBrightId === ec.toBrightId)
-            return !p || p.amount !== ec.amount
+            const prevAmount =
+              prev.find(ep => ep.toBrightId === ec.toBrightId)?.amount || 0
+            return prevAmount !== ec.amount
           })
         )
     },
