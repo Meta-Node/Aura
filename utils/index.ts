@@ -6,3 +6,7 @@ export const isThereProblemWithEncryption = (errorMessage?: string) => {
     errorMessage.includes('Could not decode data')
   )
 }
+
+export function deepCopy<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj))
+}
