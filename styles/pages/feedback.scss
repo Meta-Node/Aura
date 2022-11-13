@@ -10,6 +10,15 @@
       justify-content: center;
     }
 
+    &__energize-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      color: var(--white);
+      cursor: pointer;
+    }
+
     &__container {
       display: flex;
     }

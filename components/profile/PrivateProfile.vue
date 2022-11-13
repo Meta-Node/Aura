@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="feedback__energy__wrapper">
-        <div class="feedback__energy__container">
+        <div v-if="showEnergySlider" class="feedback__energy__container">
           <div class="feedback__energy__label__wrapper">
             <span class="material-symbols-rounded">
               electric_bolt
@@ -66,6 +66,13 @@
             @input="changeEnergy"
           />
         </div>
+        <button v-else
+                class="feedback__energy__energize-button"
+                @click="energize = true">
+            <span class="material-symbols-rounded">
+              electric_bolt
+            </span><span>energize</span>
+        </button>
       </div>
       <mutual-connections :profile="profile"/>
     </div>
@@ -134,6 +141,7 @@ export default {
 
   data() {
     return {
+      energize: false,
       ratingValue: 0,
       energyValue: 0,
       isAlreadyRated: false,
@@ -141,6 +149,9 @@ export default {
     }
   },
   computed: {
+    showEnergySlider() {
+      return this.prevTransferedEnergyToProfile > 0 || this.energize
+    },
     previousRating() {
       return +this.profile.previousRating || 0
     },
