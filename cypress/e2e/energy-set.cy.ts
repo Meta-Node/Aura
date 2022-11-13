@@ -16,7 +16,6 @@ import {
 import {
   getEnergyAllocationAmount,
   getEnergyAllocationPercentageStringInSet,
-  getInboundEnergyAmount,
   getInboundEnergyPercentage,
   newEnergyAllocation,
   oldEnergyAllocation,
@@ -91,9 +90,6 @@ describe('Energy Set', () => {
     if (rating) {
       cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
         rating
-      )
-      cy.get(`[data-testid^=user-v3-${connection.id}-inbound]`).contains(
-        getInboundEnergyAmount(connection.id)
       )
       cy.get(
         `[data-testid^=user-v3-${connection.id}-inbound-percentage]`
