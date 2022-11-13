@@ -75,8 +75,8 @@ export const actions: ActionTree<EnergyState, RootState> = {
         100 - totalAmount.reduce((prev, cur) => prev + cur, 0)
 
       commit('setAvailableEnergy', availableEnergy)
-      commit('setTransferedEnergy', allUsers)
       commit('setPrevTransferedEnergy', allUsers)
+      commit('setTransferedEnergy', allUsers)
     } catch (error) {
       console.log(error)
       throw error

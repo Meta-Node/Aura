@@ -15,6 +15,7 @@ export type LoginState = {
   isAuth: boolean
 }
 export type AppState = {
+  hasUnsavedChanges: boolean
   loading: boolean
   isWebp: boolean
   isAuth: boolean

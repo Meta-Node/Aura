@@ -36,7 +36,7 @@
                                                                                               to="/connections/">the connections page</nuxt-link> and rate them.</span>
       </div>
       <!-- <load-more text="Load More..." /> -->
-      <div v-if="changedEnergies.length && users.length" class="app-energy__save">
+      <div v-if="unsavedChangedEnergies.length && users.length" class="app-energy__save">
         <button class="app-energy__save__button" data-testid="update-energy" @click="updateEnergy">
           save changes
         </button>
@@ -55,10 +55,6 @@ export default {
   components: {UserV3, AppFilter},
   mixins: [loadItems, energySet],
   props: {
-    changedEnergies: {
-      type: Array,
-      default: () => []
-    },
     users: {
       type: Array,
       default: () => [],

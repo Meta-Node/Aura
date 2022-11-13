@@ -1,9 +1,9 @@
 <template>
   <section class="profile">
-    <div v-if="isLoading" style="margin-top: 40px">
+    <div v-if="isLoadingInitialData" style="margin-top: 40px">
       <app-spinner :is-visible="true"/>
     </div>
-    <div v-else-if="!isLoading && !profile" class="container">
+    <div v-else-if="!isLoadingInitialData && !profile" class="container">
       User not found
     </div>
     <div v-else class="container profile__wrapper">
@@ -50,7 +50,7 @@ export default {
       default: () => {
       },
     },
-    isLoading: {
+    isLoadingInitialData: {
       type: Boolean,
       default: true,
     },

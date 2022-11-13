@@ -5,10 +5,15 @@ const unsavedChangesConfirmation = () =>
 
 export default {
   computed: {
-    hasUnsavedChanges() {
-      return this.changedEnergies.length > 0
+    hasUnsavedChanges: {
+      get() {
+        return this.$store.state.app.hasUnsavedChanges
+      },
+      set(value) {
+        this.$store.commit('app/setHasUnsavedChanges', value)
+      },
     },
-    changedEnergies() {
+    unsavedChangedEnergies() {
       const prev = this.$store.state.energy.prevTransferedEnergy
       if (!prev) return []
       const current = this.$store.state.energy.transferedEnergy
@@ -26,31 +31,36 @@ export default {
     },
   },
   beforeRouteLeave(_to, _from, next) {
-    if (this.hasUnsavedChanges) {
-      const answer = unsavedChangesConfirmation()
-      if (answer) {
-        window.onbeforeunload = null
+    this.requestUnsavedChangesConfirmation(
+      () => {
         next()
-      } else {
+      },
+      () => {
         next(false)
       }
-    } else {
-      window.onbeforeunload = null
-      next()
-    }
+    )
   },
   methods: {
-    safeNavigateTo(...args) {
+    requestUnsavedChangesConfirmation(onLeavePage, onCancel) {
       if (this.hasUnsavedChanges) {
         const answer = unsavedChangesConfirmation()
         if (answer) {
           window.onbeforeunload = null
-          this.$router.push(...args)
+          this.hasUnsavedChanges = false
+          onLeavePage()
+        } else if (onCancel) {
+          onCancel()
         }
       } else {
         window.onbeforeunload = null
-        this.$router.push(...args)
+        this.hasUnsavedChanges = false
+        onLeavePage()
       }
+    },
+    safeRouterPush(...args) {
+      this.requestUnsavedChangesConfirmation(() => {
+        this.$router.push(...args)
+      })
     },
   },
   mounted() {

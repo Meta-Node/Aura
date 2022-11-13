@@ -1,6 +1,8 @@
 import { IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS } from '~/utils/constants'
+import unsavedChanges from '~/mixins/unsavedChanges'
 
 export default {
+  mixins: [unsavedChanges],
   data() {
     return {
       energyData: [],
@@ -15,6 +17,7 @@ export default {
           text: 'Energy successfully updated',
           color: TOAST_SUCCESS,
         })
+        this.hasUnsavedChanges = false
         // this.$router.push('/connections?filter=Unrated')
         this.$emit('getTransferedEnergy')
       } catch (error) {
