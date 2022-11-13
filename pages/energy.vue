@@ -19,7 +19,6 @@
         </div>
         <div class="enegry__screens">
           <app-energy
-            :changed-energies="changedEnergies"
             :filters="filters"
             :users="users"
             @clearFilters="clearFilters"
@@ -54,6 +53,7 @@ export default {
 
   data() {
     return {
+      isLoadingInitialData: true,
       filterKey,
       filters: [
         {
@@ -97,7 +97,6 @@ export default {
       title: `Aura | Energy`,
     }
   },
-
   computed: {
     transferedEnergy() {
       return this.$store.state.energy.transferedEnergy
@@ -105,6 +104,14 @@ export default {
     availableEnergy() {
       return this.$store.state.energy.availableEnergy || 0
     },
+  },
+  watch: {
+    unsavedChangedEnergies: {
+      immediate: true,
+      handler(value) {
+        this.hasUnsavedChanges = !!value?.length && !this.isLoadingInitialData
+      }
+    }
   },
   mounted() {
     this.getTransferedEnergy()
@@ -151,6 +158,7 @@ export default {
         })
         this.startUsers = finalUsers
         this.setInitialFilter()
+        this.isLoadingInitialData = false
       } catch (error) {
         console.log(error)
       } finally {

@@ -25,7 +25,7 @@
               :key="user.id"
               class="user-item__container"
           >
-            <mutual-connection :index="index" :safe-navigate-to="safeNavigateTo" :user="user"></mutual-connection>
+            <mutual-connection :index="index" :user="user"></mutual-connection>
           </li>
         </ul>
       </lazy-loading-items>
@@ -58,9 +58,6 @@ export default {
   },
   mixins: [transition, users, loadItems],
   props: {
-    safeNavigateTo: {
-      type: Function,
-    },
     profile: {
       type: Object,
       default: () => {

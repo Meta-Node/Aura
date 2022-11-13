@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :data-testid="`user-item-${index}`" :to="`/profile/${user.id}`"
   >
-    <div class="user-item__container" @click.prevent="navigateToProfile">
+    <div class="user-item__container" @click.prevent="() => safeRouterPush(`/profile/${user.id}`)">
       <nuxt-img
         :alt="user.name"
         :src="profileAvatar"
@@ -27,14 +27,12 @@
 <script>
 import avatar from '~/mixins/avatar'
 import {getAuraVerificationString} from "~/scripts/api/auranode.service";
+import unsavedChanges from "~/mixins/unsavedChanges";
 
 export default {
   name: "UserItemInfo",
-  mixins: [avatar],
+  mixins: [avatar, unsavedChanges],
   props: {
-    safeNavigateTo: {
-      type: Function
-    },
     showAuraVerification: {
       type: Boolean,
       default: true,
@@ -65,11 +63,6 @@ export default {
       })
     }
   },
-  methods: {
-    navigateToProfile() {
-      this.safeNavigateTo(`/profile/${this.user.id}`)
-    }
-  }
 }
 </script>
 

@@ -94,9 +94,10 @@
         <div :class="[isPopupOpen && 'popup-menu--open']" class="popup-menu">
           <ul class="popup-menu__reduce">
             <li class="popup-menu__list">
-              <nuxt-link :to="homeURL" class="menu-text popup-menu__text">
+              <a class="menu-text popup-menu__text" href="homeURL" target="_blank"
+                 @click.prevent="() => safeRouterPush(homeURL)">
                 Profile
-              </nuxt-link>
+              </a>
             </li>
             <li class="popup-menu__list">
               <nuxt-link class="menu-text popup-menu__text" to="/contact-us/">
@@ -130,8 +131,10 @@
 
 <script>
 import {IS_PRODUCTION, TOAST_SUCCESS} from "~/utils/constants";
+import unsavedChanges from "~/mixins/unsavedChanges";
 
 export default {
+  mixins: [unsavedChanges],
   data() {
     return {
       IS_PRODUCTION,
@@ -167,11 +170,13 @@ export default {
       this.isPopupOpen ? this.closePopup() : this.openPopup()
     },
     logout() {
-      this.$store.dispatch('login/logout')
-      this.$router.push('/')
-      this.$store.commit('toast/addToast', {
-        text: 'You have successfully logged out',
-        color: TOAST_SUCCESS,
+      this.requestUnsavedChangesConfirmation(() => {
+        this.$store.dispatch('login/logout')
+        this.$router.push('/')
+        this.$store.commit('toast/addToast', {
+          text: 'You have successfully logged out',
+          color: TOAST_SUCCESS,
+        })
       })
     },
   },

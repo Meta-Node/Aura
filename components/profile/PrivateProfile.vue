@@ -2,13 +2,13 @@
   <section class="feedback">
     <div v-if="debugError" class="debug-error">debug error: {{ debugError }}</div>
     <div
-      v-if="isLoading"
+      v-if="isLoadingInitialData"
       style="margin-top: 40px"
     >
       <app-spinner :is-visible="true"/>
     </div>
     <div
-      v-else-if="!isLoading && !profile.name"
+      v-else-if="!isLoadingInitialData && !profile.name"
       class="container"
     >
       <p style="margin: 0 auto; text-align: center">User not found</p>
@@ -75,7 +75,7 @@
         </button>
       </div>
       <mutual-connections
-        :profile="profile" :safe-navigate-to="safeNavigateTo"/>
+        :profile="profile"/>
     </div>
     <nickname-popup
       v-if="profile && profile.id"
@@ -100,6 +100,7 @@ import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
 import AuraStatistics from "~/components/profile/AuraStatistics";
 import energySet from "~/mixins/energySet";
 import {deepCopy} from "~/utils";
+import unsavedChanges from "~/mixins/unsavedChanges";
 
 export default {
   components: {
@@ -110,7 +111,7 @@ export default {
     NicknamePopup,
     MutualConnections,
   },
-  mixins: [transition, avatar, energySet],
+  mixins: [transition, avatar, energySet, unsavedChanges],
   props: {
     profile: {
       type: Object,
@@ -122,16 +123,13 @@ export default {
       default: () => {
       },
     },
-    isLoading: {
+    isLoadingInitialData: {
       type: Boolean,
       default: true,
     },
     date: {
       type: String,
       default: '',
-    },
-    safeNavigateTo: {
-      type: Function,
     },
     brightness: {
       type: Number,
@@ -174,6 +172,12 @@ export default {
     }
   },
   watch: {
+    unsavedChangedEnergies: {
+      immediate: true,
+      handler(value) {
+        this.hasUnsavedChanges = !!value?.length && !this.isLoadingInitialData
+      }
+    },
     ratingValue: {
       immediate: true,
       handler(value, oldValue) {
@@ -181,6 +185,9 @@ export default {
           this.changeEnergy(0)
         } else if (oldValue < 1) {
           this.changeEnergy(this.prevTransferedEnergyToProfile)
+        }
+        if (value !== this.previousRating) {
+          this.hasUnsavedChanges = true
         }
       }
     },
@@ -190,7 +197,7 @@ export default {
         this.energyValue = Number(newValue);
       }
     },
-    isLoading: {
+    isLoadingInitialData: {
       immediate: true,
       handler(newValue, _oldValue) {
         if (!newValue) {
@@ -221,6 +228,7 @@ export default {
         } else {
           this.$store.commit('app/setLoading', false)
         }
+        this.hasUnsavedChanges = false;
         this.$router.push('/connections')
       } catch (error) {
         this.$store.commit('app/setLoading', false)

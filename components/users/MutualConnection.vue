@@ -1,6 +1,6 @@
 <template>
   <li class="user-v2__humans-list" style="width: 100%">
-    <user-item-info :index="index" :safe-navigate-to="safeNavigateTo" :user="user"
+    <user-item-info :index="index" :user="user"
                     show-aura-verification></user-item-info>
     <div class="user-v2__numbers">
       <p :data-testid="`mutual-connection--${id}-incoming-level`" class="user-v2__num user-v2__num-outbound">
@@ -28,9 +28,6 @@ export default {
     index: {
       type: Number,
       default: 0,
-    },
-    safeNavigateTo: {
-      type: Function,
     },
     url: {
       type: String,

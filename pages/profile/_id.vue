@@ -6,9 +6,8 @@
       :brightness="brightness"
       :date="getDate"
       :four-unrated="fourUnrated"
-      :is-loading="isLoading"
+      :is-loading-initial-data="isLoadingInitialData"
       :profile="profile"
-      :safe-navigate-to="safeNavigateTo"
       @share="onShare"
       @updateNickname="updateNickname"
     />
@@ -18,7 +17,7 @@
       :brightness="brightness"
       :date="getDate"
       :four-unrated="fourUnrated"
-      :is-loading="isLoading"
+      :is-loading-initial-data="isLoadingInitialData"
       :profile="profile"
       @share="onShare"
     />
@@ -53,7 +52,7 @@ export default {
       isPrivate: true,
       isOwn: false,
       profile: {},
-      isLoading: true,
+      isLoadingInitialData: true,
     }
   },
 
@@ -121,15 +120,15 @@ export default {
   watch: {
     isPrivate() {
       const accType = this.isPrivate ? 'private' : 'public'
-      this.$router.push({query: {account: accType}})
+      this.$router.replace({query: {account: accType}})
     },
   },
 
   async mounted() {
-    this.isLoading = true
+    this.isLoadingInitialData = true
 
     if (!this.brightId) {
-      this.$router.push('/profile/' + localStorage.getItem('brightId'))
+      this.$router.replace('/profile/' + localStorage.getItem('brightId'))
       return
     }
 
@@ -182,11 +181,10 @@ export default {
         if (connectionRes?.previousRating) {
           this.profile.previousRating = connectionRes.previousRating.rating
         }
+        this.isLoadingInitialData = false
       } catch (error) {
         console.log(error)
         this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
-      } finally {
-        this.isLoading = false
       }
     },
     async loadOwnProfile() {
@@ -198,7 +196,7 @@ export default {
         console.log(error)
         this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
       } finally {
-        this.isLoading = false
+        this.isLoadingInitialData = false
       }
     },
 
