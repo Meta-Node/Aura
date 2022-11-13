@@ -42,7 +42,6 @@
               :prev-value="+profile.previousRating"
               :step="1"
               type="range"
-              @submit="onFeedbackChanged"
             />
           </div>
         </div>
@@ -83,6 +82,11 @@
       :to-bright-id="profile.id"
       @updateNickname="updateNickname"
     />
+    <div v-if="hasUnsavedChanges" class="app-energy__save">
+      <button class="app-energy__save__button" data-testid="feedback-quality-confirm" @click="onFeedbackChanged">
+        save changes
+      </button>
+    </div>
   </section>
 </template>
 
@@ -169,13 +173,19 @@ export default {
       return Number(this.$store.state.energy.transferedEnergy?.find(
         en => en.toBrightId === this.profile?.id
       )?.amount || 0)
+    },
+    hasUnsavedChangesLocal() {
+      if (this.isLoadingInitialData) return false;
+      if (this.unsavedChangedEnergies?.length) return true;
+      if (this.ratingValue !== this.previousRating) return true;
+      return false
     }
   },
   watch: {
-    unsavedChangedEnergies: {
+    hasUnsavedChangesLocal: {
       immediate: true,
       handler(value) {
-        this.hasUnsavedChanges = !!value?.length && !this.isLoadingInitialData
+        this.hasUnsavedChanges = value
       }
     },
     ratingValue: {
@@ -185,9 +195,6 @@ export default {
           this.changeEnergy(0)
         } else if (oldValue < 1) {
           this.changeEnergy(this.prevTransferedEnergyToProfile)
-        }
-        if (value !== this.previousRating) {
-          this.hasUnsavedChanges = true
         }
       }
     },
@@ -209,12 +216,12 @@ export default {
   },
 
   methods: {
-    async onFeedbackChanged(rating) {
+    async onFeedbackChanged() {
       this.$store.commit('app/setLoading', true)
       try {
-        if (rating !== this.previousRating) {
+        if (this.ratingValue !== this.previousRating) {
           await rateUser(this.$backendApi, {
-            rating,
+            rating: this.ratingValue,
             fromBrightId: localStorage.getItem('brightId'),
             toBrightId: this.profile.id,
           })
@@ -223,7 +230,7 @@ export default {
             color: TOAST_SUCCESS,
           })
         }
-        if (rating >= 1 && this.prevTransferedEnergyToProfile !== this.transferedEnergyToProfile) {
+        if (this.ratingValue >= 1 && this.prevTransferedEnergyToProfile !== this.transferedEnergyToProfile) {
           await this.updateEnergy()
         } else {
           this.$store.commit('app/setLoading', false)
@@ -236,7 +243,7 @@ export default {
           this.debugError = JSON.stringify(error.response?.data)
         }
         if (error.message === 'retryRequest') {
-          this.onFeedbackChanged(rating)
+          this.onFeedbackChanged(this.ratingValue)
         } else {
           this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
         }

@@ -40,6 +40,8 @@ export default {
       const updatedEnergy = this.energyData.filter(
         en => en.toBrightId !== data.toBrightId
       )
+      const energyDoesNotExist = updatedEnergy.length === this.energyData.length
+      if (energyDoesNotExist && data.amount === 0) return
       updatedEnergy.push(data)
       this.energyData = updatedEnergy
       this.$store.commit('energy/setTransferedEnergy', this.energyData)
