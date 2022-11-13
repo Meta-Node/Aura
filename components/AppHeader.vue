@@ -97,26 +97,21 @@
                 Profile
               </nuxt-link>
             </li>
-            <li class="popup-menu__list">
-              <nuxt-link class="menu-text popup-menu__text" to="/connections/">
-                Connections
-              </nuxt-link>
-            </li>
-            <li class="popup-menu__list">
-              <nuxt-link class="menu-text popup-menu__text" to="/energy/">
-                Energy
-              </nuxt-link>
-            </li>
+           
             <li class="popup-menu__list">
               <nuxt-link class="menu-text popup-menu__text" to="/contact-us/">
                 Contact Us
               </nuxt-link>
             </li>
-            <!--            <li class="popup-menu__list">-->
-            <!--              <nuxt-link class="menu-text popup-menu__text" to="/activity/">-->
-            <!--                Activity-->
-            <!--              </nuxt-link>-->
-            <!--            </li>-->
+            <li class="popup-menu__list">
+              <a 
+                class="menu-text popup-menu__text"
+                href ="https://brightid.gitbook.io/aura/"  
+                target="_blank"
+              >
+                Player Guide
+              </a>
+            </li>
             <li class="popup-menu__list">
               <button
                 class="menu-text popup-menu__text popup-menu__text--red"
