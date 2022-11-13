@@ -15,7 +15,6 @@ import {
   connectionsInEnergyFilterExcludeZeroSortedByRateDescending,
   getEnergyAllocationAmount,
   getEnergyAllocationPercentageStringInSet,
-  getInboundEnergyAmount,
   getInboundEnergyPercentage,
   oldEnergyAllocation,
 } from '../utils/energy'
@@ -38,9 +37,6 @@ describe('Energy View', () => {
       cy.get(`[data-testid^=user-item-${connection.id}-rating]`).contains(
         rating
       )
-      cy.get(`[data-testid^=user-v3-${connection.id}-inbound]`).contains(
-        getInboundEnergyAmount(connection.id)
-      )
       cy.get(
         `[data-testid^=user-v3-${connection.id}-inbound-percentage]`
       ).contains(getInboundEnergyPercentage(connection.id))
@@ -59,7 +55,7 @@ describe('Energy View', () => {
     }
   }
 
-  it('shows energies in the view tab', () => {
+  it('shows energies in the energy page', () => {
     cy.visit('/energy/')
 
     // shows rated connections
