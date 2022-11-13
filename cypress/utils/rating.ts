@@ -93,7 +93,7 @@ export const newRatings: AuraRating[] = [
     ...getRatingObject(ratedConnection3.id, oldRatings)!,
   },
   {
-    ...getRatingObject(ratedConnection3.id, oldRatings)!,
+    ...getRatingObject(ratedConnectionWithoutEnergy.id, oldRatings)!,
   },
   {
     ...getRatingObject(ratedConnectionNegative.id, oldRatings)!,

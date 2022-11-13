@@ -88,26 +88,6 @@ describe('Rating', () => {
     cy.get(`.toast--${TOAST_SUCCESS}`)
   }
 
-  function submitNewRatingNoChange(connection: Connection) {
-    cy.intercept(
-      {
-        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
-        method: 'POST',
-      },
-      {
-        statusCode: 500,
-      }
-    ).as('submitRatingError')
-    setNewRating(connection)
-
-    cy.get('[data-testid=feedback-quality-confirm]').click()
-    // should not be called
-    cy.get('@submitRatingError.all').should('have.length', 0)
-    cy.get(`.toast--${TOAST_SUCCESS}`, { timeout: 1 }).should('not.exist')
-    cy.get(`.toast--${TOAST_ERROR}`, { timeout: 1 }).should('not.exist')
-    cy.url().should('include', `/connections`)
-  }
-
   function showsRateValue(connection: Connection, ratings: AuraRating[]) {
     const ratingValue = Number(getRating(connection.id, ratings) || 0)
     cy.get('[data-testid=feedback-quality-value]').contains(
@@ -156,14 +136,14 @@ describe('Rating', () => {
 
     showsRateValue(connection, newRatings)
     if (newRatingValue === oldRatingValue) {
-      submitNewRatingNoChange(connection)
+      cy.get('[data-testid=feedback-quality-confirm]').should('not.exist')
     } else {
       submitNewRatingFailure(connection)
       submitNewRatingSuccess(connection)
+      cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
+      showsRateValue(connection, newRatings)
+      cy.go(-1)
     }
-    cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
-    showsRateValue(connection, newRatings)
-    cy.go(-1)
   }
 
   it('visits profile from connections and rates an unrated connection', () => {
@@ -182,6 +162,13 @@ describe('Rating', () => {
   })
 
   it('does not send request for an unchanged rate', () => {
+    const oldRatingValue = Number(
+      getRating(ratedConnectionWithoutEnergy.id, oldRatings)
+    )
+    const newRatingValue = Number(
+      getRating(ratedConnectionWithoutEnergy.id, newRatings)
+    )
+    assert(oldRatingValue === newRatingValue)
     ratePageIntercepts(ratedConnectionWithoutEnergy)
     cy.visit(`/profile/` + ratedConnectionWithoutEnergy.id)
     showsRateValue(ratedConnectionWithoutEnergy, oldRatings)
