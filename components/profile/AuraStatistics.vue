@@ -80,26 +80,26 @@ export default {
         this.callsDone++;
       }
       const onError = error => {
-        this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
+        this.$store.commit('toast/addToast', {text: 'Error while retrieving statistics', color: TOAST_ERROR})
         console.log(error)
       }
       if (this.userId) {
         getIncomingRatings(this.userId).then(ratings => {
           this.profileIncomingRatings = ratings;
           onDone()
-        })
+        }).catch(onError)
         getRatedUsers(this.userId).then(ratings => {
           this.profileRatedUsers = ratings;
           onDone()
-        })
+        }).catch(onError)
         getEnergy(this.userId).then(energy => {
           this.profileTransferedEnergy = energy;
           onDone()
-        })
+        }).catch(onError)
         getInboundEnergy(this.userId).then(energy => {
           this.profileInboundEnergy = energy;
           onDone()
-        })
+        }).catch(onError)
       } else {
         this.$store.dispatch('profile/loadProfileData').then(onDone).catch(onError)
         this.$store.dispatch('profile/getIncomingRatings').then(onDone).catch(onError)
