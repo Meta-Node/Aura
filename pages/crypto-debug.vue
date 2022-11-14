@@ -1,6 +1,8 @@
 <template>
   <section class="contact-us">
-    <div class="container contact-us__wrapper" style="padding-top: 30px;">
+    <div class="container contact-us__wrapper" style="padding-top: 30px; word-wrap: break-word">
+      <hr/>
+      Encrypt with password
       <AppInput
         v-model="password"
         placeholder="password"
@@ -13,6 +15,8 @@
         type="textarea"
       ></AppInput>
       <p>Encrypted Data:<br/>{{ encrypted }}</p>
+      <hr/>
+      Decrypt with password
       <AppInput
         v-model="password"
         placeholder="password"
@@ -25,13 +29,17 @@
         type="textarea"
       ></AppInput>
       <p>Decrypted Data:<br/>{{ decrypted }}</p>
+      <hr/>
+      Encrypt with PrivateKey
       <AppInput
         v-model="d3"
         placeholder="data to encrypt with private key (must be loggeed in)"
-        style="margin: 30px 0px 10px 0px;"
+        style="margin: 10px 0px"
         type="textarea"
       ></AppInput>
-      <p>Encrypted:<br/>{{ encryptedWithPrivateKey }}</p>
+      <p>PrivateKey: {{ privateKey }}</p><br/>
+      <p>PublicKey: {{ publicKey }}</p><br/>
+      <p>Encrypted:<br/>{{ encryptedWithPrivateKey }}<br/><br/>{{ JSON.stringify(encryptedWithPrivateKey) }}</p>
     </div>
   </section>
 </template>
@@ -42,6 +50,8 @@ import {decryptData, encryptData, encryptStringWithPrivateKey} from "~/scripts/u
 export default {
   data: function () {
     return {
+      privateKey: '',
+      publicKey: '',
       password: '',
       d1: '',
       d2: '',
@@ -58,6 +68,10 @@ export default {
     encryptedWithPrivateKey() {
       return process.client && encryptStringWithPrivateKey(this.d3)
     }
+  },
+  mounted() {
+    this.privateKey = localStorage.getItem('privateKey')
+    this.publicKey = localStorage.getItem('publicKey')
   }
 }
 </script>
