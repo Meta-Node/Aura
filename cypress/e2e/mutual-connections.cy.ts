@@ -51,7 +51,6 @@ describe('Mutual Connections', () => {
         body: connectionIncomingRatingsResponse,
       }
     )
-    cy.visit(`/profile/` + connectionToVisit.id)
   })
 
   function assertOrder(orderedConnections: IncomingConnection[]) {
@@ -64,15 +63,18 @@ describe('Mutual Connections', () => {
   }
 
   it('shows mutual connections', () => {
+    cy.visit(`/profile/` + connectionToVisit.id)
     assertOrder(connectionIncomingConnections)
   })
 
   it('sorts by incoming connection level', () => {
+    cy.visit(`/profile/` + connectionToVisit.id)
     cy.get('[data-testid=filter-IncomingConnectionLevel-inactive]').click()
     assertOrder(connectionIncomingConnectionsSortByConnectionLevelDescending)
   })
 
   it('sorts by their ratings', () => {
+    cy.visit(`/profile/` + connectionToVisit.id)
     cy.get('[data-testid=filter-IncomingRatingToConnection-inactive]').click()
     assertOrder(connectionIncomingConnectionsSortByTheirRatingDescending)
   })
