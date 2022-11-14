@@ -1,12 +1,12 @@
 <template>
   <section class="contact-us">
-    <div class="container contact-us__wrapper" style="padding-top: 30px; word-wrap: break-word">
+    <div v-if="!IS_PRODUCTION" class="container contact-us__wrapper" style="padding-top: 30px; word-wrap: break-word">
       <hr/>
       Encrypt with password
       <AppInput
         v-model="password"
         placeholder="password"
-        style="margin: 10px 0px 10px 0px;"
+        style="margin: 10px 0px"
       ></AppInput>
       <AppInput
         v-model="d1"
@@ -20,7 +20,7 @@
       <AppInput
         v-model="password"
         placeholder="password"
-        style="margin: 20px 0px 10px 0px;"
+        style="margin: 10px 0px"
       ></AppInput>
       <AppInput
         v-model="d2"
@@ -46,10 +46,12 @@
 
 <script>
 import {decryptData, encryptData, encryptStringWithPrivateKey} from "~/scripts/utils/crypto";
+import {IS_PRODUCTION} from "~/utils/constants";
 
 export default {
   data: function () {
     return {
+      IS_PRODUCTION,
       privateKey: '',
       publicKey: '',
       password: '',

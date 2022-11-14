@@ -16,6 +16,9 @@
           />
         </svg>
       </nuxt-link>
+      <nuxt-link v-if="!IS_PRODUCTION" style="color: red; opacity: 0.9" to="/crypto-debug/">
+        (dev)
+      </nuxt-link>
       <div v-if="!isAuth" class="header__info">
         <p class="header__title">
           Powered By:
@@ -126,11 +129,12 @@
 </template>
 
 <script>
-import {TOAST_SUCCESS} from "~/utils/constants";
+import {IS_PRODUCTION, TOAST_SUCCESS} from "~/utils/constants";
 
 export default {
   data() {
     return {
+      IS_PRODUCTION,
       isPopupOpen: false,
     }
   },
