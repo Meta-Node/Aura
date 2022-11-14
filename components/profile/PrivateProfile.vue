@@ -48,7 +48,7 @@
       </div>
       <div class="feedback__energy__wrapper">
         <div v-if="showEnergySlider" class="feedback__energy__container">
-          <div class="feedback__energy__label__wrapper">
+          <div class="feedback__energy__label__wrapper" @click="onEnergyClick">
             <span class="material-symbols-rounded">
               electric_bolt
             </span>
@@ -156,7 +156,7 @@ export default {
   },
   computed: {
     showEnergySlider() {
-      return this.prevTransferedEnergyToProfile > 0 || this.energize
+      return this.energyValue > 0 || this.energize
     },
     previousRating() {
       return +this.profile.previousRating || 0
@@ -210,12 +210,19 @@ export default {
         if (!newValue) {
           this.energyData = deepCopy(this.$store.state.energy.prevTransferedEnergy)
           this.ratingValue = this.previousRating
+          this.energize = this.transferedEnergyToProfile > 0;
         }
       }
     }
   },
 
   methods: {
+    onEnergyClick() {
+      console.log({e: this.energyValue})
+      if (this.energyValue === 0) {
+        this.energize = false;
+      }
+    },
     async onFeedbackChanged() {
       this.$store.commit('app/setLoading', true)
       try {
