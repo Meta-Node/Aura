@@ -72,6 +72,9 @@ export default {
   mounted() {
     this.privateKey = localStorage.getItem('privateKey')
     this.publicKey = localStorage.getItem('publicKey')
+    this.$localForage.getItem('profileData').then(profileInfo => {
+      this.password = profileInfo.profile.password
+    })
   }
 }
 </script>
