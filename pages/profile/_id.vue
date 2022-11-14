@@ -192,11 +192,10 @@ export default {
         await this.$store.dispatch('profile/loadProfileData')
 
         this.profile = this.$store.getters['profile/profileData']
+        this.isLoadingInitialData = false
       } catch (error) {
         console.log(error)
         this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
-      } finally {
-        this.isLoadingInitialData = false
       }
     },
 
