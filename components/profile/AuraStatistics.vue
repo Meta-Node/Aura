@@ -84,19 +84,19 @@ export default {
         console.log(error)
       }
       if (this.userId) {
-        getIncomingRatings(this.userId).then(ratings => {
+        getIncomingRatings(this.$backendApi, this.userId).then(ratings => {
           this.profileIncomingRatings = ratings;
           onDone()
         }).catch(onError)
-        getRatedUsers(this.userId).then(ratings => {
+        getRatedUsers(this.$backendApi, this.userId).then(ratings => {
           this.profileRatedUsers = ratings;
           onDone()
         }).catch(onError)
-        getEnergy(this.userId).then(energy => {
+        getEnergy(this.$backendApi, this.userId).then(energy => {
           this.profileTransferedEnergy = energy;
           onDone()
         }).catch(onError)
-        getInboundEnergy(this.userId).then(energy => {
+        getInboundEnergy(this.$backendApi, this.userId).then(energy => {
           this.profileInboundEnergy = energy;
           onDone()
         }).catch(onError)

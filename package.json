@@ -21,7 +21,6 @@
     "@nuxtjs/localforage": "^1.1.0",
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/pwa": "^3.3.5",
-    "apisauce": "^2.1.5",
     "assert": "^2.0.0",
     "axios": "^0.26.1",
     "base64-js": "^1.5.1",

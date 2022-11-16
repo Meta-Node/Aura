@@ -1,4 +1,4 @@
-import { auraBrightIdNodeApi } from '~/scripts/api/index'
+import { AxiosInstance } from 'axios'
 
 export type AuraVerification = 'Bronze' | 'Silver' | 'Gold'
 export type AuraVerificationString = AuraVerification | 'Not yet'
@@ -24,6 +24,7 @@ export const getAuraVerificationStringFromVerificationsResponse = (
 }
 
 export const getAuraVerificationString = async (
+  auraBrightIdNodeApi: AxiosInstance,
   userId: string
 ): Promise<AuraVerificationString> => {
   const res = await auraBrightIdNodeApi.get<VerificationsResponse>(
@@ -32,7 +33,10 @@ export const getAuraVerificationString = async (
   return getAuraVerificationStringFromVerificationsResponse(res.data)
 }
 
-export const getVerifications = async (userId: string) => {
+export const getVerifications = async (
+  auraBrightIdNodeApi: AxiosInstance,
+  userId: string
+) => {
   const res = await auraBrightIdNodeApi.get<VerificationsResponse>(
     `/brightid/v6/users/${userId}/verifications`
   )

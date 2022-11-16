@@ -19,7 +19,7 @@ export const actions: ActionTree<ConnectionsState, RootState> = {
       if (!brightId) {
         throw new Error('you need a bright ID')
       }
-      const res = await getConnections(brightId)
+      const res = await getConnections(this.$backendApi, brightId)
       if (res?.data?.connections) {
         let conn = res.data.connections
         conn = conn.sort(con => {

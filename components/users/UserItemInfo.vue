@@ -58,7 +58,7 @@ export default {
   },
   created() {
     if (this.showAuraVerification) {
-      getAuraVerificationString(this.user.id).then(auraVerification => {
+      getAuraVerificationString(this.$auraBrightIdNodeApi, this.user.id).then(auraVerification => {
         this.auraVerification = auraVerification
       })
     }

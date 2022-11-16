@@ -94,8 +94,15 @@ export const actions: ActionTree<ProfileState, RootState> = {
       const profile = profileData?.profile
       const connections = profileData?.connections
 
-      const res = await getProfile(profileData.profile.id, isPublic)
-      const ratedUsers = await getRatedUsers(profileData.profile.id)
+      const res = await getProfile(
+        this.$backendApi,
+        profileData.profile.id,
+        isPublic
+      )
+      const ratedUsers = await getRatedUsers(
+        this.$backendApi,
+        profileData.profile.id
+      )
 
       // TODO: fix the issues with aura public and private profile types
       // @ts-ignore
@@ -139,7 +146,7 @@ export const actions: ActionTree<ProfileState, RootState> = {
     try {
       const brightId = localStorage.getItem('brightId')
       if (!brightId) return
-      const ratings = await getIncomingRatings(brightId)
+      const ratings = await getIncomingRatings(this.$backendApi, brightId)
       commit('setIncomingRatings', ratings)
     } catch (error) {
       console.log(error)

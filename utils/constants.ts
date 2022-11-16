@@ -16,3 +16,4 @@ export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
 
 export const IS_PRODUCTION =
   (process.env.NUXT_ENV_VERCEL_ENV || process.env.NODE_ENV) === 'production'
+export const brightIdBaseURL = 'http://184.72.224.75'

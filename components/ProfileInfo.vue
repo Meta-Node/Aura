@@ -166,7 +166,7 @@ export default {
     },
   },
   created() {
-    getVerifications(this.id).then(verificationsResponse => {
+    getVerifications(this.$auraBrightIdNodeApi, this.id).then(verificationsResponse => {
       this.auraVerification = getAuraVerificationStringFromVerificationsResponse(verificationsResponse)
       this.userHasRecovery = verificationsResponse ? verificationsResponse.data.verifications.find(
         verification => verification.name === 'SocialRecoverySetup'

@@ -160,7 +160,7 @@ export default {
 
         this.profile = connections.find(con => con.id === this.brightId)
 
-        const res = await getProfile(this.brightId, this.isPublicRouteQuery)
+        const res = await getProfile(this.$backendApi, this.brightId, this.isPublicRouteQuery)
 
         const outboundEnergyObject = this.transferedEnergy.find(
           en => en.toBrightId === this.brightId
@@ -176,7 +176,7 @@ export default {
             : 0,
           transferedEnergy: outboundEnergyObject?.amount || 0
         }
-        const connectionRes = await getConnection(this.brightId)
+        const connectionRes = await getConnection(this.$backendApi, this.brightId)
         this.isPrivate = !this.isPublicRouteQuery
         if (connectionRes?.previousRating) {
           this.profile.previousRating = connectionRes.previousRating.rating

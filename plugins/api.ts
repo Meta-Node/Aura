@@ -3,29 +3,33 @@ import axios, { AxiosInstance } from 'axios'
 import { isThereProblemWithEncryption } from '~/utils'
 
 declare module 'vue/types/vue' {
-  // this.$myInjectedFunction inside Vue components
   interface Vue {
     $backendApi: AxiosInstance
+    $brightIdNodeApi: AxiosInstance
+    $auraBrightIdNodeApi: AxiosInstance
   }
 }
 
 declare module '@nuxt/types' {
-  // nuxtContext.app.$myInjectedFunction inside asyncData, fetch, plugins, middleware, nuxtServerInit
   interface NuxtAppOptions {
     $backendApi: AxiosInstance
+    $brightIdNodeApi: AxiosInstance
+    $auraBrightIdNodeApi: AxiosInstance
   }
 
-  // nuxtContext.$myInjectedFunction
   interface Context {
     $backendApi: AxiosInstance
+    $brightIdNodeApi: AxiosInstance
+    $auraBrightIdNodeApi: AxiosInstance
   }
 }
 
 declare module 'vuex/types/index' {
-  // this.$myInjectedFunction inside Vuex stores
   // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
   interface Store<S> {
     $backendApi: AxiosInstance
+    $brightIdNodeApi: AxiosInstance
+    $auraBrightIdNodeApi: AxiosInstance
   }
 }
 
@@ -34,6 +38,21 @@ const api: Plugin = ({ store }, inject) => {
     baseURL: process.env.API_URL,
     headers: { 'Cache-Control': 'no-cache' },
   })
+
+  const auraBrightIdNodeApi = axios.create({
+    headers: { 'Cache-Control': 'no-cache' },
+    baseURL: process.env.AURA_NODE_URL,
+    // @ts-ignore
+    mode: 'no-cors',
+  })
+
+  const brightIdNodeApi = axios.create({
+    headers: { 'Cache-Control': 'no-cache' },
+    baseURL: 'https://app.brightid.org/',
+    // @ts-ignore
+    mode: 'no-cors',
+  })
+
   backendApi.interceptors.response.use(
     response => response,
     error =>
@@ -54,6 +73,8 @@ const api: Plugin = ({ store }, inject) => {
       })
   )
   inject('backendApi', backendApi)
+  inject('auraBrightIdNodeApi', auraBrightIdNodeApi)
+  inject('brightIdNodeApi', brightIdNodeApi)
 }
 
 export default api

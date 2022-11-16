@@ -53,8 +53,8 @@ export const actions: ActionTree<EnergyState, RootState> = {
         throw new Error('BrightId is not defined')
       }
 
-      const outboundEnergy = await getEnergy(brightId)
-      const ratedUsers = await getRatedUsers(brightId)
+      const outboundEnergy = await getEnergy(this.$backendApi, brightId)
+      const ratedUsers = await getRatedUsers(this.$backendApi, brightId)
 
       const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
 
@@ -90,7 +90,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
         throw new Error('BrightId is not defined')
       }
 
-      const inboundEnergy = await getInboundEnergy(brightId)
+      const inboundEnergy = await getInboundEnergy(this.$backendApi, brightId)
 
       commit('setInboundEnergy', inboundEnergy)
     } catch (error) {

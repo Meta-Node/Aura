@@ -10,3 +10,5 @@ export const isThereProblemWithEncryption = (errorMessage?: string) => {
 export function deepCopy<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj))
 }
+
+export { brightIdBaseURL } from '~/utils/constants'

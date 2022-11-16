@@ -53,7 +53,7 @@ export default {
     async onSubmit() {
       if (!this.hasErrors) {
         try {
-          await setNickname({
+          await setNickname(this.$backendApi, {
             nickname: this.nickname.value,
             fromBrightId: localStorage.getItem('brightId'),
             toBrightId: this.toBrightId,

@@ -1,5 +1,4 @@
-import { ApiResponse } from 'apisauce'
-import { backendApi, brightIdNodeApi } from '.'
+import { AxiosInstance, AxiosResponse } from 'axios'
 import { CONNECTION_SEARCH_SEED } from '~/utils/constants'
 import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
 import {
@@ -10,20 +9,31 @@ import {
   IncomingConnectionsResponse,
 } from '~/types'
 
-export const getConnections = (fromBrightId: string) => {
+export const getConnections = (
+  backendApi: AxiosInstance,
+  fromBrightId: string
+) => {
   return backendApi.get<AuraConnectionsResponse>('/v1/connections/search', {
-    fromBrightId,
-    seed: CONNECTION_SEARCH_SEED,
+    params: {
+      fromBrightId,
+      seed: CONNECTION_SEARCH_SEED,
+    },
   })
 }
 
-export const getIncomingConnections = (toBrightId: string) => {
+export const getIncomingConnections = (
+  brightIdNodeApi: AxiosInstance,
+  toBrightId: string
+) => {
   return brightIdNodeApi.get<IncomingConnectionsResponse>(
     `/node/v6/users/${toBrightId}/connections/inbound`
   )
 }
 
-export const getConnection = async (toBrightId: string) => {
+export const getConnection = async (
+  backendApi: AxiosInstance,
+  toBrightId: string
+) => {
   const fromBrightId = localStorage.getItem('brightId')
   if (!fromBrightId) {
     return
@@ -40,40 +50,48 @@ export const getConnection = async (toBrightId: string) => {
   return res.data
 }
 
-type ProfileApiResponse = ApiResponse<AuraProfile | AuraPublicProfile>
-export const getProfile = async (fromBrightId: string, isPublic = false) => {
+type ProfileApiResponse = AxiosResponse<AuraProfile | AuraPublicProfile>
+export const getProfile = async (
+  backendApi: AxiosInstance,
+  fromBrightId: string,
+  isPublic = false
+) => {
+  let res: ProfileApiResponse
+  let resFinal: ProfileApiResponse & {
+    isPublic: boolean
+  }
+  const privateRoute = '/v1/profile/'
+  const publicRoute = '/v1/profile/public/'
+  const route = isPublic ? publicRoute : privateRoute
   try {
-    let res: ProfileApiResponse
-    let resFinal: ProfileApiResponse & {
-      isPublic: boolean
-    }
-    const privateRoute = '/v1/profile/'
-    const publicRoute = '/v1/profile/public/'
-    const route = isPublic ? publicRoute : privateRoute
     // TODO: write seperated service for public profile
     res = await backendApi.get<AuraProfile | AuraPublicProfile>(
       route + fromBrightId
     )
     resFinal = { ...res, isPublic }
-    if (res.status === 500) {
+  } catch (error: any) {
+    if (error?.response?.status === 500) {
       res = await backendApi.get<AuraPublicProfile>(publicRoute + fromBrightId)
       resFinal = { ...res, isPublic: true }
+    } else {
+      throw new Error('profile is not defined')
     }
-    return resFinal
-  } catch (error) {
-    throw new Error('profile is not defined')
   }
+  return resFinal
 }
 
-export const setNickname = ({
-  fromBrightId,
-  toBrightId,
-  nickname,
-}: {
-  fromBrightId: string
-  toBrightId: string
-  nickname: string
-}) => {
+export const setNickname = (
+  backendApi: AxiosInstance,
+  {
+    fromBrightId,
+    toBrightId,
+    nickname,
+  }: {
+    fromBrightId: string
+    toBrightId: string
+    nickname: string
+  }
+) => {
   const endpoint = '/v1/nickname/'
   const URL = `${endpoint}${fromBrightId}/${toBrightId}`
 

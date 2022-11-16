@@ -110,8 +110,8 @@ export default {
         await this.loadUserProfile()
 
         const ratedUsers = this.$store.getters['profile/ratedUsers']
-        const profileIncomingConnections = (await getIncomingConnections(this.profile.id)).data?.data.connections
-        const profileIncomingRatings = (await getIncomingRatings(this.profile.id))
+        const profileIncomingConnections = (await getIncomingConnections(this.$brightIdNodeApi, this.profile.id)).data?.data.connections
+        const profileIncomingRatings = (await getIncomingRatings(this.$backendApi, this.profile.id))
         const finalUsers = profileIncomingConnections.reduce((a, c) => {
           const mutualConnectionId = c.id
           const mutualConnectionFromOurConnectionsList = this.connections.find(cn => mutualConnectionId === cn.id)

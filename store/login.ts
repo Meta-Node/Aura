@@ -21,6 +21,7 @@ export const actions: ActionTree<LoginState, RootState> = {
     if (!brightId || !profileInfo) throw new Error('Invalid BrightId')
     const explorerCode = encryptData(brightId, profileInfo.profile.password)
     const brightIdData = await loginByExplorerCode(
+      this.$backendApi,
       explorerCode,
       profileInfo.profile.password
     )
@@ -32,6 +33,7 @@ export const actions: ActionTree<LoginState, RootState> = {
   async loginByExplorerCode({ dispatch }, data) {
     try {
       const brightIdData = await loginByExplorerCode(
+        this.$backendApi,
         data.explorer,
         data.password
       )
