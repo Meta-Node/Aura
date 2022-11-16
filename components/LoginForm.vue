@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import {create} from "apisauce";
+import axios from "axios"
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
 import {TOAST_ERROR} from '~/utils/constants'
@@ -164,7 +164,7 @@ export default {
     },
     async loginByLocalServer() {
       const localServerUrl = `${this.localserver.value.startsWith('http://') ? '' : 'http://'}${this.localserver.value}`
-      const localServer = create({
+      const localServer = axios.create({
         baseURL: localServerUrl,
         headers: {
           'Access-Control-Allow-Origin': '*',
