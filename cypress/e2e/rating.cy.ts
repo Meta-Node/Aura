@@ -179,7 +179,7 @@ describe('Rating', () => {
     doRate(ratedConnection)
   })
 
-  it.only('does not send request for an unchanged rate', () => {
+  it('does not send request for an unchanged rate', () => {
     const oldRatingValue = Number(
       getRating(ratedConnectionWithoutEnergy.id, oldRatings)
     )
