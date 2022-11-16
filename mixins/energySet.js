@@ -9,14 +9,16 @@ export default {
     }
   },
   methods: {
-    async updateEnergy() {
+    async updateEnergy(noToast = false) {
       try {
         this.$store.commit('app/setLoading', true)
         await this.$store.dispatch('energy/updateEnergy')
-        this.$store.commit('toast/addToast', {
-          text: 'Energy successfully updated',
-          color: TOAST_SUCCESS,
-        })
+        if (!noToast) {
+          this.$store.commit('toast/addToast', {
+            text: 'Energy successfully updated',
+            color: TOAST_SUCCESS,
+          })
+        }
         this.hasUnsavedChanges = false
         // this.$router.push('/connections?filter=Unrated')
         this.$emit('getTransferedEnergy')

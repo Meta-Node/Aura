@@ -232,16 +232,16 @@ export default {
             fromBrightId: localStorage.getItem('brightId'),
             toBrightId: this.profile.id,
           })
-          this.$store.commit('toast/addToast', {
-            text: 'Rating Successfully updated',
-            color: TOAST_SUCCESS,
-          })
         }
         if (this.ratingValue >= 1 && this.prevTransferedEnergyToProfile !== this.transferedEnergyToProfile) {
-          await this.updateEnergy()
+          await this.updateEnergy(true)
         } else {
           this.$store.commit('app/setLoading', false)
         }
+        this.$store.commit('toast/addToast', {
+          text: 'Success',
+          color: TOAST_SUCCESS,
+        })
         this.hasUnsavedChanges = false;
         this.$router.push('/connections')
       } catch (error) {
