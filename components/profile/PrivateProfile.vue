@@ -73,6 +73,11 @@
             </span><span>energize</span>
         </button>
       </div>
+      <div class="feedback__save">
+        <button class="feedback__save__button" data-testid="feedback-quality-confirm" @click="onFeedbackChanged">
+          save changes
+        </button>
+      </div>
       <mutual-connections
         :profile="profile"/>
     </div>
@@ -82,11 +87,6 @@
       :to-bright-id="profile.id"
       @updateNickname="updateNickname"
     />
-    <div v-if="hasUnsavedChanges" class="app-energy__save">
-      <button class="app-energy__save__button" data-testid="feedback-quality-confirm" @click="onFeedbackChanged">
-        save changes
-      </button>
-    </div>
   </section>
 </template>
 

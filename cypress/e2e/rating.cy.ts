@@ -127,6 +127,26 @@ describe('Rating', () => {
       .trigger('input')
   }
 
+  function submitNewRatingNoChange(connection: Connection) {
+    cy.intercept(
+      {
+        url: `/v1/ratings/${FAKE_BRIGHT_ID}/${connection.id}`,
+        method: 'POST',
+      },
+      {
+        statusCode: 500,
+      }
+    ).as('submitRatingError')
+    setNewRating(connection)
+
+    cy.get('[data-testid=feedback-quality-confirm]').click()
+    // should not be called
+    cy.get('@submitRatingError.all').should('have.length', 0)
+    cy.get(`.toast--${TOAST_SUCCESS}`, { timeout: 1 }).should('not.exist')
+    cy.get(`.toast--${TOAST_ERROR}`, { timeout: 1 }).should('not.exist')
+    cy.url().should('include', `/connections`)
+  }
+
   function doRate(connection: Connection) {
     setNewRateValue(connection)
 
@@ -136,7 +156,7 @@ describe('Rating', () => {
 
     showsRateValue(connection, newRatings)
     if (newRatingValue === oldRatingValue) {
-      cy.get('[data-testid=feedback-quality-confirm]').should('not.exist')
+      submitNewRatingNoChange(connection)
     } else {
       submitNewRatingFailure(connection)
       submitNewRatingSuccess(connection)
