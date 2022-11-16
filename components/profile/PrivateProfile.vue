@@ -234,7 +234,7 @@ export default {
           })
         }
         if (this.ratingValue >= 1 && this.prevTransferedEnergyToProfile !== this.transferedEnergyToProfile) {
-          await this.updateEnergy(true)
+          await this.updateEnergy(false)
         } else {
           this.$store.commit('app/setLoading', false)
         }

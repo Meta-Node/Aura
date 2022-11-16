@@ -9,11 +9,11 @@ export default {
     }
   },
   methods: {
-    async updateEnergy(noToast = false) {
+    async updateEnergy(showToast) {
       try {
         this.$store.commit('app/setLoading', true)
         await this.$store.dispatch('energy/updateEnergy')
-        if (!noToast) {
+        if (showToast) {
           this.$store.commit('toast/addToast', {
             text: 'Energy successfully updated',
             color: TOAST_SUCCESS,

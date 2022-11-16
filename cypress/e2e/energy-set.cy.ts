@@ -132,7 +132,7 @@ describe('Energy Set', () => {
       .should('have.value', 0)
   })
 
-  it('can update energies', () => {
+  it.only('can update energies', () => {
     cy.visit('/energy/')
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')

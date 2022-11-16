@@ -37,7 +37,7 @@
       </div>
       <!-- <load-more text="Load More..." /> -->
       <div v-if="hasUnsavedChanges" class="app-energy__save">
-        <button class="app-energy__save__button" data-testid="update-energy" @click="updateEnergy">
+        <button class="app-energy__save__button" data-testid="update-energy" @click="() => updateEnergy(true)">
           save changes
         </button>
       </div>
