@@ -8,6 +8,7 @@
       :four-unrated="fourUnrated"
       :is-loading-initial-data="isLoadingInitialData"
       :profile="profile"
+      @afterSave="onAfterSave"
       @share="onShare"
       @updateNickname="updateNickname"
     />
@@ -46,6 +47,12 @@ export default {
     PublicProfile,
   },
   mixins: [transition, unsavedChanges],
+
+  beforeRouteEnter(_to, from, next) {
+    next(vm => {
+      vm.fromRoute = from
+    })
+  },
 
   data() {
     return {
@@ -148,8 +155,14 @@ export default {
     }
     this.$router.push({query: {...queries}})
   },
-
   methods: {
+    onAfterSave() {
+      if (this.fromRoute?.name) {
+        this.$router.go(-1)
+      } else {
+        this.$router.push('/connections/')
+      }
+    },
     async loadConnectionProfile() {
       try {
         !this.isPublicRouteQuery &&

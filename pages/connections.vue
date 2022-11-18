@@ -99,6 +99,7 @@ export default {
   mixins: [transition, users, loadItems],
   data() {
     return {
+      fromRoute: null,
       filterKey,
       filters: [
         {

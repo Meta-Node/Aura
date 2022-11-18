@@ -215,7 +215,6 @@ export default {
       }
     }
   },
-
   methods: {
     onEnergyClick() {
       console.log({e: this.energyValue})
@@ -243,7 +242,7 @@ export default {
           color: TOAST_SUCCESS,
         })
         this.hasUnsavedChanges = false;
-        this.$router.push('/connections')
+        this.$emit('afterSave')
       } catch (error) {
         this.$store.commit('app/setLoading', false)
         if (!IS_PRODUCTION) {
