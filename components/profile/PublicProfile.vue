@@ -1,49 +1,26 @@
 <template>
-  <section class="profile">
-    <div v-if="isLoadingInitialData" style="margin-top: 40px">
-      <app-spinner :is-visible="true"/>
-    </div>
-    <div v-else-if="!isLoadingInitialData && !profile" class="container">
-      User not found
-    </div>
-    <div v-else class="container profile__wrapper">
-      <profile-info
-        :id="profile.id"
-        :brightness="brightness"
-        :connection-date="profile.connectionDate"
-        :date="date"
-        :img="profileAvatar"
-        :is-own-profile="isOwn"
-        :name="profile.name || 'Unknown'"
-        :num-of-connections="profile.numOfConnections"
-        :rating="profile.rating"
-        @share="onShare"
-      />
-      <aura-statistics
-        :profile-inbound-energy="profileInboundEnergy"
-        :profile-transferred-energy="profileTransferredEnergy"
-        :profile-rated-users="profileRatedUsers"
-        :profile-incoming-ratings="profileIncomingRatings"
-        :loading-profile-data="loadingProfileData"/>
-      <four-unrated :users="fourUnrated"/>
-    </div>
-  </section>
+  <div>
+    <aura-statistics
+      :profile-inbound-energy="profileInboundEnergy"
+      :profile-transferred-energy="profileTransferredEnergy"
+      :profile-rated-users="profileRatedUsers"
+      :profile-incoming-ratings="profileIncomingRatings"
+      :loading-profile-data="loadingProfileData"/>
+    <four-unrated :users="fourUnrated"/>
+  </div>
 </template>
 
 <script>
-import ProfileInfo from '~/components/ProfileInfo.vue'
 import transition from '~/mixins/transition'
-import avatar from '~/mixins/avatar'
 import FourUnrated from '~/components/FourUnrated.vue'
 import AuraStatistics from "~/components/profile/AuraStatistics";
 
 export default {
   components: {
     AuraStatistics,
-    ProfileInfo,
     FourUnrated
   },
-  mixins: [transition, avatar],
+  mixins: [transition],
   props: {
     profile: {
       type: Object,

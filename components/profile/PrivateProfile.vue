@@ -1,113 +1,73 @@
 <template>
-  <section class="feedback">
-    <div v-if="debugError" class="debug-error">debug error: {{ debugError }}</div>
-    <div
-      v-if="isLoadingInitialData"
-      style="margin-top: 40px"
-    >
-      <app-spinner :is-visible="true"/>
-    </div>
-    <div
-      v-else-if="!isLoadingInitialData && !profile.name"
-      class="container"
-    >
-      <p style="margin: 0 auto; text-align: center">User not found</p>
-    </div>
-    <div
-      v-else
-      class="container feedback__wrapper"
-    >
-      <profile-info
-        :id="profile.id"
-        :brightness="brightness"
-        :connection-date="profile.connectionDate"
-        :date="date"
-        :img="profileAvatar"
-        :name="profile.name"
-        :nickname="profile.nickname"
-        :num-of-connections="profile.numOfConnections"
-        :rating="Number(profile.rating)"
-        @edit="onEdit"
-        @share="onShare"
-      />
-      <aura-statistics
-        :profile-inbound-energy="profileInboundEnergy"
-        :profile-transferred-energy="profileTransferredEnergy"
-        :profile-rated-users="profileRatedUsers"
-        :profile-incoming-ratings="profileIncomingRatings"
-        :loading-profile-data="loadingProfileData"/>
-      <div class="feedback__questions">
-        <div class="feedback__quality-wrapper">
-          <div class="feedback__transition">
-            <feedback-slider
-              id="quality"
-              v-model="ratingValue"
-              :max="5"
-              :min="-5"
-              :prev-value="+profile.previousRating"
-              :step="1"
-              type="range"
-            />
-          </div>
+  <div>
+    <aura-statistics
+      :profile-inbound-energy="profileInboundEnergy"
+      :profile-transferred-energy="profileTransferredEnergy"
+      :profile-rated-users="profileRatedUsers"
+      :profile-incoming-ratings="profileIncomingRatings"
+      :loading-profile-data="loadingProfileData"/>
+    <div class="feedback__questions">
+      <div class="feedback__quality-wrapper">
+        <div class="feedback__transition">
+          <feedback-slider
+            id="quality"
+            v-model="ratingValue"
+            :max="5"
+            :min="-5"
+            :prev-value="+profile.previousRating"
+            :step="1"
+            type="range"
+          />
         </div>
       </div>
-      <div class="feedback__energy__wrapper">
-        <div v-if="showEnergySlider" class="feedback__energy__container">
-          <div class="feedback__energy__label__wrapper" @click="onEnergyClick">
+    </div>
+    <div class="feedback__energy__wrapper">
+      <div v-if="showEnergySlider" class="feedback__energy__container">
+        <div class="feedback__energy__label__wrapper" @click="onEnergyClick">
             <span class="material-symbols-rounded">
               electric_bolt
             </span>
-            <span class="feedback__energy__label__text"
-            >Energy</span>
-          </div>
-          <energy-slider
-            id="quality"
-            v-model="energyValue"
-            :disabled="ratingValue < 1"
-            :min="0"
-            :user-id="profile ? profile.id : undefined"
-            type="range"
-            @input="changeEnergy"
-          />
+          <span class="feedback__energy__label__text"
+          >Energy</span>
         </div>
-        <button v-else
-                class="feedback__energy__energize-button"
-                @click="energize = true">
+        <energy-slider
+          id="quality"
+          v-model="energyValue"
+          :disabled="ratingValue < 1"
+          :min="0"
+          :user-id="profile ? profile.id : undefined"
+          type="range"
+          @input="changeEnergy"
+        />
+      </div>
+      <button v-else
+              class="feedback__energy__energize-button"
+              @click="energize = true">
             <span class="material-symbols-rounded">
               electric_bolt
             </span><span>energize</span>
-        </button>
-      </div>
-      <div class="feedback__save">
-        <button class="feedback__save__button" data-testid="feedback-quality-confirm" @click="onFeedbackChanged">
-          save changes
-        </button>
-      </div>
-      <mutual-connections
-        :profile-inbound-energy="profileInboundEnergy"
-        :profile-incoming-connections="profileIncomingConnections"
-        :profile-transferred-energy="profileTransferredEnergy"
-        :profile-rated-users="profileRatedUsers"
-        :profile-incoming-ratings="profileIncomingRatings"
-        :loading-profile-data="loadingProfileData"
-        :profile="profile"/>
+      </button>
     </div>
-    <nickname-popup
-      v-if="profile && profile.id"
-      ref="popup"
-      :to-bright-id="profile.id"
-      @updateNickname="updateNickname"
-    />
-  </section>
+    <div class="feedback__save">
+      <button class="feedback__save__button" data-testid="feedback-quality-confirm" @click="onFeedbackChanged">
+        save changes
+      </button>
+    </div>
+    <mutual-connections
+      :profile-inbound-energy="profileInboundEnergy"
+      :profile-incoming-connections="profileIncomingConnections"
+      :profile-transferred-energy="profileTransferredEnergy"
+      :profile-rated-users="profileRatedUsers"
+      :profile-incoming-ratings="profileIncomingRatings"
+      :loading-profile-data="loadingProfileData"
+      :profile="profile"/>
+  </div>
 </template>
 
 <script>
 import MutualConnections from './MutualConnections'
-import AppSpinner from '~/components/AppSpinner.vue'
 
 import FeedbackSlider from '~/components/FeedbackSlider.vue'
-import NicknamePopup from '~/components/popup/NicknamePopup.vue'
-import ProfileInfo from '~/components/ProfileInfo.vue'
 import {rateUser} from '~/scripts/api/rate.service'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
@@ -121,9 +81,6 @@ export default {
   components: {
     AuraStatistics,
     FeedbackSlider,
-    ProfileInfo,
-    AppSpinner,
-    NicknamePopup,
     MutualConnections,
   },
   mixins: [transition, avatar, energySet, unsavedChanges],
@@ -250,6 +207,9 @@ export default {
     }
   },
   methods: {
+    onEdit() {
+      this.$refs.popup.openPopup()
+    },
     onEnergyClick() {
       console.log({e: this.energyValue})
       if (this.energyValue === 0) {
@@ -291,9 +251,6 @@ export default {
     },
     onShare() {
       this.$emit('share')
-    },
-    onEdit() {
-      this.$refs.popup.openPopup()
     },
     updateNickname(value) {
       this.$emit('updateNickname', value)

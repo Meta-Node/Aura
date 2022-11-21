@@ -1,46 +1,85 @@
 <template>
   <div data-route="profile">
-    <private-profile
-      v-if="isPrivate"
-      ref="private"
-      :brightness="brightness"
-      :date="getDate"
-      :four-unrated="fourUnrated"
-      :is-loading-initial-data="isLoadingInitialData"
-      :profile="profile"
-      :profile-inbound-energy="profileInboundEnergy"
-      :profile-transferred-energy="profileTransferredEnergy"
-      :profile-rated-users="profileRatedUsers"
-      :profile-incoming-ratings="profileIncomingRatings"
-      :loading-profile-data="loadingProfileData"
-      :profile-incoming-connections="profileIncomingConnections"
-      @afterSave="onAfterSave"
-      @share="onShare"
-      @updateNickname="updateNickname"
-    />
-    <public-profile
-      v-if="!isPrivate"
-      ref="public"
-      :brightness="brightness"
-      :date="getDate"
-      :four-unrated="fourUnrated"
-      :is-loading-initial-data="isLoadingInitialData"
-      :profile="profile"
-      :profile-inbound-energy="profileInboundEnergy"
-      :profile-transferred-energy="profileTransferredEnergy"
-      :profile-rated-users="profileRatedUsers"
-      :profile-incoming-ratings="profileIncomingRatings"
-      :loading-profile-data="loadingProfileData"
-      :profile-incoming-connections="profileIncomingConnections"
-      @share="onShare"
-    />
-    <nuxt-link
-      v-if="!isAuth && isPublicRouteQuery"
-      class="profile__login-cta"
-      to="/"
-    >
-      Please, login in Aura app to see more
-    </nuxt-link>
+    <section class="profile">
+      <div
+        v-if="isLoadingInitialData"
+        style="margin-top: 40px"
+      >
+        <app-spinner :is-visible="true"/>
+      </div>
+      <div
+        v-else-if="!isLoadingInitialData && !profile.name"
+        class="container"
+      >
+        <p style="margin: 0 auto; text-align: center">User not found</p>
+      </div>
+      <div
+        v-else
+        class="container"
+      >
+        <profile-info
+          :id="profile.id"
+          :brightness="brightness"
+          :connection-date="profile.connectionDate"
+          :date="getDate"
+          :img="profileAvatar"
+          :is-own-profile="isOwn"
+          :name="profile.name"
+          :nickname="profile.nickname"
+          :num-of-connections="profile.numOfConnections"
+          :rating="Number(profile.rating)"
+          @edit="onEdit"
+          @share="onShare"
+        />
+        <private-profile
+          v-if="isPrivate"
+          ref="private"
+          :brightness="brightness"
+          :date="getDate"
+          :four-unrated="fourUnrated"
+          :is-loading-initial-data="isLoadingInitialData"
+          :profile="profile"
+          :profile-inbound-energy="profileInboundEnergy"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :loading-profile-data="loadingProfileData"
+          :profile-incoming-connections="profileIncomingConnections"
+          @afterSave="onAfterSave"
+          @share="onShare"
+          @updateNickname="updateNickname"
+        />
+        <public-profile
+          v-if="!isPrivate"
+          ref="public"
+          :brightness="brightness"
+          :date="getDate"
+          :four-unrated="fourUnrated"
+          :is-loading-initial-data="isLoadingInitialData"
+          :profile="profile"
+          :profile-inbound-energy="profileInboundEnergy"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :loading-profile-data="loadingProfileData"
+          :profile-incoming-connections="profileIncomingConnections"
+          @share="onShare"
+        />
+        <nuxt-link
+          v-if="!isAuth && isPublicRouteQuery"
+          class="profile__login-cta"
+          to="/"
+        >
+          Please, login in Aura app to see more
+        </nuxt-link>
+      </div>
+      <nickname-popup
+        v-if="profile && profile.id"
+        ref="popup"
+        :to-bright-id="profile.id"
+        @updateNickname="updateNickname"
+      />
+    </section>
   </div>
 </template>
 
@@ -54,13 +93,16 @@ import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
 import {getIncomingRatings, getRatedUsers} from "~/scripts/api/rate.service";
 import {getEnergy, getInboundEnergy} from "~/scripts/api/energy.service";
+import avatar from "~/mixins/avatar";
+import NicknamePopup from "~/components/popup/NicknamePopup";
 
 export default {
   components: {
+    NicknamePopup,
     PrivateProfile,
     PublicProfile,
   },
-  mixins: [transition, unsavedChanges],
+  mixins: [transition, unsavedChanges, avatar],
 
   beforeRouteEnter(_to, from, next) {
     next(vm => {
@@ -71,7 +113,6 @@ export default {
   data() {
     return {
       isPrivate: true,
-      isOwn: false,
       profile: {},
       isLoadingInitialData: true,
 
@@ -91,6 +132,12 @@ export default {
   },
 
   computed: {
+    img() {
+      return this.brightId
+    },
+    isOwn() {
+      return !this.isPrivate;
+    },
     loadingProfileData() {
       return this.profileCallsDone < 5
     },
@@ -164,7 +211,6 @@ export default {
 
     if (this.brightId === localStorage.getItem('brightId')) {
       this.isPrivate = false
-      this.isOwn = true
       await this.loadOwnProfile()
       return
     }
@@ -179,6 +225,9 @@ export default {
     this.$router.push({query: {...queries}})
   },
   methods: {
+    onEdit() {
+      this.$refs.popup.openPopup()
+    },
     getProfileData() {
       const onDone = () => {
         this.profileCallsDone++;
@@ -223,7 +272,6 @@ export default {
         }).catch(onError)
       }
       getIncomingConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
-        console.log({connections})
         this.profileIncomingConnections = connections
         onDone()
       }).catch(onError)
