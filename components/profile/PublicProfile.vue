@@ -78,6 +78,10 @@ export default {
     loadingProfileData: {
       type: Boolean,
     },
+    profileIncomingConnections: {
+      type: Array,
+      default: () => [],
+    },
     profileInboundEnergy: {
       type: Array,
       default: () => [],

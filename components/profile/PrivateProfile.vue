@@ -84,6 +84,12 @@
         </button>
       </div>
       <mutual-connections
+        :profile-inbound-energy="profileInboundEnergy"
+        :profile-incoming-connections="profileIncomingConnections"
+        :profile-transfered-energy="profileTransferedEnergy"
+        :profile-rated-users="profileRatedUsers"
+        :profile-incoming-ratings="profileIncomingRatings"
+        :loading-profile-data="loadingProfileData"
         :profile="profile"/>
     </div>
     <nickname-popup
@@ -150,6 +156,10 @@ export default {
     },
     loadingProfileData: {
       type: Boolean,
+    },
+    profileIncomingConnections: {
+      type: Array,
+      default: () => [],
     },
     profileInboundEnergy: {
       type: Array,

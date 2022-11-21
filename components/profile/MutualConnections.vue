@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="isLoading"
+      v-if="loadingProfileData"
       style="margin-top: 40px"
     >
       <app-spinner :is-visible="true"/>
@@ -45,8 +45,6 @@ import loadItems from '~/mixins/loadItems'
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
 import AppFilter from '~/components/filters/AppFilter.vue'
 import MutualConnection from '~/components/users/MutualConnection'
-import {getIncomingConnections} from "~/scripts/api/connections.service";
-import {getIncomingRatings} from "~/scripts/api/rate.service";
 
 
 const filterKey = 'mutualConnectionFilters'
@@ -63,9 +61,33 @@ export default {
       default: () => {
       },
     },
+    loadingProfileData: {
+      type: Boolean,
+    },
+    profileIncomingConnections: {
+      type: Array,
+      default: () => [],
+    },
+    profileInboundEnergy: {
+      type: Array,
+      default: () => [],
+    },
+    profileTransferedEnergy: {
+      type: Array,
+      default: () => [],
+    },
+    profileRatedUsers: {
+      type: Array,
+      default: () => [],
+    },
+    profileIncomingRatings: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
+      isLoading: true,
       filterKey,
       filters: [
         {
@@ -102,45 +124,44 @@ export default {
       ],
     }
   },
-
+  watch: {
+    loadingProfileData: {
+      immediate: true,
+      handler(newValue) {
+        if (!newValue) {
+          this.setUserData()
+        }
+      }
+    }
+  },
   methods: {
     async getUserData() {
-      try {
-        this.isLoading = true
-        await this.loadUserProfile()
-
-        const ratedUsers = this.$store.getters['profile/ratedUsers']
-        const profileIncomingConnections = (await getIncomingConnections(this.$brightIdNodeApi, this.profile.id)).data?.data.connections
-        const profileIncomingRatings = (await getIncomingRatings(this.$backendApi, this.profile.id))
-        const finalUsers = profileIncomingConnections.reduce((a, c) => {
-          const mutualConnectionId = c.id
-          const mutualConnectionFromOurConnectionsList = this.connections.find(cn => mutualConnectionId === cn.id)
-          if (!mutualConnectionFromOurConnectionsList) return a
-          const ratingData = ratedUsers.find(
-            user => user.toBrightId === mutualConnectionId
-          )
-          const incomingRatingDataToConnection = profileIncomingRatings.find(
-            en => en.fromBrightId === mutualConnectionId
-          )
-          return a.concat({
-            incomingConnectionLevel: c.level,
-            ratingData,
-            rating: ratingData ? +ratingData.rating : undefined,
-            incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined,
-            ...mutualConnectionFromOurConnectionsList,
-          })
-        }, [])
-
-        this.startUsers = finalUsers
-        this.setInitialFilter()
-      } catch (error) {
-        console.log(error)
-      } finally {
-        this.isLoading = false
-      }
     },
-
+    setUserData() {
+      const ratedUsers = this.$store.getters['profile/ratedUsers']
+      const profileIncomingConnections = this.profileIncomingConnections
+      const profileIncomingRatings = this.profileIncomingRatings
+      this.startUsers = profileIncomingConnections.reduce((a, c) => {
+        const mutualConnectionId = c.id
+        const mutualConnectionFromOurConnectionsList = this.connections.find(cn => mutualConnectionId === cn.id)
+        if (!mutualConnectionFromOurConnectionsList) return a
+        const ratingData = ratedUsers.find(
+          user => user.toBrightId === mutualConnectionId
+        )
+        const incomingRatingDataToConnection = profileIncomingRatings.find(
+          en => en.fromBrightId === mutualConnectionId
+        )
+        return a.concat({
+          incomingConnectionLevel: c.level,
+          ratingData,
+          rating: ratingData ? +ratingData.rating : undefined,
+          incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined,
+          ...mutualConnectionFromOurConnectionsList,
+        })
+      }, [])
+      this.setInitialFilter()
+      this.isLoading = false
+    },
   }
-
 }
 </script>

@@ -13,6 +13,7 @@
       :profile-rated-users="profileRatedUsers"
       :profile-incoming-ratings="profileIncomingRatings"
       :loading-profile-data="loadingProfileData"
+      :profile-incoming-connections="profileIncomingConnections"
       @afterSave="onAfterSave"
       @share="onShare"
       @updateNickname="updateNickname"
@@ -30,6 +31,7 @@
       :profile-rated-users="profileRatedUsers"
       :profile-incoming-ratings="profileIncomingRatings"
       :loading-profile-data="loadingProfileData"
+      :profile-incoming-connections="profileIncomingConnections"
       @share="onShare"
     />
     <nuxt-link
@@ -46,7 +48,7 @@
 import transition from '~/mixins/transition'
 import PrivateProfile from '~/components/profile/PrivateProfile.vue'
 import PublicProfile from '~/components/profile/PublicProfile.vue'
-import {getConnection, getProfile} from '~/scripts/api/connections.service'
+import {getConnection, getIncomingConnections, getProfile} from '~/scripts/api/connections.service'
 import {TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
@@ -74,10 +76,11 @@ export default {
       isLoadingInitialData: true,
 
       profileCallsDone: 0,
-      profileInboundEnergy: null,
-      profileTransferedEnergy: null,
-      profileRatedUsers: null,
-      profileIncomingRatings: null,
+      profileIncomingConnections: [],
+      profileInboundEnergy: [],
+      profileTransferedEnergy: [],
+      profileRatedUsers: [],
+      profileIncomingRatings: [],
     }
   },
 
@@ -89,7 +92,7 @@ export default {
 
   computed: {
     loadingProfileData() {
-      return this.profileCallsDone < 4
+      return this.profileCallsDone < 5
     },
     brightness() {
       return this.profile?.rating / 10
@@ -202,23 +205,28 @@ export default {
           onDone()
         }).catch(onError)
       } else {
-        getIncomingRatings(this.$backendApi, this.userId).then(ratings => {
+        getIncomingRatings(this.$backendApi, this.brightId).then(ratings => {
           this.profileIncomingRatings = ratings;
           onDone()
         }).catch(onError)
-        getRatedUsers(this.$backendApi, this.userId).then(ratings => {
+        getRatedUsers(this.$backendApi, this.brightId).then(ratings => {
           this.profileRatedUsers = ratings;
           onDone()
         }).catch(onError)
-        getEnergy(this.$backendApi, this.userId).then(energy => {
+        getEnergy(this.$backendApi, this.brightId).then(energy => {
           this.profileTransferedEnergy = energy;
           onDone()
         }).catch(onError)
-        getInboundEnergy(this.$backendApi, this.userId).then(energy => {
+        getInboundEnergy(this.$backendApi, this.brightId).then(energy => {
           this.profileInboundEnergy = energy;
           onDone()
         }).catch(onError)
       }
+      getIncomingConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
+        console.log({connections})
+        this.profileIncomingConnections = connections
+        onDone()
+      }).catch(onError)
     },
     onAfterSave() {
       if (this.fromRoute?.name) {

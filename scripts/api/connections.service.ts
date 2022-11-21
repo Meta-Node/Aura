@@ -1,6 +1,6 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import { CONNECTION_SEARCH_SEED } from '~/utils/constants'
-import { encryptDataWithPrivateKey } from '~/scripts/utils/crypto'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import {CONNECTION_SEARCH_SEED} from '~/utils/constants'
+import {encryptDataWithPrivateKey} from '~/scripts/utils/crypto'
 import {
   AuraConnectionsResponse,
   AuraProfile,
@@ -21,13 +21,14 @@ export const getConnections = (
   })
 }
 
-export const getIncomingConnections = (
+export const getIncomingConnections = async (
   brightIdNodeApi: AxiosInstance,
   toBrightId: string
 ) => {
-  return brightIdNodeApi.get<IncomingConnectionsResponse>(
+  const res = await brightIdNodeApi.get<IncomingConnectionsResponse>(
     `/node/v6/users/${toBrightId}/connections/inbound`
   )
+  return res.data.data.connections
 }
 
 export const getConnection = async (
@@ -68,11 +69,11 @@ export const getProfile = async (
     res = await backendApi.get<AuraProfile | AuraPublicProfile>(
       route + fromBrightId
     )
-    resFinal = { ...res, isPublic }
+    resFinal = {...res, isPublic}
   } catch (error: any) {
     if (error?.response?.status === 500) {
       res = await backendApi.get<AuraPublicProfile>(publicRoute + fromBrightId)
-      resFinal = { ...res, isPublic: true }
+      resFinal = {...res, isPublic: true}
     } else {
       throw new Error('profile is not defined')
     }
