@@ -18,13 +18,21 @@
       </tr>
       <tr>
         <td>energy transfer</td>
-        <td id="energyIn" data-testid="aura-statistics-energy-in">{{ profileInboundEnergy.length }}</td>
-        <td id="energyOut" data-testid="aura-statistics-energy-out">{{ profileTransferredEnergy.length }}</td>
+        <td id="energyIn" data-testid="aura-statistics-energy-in" class="aura-statistics__detail-button">
+          {{ profileInboundEnergy.length }}
+        </td>
+        <td id="energyOut" data-testid="aura-statistics-energy-out" class="aura-statistics__detail-button">
+          {{ profileTransferredEnergy.length }}
+        </td>
       </tr>
       <tr>
         <td>honesty</td>
-        <td id="honestyIn" data-testid="aura-statistics-honesty-in">{{ profileIncomingRatings.length }}</td>
-        <td id="honestyOut" data-testid="aura-statistics-honesty-out">{{ profileRatedUsers.length }}</td>
+        <td id="honestyIn" data-testid="aura-statistics-honesty-in" class="aura-statistics__detail-button">
+          {{ profileIncomingRatings.length }}
+        </td>
+        <td id="honestyOut" data-testid="aura-statistics-honesty-out" class="aura-statistics__detail-button">
+          {{ profileRatedUsers.length }}
+        </td>
       </tr>
       </tbody>
     </table>

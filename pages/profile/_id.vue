@@ -31,8 +31,24 @@
           @edit="onEdit"
           @share="onShare"
         />
-        <private-profile
-          v-if="isPrivate"
+        <own-profile
+          v-if="isOwn"
+          ref="public"
+          :brightness="brightness"
+          :date="getDate"
+          :four-unrated="fourUnrated"
+          :is-loading-initial-data="isLoadingInitialData"
+          :profile="profile"
+          :profile-inbound-energy="profileInboundEnergy"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :loading-profile-data="loadingProfileData"
+          :profile-incoming-connections="profileIncomingConnections"
+          @share="onShare"
+        />
+        <others-profile
+          v-else
           ref="private"
           :brightness="brightness"
           :date="getDate"
@@ -48,22 +64,6 @@
           @afterSave="onAfterSave"
           @share="onShare"
           @updateNickname="updateNickname"
-        />
-        <public-profile
-          v-if="!isPrivate"
-          ref="public"
-          :brightness="brightness"
-          :date="getDate"
-          :four-unrated="fourUnrated"
-          :is-loading-initial-data="isLoadingInitialData"
-          :profile="profile"
-          :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
-          :profile-incoming-ratings="profileIncomingRatings"
-          :loading-profile-data="loadingProfileData"
-          :profile-incoming-connections="profileIncomingConnections"
-          @share="onShare"
         />
         <nuxt-link
           v-if="!isAuth && isPublicRouteQuery"
@@ -85,8 +85,8 @@
 
 <script>
 import transition from '~/mixins/transition'
-import PrivateProfile from '~/components/profile/PrivateProfile.vue'
-import PublicProfile from '~/components/profile/PublicProfile.vue'
+import OthersProfile from '~/components/profile/OthersProfile.vue'
+import OwnProfile from '~/components/profile/OwnProfile.vue'
 import {getConnection, getIncomingConnections, getProfile} from '~/scripts/api/connections.service'
 import {TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
@@ -99,8 +99,8 @@ import NicknamePopup from "~/components/popup/NicknamePopup";
 export default {
   components: {
     NicknamePopup,
-    PrivateProfile,
-    PublicProfile,
+    OthersProfile,
+    OwnProfile,
   },
   mixins: [transition, unsavedChanges, avatar],
 
@@ -112,7 +112,7 @@ export default {
 
   data() {
     return {
-      isPrivate: true,
+      isOwn: false,
       profile: {},
       isLoadingInitialData: true,
 
@@ -134,9 +134,6 @@ export default {
   computed: {
     img() {
       return this.brightId
-    },
-    isOwn() {
-      return !this.isPrivate;
     },
     loadingProfileData() {
       return this.profileCallsDone < 5
@@ -193,8 +190,8 @@ export default {
   },
 
   watch: {
-    isPrivate() {
-      const accType = this.isPrivate ? 'private' : 'public'
+    isOwn() {
+      const accType = this.isOwn ? 'public' : 'private'
       this.$router.replace({query: {account: accType}})
     },
   },
@@ -210,7 +207,7 @@ export default {
     this.getProfileData()
 
     if (this.brightId === localStorage.getItem('brightId')) {
-      this.isPrivate = false
+      this.isOwn = true
       await this.loadOwnProfile()
       return
     }
@@ -311,7 +308,7 @@ export default {
           transferredEnergy: outboundEnergyObject?.amount || 0
         }
         const connectionRes = await getConnection(this.$backendApi, this.brightId)
-        this.isPrivate = !this.isPublicRouteQuery
+        this.isOwn = this.isPublicRouteQuery
         if (connectionRes?.previousRating) {
           this.profile.previousRating = connectionRes.previousRating.rating
         }

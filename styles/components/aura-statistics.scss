@@ -14,6 +14,15 @@
     width: 100%;
     margin-top: 1.5rem;
   }
+
+
+  &__detail-button {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--gray);
+    }
+  }
 }
 
 .aura-statistics th,
