@@ -65,13 +65,6 @@
           @share="onShare"
           @updateNickname="updateNickname"
         />
-        <nuxt-link
-          v-if="!isAuth && isPublicRouteQuery"
-          class="profile__login-cta"
-          to="/"
-        >
-          Please, login in Aura app to see more
-        </nuxt-link>
       </div>
       <nickname-popup
         v-if="profile && profile.id"
@@ -112,7 +105,6 @@ export default {
 
   data() {
     return {
-      isOwn: false,
       profile: {},
       isLoadingInitialData: true,
 
@@ -132,6 +124,9 @@ export default {
   },
 
   computed: {
+    isOwn() {
+      return process.client && this.brightId === localStorage.getItem('brightId')
+    },
     img() {
       return this.brightId
     },
@@ -146,9 +141,6 @@ export default {
     },
     brightId() {
       return this.$route.params.id
-    },
-    isPublicRouteQuery() {
-      return this.$route.query?.account === 'public'
     },
     getDate() {
       const difDate = {}
@@ -189,13 +181,6 @@ export default {
     },
   },
 
-  watch: {
-    isOwn() {
-      const accType = this.isOwn ? 'public' : 'private'
-      this.$router.replace({query: {account: accType}})
-    },
-  },
-
   async mounted() {
     this.isLoadingInitialData = true
 
@@ -206,8 +191,7 @@ export default {
 
     this.getProfileData()
 
-    if (this.brightId === localStorage.getItem('brightId')) {
-      this.isOwn = true
+    if (this.isOwn) {
       await this.loadOwnProfile()
       return
     }
@@ -282,7 +266,7 @@ export default {
     },
     async loadConnectionProfile() {
       try {
-        !this.isPublicRouteQuery &&
+        !this.isOwn &&
         (await this.$store.dispatch('connections/getConnectionsData'))
         await this.$store.dispatch('profile/loadProfileData')
         await this.$store.dispatch('energy/getTransferredEnergy')
@@ -290,7 +274,7 @@ export default {
 
         this.profile = connections.find(con => con.id === this.brightId)
 
-        const res = await getProfile(this.$backendApi, this.brightId, this.isPublicRouteQuery)
+        const res = await getProfile(this.$backendApi, this.brightId, this.isOwn)
 
         const transferredEnergy = this.$store.state.energy.transferredEnergy
         const outboundEnergyObject = transferredEnergy.find(
@@ -308,7 +292,6 @@ export default {
           transferredEnergy: outboundEnergyObject?.amount || 0
         }
         const connectionRes = await getConnection(this.$backendApi, this.brightId)
-        this.isOwn = this.isPublicRouteQuery
         if (connectionRes?.previousRating) {
           this.profile.previousRating = connectionRes.previousRating.rating
         }
@@ -338,9 +321,7 @@ export default {
       const {copyToClipboard} = await import(
         '~/scripts/utils/copyToClipboard'
         )
-      const URL = this.isPublicRouteQuery
-        ? location.href
-        : location.href + '?account=public'
+      const URL = location.href
 
       copyToClipboard(URL)
       this.$store.commit('toast/addToast', {
