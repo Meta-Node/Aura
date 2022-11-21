@@ -54,6 +54,7 @@
       </button>
     </div>
     <mutual-connections
+      :profile-calls-done="profileCallsDone"
       :profile-inbound-energy="profileInboundEnergy"
       :profile-incoming-connections="profileIncomingConnections"
       :profile-transferred-energy="profileTransferredEnergy"
@@ -98,6 +99,9 @@ export default {
     isLoadingInitialData: {
       type: Boolean,
       default: true,
+    },
+    profileCallsDone: {
+      type: Number,
     },
     date: {
       type: String,

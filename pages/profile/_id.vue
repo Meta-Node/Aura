@@ -55,6 +55,7 @@
           :four-unrated="fourUnrated"
           :is-loading-initial-data="isLoadingInitialData"
           :profile="profile"
+          :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
           :profile-transferred-energy="profileTransferredEnergy"
           :profile-rated-users="profileRatedUsers"
@@ -103,11 +104,11 @@ export default {
       isLoadingInitialData: true,
 
       profileCallsDone: 0,
-      profileIncomingConnections: [],
-      profileInboundEnergy: [],
-      profileTransferredEnergy: [],
-      profileRatedUsers: [],
-      profileIncomingRatings: [],
+      profileIncomingConnections: null,
+      profileInboundEnergy: null,
+      profileTransferredEnergy: null,
+      profileRatedUsers: null,
+      profileIncomingRatings: null,
     }
   },
 

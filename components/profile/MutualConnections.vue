@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="loadingProfileData"
+      v-if="isLoading"
       style="margin-top: 40px"
     >
       <app-spinner :is-visible="true"/>
@@ -58,31 +58,27 @@ export default {
   props: {
     profile: {
       type: Object,
-      default: () => {
-      },
     },
     loadingProfileData: {
       type: Boolean,
     },
+    profileCallsDone: {
+      type: Number,
+    },
     profileIncomingConnections: {
       type: Array,
-      default: () => [],
     },
     profileInboundEnergy: {
       type: Array,
-      default: () => [],
     },
     profileTransferredEnergy: {
       type: Array,
-      default: () => [],
     },
     profileRatedUsers: {
       type: Array,
-      default: () => [],
     },
     profileIncomingRatings: {
       type: Array,
-      default: () => [],
     },
   },
   data() {
@@ -125,10 +121,11 @@ export default {
     }
   },
   watch: {
-    loadingProfileData: {
+    profileCallsDone: {
       immediate: true,
-      handler(newValue) {
-        if (!newValue) {
+      handler() {
+        if (this.profileIncomingConnections !== null
+          && this.profileIncomingRatings !== null) {
           this.setUserData()
         }
       }
