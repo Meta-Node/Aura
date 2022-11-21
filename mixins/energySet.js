@@ -27,7 +27,7 @@ export default {
           this.debugError = JSON.stringify(error.response?.data)
         }
         if (error.message === 'retryRequest') {
-          this.updateEnergy()
+          this.updateEnergy(true)
         } else {
           this.$store.commit('toast/addToast', {
             text: 'Error',
