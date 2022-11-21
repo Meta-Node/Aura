@@ -238,7 +238,7 @@ export default {
           this.$store.commit('app/setLoading', false)
         }
         this.$store.commit('toast/addToast', {
-          text: 'Success',
+          text: 'Updated',
           color: TOAST_SUCCESS,
         })
         this.hasUnsavedChanges = false;
