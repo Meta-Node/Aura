@@ -32,6 +32,7 @@
           @share="onShare"
         />
         <aura-statistics
+          :stat="stat"
           :profile-inbound-energy="profileInboundEnergy"
           :profile-transferred-energy="profileTransferredEnergy"
           :profile-rated-users="profileRatedUsers"
@@ -39,7 +40,9 @@
         />
         <stats
           v-if="stat"
+          :stat="stat"
           :profile="profile"
+          :is-own="isOwn"
           :profile-inbound-energy="profileInboundEnergy"
           :profile-transferred-energy="profileTransferredEnergy"
           :profile-rated-users="profileRatedUsers"
@@ -97,7 +100,7 @@ import transition from '~/mixins/transition'
 import OthersProfile from '~/components/profile/OthersProfile.vue'
 import OwnProfile from '~/components/profile/OwnProfile.vue'
 import {getConnection, getIncomingConnections, getProfile} from '~/scripts/api/connections.service'
-import {TOAST_ERROR} from "~/utils/constants";
+import {RATING_INBOUND_STAT, TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
 import {getIncomingRatings, getRatedUsers} from "~/scripts/api/rate.service";
@@ -142,7 +145,7 @@ export default {
       return process.client && this.brightId === localStorage.getItem('brightId')
     },
     stat() {
-      return this.$route.query.stat
+      return this.$route.query.stat || (this.isOwn ? RATING_INBOUND_STAT : '')
     },
     img() {
       return this.brightId

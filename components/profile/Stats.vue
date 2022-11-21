@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="stats__return" @click="clearStat">
+    <div v-if="!isOwn" class="stats__return" @click="clearStat">
       &lt;- Return to
       Profile
     </div>
@@ -14,7 +14,7 @@
       v-else
       class="mutual-connections__users"
     >
-      <h3 class="mutual-connections__title" style="margin-top: 0px;">{{ titles[stat] }}</h3>
+      <h3 class="mutual-connections__title" style="margin-top: 15px;">{{ titles[stat] }}</h3>
       <div class="filter switch-wrapper">
         <app-filter :filters="filters" @clearFilters="clearFilters" @filtered="onFiltered"/>
       </div>
@@ -62,10 +62,14 @@ export default {
   },
   mixins: [transition, users, loadItems],
   props: {
+    isOwn: {
+      type: Boolean,
+    },
+    stat: {
+      type: String,
+    },
     profile: {
       type: Object,
-      default: () => {
-      },
     },
     loadingProfileData: {
       type: Boolean,
@@ -139,9 +143,6 @@ export default {
   computed: {
     filterKey() {
       return filterKey + ' ' + this.stat
-    },
-    stat() {
-      return this.$route.query.stat
     },
   },
   watch: {

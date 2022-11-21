@@ -53,6 +53,9 @@ import {ENERGY_INBOUND_STAT, ENERGY_OUTBOUND_STAT, RATING_INBOUND_STAT, RATING_O
 export default {
   name: "AuraStatistics",
   props: {
+    stat: {
+      type: String
+    },
     loadingProfileData: {
       type: Boolean,
     },
@@ -80,11 +83,6 @@ export default {
       ENERGY_INBOUND_STAT,
       ENERGY_OUTBOUND_STAT,
     }
-  },
-  computed: {
-    stat() {
-      return this.$route.query.stat
-    },
   },
   methods: {
     setStat(stat) {
