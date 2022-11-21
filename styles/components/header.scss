@@ -48,7 +48,7 @@
   @include mono-reg;
   line-height: 120%;
   font-size: 10px;
-  color: var(--s-grey);
+  color: var(--s-gray);
   letter-spacing: -0.03em;
 }
 
@@ -84,7 +84,7 @@
 .menu-text {
   @include semi;
   display: block;
-  color: var(--s-grey);
+  color: var(--s-gray);
   font-size: 12px;
   line-height: 100%;
 }
@@ -138,7 +138,7 @@
   position: relative;
   height: 6px;
   border-radius: 20px;
-  background-color: var(--b-grey);
+  background-color: var(--b-gray);
   transition: transform 0.4s ease;
 }
 
@@ -189,7 +189,7 @@
   transition: transform opacity;
   top: 32px;
   right: 0;
-  background-color: var(--b-grey);
+  background-color: var(--b-gray);
   border-radius: 5px;
   padding: 12px;
 

@@ -10,7 +10,7 @@
   }
 
   &__action {
-    background: var(--grey);
+    background: var(--gray);
     padding: 5px 10px;
     margin: 0px 5px;
     cursor: pointer;
@@ -48,7 +48,7 @@
     z-index: 0;
     border-radius: 80px;
 
-    background-color: var(--s-grey);
+    background-color: var(--s-gray);
     opacity: 0.2;
     width: var(--quota);
 
@@ -78,8 +78,8 @@
   width: 20px;
   height: 20px;
   border-radius: 80px;
-  background-color: var(--b-grey);
-  border: 2px solid var(--b-grey);
+  background-color: var(--b-gray);
+  border: 2px solid var(--b-gray);
   box-shadow: 0px 4px 4px 0px var(--black);
   box-shadow: 0px 0px 20px 0px var(--white);
   z-index: 2;
@@ -94,7 +94,7 @@
   font-size: 14px;
   line-height: 125%;
   letter-spacing: -0.03em;
-  color: var(--b-grey);
+  color: var(--b-gray);
   margin-top: 8px;
 }
 

@@ -8,7 +8,7 @@
 .select {
   @include reg;
   border-radius: 10px;
-  background-color: var(--grey);
+  background-color: var(--gray);
   color: rgba(241, 241, 241, 0.6);
   width: 100%;
   padding: 6px 8px 6px;
@@ -24,7 +24,7 @@
 
   &__options {
     border-radius: 10px;
-    color: var(--grey);
+    color: var(--gray);
     background-color: rgba(241, 241, 241);
     width: 100%;
     padding: 6px 8px 6px;
@@ -39,6 +39,7 @@
 
     &__option {
       cursor: pointer;
+
       &:hover {
         font-weight: 500;
       }

@@ -33,7 +33,7 @@
 }
 
 .profile__name {
-  color: var(--s-grey);
+  color: var(--s-gray);
   margin-top: 4px;
 }
 
@@ -68,7 +68,7 @@
 
 .profile__info {
   @include mono-bold;
-  color: var(--s-grey);
+  color: var(--s-gray);
   font-size: 16px;
   line-height: 125%;
   letter-spacing: -0.03em;

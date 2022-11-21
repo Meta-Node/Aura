@@ -87,7 +87,7 @@
   display: block;
   margin-top: 32px;
   border: none;
-  background-color: var(--grey);
+  background-color: var(--gray);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,14 +97,14 @@
 
   &:disabled {
     cursor: not-allowed;
-    color: var(--s-grey);
+    color: var(--s-gray);
   }
 }
 
 .form__btn-select {
   display: block;
   border: none;
-  background-color: var(--grey);
+  background-color: var(--gray);
   justify-content: center;
   align-items: center;
   padding: 14px;
@@ -116,15 +116,15 @@
     font-size: 16px;
     line-height: 100%;
     letter-spacing: -0.03em;
-    color: var(--b-grey);
+    color: var(--b-gray);
 
     &__selected {
-      color: var(--grey);
+      color: var(--gray);
     }
   }
 
   &__selected {
-    background-color: var(--b-grey);
+    background-color: var(--b-gray);
   }
 }
 
@@ -133,7 +133,7 @@
   font-size: 16px;
   line-height: 100%;
   letter-spacing: -0.03em;
-  color: var(--b-grey);
+  color: var(--b-gray);
 }
 
 .brightid__btn {

@@ -27,7 +27,7 @@
 .popup__backdrop {
   width: 100%;
   height: 100%;
-  background-color: var(--grey);
+  background-color: var(--gray);
   opacity: 0.6;
   position: absolute;
   z-index: 1;
@@ -55,7 +55,7 @@
   position: relative;
   width: 100%;
   max-width: 344px;
-  background-color: var(--grey);
+  background-color: var(--gray);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -116,6 +116,7 @@
   padding-right: 20px;
   width: 100%;
   max-width: 344px;
+
   .input-wrapper {
     display: flex;
     flex-direction: column;

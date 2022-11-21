@@ -21,10 +21,10 @@
   font-size: 12px;
   line-height: 100%;
   letter-spacing: -0.03em;
-  background-color: var(--grey);
-  // border: 2px solid var(--s-grey);
+  background-color: var(--gray);
+  // border: 2px solid var(--s-gray);
   border-radius: 70px;
-  color: var(--s-grey);
+  color: var(--s-gray);
   padding: 6px 16px 5px 16px;
 
   opacity: 0.5;
@@ -35,8 +35,8 @@
 
   &--active {
     color: var(--white);
-    background-color: var(--grey);
-    // border: 2px solid var(--b-grey);
+    background-color: var(--gray);
+    // border: 2px solid var(--b-gray);
     opacity: 1;
 
     &--clear {

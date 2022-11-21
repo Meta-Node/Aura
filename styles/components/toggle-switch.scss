@@ -25,7 +25,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--grey);
+  background-color: var(--gray);
   transition: 0.4s;
 
   &:before {
@@ -35,14 +35,14 @@
     width: 12px;
     left: 1px;
     bottom: 1px;
-    background-color: var(--s-grey);
+    background-color: var(--s-gray);
     transition: 0.4s;
     transform: translateX(1px);
   }
 }
 
 .toggle-switch__checkbox:checked + .toggle-switch__round {
-  background-color: var(--grey);
+  background-color: var(--gray);
 }
 
 .toggle-switch__checkbox:checked + .toggle-switch__round:before {

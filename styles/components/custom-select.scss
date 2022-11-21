@@ -9,14 +9,14 @@
 }
 
 .custom-select__selected {
-  background-color: var(--grey);
+  background-color: var(--gray);
   border-radius: 70px;
   opacity: 0.5;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  color: var(--s-grey);
+  color: var(--s-gray);
   padding-left: 16px;
   padding-right: 16px;
   cursor: pointer;
@@ -40,10 +40,10 @@
 }
 
 .custom-select__items {
-  color: var(--s-grey);
+  color: var(--s-gray);
   overflow: hidden;
   position: absolute;
-  background-color: var(--grey);
+  background-color: var(--gray);
   left: 0;
   top: 28px;
   right: 0;
@@ -53,7 +53,7 @@
 }
 
 .custom-select__item {
-  color: var(--s-grey);
+  color: var(--s-gray);
 
   padding-left: 1em;
   cursor: pointer;

@@ -37,7 +37,7 @@
 .input {
   @include reg;
   border-radius: 10px;
-  background-color: var(--grey);
+  background-color: var(--gray);
   color: rgba(241, 241, 241, 0.6);
   width: 100%;
   padding: 6px 8px 6px;
@@ -45,6 +45,7 @@
   font-size: 16px;
   letter-spacing: -0.03em;
   border: 0;
+
   &::selection {
     background-color: var(--black);
     color: var(--white);

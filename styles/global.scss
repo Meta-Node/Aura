@@ -1,7 +1,7 @@
 * {
   &::selection {
     color: white;
-    background: var(--grey);
+    background: var(--gray);
   }
 }
 
@@ -42,7 +42,7 @@ svg {
 
 
 .aura-verification-color {
-  color: var(--s-grey);
+  color: var(--s-gray);
 
   &--bronze {
     color: var(--aura-verification-bronze);

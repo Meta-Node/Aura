@@ -41,7 +41,7 @@
       @include semi;
       font-size: 16px;
       line-height: 150%;
-      color: var(--b-grey);
+      color: var(--b-gray);
       letter-spacing: -0.03em;
       overflow: hidden;
       white-space: nowrap;
@@ -62,5 +62,5 @@
 }
 
 .user-item__rate {
-  color: var(--s-grey);
+  color: var(--s-gray);
 }

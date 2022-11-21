@@ -1,6 +1,6 @@
 .btn {
   border: none;
-  background-color: var(--grey);
+  background-color: var(--gray);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,10 +10,10 @@
   font-size: 16px;
   line-height: 100%;
   letter-spacing: -0.03em;
-  color: var(--b-grey);
+  color: var(--b-gray);
 
   &:disabled {
     cursor: not-allowed;
-    color: var(--s-grey);
+    color: var(--s-gray);
   }
 }
