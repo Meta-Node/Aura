@@ -17,10 +17,16 @@
 
 
   &__detail-button {
+    text-decoration: underline;
+    text-underline-offset: 3px;
     cursor: pointer;
 
     &:hover {
       background-color: var(--gray);
+    }
+
+    &-active {
+      background-color: var(--light-gray);
     }
   }
 }

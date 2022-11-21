@@ -1,0 +1,13 @@
+.stats {
+  &__return {
+    @include semi;
+    color: white;
+    text-align: center;
+    width: 100%;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 15px 0;
+    text-underline-offset: 3px;
+  }
+}

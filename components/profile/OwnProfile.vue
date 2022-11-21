@@ -1,11 +1,5 @@
 <template>
   <div>
-    <aura-statistics
-      :profile-inbound-energy="profileInboundEnergy"
-      :profile-transferred-energy="profileTransferredEnergy"
-      :profile-rated-users="profileRatedUsers"
-      :profile-incoming-ratings="profileIncomingRatings"
-      :loading-profile-data="loadingProfileData"/>
     <four-unrated :users="fourUnrated"/>
   </div>
 </template>
@@ -13,11 +7,9 @@
 <script>
 import transition from '~/mixins/transition'
 import FourUnrated from '~/components/FourUnrated.vue'
-import AuraStatistics from "~/components/profile/AuraStatistics";
 
 export default {
   components: {
-    AuraStatistics,
     FourUnrated
   },
   mixins: [transition],

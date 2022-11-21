@@ -31,8 +31,23 @@
           @edit="onEdit"
           @share="onShare"
         />
+        <aura-statistics
+          :profile-inbound-energy="profileInboundEnergy"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-ratings="profileIncomingRatings"
+        />
+        <stats
+          v-if="stat"
+          :profile="profile"
+          :profile-inbound-energy="profileInboundEnergy"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :loading-profile-data="loadingProfileData"
+          :profile-incoming-connections="profileIncomingConnections"/>
         <own-profile
-          v-if="isOwn"
+          v-else-if="isOwn"
           ref="public"
           :brightness="brightness"
           :date="getDate"
@@ -89,9 +104,13 @@ import {getIncomingRatings, getRatedUsers} from "~/scripts/api/rate.service";
 import {getEnergy, getInboundEnergy} from "~/scripts/api/energy.service";
 import avatar from "~/mixins/avatar";
 import NicknamePopup from "~/components/popup/NicknamePopup";
+import AuraStatistics from "~/components/profile/AuraStatistics";
+import Stats from "~/components/profile/Stats";
 
 export default {
   components: {
+    Stats,
+    AuraStatistics,
     NicknamePopup,
     OthersProfile,
     OwnProfile,
@@ -121,6 +140,9 @@ export default {
   computed: {
     isOwn() {
       return process.client && this.brightId === localStorage.getItem('brightId')
+    },
+    stat() {
+      return this.$route.query.stat
     },
     img() {
       return this.brightId
