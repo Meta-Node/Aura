@@ -19,6 +19,7 @@ export type AppState = {
   loading: boolean
   isWebp: boolean
   isAuth: boolean
+  isFirstVisitedRoute: boolean
 }
 export type ConnectionsState = {
   connectionsData: AuraConnection[]

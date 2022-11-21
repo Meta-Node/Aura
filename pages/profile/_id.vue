@@ -97,12 +97,6 @@ export default {
   },
   mixins: [transition, unsavedChanges, avatar],
 
-  beforeRouteEnter(_to, from, next) {
-    next(vm => {
-      vm.fromRoute = from
-    })
-  },
-
   data() {
     return {
       profile: {},
@@ -258,10 +252,10 @@ export default {
       }).catch(onError)
     },
     onAfterSave() {
-      if (this.fromRoute?.name) {
-        this.$router.go(-1)
-      } else {
+      if (this.$store.getters["app/isFirstVisitedRoute"]) {
         this.$router.push('/connections/')
+      } else {
+        this.$router.go(-1)
       }
     },
     async loadConnectionProfile() {

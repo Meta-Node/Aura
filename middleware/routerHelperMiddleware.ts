@@ -1,6 +1,8 @@
-import { Middleware } from '@nuxt/types'
+import {Middleware} from '@nuxt/types'
 
-const redirectsMiddleware: Middleware = function ({ route, redirect }) {
+const routerHelperMiddleware: Middleware = function ({store, from, route, redirect}) {
+  store.commit('app/setIsFirstVisitedRoute', !from)
+
   const redirects = [
     {
       from: '/community',
@@ -13,4 +15,4 @@ const redirectsMiddleware: Middleware = function ({ route, redirect }) {
   }
 }
 
-export default redirectsMiddleware
+export default routerHelperMiddleware
