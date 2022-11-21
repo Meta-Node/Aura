@@ -8,6 +8,11 @@
       :four-unrated="fourUnrated"
       :is-loading-initial-data="isLoadingInitialData"
       :profile="profile"
+      :profile-inbound-energy="profileInboundEnergy"
+      :profile-transfered-energy="profileTransferedEnergy"
+      :profile-rated-users="profileRatedUsers"
+      :profile-incoming-ratings="profileIncomingRatings"
+      :loading-profile-data="loadingProfileData"
       @afterSave="onAfterSave"
       @share="onShare"
       @updateNickname="updateNickname"
@@ -20,6 +25,11 @@
       :four-unrated="fourUnrated"
       :is-loading-initial-data="isLoadingInitialData"
       :profile="profile"
+      :profile-inbound-energy="profileInboundEnergy"
+      :profile-transfered-energy="profileTransferedEnergy"
+      :profile-rated-users="profileRatedUsers"
+      :profile-incoming-ratings="profileIncomingRatings"
+      :loading-profile-data="loadingProfileData"
       @share="onShare"
     />
     <nuxt-link
@@ -40,6 +50,8 @@ import {getConnection, getProfile} from '~/scripts/api/connections.service'
 import {TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
+import {getIncomingRatings, getRatedUsers} from "~/scripts/api/rate.service";
+import {getEnergy, getInboundEnergy} from "~/scripts/api/energy.service";
 
 export default {
   components: {
@@ -60,6 +72,12 @@ export default {
       isOwn: false,
       profile: {},
       isLoadingInitialData: true,
+
+      profileCallsDone: 0,
+      profileInboundEnergy: null,
+      profileTransferedEnergy: null,
+      profileRatedUsers: null,
+      profileIncomingRatings: null,
     }
   },
 
@@ -70,8 +88,8 @@ export default {
   },
 
   computed: {
-    transferedEnergy() {
-      return this.$store.state.energy.transferedEnergy
+    loadingProfileData() {
+      return this.profileCallsDone < 4
     },
     brightness() {
       return this.profile?.rating / 10
@@ -139,6 +157,8 @@ export default {
       return
     }
 
+    this.getProfileData()
+
     if (this.brightId === localStorage.getItem('brightId')) {
       this.isPrivate = false
       this.isOwn = true
@@ -156,6 +176,50 @@ export default {
     this.$router.push({query: {...queries}})
   },
   methods: {
+    getProfileData() {
+      const onDone = () => {
+        this.profileCallsDone++;
+      }
+      const onError = error => {
+        this.$store.commit('toast/addToast', {text: 'Error while retrieving profile', color: TOAST_ERROR})
+        console.log(error)
+      }
+      if (this.brightId === localStorage.getItem('brightId')) {
+        this.$store.dispatch('profile/loadProfileData').then(() => {
+          this.profileRatedUsers = this.$store.getters["profile/ratedUsers"];
+          onDone()
+        }).catch(onError)
+        this.$store.dispatch('profile/getIncomingRatings').then(() => {
+          this.profileIncomingRatings = this.$store.getters["profile/incomingRatings"];
+          onDone()
+        }).catch(onError)
+        this.$store.dispatch('energy/getTransferedEnergy').then(() => {
+          this.profileTransferedEnergy = this.$store.getters["energy/transferedEnergy"];
+          onDone()
+        }).catch(onError)
+        this.$store.dispatch('energy/getInboundEnergy').then(() => {
+          this.profileInboundEnergy = this.$store.getters["energy/inboundEnergy"];
+          onDone()
+        }).catch(onError)
+      } else {
+        getIncomingRatings(this.$backendApi, this.userId).then(ratings => {
+          this.profileIncomingRatings = ratings;
+          onDone()
+        }).catch(onError)
+        getRatedUsers(this.$backendApi, this.userId).then(ratings => {
+          this.profileRatedUsers = ratings;
+          onDone()
+        }).catch(onError)
+        getEnergy(this.$backendApi, this.userId).then(energy => {
+          this.profileTransferedEnergy = energy;
+          onDone()
+        }).catch(onError)
+        getInboundEnergy(this.$backendApi, this.userId).then(energy => {
+          this.profileInboundEnergy = energy;
+          onDone()
+        }).catch(onError)
+      }
+    },
     onAfterSave() {
       if (this.fromRoute?.name) {
         this.$router.go(-1)
@@ -175,7 +239,8 @@ export default {
 
         const res = await getProfile(this.$backendApi, this.brightId, this.isPublicRouteQuery)
 
-        const outboundEnergyObject = this.transferedEnergy.find(
+        const transferedEnergy = this.$store.state.energy.transferedEnergy
+        const outboundEnergyObject = transferedEnergy.find(
           en => en.toBrightId === this.brightId
         )
 

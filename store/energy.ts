@@ -1,11 +1,7 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import {
-  getEnergy,
-  getInboundEnergy,
-  transferEnergy,
-} from '~/scripts/api/energy.service'
-import { getRatedUsers } from '~/scripts/api/rate.service'
-import { EnergyState, RootState } from '~/types/store'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {getEnergy, getInboundEnergy, transferEnergy,} from '~/scripts/api/energy.service'
+import {getRatedUsers} from '~/scripts/api/rate.service'
+import {EnergyState, RootState} from '~/types/store'
 
 export const state = (): EnergyState => ({
   transferedEnergy: [],
@@ -15,6 +11,8 @@ export const state = (): EnergyState => ({
 })
 
 export const getters: GetterTree<EnergyState, RootState> = {
+  transferedEnergy: state => state.transferedEnergy,
+  inboundEnergy: state => state.inboundEnergy,
   transferedEnergyAmount: state => {
     const totalAmount = state.transferedEnergy.map(user => user.amount)
     return totalAmount.reduce((prev, cur) => prev + cur, 0)
@@ -46,7 +44,7 @@ export const mutations: MutationTree<EnergyState> = {
 }
 
 export const actions: ActionTree<EnergyState, RootState> = {
-  async getTransferedEnergy({ commit }) {
+  async getTransferedEnergy({commit}) {
     try {
       const brightId = localStorage.getItem('brightId')
       if (!brightId) {
@@ -83,7 +81,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
     }
   },
 
-  async getInboundEnergy({ commit }) {
+  async getInboundEnergy({commit}) {
     try {
       const brightId = localStorage.getItem('brightId')
       if (!brightId) {
@@ -99,7 +97,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
     }
   },
 
-  async updateEnergy({ state }) {
+  async updateEnergy({state}) {
     try {
       await transferEnergy(this.$backendApi, state.transferedEnergy)
     } catch (error) {

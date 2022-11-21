@@ -30,7 +30,12 @@
         @edit="onEdit"
         @share="onShare"
       />
-      <aura-statistics :user-id="profile.id"/>
+      <aura-statistics
+        :profile-inbound-energy="profileInboundEnergy"
+        :profile-transfered-energy="profileTransferedEnergy"
+        :profile-rated-users="profileRatedUsers"
+        :profile-incoming-ratings="profileIncomingRatings"
+        :loading-profile-data="loadingProfileData"/>
       <div class="feedback__questions">
         <div class="feedback__quality-wrapper">
           <div class="feedback__transition">
@@ -140,6 +145,25 @@ export default {
       default: 0,
     },
     fourUnrated: {
+      type: Array,
+      default: () => [],
+    },
+    loadingProfileData: {
+      type: Boolean,
+    },
+    profileInboundEnergy: {
+      type: Array,
+      default: () => [],
+    },
+    profileTransferedEnergy: {
+      type: Array,
+      default: () => [],
+    },
+    profileRatedUsers: {
+      type: Array,
+      default: () => [],
+    },
+    profileIncomingRatings: {
       type: Array,
       default: () => [],
     },

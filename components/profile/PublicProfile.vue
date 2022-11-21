@@ -19,7 +19,12 @@
         :rating="profile.rating"
         @share="onShare"
       />
-      <aura-statistics/>
+      <aura-statistics
+        :profile-inbound-energy="profileInboundEnergy"
+        :profile-transfered-energy="profileTransferedEnergy"
+        :profile-rated-users="profileRatedUsers"
+        :profile-incoming-ratings="profileIncomingRatings"
+        :loading-profile-data="loadingProfileData"/>
       <four-unrated :users="fourUnrated"/>
     </div>
   </section>
@@ -67,6 +72,25 @@ export default {
       default: 0,
     },
     fourUnrated: {
+      type: Array,
+      default: () => [],
+    },
+    loadingProfileData: {
+      type: Boolean,
+    },
+    profileInboundEnergy: {
+      type: Array,
+      default: () => [],
+    },
+    profileTransferedEnergy: {
+      type: Array,
+      default: () => [],
+    },
+    profileRatedUsers: {
+      type: Array,
+      default: () => [],
+    },
+    profileIncomingRatings: {
       type: Array,
       default: () => [],
     },
