@@ -6,7 +6,7 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
+import {TOAST_ERROR, TOAST_SUCCESS} from '../../utils/constants'
 import {
   Connection,
   EnergyAllocationList,
@@ -20,7 +20,7 @@ import {
   newEnergyAllocation,
   oldEnergyAllocation,
 } from '../utils/energy'
-import { getRating, oldRatings } from '../utils/rating'
+import {getRating, oldRatings} from '../utils/rating'
 
 describe('Energy Set', () => {
   beforeEach(() => {
@@ -132,7 +132,7 @@ describe('Energy Set', () => {
       .should('have.value', 0)
   })
 
-  it.only('can update energies', () => {
+  it('can update energies', () => {
     cy.visit('/energy/')
     cy.get(`[data-testid=user-slider-${ratedConnectionWithoutEnergy.id}-input]`)
       .type('{selectAll}')
