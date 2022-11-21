@@ -4,17 +4,17 @@ import {getRatedUsers} from '~/scripts/api/rate.service'
 import {EnergyState, RootState} from '~/types/store'
 
 export const state = (): EnergyState => ({
-  transferedEnergy: [],
-  prevTransferedEnergy: [],
+  transferredEnergy: [],
+  prevTransferredEnergy: [],
   inboundEnergy: [],
   availableEnergy: 100,
 })
 
 export const getters: GetterTree<EnergyState, RootState> = {
-  transferedEnergy: state => state.transferedEnergy,
+  transferredEnergy: state => state.transferredEnergy,
   inboundEnergy: state => state.inboundEnergy,
-  transferedEnergyAmount: state => {
-    const totalAmount = state.transferedEnergy.map(user => user.amount)
+  transferredEnergyAmount: state => {
+    const totalAmount = state.transferredEnergy.map(user => user.amount)
     return totalAmount.reduce((prev, cur) => prev + cur, 0)
   },
 }
@@ -23,19 +23,19 @@ export const mutations: MutationTree<EnergyState> = {
   setAvailableEnergy(state, value) {
     state.availableEnergy = value
   },
-  setPrevTransferedEnergy(state, value) {
-    state.prevTransferedEnergy = value
+  setPrevTransferredEnergy(state, value) {
+    state.prevTransferredEnergy = value
   },
-  setTransferedEnergy(state, value) {
-    state.transferedEnergy = value
+  setTransferredEnergy(state, value) {
+    state.transferredEnergy = value
 
-    const totalAmount = state.transferedEnergy.map(user => user.amount)
-    const transferedEnergyAmount = totalAmount.reduce(
+    const totalAmount = state.transferredEnergy.map(user => user.amount)
+    const transferredEnergyAmount = totalAmount.reduce(
       (prev, cur) => prev + cur,
       0
     )
 
-    state.availableEnergy = +(100 - transferedEnergyAmount).toFixed(2)
+    state.availableEnergy = +(100 - transferredEnergyAmount).toFixed(2)
   },
 
   setInboundEnergy(state, value) {
@@ -44,7 +44,7 @@ export const mutations: MutationTree<EnergyState> = {
 }
 
 export const actions: ActionTree<EnergyState, RootState> = {
-  async getTransferedEnergy({commit}) {
+  async getTransferredEnergy({commit}) {
     try {
       const brightId = localStorage.getItem('brightId')
       if (!brightId) {
@@ -73,8 +73,8 @@ export const actions: ActionTree<EnergyState, RootState> = {
         100 - totalAmount.reduce((prev, cur) => prev + cur, 0)
 
       commit('setAvailableEnergy', availableEnergy)
-      commit('setPrevTransferedEnergy', allUsers)
-      commit('setTransferedEnergy', allUsers)
+      commit('setPrevTransferredEnergy', allUsers)
+      commit('setTransferredEnergy', allUsers)
     } catch (error) {
       console.log(error)
       throw error
@@ -99,7 +99,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
 
   async updateEnergy({state}) {
     try {
-      await transferEnergy(this.$backendApi, state.transferedEnergy)
+      await transferEnergy(this.$backendApi, state.transferredEnergy)
     } catch (error) {
       console.log(error)
       throw error

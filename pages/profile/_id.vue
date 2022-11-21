@@ -9,7 +9,7 @@
       :is-loading-initial-data="isLoadingInitialData"
       :profile="profile"
       :profile-inbound-energy="profileInboundEnergy"
-      :profile-transfered-energy="profileTransferedEnergy"
+      :profile-transferred-energy="profileTransferredEnergy"
       :profile-rated-users="profileRatedUsers"
       :profile-incoming-ratings="profileIncomingRatings"
       :loading-profile-data="loadingProfileData"
@@ -27,7 +27,7 @@
       :is-loading-initial-data="isLoadingInitialData"
       :profile="profile"
       :profile-inbound-energy="profileInboundEnergy"
-      :profile-transfered-energy="profileTransferedEnergy"
+      :profile-transferred-energy="profileTransferredEnergy"
       :profile-rated-users="profileRatedUsers"
       :profile-incoming-ratings="profileIncomingRatings"
       :loading-profile-data="loadingProfileData"
@@ -78,7 +78,7 @@ export default {
       profileCallsDone: 0,
       profileIncomingConnections: [],
       profileInboundEnergy: [],
-      profileTransferedEnergy: [],
+      profileTransferredEnergy: [],
       profileRatedUsers: [],
       profileIncomingRatings: [],
     }
@@ -196,8 +196,8 @@ export default {
           this.profileIncomingRatings = this.$store.getters["profile/incomingRatings"];
           onDone()
         }).catch(onError)
-        this.$store.dispatch('energy/getTransferedEnergy').then(() => {
-          this.profileTransferedEnergy = this.$store.getters["energy/transferedEnergy"];
+        this.$store.dispatch('energy/getTransferredEnergy').then(() => {
+          this.profileTransferredEnergy = this.$store.getters["energy/transferredEnergy"];
           onDone()
         }).catch(onError)
         this.$store.dispatch('energy/getInboundEnergy').then(() => {
@@ -214,7 +214,7 @@ export default {
           onDone()
         }).catch(onError)
         getEnergy(this.$backendApi, this.brightId).then(energy => {
-          this.profileTransferedEnergy = energy;
+          this.profileTransferredEnergy = energy;
           onDone()
         }).catch(onError)
         getInboundEnergy(this.$backendApi, this.brightId).then(energy => {
@@ -240,27 +240,27 @@ export default {
         !this.isPublicRouteQuery &&
         (await this.$store.dispatch('connections/getConnectionsData'))
         await this.$store.dispatch('profile/loadProfileData')
-        await this.$store.dispatch('energy/getTransferedEnergy')
+        await this.$store.dispatch('energy/getTransferredEnergy')
         const connections = this.$store.getters['profile/connections']
 
         this.profile = connections.find(con => con.id === this.brightId)
 
         const res = await getProfile(this.$backendApi, this.brightId, this.isPublicRouteQuery)
 
-        const transferedEnergy = this.$store.state.energy.transferedEnergy
-        const outboundEnergyObject = transferedEnergy.find(
+        const transferredEnergy = this.$store.state.energy.transferredEnergy
+        const outboundEnergyObject = transferredEnergy.find(
           en => en.toBrightId === this.brightId
         )
 
         this.profile = {
           ...this.profile, ...res.data,
-          transferedEnergyPercentage: outboundEnergyObject
+          transferredEnergyPercentage: outboundEnergyObject
             ? toRoundedPercentage(
               outboundEnergyObject.amount,
               outboundEnergyObject.scale
             )
             : 0,
-          transferedEnergy: outboundEnergyObject?.amount || 0
+          transferredEnergy: outboundEnergyObject?.amount || 0
         }
         const connectionRes = await getConnection(this.$backendApi, this.brightId)
         this.isPrivate = !this.isPublicRouteQuery

@@ -19,7 +19,7 @@
       <tr>
         <td>energy transfer</td>
         <td id="energyIn" data-testid="aura-statistics-energy-in">{{ profileInboundEnergy.length }}</td>
-        <td id="energyOut" data-testid="aura-statistics-energy-out">{{ profileTransferedEnergy.length }}</td>
+        <td id="energyOut" data-testid="aura-statistics-energy-out">{{ profileTransferredEnergy.length }}</td>
       </tr>
       <tr>
         <td>honesty</td>
@@ -43,7 +43,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    profileTransferedEnergy: {
+    profileTransferredEnergy: {
       type: Array,
       default: () => [],
     },

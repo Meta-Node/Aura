@@ -32,7 +32,7 @@
       />
       <aura-statistics
         :profile-inbound-energy="profileInboundEnergy"
-        :profile-transfered-energy="profileTransferedEnergy"
+        :profile-transferred-energy="profileTransferredEnergy"
         :profile-rated-users="profileRatedUsers"
         :profile-incoming-ratings="profileIncomingRatings"
         :loading-profile-data="loadingProfileData"/>
@@ -86,7 +86,7 @@
       <mutual-connections
         :profile-inbound-energy="profileInboundEnergy"
         :profile-incoming-connections="profileIncomingConnections"
-        :profile-transfered-energy="profileTransferedEnergy"
+        :profile-transferred-energy="profileTransferredEnergy"
         :profile-rated-users="profileRatedUsers"
         :profile-incoming-ratings="profileIncomingRatings"
         :loading-profile-data="loadingProfileData"
@@ -165,7 +165,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    profileTransferedEnergy: {
+    profileTransferredEnergy: {
       type: Array,
       default: () => [],
     },
@@ -198,13 +198,13 @@ export default {
     img() {
       return this.$route.params.id
     },
-    prevTransferedEnergyToProfile() {
-      return Number(this.$store.state.energy.prevTransferedEnergy?.find(
+    prevTransferredEnergyToProfile() {
+      return Number(this.$store.state.energy.prevTransferredEnergy?.find(
         en => en.toBrightId === this.profile?.id
       )?.amount || 0)
     },
-    transferedEnergyToProfile() {
-      return Number(this.$store.state.energy.transferedEnergy?.find(
+    transferredEnergyToProfile() {
+      return Number(this.$store.state.energy.transferredEnergy?.find(
         en => en.toBrightId === this.profile?.id
       )?.amount || 0)
     },
@@ -228,11 +228,11 @@ export default {
         if (value < 1) {
           this.changeEnergy(0)
         } else if (oldValue < 1) {
-          this.changeEnergy(this.prevTransferedEnergyToProfile)
+          this.changeEnergy(this.prevTransferredEnergyToProfile)
         }
       }
     },
-    transferedEnergyToProfile: {
+    transferredEnergyToProfile: {
       immediate: true,
       handler(newValue, _oldValue) {
         this.energyValue = Number(newValue);
@@ -242,9 +242,9 @@ export default {
       immediate: true,
       handler(newValue, _oldValue) {
         if (!newValue) {
-          this.energyData = deepCopy(this.$store.state.energy.prevTransferedEnergy)
+          this.energyData = deepCopy(this.$store.state.energy.prevTransferredEnergy)
           this.ratingValue = this.previousRating
-          this.energize = this.transferedEnergyToProfile > 0;
+          this.energize = this.transferredEnergyToProfile > 0;
         }
       }
     }
@@ -266,7 +266,7 @@ export default {
             toBrightId: this.profile.id,
           })
         }
-        if (this.ratingValue >= 1 && this.prevTransferedEnergyToProfile !== this.transferedEnergyToProfile) {
+        if (this.ratingValue >= 1 && this.prevTransferredEnergyToProfile !== this.transferredEnergyToProfile) {
           await this.updateEnergy(false)
         } else {
           this.$store.commit('app/setLoading', false)

@@ -72,7 +72,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    profileTransferedEnergy: {
+    profileTransferredEnergy: {
       type: Array,
       default: () => [],
     },

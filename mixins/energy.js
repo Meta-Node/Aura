@@ -1,9 +1,9 @@
-import { toRoundedPercentage } from '~/utils/numbers'
+import {toRoundedPercentage} from '~/utils/numbers'
 
 export default {
   computed: {
     energySum() {
-      return this.$store.getters['energy/transferedEnergyAmount']
+      return this.$store.getters['energy/transferredEnergyAmount']
     },
     outboundPercentage() {
       return toRoundedPercentage(this.outbound, this.energySum)

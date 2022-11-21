@@ -10,8 +10,8 @@ export default {
   },
 
   computed: {
-    transferedEnergy() {
-      return this.$store.state.energy.transferedEnergy
+    transferredEnergy() {
+      return this.$store.state.energy.transferredEnergy
     },
     inboundEnergy() {
       return this.$store.state.energy.inboundEnergy

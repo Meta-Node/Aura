@@ -1,4 +1,4 @@
-import { IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS } from '~/utils/constants'
+import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from '~/utils/constants'
 import unsavedChanges from '~/mixins/unsavedChanges'
 
 export default {
@@ -21,7 +21,7 @@ export default {
         }
         this.hasUnsavedChanges = false
         // this.$router.push('/connections?filter=Unrated')
-        this.$emit('getTransferedEnergy')
+        this.$emit('getTransferredEnergy')
       } catch (error) {
         if (!IS_PRODUCTION) {
           this.debugError = JSON.stringify(error.response?.data)
@@ -46,7 +46,7 @@ export default {
       if (energyDoesNotExist && data.amount === 0) return
       updatedEnergy.push(data)
       this.energyData = updatedEnergy
-      this.$store.commit('energy/setTransferedEnergy', this.energyData)
+      this.$store.commit('energy/setTransferredEnergy', this.energyData)
     },
   },
 }

@@ -24,8 +24,8 @@ export type ConnectionsState = {
   connectionsData: AuraConnection[]
 }
 export type EnergyState = {
-  transferedEnergy: EnergyAllocationList
-  prevTransferedEnergy: EnergyAllocationList
+  transferredEnergy: EnergyAllocationList
+  prevTransferredEnergy: EnergyAllocationList
   inboundEnergy: InboundEnergyAllocationList
   availableEnergy: number
 }

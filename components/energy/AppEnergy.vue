@@ -20,7 +20,7 @@
               v-for="(user, i) in visibleItems"
               :id="user.id"
               :key="user.id"
-              :energy="user.transferedEnergy"
+              :energy="user.transferredEnergy"
               :img="user.id"
               :index="i"
               :name="user.nickname || user.name"
@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted() {
-    this.energyData = this.$store.state.energy.transferedEnergy
+    this.energyData = this.$store.state.energy.transferredEnergy
   },
   methods: {
     clearFilters() {

@@ -23,7 +23,7 @@
             :users="users"
             @clearFilters="clearFilters"
             @filtered="onFiltered"
-            @getTransferedEnergy="getUserData"
+            @getTransferredEnergy="getUserData"
           />
         </div>
       </div>
@@ -98,8 +98,8 @@ export default {
     }
   },
   computed: {
-    transferedEnergy() {
-      return this.$store.state.energy.transferedEnergy
+    transferredEnergy() {
+      return this.$store.state.energy.transferredEnergy
     },
     availableEnergy() {
       return this.$store.state.energy.availableEnergy || 0
@@ -114,7 +114,7 @@ export default {
     }
   },
   mounted() {
-    this.getTransferedEnergy()
+    this.getTransferredEnergy()
   },
   methods: {
     async getUserData() {
@@ -123,7 +123,7 @@ export default {
         await this.loadUserProfile()
 
         const ratedUsers = this.$store.getters['profile/ratedUsers']
-        await this.$store.dispatch('energy/getTransferedEnergy')
+        await this.$store.dispatch('energy/getTransferredEnergy')
         await this.$store.dispatch('energy/getInboundEnergy')
 
         const finalUsers = this.connections.map(conn => {
@@ -133,19 +133,19 @@ export default {
           const inboundEnergyObject = this.inboundEnergy.find(
             en => en.fromBrightId === conn.id
           )
-          const outboundEnergyObject = this.transferedEnergy.find(
+          const outboundEnergyObject = this.transferredEnergy.find(
             en => en.toBrightId === conn.id
           )
           return {
             ratingData,
             rating: ratingData ? +ratingData.rating : undefined,
-            transferedEnergyPercentage: outboundEnergyObject
+            transferredEnergyPercentage: outboundEnergyObject
               ? toRoundedPercentage(
                 outboundEnergyObject.amount,
                 outboundEnergyObject.scale
               )
               : 0,
-            transferedEnergy: outboundEnergyObject?.amount || 0,
+            transferredEnergy: outboundEnergyObject?.amount || 0,
             inboundEnergyAmount: inboundEnergyObject?.amount || 0,
             inboundEnergyPercentage: inboundEnergyObject
               ? toRoundedPercentage(
@@ -165,8 +165,8 @@ export default {
         this.isLoading = false
       }
     },
-    getTransferedEnergy() {
-      this.$store.dispatch('energy/getTransferedEnergy')
+    getTransferredEnergy() {
+      this.$store.dispatch('energy/getTransferredEnergy')
         .catch(error => {
           this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
           console.log(error)

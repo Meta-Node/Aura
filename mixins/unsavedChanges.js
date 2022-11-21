@@ -14,8 +14,8 @@ export default {
       },
     },
     unsavedChangedEnergies() {
-      const prev = this.$store.state.energy.prevTransferedEnergy
-      const current = this.$store.state.energy.transferedEnergy
+      const prev = this.$store.state.energy.prevTransferredEnergy
+      const current = this.$store.state.energy.transferredEnergy
       return prev
         .filter(ep => {
           const curAmount =

@@ -21,7 +21,7 @@
       />
       <aura-statistics
         :profile-inbound-energy="profileInboundEnergy"
-        :profile-transfered-energy="profileTransferedEnergy"
+        :profile-transferred-energy="profileTransferredEnergy"
         :profile-rated-users="profileRatedUsers"
         :profile-incoming-ratings="profileIncomingRatings"
         :loading-profile-data="loadingProfileData"/>
@@ -86,7 +86,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    profileTransferedEnergy: {
+    profileTransferredEnergy: {
       type: Array,
       default: () => [],
     },
