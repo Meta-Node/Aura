@@ -83,6 +83,7 @@ export default {
   },
   data() {
     return {
+      setDataCalled: false,
       isLoading: true,
       filterKey,
       filters: [
@@ -125,7 +126,7 @@ export default {
       immediate: true,
       handler() {
         if (this.profileIncomingConnections !== null
-          && this.profileIncomingRatings !== null) {
+          && this.profileIncomingRatings !== null && !this.setDataCalled) {
           this.setUserData()
         }
       }
@@ -135,6 +136,7 @@ export default {
     async getUserData() {
     },
     setUserData() {
+      this.setDataCalled = true
       const ratedUsers = this.$store.getters['profile/ratedUsers']
       const profileIncomingConnections = this.profileIncomingConnections
       const profileIncomingRatings = this.profileIncomingRatings
