@@ -35,7 +35,7 @@ export default {
   beforeMount() {
     setTimeout(() => {
       gsap.to(this.$refs.progress, {
-        duration: 5,
+        duration: 2,
         width: '100%',
         ease: 'linear',
         onComplete: () => {
