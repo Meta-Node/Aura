@@ -240,7 +240,7 @@ export default {
           this.debugError = JSON.stringify(error.response?.data)
         }
         if (error.message === 'retryRequest') {
-          this.onFeedbackChanged(this.ratingValue)
+          this.onFeedbackChanged()
         } else {
           this.$store.commit('toast/addToast', {text: 'Error', color: TOAST_ERROR})
         }
