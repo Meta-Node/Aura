@@ -19,27 +19,27 @@
       <tr>
         <td>energy transfer</td>
         <td id="energyIn" data-testid="aura-statistics-energy-in" class="aura-statistics__detail-button"
-            :class="{'aura-statistics__detail-button-active': stat === RATING_INBOUND_STAT}"
-            @click="() => setStat(RATING_INBOUND_STAT)">
-          {{ profileInboundEnergy.length }}
+            :class="{'aura-statistics__detail-button-active': stat === ENERGY_INBOUND_STAT}"
+            @click="() => setStat(ENERGY_INBOUND_STAT)">
+          {{ profileInboundEnergy ? profileInboundEnergy.length : 0 }}
         </td>
         <td id="energyOut" data-testid="aura-statistics-energy-out" class="aura-statistics__detail-button"
-            :class="{'aura-statistics__detail-button-active': stat === RATING_OUTBOUND_STAT}"
-            @click="() => setStat(RATING_OUTBOUND_STAT)">
-          {{ profileTransferredEnergy.length }}
+            :class="{'aura-statistics__detail-button-active': stat === ENERGY_OUTBOUND_STAT}"
+            @click="() => setStat(ENERGY_OUTBOUND_STAT)">
+          {{ profileTransferredEnergy ? profileTransferredEnergy.length : 0 }}
         </td>
       </tr>
       <tr>
         <td>honesty</td>
         <td id="honestyIn" data-testid="aura-statistics-honesty-in" class="aura-statistics__detail-button"
-            :class="{'aura-statistics__detail-button-active': stat === ENERGY_INBOUND_STAT}"
-            @click="() => setStat(ENERGY_INBOUND_STAT)">
-          {{ profileIncomingRatings.length }}
+            :class="{'aura-statistics__detail-button-active': stat === RATING_INBOUND_STAT}"
+            @click="() => setStat(RATING_INBOUND_STAT)">
+          {{ profileIncomingRatings ? profileIncomingRatings.length : 0 }}
         </td>
         <td id="honestyOut" data-testid="aura-statistics-honesty-out" class="aura-statistics__detail-button"
-            :class="{'aura-statistics__detail-button-active': stat === ENERGY_OUTBOUND_STAT}"
-            @click="() => setStat(ENERGY_OUTBOUND_STAT)">
-          {{ profileRatedUsers.length }}
+            :class="{'aura-statistics__detail-button-active': stat === RATING_OUTBOUND_STAT}"
+            @click="() => setStat(RATING_OUTBOUND_STAT)">
+          {{ profileRatedUsers ? profileRatedUsers.length : 0 }}
         </td>
       </tr>
       </tbody>
@@ -61,19 +61,15 @@ export default {
     },
     profileInboundEnergy: {
       type: Array,
-      default: () => [],
     },
     profileTransferredEnergy: {
       type: Array,
-      default: () => [],
     },
     profileRatedUsers: {
       type: Array,
-      default: () => [],
     },
     profileIncomingRatings: {
       type: Array,
-      default: () => [],
     },
   },
   data() {

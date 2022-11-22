@@ -62,6 +62,9 @@ export default {
   },
   mixins: [transition, users, loadItems],
   props: {
+    profileCallsDone: {
+      type: Number,
+    },
     isOwn: {
       type: Boolean,
     },
@@ -76,27 +79,23 @@ export default {
     },
     profileIncomingConnections: {
       type: Array,
-      default: () => [],
     },
     profileInboundEnergy: {
       type: Array,
-      default: () => [],
     },
     profileTransferredEnergy: {
       type: Array,
-      default: () => [],
     },
     profileRatedUsers: {
       type: Array,
-      default: () => [],
     },
     profileIncomingRatings: {
       type: Array,
-      default: () => [],
     },
   },
   data() {
     return {
+      filterKey,
       defaultFilter: 'MutualFirst',
       titles: {
         [RATING_INBOUND_STAT]: "Inbound Rating",
@@ -140,11 +139,6 @@ export default {
       ],
     }
   },
-  computed: {
-    filterKey() {
-      return filterKey + ' ' + this.stat
-    },
-  },
   watch: {
     loadingProfileData: {
       immediate: true,
@@ -170,6 +164,7 @@ export default {
     async getUserData() {
     },
     setUserData() {
+      if (this.loadingProfileData) return
       const ratedUsers = this.$store.getters['profile/ratedUsers']
       this.startUsers = this.profileIncomingConnections.reduce((a, c) => {
         const mutualConnectionId = c.id

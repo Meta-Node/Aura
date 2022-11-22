@@ -1,12 +1,6 @@
-import {
-  AURA_LEVEL,
-  AURA_PROFILE,
-  BRIGHT_ID_BACKUP,
-  FAKE_BRIGHT_ID,
-  unratedConnection,
-} from '../utils/data'
-import { AURA_ENERGIES, AURA_INBOUND_ENERGIES } from '../utils/energy'
-import { incomingRatings, oldRatings } from '../utils/rating'
+import {AURA_LEVEL, AURA_PROFILE, BRIGHT_ID_BACKUP, FAKE_BRIGHT_ID,} from '../utils/data'
+import {AURA_ENERGIES, AURA_INBOUND_ENERGIES} from '../utils/energy'
+import {incomingRatings, oldRatings} from '../utils/rating'
 
 describe('Login', () => {
   beforeEach(() => {
@@ -23,13 +17,6 @@ describe('Login', () => {
       `${AURA_PROFILE.numOfConnections} Connections`
     )
     cy.get('[data-testid=profile-info-aura-level]').contains(AURA_LEVEL)
-  })
-
-  it('yet to be rated', () => {
-    cy.visit('/')
-    cy.get(`[data-testid=user-v1-${unratedConnection.id}-name]`).contains(
-      unratedConnection.name
-    )
   })
 
   it('aura statistics', () => {

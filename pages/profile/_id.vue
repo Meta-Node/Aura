@@ -43,6 +43,7 @@
           :stat="stat"
           :profile="profile"
           :is-own="isOwn"
+          :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
           :profile-transferred-energy="profileTransferredEnergy"
           :profile-rated-users="profileRatedUsers"
@@ -247,7 +248,7 @@ export default {
           onDone()
         }).catch(onError)
         this.$store.dispatch('energy/getTransferredEnergy').then(() => {
-          this.profileTransferredEnergy = this.$store.getters["energy/transferredEnergy"];
+          this.profileTransferredEnergy = this.$store.getters["energy/outboundEnergy"];
           onDone()
         }).catch(onError)
         this.$store.dispatch('energy/getInboundEnergy').then(() => {
