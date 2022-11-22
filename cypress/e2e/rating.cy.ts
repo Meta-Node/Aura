@@ -8,11 +8,11 @@ import {
   ratedConnectionWithoutEnergy,
   unratedConnection,
 } from '../utils/data'
-import { AuraRating, AuraRatingRetrieveResponse, Connection } from '../../types'
-import { getStepName, valueToStep } from '../../utils/rating'
-import { TOAST_ERROR, TOAST_SUCCESS } from '../../utils/constants'
-import { getConnectionResponse } from '../utils/energy'
-import { getRating, newRatings, oldRatings } from '../utils/rating'
+import {AuraRating, AuraRatingRetrieveResponse, Connection} from '../../types'
+import {getStepName, valueToStep} from '../../utils/rating'
+import {TOAST_ERROR, TOAST_SUCCESS} from '../../utils/constants'
+import {getConnectionResponse} from '../utils/energy'
+import {getRating, newRatings, oldRatings} from '../utils/rating'
 
 describe('Rating', () => {
   beforeEach(() => {
@@ -160,7 +160,6 @@ describe('Rating', () => {
       submitNewRatingSuccess(connection)
       cy.get(`[data-testid^=user-item-${connection.id}-name]`).click()
       showsRateValue(connection, newRatings)
-      cy.go(-1)
     }
   }
 
