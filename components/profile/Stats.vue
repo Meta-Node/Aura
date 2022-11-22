@@ -195,7 +195,7 @@ export default {
           rating: ratingData ? +ratingData.rating : undefined,
           incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined,
           ...(mutualConnectionFromOurConnectionsList || {
-            name: 'Unknown',
+            name: mutualConnectionId,
           }),
           unknownConnection: !mutualConnectionFromOurConnectionsList,
         })
