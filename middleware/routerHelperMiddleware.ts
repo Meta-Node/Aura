@@ -1,7 +1,7 @@
 import {Middleware} from '@nuxt/types'
 
 const routerHelperMiddleware: Middleware = function ({store, from, route, redirect}) {
-  store.commit('app/setIsFirstVisitedRoute', !from)
+  store.commit('app/setIsFirstVisitedRoute', !from || from.path === route.path)
 
   const redirects = [
     {

@@ -171,7 +171,7 @@ describe('Rating', () => {
     doRate(unratedConnection)
   })
 
-  it.only('rates a rated connection', () => {
+  it('rates a rated connection', () => {
     ratePageIntercepts(ratedConnection)
     cy.visit(`/profile/` + ratedConnection.id)
     showsRateValue(ratedConnection, oldRatings)
