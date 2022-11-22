@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="debugError" class="debug-error">debug error: {{ debugError }}</div>
     <div class="feedback__questions">
       <div class="feedback__quality-wrapper">
         <div class="feedback__transition">
