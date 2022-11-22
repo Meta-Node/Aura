@@ -1,4 +1,4 @@
-import { ConnectionLevel } from '~/types'
+import {ConnectionLevel} from '~/types'
 
 export const CONNECTION_SEARCH_SEED = 5
 
@@ -17,3 +17,9 @@ export const connectionLevelMap: { [c in ConnectionLevel]: number } = {
 export const IS_PRODUCTION =
   (process.env.NUXT_ENV_VERCEL_ENV || process.env.NODE_ENV) === 'production'
 export const brightIdBaseURL = 'http://184.72.224.75'
+
+
+export const RATING_INBOUND_STAT = 'ri'
+export const RATING_OUTBOUND_STAT = 'ro'
+export const ENERGY_INBOUND_STAT = 'ei'
+export const ENERGY_OUTBOUND_STAT = 'eo'

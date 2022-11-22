@@ -1,11 +1,5 @@
 <template>
   <div>
-    <aura-statistics
-      :profile-inbound-energy="profileInboundEnergy"
-      :profile-transferred-energy="profileTransferredEnergy"
-      :profile-rated-users="profileRatedUsers"
-      :profile-incoming-ratings="profileIncomingRatings"
-      :loading-profile-data="loadingProfileData"/>
     <div class="feedback__questions">
       <div class="feedback__quality-wrapper">
         <div class="feedback__transition">
@@ -73,14 +67,12 @@ import {rateUser} from '~/scripts/api/rate.service'
 import transition from '~/mixins/transition'
 import avatar from '~/mixins/avatar'
 import {IS_PRODUCTION, TOAST_ERROR, TOAST_SUCCESS} from "~/utils/constants";
-import AuraStatistics from "~/components/profile/AuraStatistics";
 import energySet from "~/mixins/energySet";
 import {deepCopy} from "~/utils";
 import unsavedChanges from "~/mixins/unsavedChanges";
 
 export default {
   components: {
-    AuraStatistics,
     FeedbackSlider,
     MutualConnections,
   },

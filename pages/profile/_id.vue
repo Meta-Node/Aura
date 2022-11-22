@@ -31,8 +31,27 @@
           @edit="onEdit"
           @share="onShare"
         />
+        <aura-statistics
+          :stat="stat"
+          :profile-inbound-energy="profileInboundEnergy"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-ratings="profileIncomingRatings"
+        />
+        <stats
+          v-if="stat"
+          :stat="stat"
+          :profile="profile"
+          :is-own="isOwn"
+          :profile-calls-done="profileCallsDone"
+          :profile-inbound-energy="profileInboundEnergy"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :loading-profile-data="loadingProfileData"
+          :profile-incoming-connections="profileIncomingConnections"/>
         <own-profile
-          v-if="isOwn"
+          v-else-if="isOwn"
           ref="public"
           :brightness="brightness"
           :date="getDate"
@@ -82,16 +101,20 @@ import transition from '~/mixins/transition'
 import OthersProfile from '~/components/profile/OthersProfile.vue'
 import OwnProfile from '~/components/profile/OwnProfile.vue'
 import {getConnection, getIncomingConnections, getProfile} from '~/scripts/api/connections.service'
-import {TOAST_ERROR} from "~/utils/constants";
+import {RATING_INBOUND_STAT, TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
 import {getIncomingRatings, getRatedUsers} from "~/scripts/api/rate.service";
 import {getEnergy, getInboundEnergy} from "~/scripts/api/energy.service";
 import avatar from "~/mixins/avatar";
 import NicknamePopup from "~/components/popup/NicknamePopup";
+import AuraStatistics from "~/components/profile/AuraStatistics";
+import Stats from "~/components/profile/Stats";
 
 export default {
   components: {
+    Stats,
+    AuraStatistics,
     NicknamePopup,
     OthersProfile,
     OwnProfile,
@@ -121,6 +144,9 @@ export default {
   computed: {
     isOwn() {
       return process.client && this.brightId === localStorage.getItem('brightId')
+    },
+    stat() {
+      return this.$route.query.stat || (this.isOwn ? RATING_INBOUND_STAT : '')
     },
     img() {
       return this.brightId
@@ -222,7 +248,7 @@ export default {
           onDone()
         }).catch(onError)
         this.$store.dispatch('energy/getTransferredEnergy').then(() => {
-          this.profileTransferredEnergy = this.$store.getters["energy/transferredEnergy"];
+          this.profileTransferredEnergy = this.$store.getters["energy/outboundEnergy"];
           onDone()
         }).catch(onError)
         this.$store.dispatch('energy/getInboundEnergy').then(() => {

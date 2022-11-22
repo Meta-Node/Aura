@@ -215,6 +215,11 @@ export default {
 
       return this.filteredUsers
     },
+    getMutualFirst() {
+      this.filteredUsers = [...this.startUsers].sort((a, _b) => a.unknownConnection ? 1 : -1)
+
+      return this.filteredUsers
+    },
     getAllConnections() {
       return this.getAll()
     },

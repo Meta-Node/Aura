@@ -4,6 +4,7 @@ import {getRatedUsers} from '~/scripts/api/rate.service'
 import {EnergyState, RootState} from '~/types/store'
 
 export const state = (): EnergyState => ({
+  outboundEnergy: [],
   transferredEnergy: [],
   prevTransferredEnergy: [],
   inboundEnergy: [],
@@ -11,6 +12,7 @@ export const state = (): EnergyState => ({
 })
 
 export const getters: GetterTree<EnergyState, RootState> = {
+  outboundEnergy: state => state.outboundEnergy,
   transferredEnergy: state => state.transferredEnergy,
   inboundEnergy: state => state.inboundEnergy,
   transferredEnergyAmount: state => {
@@ -25,6 +27,9 @@ export const mutations: MutationTree<EnergyState> = {
   },
   setPrevTransferredEnergy(state, value) {
     state.prevTransferredEnergy = value
+  },
+  setOutboundEnergy(state, value) {
+    state.outboundEnergy = value
   },
   setTransferredEnergy(state, value) {
     state.transferredEnergy = value
@@ -52,6 +57,7 @@ export const actions: ActionTree<EnergyState, RootState> = {
       }
 
       const outboundEnergy = await getEnergy(this.$backendApi, brightId)
+      commit('setOutboundEnergy', outboundEnergy)
       const ratedUsers = await getRatedUsers(this.$backendApi, brightId)
 
       const moreThanZero = ratedUsers.filter(user => +user.rating >= 1)
