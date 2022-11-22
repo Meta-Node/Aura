@@ -34,6 +34,12 @@
   }
 }
 
+.aura-statistics td:not(:first-child),
+.aura-statistics th:not(:first-child) {
+  width: 80px;
+  text-align: center;
+}
+
 .aura-statistics th,
 .aura-statistics td {
   min-width: 50px;
