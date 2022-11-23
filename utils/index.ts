@@ -1,5 +1,5 @@
 export const isThereProblemWithEncryption = (errorMessage?: string) => {
-  if (!errorMessage) return false
+  if (typeof errorMessage !== 'string') return false
   return (
     errorMessage.includes('Could not decrypt using publicKey') ||
     errorMessage.includes('TypeError [ERR_INVALID_ARG_TYPE]') ||
