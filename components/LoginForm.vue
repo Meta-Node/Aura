@@ -179,7 +179,7 @@ export default {
           'Access-Control-Allow-Origin': '*',
         },
       })
-      const explorerData = (await localServer.get('/v1/info')).data
+      const explorerData = (await localServer.get('/v1/user-info')).data
       if (explorerData) {
         const {
           id: brightId,
