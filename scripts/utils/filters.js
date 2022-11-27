@@ -131,21 +131,11 @@ export const getJustMet = users => {
 }
 
 export const trim = str => {
-  return str.trim().toLowerCase()
+  return str?.trim().toLowerCase() || ''
 }
 
 export const onSearch = (value, users) => {
-  const foundUsers = users.filter(el => {
-    if (el.nickname && trim(el.nickname).includes(value)) {
-      return true
-    }
-    if (trim(el.name).includes(value)) {
-      return true
-    }
-    if (trim(el.id).includes(value)) {
-      return true
-    }
-    return false
-  })
-  return foundUsers
+  return users.filter(el => trim(el.nickname).includes(value) ||
+    trim(el.name).includes(value) || trim(el.id).includes(value))
 }
+
