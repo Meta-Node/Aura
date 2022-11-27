@@ -4,7 +4,7 @@
     <ui-loader/>
     <app-header/>
     <Nuxt v-show="!showSearchResult"/>
-    <connections v-show="showSearchResult"/>
+    <connections v-if="!disableGlobalSearchResults" v-show="searchValue"/>
   </div>
 </template>
 
