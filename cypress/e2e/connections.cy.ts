@@ -22,7 +22,7 @@ describe('Connections Page', () => {
       checkConnectionOrderInViewTab(r.id, i)
     })
     cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
-      'not.be.visible'
+      'not.exist'
     )
   }
 

@@ -1,6 +1,7 @@
 <template>
   <li class="user-v2__humans-list" style="width: 100%">
-    <user-item-info :index="index" :user="user"
+    <user-item-info :index="index" :test-namespace="testNamespace"
+                    :user="user"
                     show-aura-verification></user-item-info>
     <div class="user-v2__numbers">
       <p :data-testid="`mutual-connection--${id}-incoming-level`" class="user-v2__num user-v2__num-outbound">
@@ -16,6 +17,7 @@
 import UserItemInfo from './UserItemInfo'
 import avatar from '~/mixins/avatar'
 import energy from '~/mixins/energy'
+import {MUTUAL_CONNECTIONS_TEST_NAMESPACE} from "~/utils/constants";
 
 export default {
   components: {UserItemInfo},
@@ -57,6 +59,11 @@ export default {
       type: Number,
       default: 0,
     },
+  },
+  data() {
+    return {
+      testNamespace: MUTUAL_CONNECTIONS_TEST_NAMESPACE
+    }
   },
 }
 </script>

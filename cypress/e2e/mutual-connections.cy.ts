@@ -10,6 +10,7 @@ import {
   connectionToVisit,
 } from '../utils/mutual-connections'
 import {IncomingConnection} from '../../types'
+import {MUTUAL_CONNECTIONS_TEST_NAMESPACE} from "../../utils/constants";
 
 describe('Mutual Connections', () => {
   beforeEach(() => {
@@ -55,10 +56,10 @@ describe('Mutual Connections', () => {
 
   function assertOrder(orderedConnections: IncomingConnection[]) {
     orderedConnections.forEach((r, i) => {
-      cy.get(`[data-testid=user-item-${r.id}-name-${i}]`).should('be.visible')
+      cy.get(`[data-testid=${MUTUAL_CONNECTIONS_TEST_NAMESPACE}user-item-${r.id}-name-${i}]`).should('be.visible')
     })
-    cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
-      'not.be.visible'
+    cy.get(`[data-testid=${MUTUAL_CONNECTIONS_TEST_NAMESPACE}user-item-${orderedConnections.length}]`).should(
+      'not.exist'
     )
   }
 

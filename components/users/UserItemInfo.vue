@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :data-testid="`user-item-${index}`" :to="`/profile/${user.id}`"
+  <nuxt-link :data-testid="testNamespace +`user-item-${index}`" :to="`/profile/${user.id}`"
   >
     <div class="user-item__container" @click.prevent="() => safeRouterPush(`/profile/${user.id}`)">
       <nuxt-img
@@ -11,13 +11,15 @@
         width="48"
       />
       <div class="user-item__tag">
-        <div :data-testid="`user-item-${user.id}-name-${index}`" class="user-item__tag__name">{{ user.name }}</div>
+        <div :data-testid="testNamespace +`user-item-${user.id}-name-${index}`" class="user-item__tag__name">
+          {{ user.name }}
+        </div>
         <div v-if="showAuraVerification"
              :class="auraVerification ? `aura-verification-color--${auraVerification.toLowerCase()}` : ''"
              class="user-item__tag__aura-verification aura-verification-color">{{ auraVerification || 'loading...' }}
         </div>
       </div>
-      <small v-if="user.rating" :data-testid="`user-item-${user.id}-rating`" class="user-item__rate">({{
+      <small v-if="user.rating" :data-testid="testNamespace +`user-item-${user.id}-rating`" class="user-item__rate">({{
           user.rating
         }})</small>
     </div>
@@ -33,6 +35,10 @@ export default {
   name: "UserItemInfo",
   mixins: [avatar, unsavedChanges],
   props: {
+    testNamespace: {
+      type: String,
+      default: '',
+    },
     showAuraVerification: {
       type: Boolean,
       default: true,
