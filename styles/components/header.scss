@@ -11,6 +11,10 @@
   &.add-bg {
     background-color: rgba(0, 0, 0, 1);
   }
+
+  &__search.input-wrapper {
+    width: 420px;
+  }
 }
 
 .nav-hidden {
@@ -26,6 +30,7 @@
   align-items: center;
   padding-top: 28px;
   padding-bottom: 28px;
+  z-index: 200;
 }
 
 .header__img-wrapper {

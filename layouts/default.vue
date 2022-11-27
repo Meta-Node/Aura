@@ -3,7 +3,8 @@
     <app-toast/>
     <ui-loader/>
     <app-header/>
-    <Nuxt/>
+    <Nuxt v-show="!showSearchResult"/>
+    <connections v-show="showSearchResult"/>
   </div>
 </template>
 
@@ -11,9 +12,21 @@
 import UiLoader from '~/components/UiLoader.vue'
 import AppHeader from '~/components/AppHeader.vue'
 import AppToast from '~/components/AppToast.vue'
+import Connections from "~/pages/connections";
 
 export default {
-  components: {UiLoader, AppHeader, AppToast},
+  components: {UiLoader, AppHeader, AppToast, Connections},
+  computed: {
+    showSearchResult() {
+      return this.searchValue && !this.disableGlobalSearch
+    },
+    searchValue() {
+      return this.$store.getters["app/searchValue"]
+    },
+    disableGlobalSearch() {
+      return this.$store.getters["app/disableGlobalSearch"]
+    }
+  },
 
   async mounted() {
     const {default: supportsWebP} = await import('supports-webp')

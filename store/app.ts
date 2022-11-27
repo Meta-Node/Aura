@@ -7,10 +7,14 @@ export const state = (): AppState => ({
   isWebp: false,
   isAuth: false,
   isFirstVisitedRoute: true,
+  searchValue: '',
+  disableGlobalSearch: false,
 })
 
 export const getters: GetterTree<AppState, RootState> = {
-  isFirstVisitedRoute: state => state.isFirstVisitedRoute
+  isFirstVisitedRoute: state => state.isFirstVisitedRoute,
+  searchValue: state => state.searchValue,
+  disableGlobalSearch: state => state.disableGlobalSearch
 }
 
 export const mutations: MutationTree<AppState> = {
@@ -19,6 +23,12 @@ export const mutations: MutationTree<AppState> = {
   },
   setIsFirstVisitedRoute(state, value) {
     state.isFirstVisitedRoute = value
+  },
+  setSearchValue(state, value) {
+    state.searchValue = value
+  },
+  setDisableGlobalSearch(state, value) {
+    state.disableGlobalSearch = value
   },
   setLoading(state, value) {
     state.loading = value

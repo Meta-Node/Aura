@@ -30,12 +30,26 @@ function tryParse(key) {
 export default {
   data() {
     return {
-      searchValue: '',
       filteredUsers: [],
       users: [],
       appliedFilters: [],
       filterKey: null,
       defaultFilter: 'All',
+    }
+  },
+  computed: {
+    searchValue: {
+      get() {
+        return this.$store.getters["app/searchValue"]
+      },
+      set(value) {
+        this.$store.commit('app/setSearchValue', value)
+      }
+    }
+  },
+  watch: {
+    searchValue(newValue) {
+      this.onSearchValue(newValue)
     }
   },
   created() {

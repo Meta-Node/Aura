@@ -2,12 +2,12 @@
   <app-input
     id="search"
     ref="input"
+    v-model="value"
     :is-search="true"
-    class="community__input-wrapper"
+    class="header__search"
     data-testid="top-search"
     placeholder="Search..."
     type="text"
-    @inputValue="onInputValue"
   />
 </template>
 
@@ -16,16 +16,17 @@ import AppInput from './AppInput.vue'
 
 export default {
   components: {AppInput},
-  data() {
-    return {
-      value: '',
+  computed: {
+    value: {
+      get() {
+        return this.$store.getters["app/searchValue"]
+      },
+      set(value) {
+        this.$store.commit('app/setSearchValue', value)
+      }
     }
   },
   methods: {
-    onInputValue(data) {
-      this.value = data.value.trim()
-      this.$emit('searchValue', this.value)
-    },
     resetSearch() {
       this.$refs.input.resetSearch()
     }

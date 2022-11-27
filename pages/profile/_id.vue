@@ -1,6 +1,6 @@
 <template>
   <div data-route="profile">
-    <section class="profile">
+    <section class="profile app-page">
       <div
         v-if="isLoadingInitialData"
         style="margin-top: 40px"
@@ -32,24 +32,24 @@
           @share="onShare"
         />
         <aura-statistics
-          :stat="stat"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
           :profile-incoming-ratings="profileIncomingRatings"
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :stat="stat"
         />
         <stats
           v-if="stat"
-          :stat="stat"
-          :profile="profile"
           :is-own="isOwn"
+          :loading-profile-data="loadingProfileData"
+          :profile="profile"
           :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-connections="profileIncomingConnections"
           :profile-incoming-ratings="profileIncomingRatings"
-          :loading-profile-data="loadingProfileData"
-          :profile-incoming-connections="profileIncomingConnections"/>
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :stat="stat"/>
         <own-profile
           v-else-if="isOwn"
           ref="public"
@@ -57,13 +57,13 @@
           :date="getDate"
           :four-unrated="fourUnrated"
           :is-loading-initial-data="isLoadingInitialData"
+          :loading-profile-data="loadingProfileData"
           :profile="profile"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
-          :profile-incoming-ratings="profileIncomingRatings"
-          :loading-profile-data="loadingProfileData"
           :profile-incoming-connections="profileIncomingConnections"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
           @share="onShare"
         />
         <others-profile
@@ -73,14 +73,14 @@
           :date="getDate"
           :four-unrated="fourUnrated"
           :is-loading-initial-data="isLoadingInitialData"
+          :loading-profile-data="loadingProfileData"
           :profile="profile"
           :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
-          :profile-incoming-ratings="profileIncomingRatings"
-          :loading-profile-data="loadingProfileData"
           :profile-incoming-connections="profileIncomingConnections"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
           @afterSave="onAfterSave"
           @share="onShare"
           @updateNickname="updateNickname"
