@@ -1,9 +1,5 @@
-import {
-  ratedConnectionNegative,
-  ratedConnectionWithoutEnergy,
-  unratedConnection,
-} from '../utils/data'
-import { Connection, EnergyAllocationList } from '../../types'
+import {ratedConnectionNegative, ratedConnectionWithoutEnergy, unratedConnection,} from '../utils/data'
+import {Connection, EnergyAllocationList} from '../../types'
 import {
   connectionsInEnergyFilterAll,
   connectionsInEnergyFilterAllSortedByRateAscending,
@@ -18,7 +14,7 @@ import {
   getInboundEnergyPercentage,
   oldEnergyAllocation,
 } from '../utils/energy'
-import { getRating, oldRatings } from '../utils/rating'
+import {getRating, oldRatings} from '../utils/rating'
 
 describe('Energy View', () => {
   beforeEach(() => {
@@ -92,13 +88,16 @@ describe('Energy View', () => {
   })
 
   function checkConnectionOrderInViewTab(brightId: string, index: number) {
-    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('exist')
+    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('be.visible')
   }
 
   function assertOrder(orderedConnections: Connection[]) {
     orderedConnections.forEach((r, i) => {
       checkConnectionOrderInViewTab(r.id, i)
     })
+    cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
+      'not.be.visible'
+    )
   }
 
   it('orders connections by rate', () => {

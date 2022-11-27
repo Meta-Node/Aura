@@ -18,7 +18,7 @@ const routerHelperMiddleware: Middleware = function ({store, from, route, redire
     '/connections',
     '/energy',
   ]
-  store.commit('app/searchValue', '')
+  store.commit('app/setSearchValue', '')
   store.commit('app/setDisableGlobalSearchResults', disableGlobalSearchResultsRoutes.find(r => route.path.startsWith(r)))
 }
 

@@ -1,6 +1,6 @@
-import { AURA_GENERAL_PROFILE, FAKE_BRIGHT_ID } from '../utils/data'
-import { getConnectionResponse } from '../utils/energy'
-import { oldRatings } from '../utils/rating'
+import {AURA_GENERAL_PROFILE, FAKE_BRIGHT_ID} from '../utils/data'
+import {getConnectionResponse} from '../utils/energy'
+import {oldRatings} from '../utils/rating'
 import {
   connectionIncomingConnections,
   connectionIncomingConnectionsResponse,
@@ -9,7 +9,7 @@ import {
   connectionIncomingRatingsResponse,
   connectionToVisit,
 } from '../utils/mutual-connections'
-import { IncomingConnection } from '../../types'
+import {IncomingConnection} from '../../types'
 
 describe('Mutual Connections', () => {
   beforeEach(() => {
@@ -55,10 +55,10 @@ describe('Mutual Connections', () => {
 
   function assertOrder(orderedConnections: IncomingConnection[]) {
     orderedConnections.forEach((r, i) => {
-      cy.get(`[data-testid=user-item-${r.id}-name-${i}]`).should('exist')
+      cy.get(`[data-testid=user-item-${r.id}-name-${i}]`).should('be.visible')
     })
     cy.get(`[data-testid=user-item-${orderedConnections.length}]`).should(
-      'not.exist'
+      'not.be.visible'
     )
   }
 
