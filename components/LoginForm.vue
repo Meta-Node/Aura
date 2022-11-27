@@ -1,22 +1,22 @@
 <template>
   <form class="form" novalidate @submit.prevent="onSubmit">
-    <!--    <div style="display: flex; width: 100%; margin-bottom: 16px;">-->
-    <!--      <app-button-->
-    <!--        v-for="l in LoginMethods"-->
-    <!--        :key="l"-->
-    <!--        :class="{-->
-    <!--          'text-button form__btn-select__selected': loginMethod === l-->
-    <!--        }"-->
-    <!--        class="text-button form__btn-select"-->
-    <!--        @click.prevent="loginMethod = l"-->
-    <!--      >-->
-    <!--        <span-->
-    <!--          :class="{-->
-    <!--             'form__btn-select-text__selected':loginMethod === l-->
-    <!--           }"-->
-    <!--          class="form__btn-select-text">{{ l }}</span>-->
-    <!--      </app-button>-->
-    <!--    </div>-->
+    <div class="form__login-method">
+      <app-button
+        v-for="l in LoginMethods"
+        :key="l"
+        :class="{
+              'text-button form__btn-select__selected': loginMethod === l
+            }"
+        class="text-button form__btn-select"
+        @click.prevent="loginMethod = l"
+      >
+            <span
+              :class="{
+                 'form__btn-select-text__selected':loginMethod === l
+               }"
+              class="form__btn-select-text">{{ l }}</span>
+      </app-button>
+    </div>
     <app-input
       v-show="loginMethod === LoginMethods.explorerCode"
       id="explorer"
@@ -43,6 +43,10 @@
         how to find my explorer code
       </p>
     </div>
+    <a
+      v-show="loginMethod === LoginMethods.localServer"
+      :href="openBrightIdUrl" class="form__open-brightid">Open
+      BrightID</a>
     <app-input
       v-show="loginMethod === LoginMethods.localServer"
       id="localserver"
@@ -77,12 +81,12 @@
         style="display: none"
         type="checkbox"
       />
-      <!-- <label class="checkbox" for="input-checkbox"
-        ><span>
+      <label class="checkbox" for="input-checkbox"
+      ><span>
           <svg width="12px" height="10px" viewbox="0 0 12 10">
             <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-        ><span>Remember my details</span></label
-      > -->
+      ><span>Remember my details</span></label
+      >
     </div>
     <div class="form__btn-wrapper">
       <app-button
@@ -94,7 +98,6 @@
       >
         <span class="form__btn-text">Sign In</span>
       </app-button>
-      <!-- <bright-id-login /> -->
     </div>
   </form>
 </template>
@@ -104,6 +107,7 @@ import axios from "axios"
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
 import {TOAST_ERROR} from '~/utils/constants'
+import {encryptData} from "~/scripts/utils/crypto";
 
 const LoginMethods = Object.freeze({
   localServer: 'WiFi Sharing',
@@ -111,11 +115,11 @@ const LoginMethods = Object.freeze({
 })
 export default {
   components: {AppInput, AppButton},
-
   data() {
     return {
+      openBrightIdUrl: '',
       LoginMethods,
-      loginMethod: LoginMethods.explorerCode,
+      loginMethod: LoginMethods.localServer,
       hasErrors: true,
       explorer: {
         value: '',
@@ -129,6 +133,12 @@ export default {
         value: '',
         error: true,
       },
+    }
+  },
+  mounted() {
+    this.openBrightIdUrl = 'brightid://local-server?run=true&next=' + window.location.href
+    if (this.$store.getters["app/isFirstVisitedRoute"]) {
+      this.loginByLocalServer('http://localhost:9025')
     }
   },
 
@@ -162,23 +172,22 @@ export default {
         this.$store.commit('app/setLoading', false);
       }
     },
-    async loginByLocalServer() {
-      const localServerUrl = `${this.localserver.value.startsWith('http://') ? '' : 'http://'}${this.localserver.value}`
+    async loginByLocalServer(localServerUrl) {
       const localServer = axios.create({
         baseURL: localServerUrl,
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
       })
-      const explorerData = (await localServer.get('/v1/explorer-code')).data
+      const explorerData = (await localServer.get('/v1/user-info')).data
       if (explorerData) {
         const {
-          explorerCode,
+          id: brightId,
           password
         } = explorerData
         this.onInputValue({
           id: 'explorer',
-          value: explorerCode,
+          value: encryptData(brightId, password),
           error: false,
         })
         this.onInputValue({
@@ -193,7 +202,10 @@ export default {
       if (this.loginMethod === LoginMethods.explorerCode) {
         this.loginByExplorerCode()
       } else if (this.loginMethod === LoginMethods.localServer) {
-        this.loginByLocalServer();
+        if (this.localserver.value) {
+          const localServerUrl = `${this.localserver.value.startsWith('http://') ? '' : 'http://'}${this.localserver.value}`
+          this.loginByLocalServer(localServerUrl);
+        }
       }
     },
     emmitError() {
@@ -210,6 +222,6 @@ export default {
     visitLink(link) {
       window.open(link, '_blank')
     },
-  },
+  }
 }
 </script>
