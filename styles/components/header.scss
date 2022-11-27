@@ -12,8 +12,15 @@
     background-color: rgba(0, 0, 0, 1);
   }
 
+  &__search.input-wrapper .input {
+    @media (max-width: 600px) {
+      border-radius: 6px;
+    }
+  }
+
   &__search.input-wrapper {
-    width: 420px;
+    width: 90%;
+    max-width: 420px;
   }
 }
 
