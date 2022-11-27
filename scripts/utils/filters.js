@@ -142,6 +142,9 @@ export const onSearch = (value, users) => {
     if (trim(el.name).includes(value)) {
       return true
     }
+    if (trim(el.id).includes(value)) {
+      return true
+    }
     return false
   })
   return foundUsers
