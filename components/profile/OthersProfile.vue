@@ -28,7 +28,6 @@
         <energy-slider
           id="quality"
           v-model="energyValue"
-          :disabled="ratingValue < 1"
           :min="0"
           :user-id="profile ? profile.id : undefined"
           type="range"
@@ -36,11 +35,13 @@
         />
       </div>
       <button v-else
+              :class="{'feedback__energy__energize-button--disabled':energizeDisabled}"
+              :disabled="energizeDisabled"
               class="feedback__energy__energize-button"
               @click="energize = true">
             <span class="material-symbols-rounded">
               electric_bolt
-            </span><span>energize</span>
+            </span>energize <span v-if="energizeDisabled">(needs honesty > 1)</span>
       </button>
     </div>
     <div class="feedback__save">
@@ -49,14 +50,14 @@
       </button>
     </div>
     <mutual-connections
+      :loading-profile-data="loadingProfileData"
+      :profile="profile"
       :profile-calls-done="profileCallsDone"
       :profile-inbound-energy="profileInboundEnergy"
       :profile-incoming-connections="profileIncomingConnections"
-      :profile-transferred-energy="profileTransferredEnergy"
-      :profile-rated-users="profileRatedUsers"
       :profile-incoming-ratings="profileIncomingRatings"
-      :loading-profile-data="loadingProfileData"
-      :profile="profile"/>
+      :profile-rated-users="profileRatedUsers"
+      :profile-transferred-energy="profileTransferredEnergy"/>
   </div>
 </template>
 
@@ -144,7 +145,10 @@ export default {
   },
   computed: {
     showEnergySlider() {
-      return this.energyValue > 0 || this.energize
+      return this.ratingValue >= 1 && (this.energyValue > 0 || this.energize)
+    },
+    energizeDisabled() {
+      return this.ratingValue < 1
     },
     previousRating() {
       return +this.profile.previousRating || 0
