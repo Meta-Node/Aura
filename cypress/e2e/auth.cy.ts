@@ -6,11 +6,11 @@ import {
   FAKE_USER_EXPLORER_CODE,
   LOCAL_FORAGE_DATA,
 } from '../utils/data'
-import { TOAST_ERROR } from '../../utils/constants'
+import {LoginMethods, TOAST_ERROR} from '../../utils/constants'
 
 describe('Auth', () => {
   beforeEach(() => {
-    localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+    localforage.config({storeName: 'nuxtLocalForage', name: 'nuxtJS'})
     localforage.removeItem('profileData')
     cy.profileIntercepts()
   })
@@ -24,6 +24,7 @@ describe('Auth', () => {
         window.localStorage.removeItem('privateKey')
       },
     })
+    cy.get(`[data-testid=login-method-btn-${LoginMethods.explorerCode.replace(' ', '')}]`).click()
     cy.get('[data-testid=login-explorer-code]').type(FAKE_USER_EXPLORER_CODE)
     cy.get('[data-testid=login-password]').type(FAKE_BRIGHT_ID_PASSWORD)
     cy.get('[data-testid=login-submit]').click()
@@ -42,7 +43,7 @@ describe('Auth', () => {
     doLogin()
   }
 
-  it('login', () => {
+  it('login by explorer code', () => {
     doLoginSuccess()
     cy.wait('@explorerCode')
       .its('request.body')
@@ -61,7 +62,7 @@ describe('Auth', () => {
     cy.url()
       .should('include', `/profile/${FAKE_BRIGHT_ID}`)
       .then(async () => {
-        localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+        localforage.config({storeName: 'nuxtLocalForage', name: 'nuxtJS'})
         const data = await localforage.getItem('profileData')
         expect(data).to.deep.eq(LOCAL_FORAGE_DATA)
       })
@@ -76,7 +77,7 @@ describe('Auth', () => {
     expect(localStorage.getItem('authKey')).to.be.null
     expect(localStorage.getItem('publicKey')).to.be.null
     expect(localStorage.getItem('privateKey')).to.be.null
-    localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+    localforage.config({storeName: 'nuxtLocalForage', name: 'nuxtJS'})
     const data = await localforage.getItem('profileData')
     expect(data).to.be.null
   }

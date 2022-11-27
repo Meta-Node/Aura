@@ -23,3 +23,8 @@ export const RATING_INBOUND_STAT = 'ri'
 export const RATING_OUTBOUND_STAT = 'ro'
 export const ENERGY_INBOUND_STAT = 'ei'
 export const ENERGY_OUTBOUND_STAT = 'eo'
+
+export const LoginMethods = Object.freeze({
+  localServer: 'WiFi Sharing',
+  explorerCode: 'Explorer Code',
+})

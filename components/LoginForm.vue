@@ -7,6 +7,7 @@
         :class="{
               'text-button form__btn-select__selected': loginMethod === l
             }"
+        :data-testid="`login-method-btn-${l.replace(' ', '')}`"
         class="text-button form__btn-select"
         @click.prevent="loginMethod = l"
       >
@@ -83,7 +84,7 @@
       />
       <label class="checkbox" for="input-checkbox"
       ><span>
-          <svg width="12px" height="10px" viewbox="0 0 12 10">
+          <svg height="10px" viewbox="0 0 12 10" width="12px">
             <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
       ><span>Remember my details</span></label
       >
@@ -106,13 +107,9 @@
 import axios from "axios"
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
-import {TOAST_ERROR} from '~/utils/constants'
+import {LoginMethods, TOAST_ERROR} from '~/utils/constants'
 import {encryptData} from "~/scripts/utils/crypto";
 
-const LoginMethods = Object.freeze({
-  localServer: 'WiFi Sharing',
-  explorerCode: 'Explorer Code',
-})
 export default {
   components: {AppInput, AppButton},
   data() {
@@ -138,7 +135,8 @@ export default {
   mounted() {
     this.openBrightIdUrl = 'brightid://local-server?run=true&next=' + window.location.href
     if (this.$store.getters["app/isFirstVisitedRoute"]) {
-      this.loginByLocalServer('http://localhost:9025')
+      this.loginByLocalServer('http://localhost:9025').catch(_err => {
+      })
     }
   },
 
