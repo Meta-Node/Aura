@@ -126,7 +126,7 @@
         </div>
       </div>
     </nav>
-    <app-search/>
+    <app-search v-if="$route.path !== '/'"/>
   </header>
 </template>
 

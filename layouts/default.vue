@@ -18,13 +18,13 @@ export default {
   components: {UiLoader, AppHeader, AppToast, Connections},
   computed: {
     showSearchResult() {
-      return this.searchValue && !this.disableGlobalSearch
+      return this.searchValue && !this.disableGlobalSearchResults
     },
     searchValue() {
       return this.$store.getters["app/searchValue"]
     },
-    disableGlobalSearch() {
-      return this.$store.getters["app/disableGlobalSearch"]
+    disableGlobalSearchResults() {
+      return this.$store.getters["app/disableGlobalSearchResults"]
     }
   },
 

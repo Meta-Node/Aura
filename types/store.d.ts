@@ -15,7 +15,7 @@ export type LoginState = {
   isAuth: boolean
 }
 export type AppState = {
-  disableGlobalSearch: boolean
+  disableGlobalSearchResults: boolean
   searchValue: string
   hasUnsavedChanges: boolean
   loading: boolean
