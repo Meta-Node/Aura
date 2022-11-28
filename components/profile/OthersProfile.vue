@@ -20,16 +20,15 @@
       <div class="feedback__energy__wrapper">
         <div v-if="showEnergySlider" class="feedback__energy__container">
           <div class="feedback__energy__label__wrapper" @click="onEnergyClick">
-              <span class="material-symbols-rounded">
-                electric_bolt
-              </span>
+            <span class="material-symbols-rounded">
+              electric_bolt
+            </span>
             <span class="feedback__energy__label__text"
             >Energy</span>
           </div>
           <energy-slider
             id="quality"
             v-model="energyValue"
-            :disabled="ratingValue < 1"
             :min="0"
             :user-id="profile ? profile.id : undefined"
             type="range"
@@ -37,11 +36,13 @@
           />
         </div>
         <button v-else
+                :class="{'feedback__energy__energize-button--disabled':energizeDisabled}"
+                :disabled="energizeDisabled"
                 class="feedback__energy__energize-button"
                 @click="energize = true">
-              <span class="material-symbols-rounded">
-                electric_bolt
-              </span><span>energize</span>
+            <span class="material-symbols-rounded">
+              electric_bolt
+            </span>energize <span v-if="energizeDisabled">(needs honesty > 1)</span>
         </button>
       </div>
       <div class="feedback__save">
@@ -146,7 +147,10 @@ export default {
   },
   computed: {
     showEnergySlider() {
-      return this.energyValue > 0 || this.energize
+      return this.ratingValue >= 1 && (this.energyValue > 0 || this.energize)
+    },
+    energizeDisabled() {
+      return this.ratingValue < 1
     },
     previousRating() {
       return +this.profile.previousRating || 0
