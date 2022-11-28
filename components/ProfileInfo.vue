@@ -2,8 +2,14 @@
   <div class="grid profile-info">
     <div class="profile__user-info-left">
       <profile-avatar :brightness="brightness" :img="img" alt="Avatar"/>
-      <p v-if="!isOwnProfile" class="profile__user-info-left__last-connection">
-        last connection<br/><strong>{{ lastConnection }}</strong>
+      <p v-if="!isOwnProfile" :class="{'profile__user-info-left__last-connection--not-connected': notConnected}"
+         class="profile__user-info-left__last-connection">
+        <template v-if="notConnected">
+          Not Connected
+        </template>
+        <template v-else>
+          last connection<br/><strong>{{ lastConnection }}</strong>
+        </template>
       </p>
     </div>
     <div class="profile__user-info">
@@ -112,7 +118,7 @@ export default {
     },
     name: {
       type: String,
-      default: 'Name',
+      default: 'Unknown',
     },
     nickname: {
       type: String,
@@ -144,7 +150,6 @@ export default {
     },
     connectionDate: {
       type: Number,
-      default: 0,
     },
   },
   data() {
@@ -154,6 +159,9 @@ export default {
     }
   },
   computed: {
+    notConnected() {
+      return isNaN(this.connectionDate)
+    },
     auraIdentifier() {
       return IS_PRODUCTION ? 'aura' : 'aura-test';
     },

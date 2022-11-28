@@ -1,62 +1,64 @@
 <template>
   <div>
     <div v-if="debugError" class="debug-error">debug error: {{ debugError }}</div>
-    <div class="feedback__questions">
-      <div class="feedback__quality-wrapper">
-        <div class="feedback__transition">
-          <feedback-slider
+    <template v-if="profile.name">
+      <div class="feedback__questions">
+        <div class="feedback__quality-wrapper">
+          <div class="feedback__transition">
+            <feedback-slider
+              id="quality"
+              v-model="ratingValue"
+              :max="5"
+              :min="-5"
+              :prev-value="+profile.previousRating"
+              :step="1"
+              type="range"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="feedback__energy__wrapper">
+        <div v-if="showEnergySlider" class="feedback__energy__container">
+          <div class="feedback__energy__label__wrapper" @click="onEnergyClick">
+              <span class="material-symbols-rounded">
+                electric_bolt
+              </span>
+            <span class="feedback__energy__label__text"
+            >Energy</span>
+          </div>
+          <energy-slider
             id="quality"
-            v-model="ratingValue"
-            :max="5"
-            :min="-5"
-            :prev-value="+profile.previousRating"
-            :step="1"
+            v-model="energyValue"
+            :disabled="ratingValue < 1"
+            :min="0"
+            :user-id="profile ? profile.id : undefined"
             type="range"
+            @input="changeEnergy"
           />
         </div>
+        <button v-else
+                class="feedback__energy__energize-button"
+                @click="energize = true">
+              <span class="material-symbols-rounded">
+                electric_bolt
+              </span><span>energize</span>
+        </button>
       </div>
-    </div>
-    <div class="feedback__energy__wrapper">
-      <div v-if="showEnergySlider" class="feedback__energy__container">
-        <div class="feedback__energy__label__wrapper" @click="onEnergyClick">
-            <span class="material-symbols-rounded">
-              electric_bolt
-            </span>
-          <span class="feedback__energy__label__text"
-          >Energy</span>
-        </div>
-        <energy-slider
-          id="quality"
-          v-model="energyValue"
-          :disabled="ratingValue < 1"
-          :min="0"
-          :user-id="profile ? profile.id : undefined"
-          type="range"
-          @input="changeEnergy"
-        />
+      <div class="feedback__save">
+        <button class="feedback__save__button" data-testid="feedback-quality-confirm" @click="onFeedbackChanged">
+          save changes
+        </button>
       </div>
-      <button v-else
-              class="feedback__energy__energize-button"
-              @click="energize = true">
-            <span class="material-symbols-rounded">
-              electric_bolt
-            </span><span>energize</span>
-      </button>
-    </div>
-    <div class="feedback__save">
-      <button class="feedback__save__button" data-testid="feedback-quality-confirm" @click="onFeedbackChanged">
-        save changes
-      </button>
-    </div>
+    </template>
     <mutual-connections
+      :loading-profile-data="loadingProfileData"
+      :profile="profile"
       :profile-calls-done="profileCallsDone"
       :profile-inbound-energy="profileInboundEnergy"
       :profile-incoming-connections="profileIncomingConnections"
-      :profile-transferred-energy="profileTransferredEnergy"
-      :profile-rated-users="profileRatedUsers"
       :profile-incoming-ratings="profileIncomingRatings"
-      :loading-profile-data="loadingProfileData"
-      :profile="profile"/>
+      :profile-rated-users="profileRatedUsers"
+      :profile-transferred-energy="profileTransferredEnergy"/>
   </div>
 </template>
 

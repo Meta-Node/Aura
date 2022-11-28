@@ -8,17 +8,11 @@
         <app-spinner :is-visible="true"/>
       </div>
       <div
-        v-else-if="!isLoadingInitialData && !profile.name"
-        class="container"
-      >
-        <p style="margin: 0 auto; text-align: center">User not found</p>
-      </div>
-      <div
         v-else
         class="container"
       >
         <profile-info
-          :id="profile.id"
+          :id="brightId"
           :brightness="brightness"
           :connection-date="profile.connectionDate"
           :date="getDate"
@@ -32,24 +26,24 @@
           @share="onShare"
         />
         <aura-statistics
-          :stat="stat"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
           :profile-incoming-ratings="profileIncomingRatings"
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :stat="stat"
         />
         <stats
           v-if="stat"
-          :stat="stat"
-          :profile="profile"
           :is-own="isOwn"
+          :loading-profile-data="loadingProfileData"
+          :profile="profile"
           :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
+          :profile-incoming-connections="profileIncomingConnections"
           :profile-incoming-ratings="profileIncomingRatings"
-          :loading-profile-data="loadingProfileData"
-          :profile-incoming-connections="profileIncomingConnections"/>
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
+          :stat="stat"/>
         <own-profile
           v-else-if="isOwn"
           ref="public"
@@ -57,13 +51,13 @@
           :date="getDate"
           :four-unrated="fourUnrated"
           :is-loading-initial-data="isLoadingInitialData"
+          :loading-profile-data="loadingProfileData"
           :profile="profile"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
-          :profile-incoming-ratings="profileIncomingRatings"
-          :loading-profile-data="loadingProfileData"
           :profile-incoming-connections="profileIncomingConnections"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
           @share="onShare"
         />
         <others-profile
@@ -73,14 +67,14 @@
           :date="getDate"
           :four-unrated="fourUnrated"
           :is-loading-initial-data="isLoadingInitialData"
+          :loading-profile-data="loadingProfileData"
           :profile="profile"
           :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
-          :profile-transferred-energy="profileTransferredEnergy"
-          :profile-rated-users="profileRatedUsers"
-          :profile-incoming-ratings="profileIncomingRatings"
-          :loading-profile-data="loadingProfileData"
           :profile-incoming-connections="profileIncomingConnections"
+          :profile-incoming-ratings="profileIncomingRatings"
+          :profile-rated-users="profileRatedUsers"
+          :profile-transferred-energy="profileTransferredEnergy"
           @afterSave="onAfterSave"
           @share="onShare"
           @updateNickname="updateNickname"
@@ -241,42 +235,33 @@ export default {
       if (this.brightId === localStorage.getItem('brightId')) {
         this.$store.dispatch('profile/loadProfileData').then(() => {
           this.profileRatedUsers = this.$store.getters["profile/ratedUsers"];
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
         this.$store.dispatch('profile/getIncomingRatings').then(() => {
           this.profileIncomingRatings = this.$store.getters["profile/incomingRatings"];
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
         this.$store.dispatch('energy/getTransferredEnergy').then(() => {
           this.profileTransferredEnergy = this.$store.getters["energy/outboundEnergy"];
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
         this.$store.dispatch('energy/getInboundEnergy').then(() => {
           this.profileInboundEnergy = this.$store.getters["energy/inboundEnergy"];
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
       } else {
         getIncomingRatings(this.$backendApi, this.brightId).then(ratings => {
           this.profileIncomingRatings = ratings;
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
         getRatedUsers(this.$backendApi, this.brightId).then(ratings => {
           this.profileRatedUsers = ratings;
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
         getEnergy(this.$backendApi, this.brightId).then(energy => {
           this.profileTransferredEnergy = energy;
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
         getInboundEnergy(this.$backendApi, this.brightId).then(energy => {
           this.profileInboundEnergy = energy;
-          onDone()
-        }).catch(onError)
+        }).catch(onError).finally(onDone)
       }
       getIncomingConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
         this.profileIncomingConnections = connections
-        onDone()
-      }).catch(onError)
+      }).catch(onError).finally(onDone)
     },
     onAfterSave() {
       if (this.$store.getters["app/isFirstVisitedRoute"]) {
@@ -293,7 +278,7 @@ export default {
         await this.$store.dispatch('energy/getTransferredEnergy')
         const connections = this.$store.getters['profile/connections']
 
-        this.profile = connections.find(con => con.id === this.brightId)
+        const profile = connections.find(con => con.id === this.brightId)
 
         const res = await getProfile(this.$backendApi, this.brightId, this.isOwn)
 
@@ -303,7 +288,7 @@ export default {
         )
 
         this.profile = {
-          ...this.profile, ...res.data,
+          ...profile, ...res.data,
           transferredEnergyPercentage: outboundEnergyObject
             ? toRoundedPercentage(
               outboundEnergyObject.amount,
@@ -312,9 +297,11 @@ export default {
             : 0,
           transferredEnergy: outboundEnergyObject?.amount || 0
         }
-        const connectionRes = await getConnection(this.$backendApi, this.brightId)
-        if (connectionRes?.previousRating) {
-          this.profile.previousRating = connectionRes.previousRating.rating
+        if (profile) {
+          const connectionRes = await getConnection(this.$backendApi, this.brightId)
+          if (connectionRes?.previousRating) {
+            this.profile.previousRating = connectionRes.previousRating.rating
+          }
         }
         this.isLoadingInitialData = false
       } catch (error) {

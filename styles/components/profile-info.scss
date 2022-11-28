@@ -4,6 +4,10 @@
 
     &__last-connection {
       text-align: center;
+
+      &--not-connected {
+        padding-top: 10px;
+      }
     }
   }
 }
