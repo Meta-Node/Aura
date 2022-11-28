@@ -13,7 +13,6 @@ import {
   getRecentConnection,
   getUnrated,
   onSearch,
-  trim,
 } from '~/scripts/utils/filters'
 
 function tryParse(key) {
@@ -210,11 +209,10 @@ export default {
     },
     onSearchValue(value) {
       this.searchValue = value
-      const trimmedValue = trim(value)
 
       let usersBase = this.filteredUsers
       if (this.$route.name === 'energy') {
-        if (trimmedValue) {
+        if (value) {
           usersBase = usersBase.filter(
             user => !user.rating || +user.rating >= 1
           )
@@ -222,7 +220,7 @@ export default {
           usersBase = usersBase.filter(user => +user.rating >= 1)
         }
       }
-      this.users = onSearch(trimmedValue, usersBase)
+      this.users = onSearch(value, usersBase)
     },
     getAll() {
       this.filteredUsers = this.startUsers

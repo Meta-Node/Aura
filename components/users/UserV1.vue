@@ -11,7 +11,7 @@
         loading="lazy"
         width="74"
       />
-      <p :data-testid="`user-v1-${id}-name`" class="user-v1__tag">{{ name }}</p>
+      <p :data-testid="`user-v1-${id}-name`" class="user-v1__tag">{{ name || id }}</p>
     </nuxt-link>
   </li>
 </template>
@@ -36,7 +36,6 @@ export default {
     },
     name: {
       type: String,
-      default: 'Name',
     },
     isBrightness: {
       type: Boolean,

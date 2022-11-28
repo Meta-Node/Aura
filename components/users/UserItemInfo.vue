@@ -12,7 +12,7 @@
       />
       <div class="user-item__tag">
         <div :data-testid="testNamespace +`user-item-${user.id}-name-${index}`" class="user-item__tag__name">
-          {{ user.name }}
+          {{ user.name || user.id }}
         </div>
         <div v-if="showAuraVerification"
              :class="auraVerification ? `aura-verification-color--${auraVerification.toLowerCase()}` : ''"

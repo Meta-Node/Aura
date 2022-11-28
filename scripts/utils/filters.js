@@ -134,8 +134,15 @@ export const trim = str => {
   return str?.trim().toLowerCase() || ''
 }
 
+function isBrightId(value) {
+  return typeof value === 'string' && value.length === 43
+}
+
 export const onSearch = (value, users) => {
-  return users.filter(el => trim(el.nickname).includes(value) ||
-    trim(el.name).includes(value) || trim(el.id).includes(value))
+  const trimmedValue = trim(value)
+  const finalUsers = users.filter(el => trim(el.nickname).includes(trimmedValue) ||
+    trim(el.name).includes(trimmedValue) || trim(el.id).includes(trimmedValue))
+  if (!finalUsers.length && isBrightId(value)) return [{id: value}]
+  return finalUsers
 }
 

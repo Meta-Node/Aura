@@ -1,6 +1,7 @@
 import {Middleware} from '@nuxt/types'
 
 const routerHelperMiddleware: Middleware = function ({store, from, route, redirect}) {
+  store.commit('app/setSearchValue', '')
   store.commit('app/setIsFirstVisitedRoute', !from || from.path === route.path)
 
   const redirects = [
@@ -18,7 +19,6 @@ const routerHelperMiddleware: Middleware = function ({store, from, route, redire
     '/connections',
     '/energy',
   ]
-  store.commit('app/setSearchValue', '')
   store.commit('app/setDisableGlobalSearchResults', disableGlobalSearchResultsRoutes.find(r => route.path.startsWith(r)))
 }
 

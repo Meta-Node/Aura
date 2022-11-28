@@ -136,7 +136,7 @@ export default {
     value: {
       immediate: true,
       handler(newValue, _oldValue) {
-        if (newValue) {
+        if (typeof newValue === 'string') {
           this.localValue = newValue
         }
       }
