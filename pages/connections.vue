@@ -1,10 +1,6 @@
 <template>
-  <section class="community">
+  <section class="community app-page">
     <div class="container community__wrapper">
-      <div class="community__search">
-        <h3 class="community__search-title">Find A Connection</h3>
-        <app-search ref="search" @searchValue="onSearchValue"/>
-      </div>
       <div v-if="isLoading" style="margin-top: 40px">
         <app-spinner :is-visible="true"/>
       </div>
@@ -81,7 +77,6 @@
 import transition from '~/mixins/transition'
 import users from '~/mixins/users'
 import loadItems from '~/mixins/loadItems'
-import AppSearch from '~/components/AppSearch.vue'
 
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
 import UserItemInfo from '~/components/users/UserItemInfo'
@@ -91,7 +86,6 @@ const filterKey = 'connectionsPageFilters'
 
 export default {
   components: {
-    AppSearch,
     LazyLoadingItems,
     UserItemInfo,
     AppFilter,

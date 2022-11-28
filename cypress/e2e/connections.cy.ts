@@ -1,4 +1,4 @@
-import { Connection } from '../../types'
+import {Connection} from '../../types'
 import {
   connectionsInConnectionsPageFilterAll,
   connectionsInConnectionsPageFilterAllSortedByNameAscending,
@@ -14,7 +14,7 @@ describe('Connections Page', () => {
   })
 
   function checkConnectionOrderInViewTab(brightId: string, index: number) {
-    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('exist')
+    cy.get(`[data-testid=user-item-${brightId}-name-${index}]`).should('be.visible')
   }
 
   function assertOrder(orderedConnections: Connection[]) {

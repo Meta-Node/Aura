@@ -126,14 +126,19 @@
         </div>
       </div>
     </nav>
+    <app-search v-if="$route.path !== '/'"/>
   </header>
 </template>
 
 <script>
 import {IS_PRODUCTION, TOAST_SUCCESS} from "~/utils/constants";
 import unsavedChanges from "~/mixins/unsavedChanges";
+import AppSearch from "~/components/AppSearch";
 
 export default {
+  components: {
+    AppSearch
+  },
   mixins: [unsavedChanges],
   data() {
     return {

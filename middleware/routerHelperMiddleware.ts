@@ -13,6 +13,13 @@ const routerHelperMiddleware: Middleware = function ({store, from, route, redire
   if (redirectObj) {
     return redirect(redirectObj.to)
   }
+
+  const disableGlobalSearchResultsRoutes = [
+    '/connections',
+    '/energy',
+  ]
+  store.commit('app/setSearchValue', '')
+  store.commit('app/setDisableGlobalSearchResults', disableGlobalSearchResultsRoutes.find(r => route.path.startsWith(r)))
 }
 
 export default routerHelperMiddleware

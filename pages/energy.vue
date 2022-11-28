@@ -1,12 +1,6 @@
 <template>
-  <section class="energy">
+  <section class="energy app-page">
     <div class="container energy__wrapper">
-      <div class="explorer__input-wrapper">
-        <app-search
-          ref="search"
-          @searchValue="onSearchValue"
-        />
-      </div>
       <div
         v-if="isLoading"
         style="margin-top: 40px"
@@ -32,7 +26,6 @@
 </template>
 
 <script>
-import AppSearch from '~/components/AppSearch.vue'
 import AppSpinner from '~/components/AppSpinner.vue'
 import AppEnergy from '~/components/energy/AppEnergy'
 import transition from '~/mixins/transition'
@@ -44,7 +37,6 @@ import unsavedChanges from "~/mixins/unsavedChanges";
 const filterKey = 'energyFilters'
 export default {
   components: {
-    AppSearch,
     // EnergyIndicator,
     AppEnergy,
     AppSpinner,

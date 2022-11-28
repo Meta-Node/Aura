@@ -1,6 +1,6 @@
 <template>
   <div data-route="profile">
-    <section class="profile">
+    <section class="profile app-page">
       <div
         v-if="isLoadingInitialData"
         style="margin-top: 40px"

@@ -1,5 +1,5 @@
 <template>
-  <section class="contact-us">
+  <section class="contact-us app-page">
     <div v-if="!IS_PRODUCTION" class="container contact-us__wrapper" style="padding-top: 30px; word-wrap: break-word">
       <hr/>
       Encrypt with password
