@@ -84,6 +84,9 @@ export default {
     profileIncomingRatings: {
       type: Array,
     },
+    profileOutboundConnections: {
+      type: Array,
+    }
   },
 
   data() {
@@ -150,6 +153,7 @@ export default {
       const profileIncomingConnections = this.profileIncomingConnections
       const profileIncomingRatings = this.profileIncomingRatings
       const profileOutboundRatings = this.profileRatedUsers
+      const profileOutboundConnections = this.profileOutboundConnections
       this.startUsers = profileIncomingConnections.reduce((a, c) => {
         const mutualConnectionId = c.id
         const mutualConnectionFromOurConnectionsList = this.connections.find(cn => mutualConnectionId === cn.id)
@@ -165,8 +169,7 @@ export default {
         )
         return a.concat({
           incomingConnectionLevel: c.level,
-          // TODO: set outgoing connection level from profileConnections
-          outboundConnectionLevel: c.level,
+          outboundConnectionLevel: profileOutboundConnections.find(cn => mutualConnectionId === cn.id).level,
           ratingData,
           rating: ratingData ? +ratingData.rating : undefined,
 
