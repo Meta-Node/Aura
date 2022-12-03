@@ -5,8 +5,8 @@ import {
   AuraConnectionsResponse,
   AuraProfile,
   AuraPublicProfile,
+  BrightIdConnectionsResponse,
   ConnectionResponse,
-  IncomingConnectionsResponse,
 } from '~/types'
 
 export const getConnections = (
@@ -25,8 +25,18 @@ export const getIncomingConnections = async (
   brightIdNodeApi: AxiosInstance,
   toBrightId: string
 ) => {
-  const res = await brightIdNodeApi.get<IncomingConnectionsResponse>(
+  const res = await brightIdNodeApi.get<BrightIdConnectionsResponse>(
     `/node/v6/users/${toBrightId}/connections/inbound`
+  )
+  return res.data.data.connections
+}
+
+export const getOutboundConnections = async (
+  brightIdNodeApi: AxiosInstance,
+  toBrightId: string
+) => {
+  const res = await brightIdNodeApi.get<BrightIdConnectionsResponse>(
+    `/node/v6/users/${toBrightId}/connections/outbound`
   )
   return res.data.data.connections
 }

@@ -1,12 +1,12 @@
 import {
   AuraProfile,
   AuraRating,
+  BrightIdConnection,
+  BrightIdConnectionsResponse,
   Connection,
   ConnectionLevel,
-  IncomingConnection,
-  IncomingConnectionsResponse,
 } from '../../types'
-import { connectionLevelMap } from '../../utils/constants'
+import {connectionLevelMap} from '../../utils/constants'
 import {
   justMet2,
   justMet3,
@@ -24,14 +24,14 @@ export const connectionToVisit = unratedConnection
 const toIncomingConnectionFormat = (
   connection: Connection,
   level: ConnectionLevel
-): IncomingConnection => ({
+): BrightIdConnection => ({
   id: connection.id,
   level,
   reportReason: connection.reportReason,
   timestamp: RANDOM_TIMESTAMP,
 })
 
-export const connectionIncomingConnections: IncomingConnection[] = [
+export const connectionIncomingConnections: BrightIdConnection[] = [
   toIncomingConnectionFormat(ratedConnection, 'suspicious'),
   toIncomingConnectionFormat(ratedConnection2, 'already known'),
   toIncomingConnectionFormat(ratedConnection3, 'just met'),
@@ -40,7 +40,7 @@ export const connectionIncomingConnections: IncomingConnection[] = [
   toIncomingConnectionFormat(justMet3, 'reported'),
 ]
 
-export const connectionIncomingConnectionsResponse: IncomingConnectionsResponse =
+export const connectionIncomingConnectionsResponse: BrightIdConnectionsResponse =
   {
     data: {
       connections: connectionIncomingConnections,
@@ -49,7 +49,7 @@ export const connectionIncomingConnectionsResponse: IncomingConnectionsResponse 
 
 export const connectionProfile: AuraProfile = {
   numOfConnections:
-    connectionIncomingConnectionsResponse.data.connections.length,
+  connectionIncomingConnectionsResponse.data.connections.length,
   brightIdDate: RANDOM_TIMESTAMP,
   fourUnrated: [],
   rating: 0,
@@ -109,7 +109,7 @@ export const connectionIncomingConnectionsSortByConnectionLevelDescending = [
   ...connectionIncomingConnections,
 ].sort((a, b) => connectionLevelMap[b.level] - connectionLevelMap[a.level])
 
-const getIncomingRatingFrom = (connection: IncomingConnection) =>
+const getIncomingRatingFrom = (connection: BrightIdConnection) =>
   Number(
     connectionIncomingRatings.find(r => r.fromBrightId === connection.id)
       ?.rating || 0

@@ -137,15 +137,15 @@ export type AppToast = {
   color: 'success' | 'danger'
 }
 
-export type IncomingConnection = {
+export type BrightIdConnection = {
   id: string
   level: ConnectionLevel
   reportReason: string | null
   timestamp: number
 }
 
-export type IncomingConnectionsResponse = {
+export type BrightIdConnectionsResponse = {
   data: {
-    connections: IncomingConnection[]
+    connections: BrightIdConnection[]
   }
 }

@@ -9,7 +9,7 @@ import {
   connectionIncomingRatingsResponse,
   connectionToVisit,
 } from '../utils/mutual-connections'
-import {IncomingConnection} from '../../types'
+import {BrightIdConnection} from '../../types'
 import {MUTUAL_CONNECTIONS_TEST_NAMESPACE} from "../../utils/constants";
 
 describe('Mutual Connections', () => {
@@ -54,7 +54,7 @@ describe('Mutual Connections', () => {
     )
   })
 
-  function assertOrder(orderedConnections: IncomingConnection[]) {
+  function assertOrder(orderedConnections: BrightIdConnection[]) {
     orderedConnections.forEach((r, i) => {
       cy.get(`[data-testid=${MUTUAL_CONNECTIONS_TEST_NAMESPACE}user-item-${r.id}-name-${i}]`).should('be.visible')
     })
