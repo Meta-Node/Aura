@@ -19,19 +19,9 @@
         :items="users"
         @updateItems="onUpdateItems"
       >
-        <small v-if="isInbound" class="app-explorer__table-name"
-               style="margin-top: 30px;
-                      text-decoration: underline;
-                      text-underline-offset: 3px;"
+        <small class="mutual-connections__inbound-toggle"
                @click="isInboundToggle()"
-        >Opinions about {{ profile.name }}:
-        </small>
-        <small v-else class="app-explorer__table-name"
-               style="margin-top: 30px;
-                      text-decoration: underline;
-                      text-underline-offset: 3px;"
-               @click="isInboundToggle()"
-        >{{ profile.name }}'s opinions:
+        >{{ isInbound ? `Opinion about ${profile.name}:` : `${profile.name}'s opinion:` }}:
         </small>
 
         <ul class="user-item__list" style="margin-top: 0px">
