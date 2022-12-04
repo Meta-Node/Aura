@@ -271,7 +271,7 @@ export default {
       }).catch(onError).finally(onDone)
       getOutboundConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
         this.profileOutboundConnections = connections
-      })
+      }).catch(onError).finally(onDone)
     },
     onAfterSave() {
       if (this.$store.getters["app/isFirstVisitedRoute"]) {
