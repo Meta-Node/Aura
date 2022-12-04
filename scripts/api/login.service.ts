@@ -1,12 +1,7 @@
-import { Store } from 'vuex'
-import { AxiosInstance } from 'axios'
-import {
-  decryptData,
-  decryptUserData,
-  generateB64Keypair,
-  hash,
-} from '~/scripts/utils/crypto'
-import { RootState } from '~/types/store'
+import {Store} from 'vuex'
+import {AxiosInstance} from 'axios'
+import {decryptData, decryptUserData, generateB64Keypair, hash,} from '~/scripts/utils/crypto'
+import {RootState} from '~/types/store'
 
 export async function pullDecryptedUserData(
   key: string,
@@ -50,7 +45,7 @@ export const loginByExplorerCode = async (
 
     const authKey = hash(brightId + password)
 
-    const { publicKey, privateKey } = generateB64Keypair()
+    const {publicKey, privateKey} = generateB64Keypair()
 
     const body = {
       publicKey,

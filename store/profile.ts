@@ -1,12 +1,9 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex'
-import { getProfile } from '~/scripts/api/connections.service'
-import {
-  pullDecryptedUserData,
-  pullProfilePhoto,
-} from '~/scripts/api/login.service'
-import { getIncomingRatings, getRatedUsers } from '~/scripts/api/rate.service'
-import { ProfileState, RootState } from '~/types/store'
-import { LocalForageBrightIdBackup } from '~/types'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {getProfile} from '~/scripts/api/connections.service'
+import {pullDecryptedUserData, pullProfilePhoto,} from '~/scripts/api/login.service'
+import {getIncomingRatings, getRatedUsers} from '~/scripts/api/rate.service'
+import {ProfileState, RootState} from '~/types/store'
+import {LocalForageBrightIdBackup} from '~/types'
 
 export const state = (): ProfileState => ({
   localForageBrightIdBackup: null,
@@ -61,27 +58,27 @@ export const mutations: MutationTree<ProfileState> = {
 
 export const actions: ActionTree<ProfileState, RootState> = {
   async getLocalForageBrightIdBackup(
-    { commit },
-    { authKey, password }: { authKey: string; password: string }
+    {commit},
+    {authKey, password}: { authKey: string; password: string }
   ) {
     try {
       const profileData = await pullDecryptedUserData(authKey, password, this)
       commit('setAndSaveLocalForageBrightIdBackup', {
         ...profileData,
-        profile: { ...profileData.userData, password },
+        profile: {...profileData.userData, password},
       })
     } catch (error) {
       console.log(error)
       throw error
     }
   },
-  async refreshLocalForageBrightIdBackup({ state, dispatch }) {
+  async refreshLocalForageBrightIdBackup({state, dispatch}) {
     const authKey = localStorage.getItem('authKey')
     const password = state.localForageBrightIdBackup?.profile.password
     if (!authKey || !password) return
-    await dispatch('getLocalForageBrightIdBackup', { authKey, password })
+    await dispatch('getLocalForageBrightIdBackup', {authKey, password})
   },
-  async loadProfileData({ commit }, isPublic) {
+  async loadProfileData({commit}, isPublic) {
     try {
       const profileData: LocalForageBrightIdBackup =
         // @ts-ignore
@@ -118,7 +115,7 @@ export const actions: ActionTree<ProfileState, RootState> = {
         rating: ratedUsers.find(ru => ru.toBrightId === conn.id)?.rating,
       }))
 
-      commit('setProfileData', { ...profile, ...res.data })
+      commit('setProfileData', {...profile, ...res.data})
       commit('setConnections', connectionsWithNicknames)
       commit('setRatedUsers', ratedUsers)
     } catch (error) {
@@ -127,10 +124,10 @@ export const actions: ActionTree<ProfileState, RootState> = {
   },
 
   async getProfilePhoto(_ctx, brightId) {
-    const privateKey = localStorage.getItem('authKey')!
+    const privateKey = localStorage.getItem('authKey')
     // @ts-ignore
     const profileInfo = await this.$localForage.getItem('profileData')
-    if (!profileInfo) {
+    if (!profileInfo || !privateKey || !brightId) {
       return
     }
 
@@ -142,7 +139,7 @@ export const actions: ActionTree<ProfileState, RootState> = {
     )
   },
 
-  async getIncomingRatings({ commit }) {
+  async getIncomingRatings({commit}) {
     try {
       const brightId = localStorage.getItem('brightId')
       if (!brightId) return

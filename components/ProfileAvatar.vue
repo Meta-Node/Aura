@@ -1,10 +1,10 @@
 <template>
   <div class="profile__card-img">
     <nuxt-img
+      :alt="alt"
+      :src="img || '/images/avatar-thumb.jpg'"
       :style="`--brightness: ${brightness}px`"
       class="img profile__avatar"
-      :src="img || '/images/avatar-thumb.jpg'"
-      :alt="alt"
     />
   </div>
 </template>
@@ -14,7 +14,6 @@ export default {
   props: {
     img: {
       type: String,
-      default: '/',
     },
     alt: {
       type: String,
