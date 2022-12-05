@@ -86,20 +86,17 @@
   transform: translateY(0px);
 }
 
-.user__percents {
-  @include mono-reg;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  line-height: 125%;
-  letter-spacing: -0.03em;
-  color: var(--b-gray);
-  margin-top: 8px;
-}
-
 .user-v3__humans-list .user__percents {
+  @include mono-reg;
   position: absolute;
   right: 0px;
   width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  line-height: 125%;
+  letter-spacing: -0.03em;
+  color: var(--b-gray);
+  margin-top: 5px;
 }
