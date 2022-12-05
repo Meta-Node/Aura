@@ -221,7 +221,7 @@ export default {
           this.profileIncomingRatings = this.$store.getters["profile/incomingRatings"];
           this.profileRatedUsers = this.$store.getters["profile/ratedUsers"];
           this.profileInboundEnergy = this.$store.getters["energy/inboundEnergy"];
-          this.profileTransferredEnergy = this.$store.getters["energy/outboundEnergy"];
+          this.profileTransferredEnergy = this.$store.getters["energy/outboundEnergy"].filter(e => e.amount > 0);
           this.profileIncomingConnections = inboundConnections;
           this.profileOutboundConnections = outboundConnections;
           this.loadingProfileData = false;
