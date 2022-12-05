@@ -54,7 +54,6 @@
     <mutual-connections
       :loading-profile-data="loadingProfileData"
       :profile="profile"
-      :profile-calls-done="profileCallsDone"
       :profile-inbound-energy="profileInboundEnergy"
       :profile-incoming-connections="profileIncomingConnections"
       :profile-incoming-ratings="profileIncomingRatings"
@@ -96,9 +95,6 @@ export default {
     isLoadingInitialData: {
       type: Boolean,
       default: true,
-    },
-    profileCallsDone: {
-      type: Number,
     },
     date: {
       type: String,

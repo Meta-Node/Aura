@@ -62,9 +62,6 @@ export default {
   },
   mixins: [transition, users, loadItems],
   props: {
-    profileCallsDone: {
-      type: Number,
-    },
     isOwn: {
       type: Boolean,
     },

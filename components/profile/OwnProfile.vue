@@ -44,9 +44,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    loadingProfileData: {
-      type: Boolean,
-    },
     profileIncomingConnections: {
       type: Array,
       default: () => [],

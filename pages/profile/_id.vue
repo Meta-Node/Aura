@@ -37,7 +37,6 @@
           :is-own="isOwn"
           :loading-profile-data="loadingProfileData"
           :profile="profile"
-          :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
           :profile-incoming-connections="profileIncomingConnections"
           :profile-incoming-ratings="profileIncomingRatings"
@@ -51,7 +50,6 @@
           :date="getDate"
           :four-unrated="fourUnrated"
           :is-loading-initial-data="isLoadingInitialData"
-          :loading-profile-data="loadingProfileData"
           :profile="profile"
           :profile-inbound-energy="profileInboundEnergy"
           :profile-incoming-connections="profileIncomingConnections"
@@ -69,7 +67,6 @@
           :is-loading-initial-data="isLoadingInitialData"
           :loading-profile-data="loadingProfileData"
           :profile="profile"
-          :profile-calls-done="profileCallsDone"
           :profile-inbound-energy="profileInboundEnergy"
           :profile-incoming-connections="profileIncomingConnections"
           :profile-incoming-ratings="profileIncomingRatings"
@@ -101,7 +98,7 @@ import {
   getOutboundConnections,
   getProfile
 } from '~/scripts/api/connections.service'
-import {RATING_INBOUND_STAT, TOAST_ERROR} from "~/utils/constants";
+import {IS_PRODUCTION, RATING_INBOUND_STAT, TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
 import {getIncomingRatings, getRatedUsers} from "~/scripts/api/rate.service";
@@ -126,7 +123,7 @@ export default {
       profile: {},
       isLoadingInitialData: true,
 
-      profileCallsDone: 0,
+      loadingProfileData: true,
       profileIncomingConnections: null,
       profileInboundEnergy: null,
       profileTransferredEnergy: null,
@@ -151,9 +148,6 @@ export default {
     },
     img() {
       return this.brightId
-    },
-    loadingProfileData() {
-      return this.profileCallsDone < 6
     },
     brightness() {
       return this.profile?.rating / 10
@@ -232,46 +226,51 @@ export default {
       this.$refs.popup.openPopup()
     },
     getProfileData() {
-      const onDone = () => {
-        this.profileCallsDone++;
-      }
-      const onError = error => {
-        this.$store.commit('toast/addToast', {text: 'Error while retrieving profile', color: TOAST_ERROR})
-        console.log(error)
-      }
       if (this.brightId === localStorage.getItem('brightId')) {
-        this.$store.dispatch('profile/loadProfileData').then(() => {
-          this.profileRatedUsers = this.$store.getters["profile/ratedUsers"];
-        }).catch(onError).finally(onDone)
-        this.$store.dispatch('profile/getIncomingRatings').then(() => {
+        Promise.all([
+          this.$store.dispatch('profile/loadProfileData'),
+          this.$store.dispatch('profile/getIncomingRatings'),
+          this.$store.dispatch('energy/getTransferredEnergy'),
+          this.$store.dispatch('energy/getInboundEnergy'),
+          getIncomingConnections(this.$brightIdNodeApi, this.brightId),
+          getOutboundConnections(this.$brightIdNodeApi, this.brightId),
+        ]).then(([_r1, _r2, _r3, _r4, inboundConnections, outboundConnections]) => {
           this.profileIncomingRatings = this.$store.getters["profile/incomingRatings"];
-        }).catch(onError).finally(onDone)
-        this.$store.dispatch('energy/getTransferredEnergy').then(() => {
-          this.profileTransferredEnergy = this.$store.getters["energy/outboundEnergy"];
-        }).catch(onError).finally(onDone)
-        this.$store.dispatch('energy/getInboundEnergy').then(() => {
+          this.profileRatedUsers = this.$store.getters["profile/ratedUsers"];
           this.profileInboundEnergy = this.$store.getters["energy/inboundEnergy"];
-        }).catch(onError).finally(onDone)
+          this.profileTransferredEnergy = this.$store.getters["energy/outboundEnergy"];
+          this.profileIncomingConnections = inboundConnections;
+          this.profileOutboundConnections = outboundConnections;
+          this.loadingProfileData = false;
+        }).catch(error => {
+          if (!IS_PRODUCTION) {
+            alert('getProfileError\n' + (error?.response?.data || error))
+          }
+          console.log(error)
+        })
       } else {
-        getIncomingRatings(this.$backendApi, this.brightId).then(ratings => {
-          this.profileIncomingRatings = ratings;
-        }).catch(onError).finally(onDone)
-        getRatedUsers(this.$backendApi, this.brightId).then(ratings => {
-          this.profileRatedUsers = ratings;
-        }).catch(onError).finally(onDone)
-        getEnergy(this.$backendApi, this.brightId).then(energy => {
-          this.profileTransferredEnergy = energy;
-        }).catch(onError).finally(onDone)
-        getInboundEnergy(this.$backendApi, this.brightId).then(energy => {
-          this.profileInboundEnergy = energy;
-        }).catch(onError).finally(onDone)
+        Promise.all([
+          getIncomingRatings(this.$backendApi, this.brightId),
+          getRatedUsers(this.$backendApi, this.brightId),
+          getInboundEnergy(this.$backendApi, this.brightId),
+          getEnergy(this.$backendApi, this.brightId),
+          getIncomingConnections(this.$brightIdNodeApi, this.brightId),
+          getOutboundConnections(this.$brightIdNodeApi, this.brightId),
+        ]).then(([inboundRatings, outboundRatings, inboundEnergy, outboundEnergy, inboundConnections, outboundConnections]) => {
+          this.profileIncomingRatings = inboundRatings;
+          this.profileRatedUsers = outboundRatings;
+          this.profileInboundEnergy = inboundEnergy;
+          this.profileTransferredEnergy = outboundEnergy;
+          this.profileIncomingConnections = inboundConnections;
+          this.profileOutboundConnections = outboundConnections;
+          this.loadingProfileData = false;
+        }).catch(error => {
+          if (!IS_PRODUCTION) {
+            alert('getProfileError\n' + (error?.response?.data || error))
+          }
+          console.log(error)
+        })
       }
-      getIncomingConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
-        this.profileIncomingConnections = connections
-      }).catch(onError).finally(onDone)
-      getOutboundConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
-        this.profileOutboundConnections = connections
-      }).catch(onError).finally(onDone)
     },
     onAfterSave() {
       if (this.$store.getters["app/isFirstVisitedRoute"]) {

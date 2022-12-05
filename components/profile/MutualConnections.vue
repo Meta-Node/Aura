@@ -66,9 +66,6 @@ export default {
     loadingProfileData: {
       type: Boolean,
     },
-    profileCallsDone: {
-      type: Number,
-    },
     profileIncomingConnections: {
       type: Array,
     },
@@ -92,7 +89,6 @@ export default {
   data() {
     return {
       isInbound: true,
-      setDataCalled: false,
       isLoading: true,
       filterKey,
       filters: [
@@ -131,11 +127,10 @@ export default {
     }
   },
   watch: {
-    profileCallsDone: {
+    loadingProfileData: {
       immediate: true,
-      handler() {
-        if (this.profileIncomingConnections !== null
-          && this.profileIncomingRatings !== null && !this.setDataCalled) {
+      handler(newValue) {
+        if (!newValue) {
           this.setUserData()
         }
       }
@@ -148,7 +143,6 @@ export default {
     async getUserData() {
     },
     setUserData() {
-      this.setDataCalled = true
       const ratedUsers = this.$store.getters['profile/ratedUsers']
       const profileIncomingConnections = this.profileIncomingConnections
       const profileIncomingRatings = this.profileIncomingRatings
