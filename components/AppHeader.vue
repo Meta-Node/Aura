@@ -94,7 +94,7 @@
         <div :class="[isPopupOpen && 'popup-menu--open']" class="popup-menu">
           <ul class="popup-menu__reduce">
             <li class="popup-menu__list">
-              <a class="menu-text popup-menu__text" href="homeURL" target="_blank"
+              <a :href="homeURL" class="menu-text popup-menu__text" target="_blank"
                  @click.prevent="() => safeRouterPush(homeURL)">
                 Profile
               </a>
