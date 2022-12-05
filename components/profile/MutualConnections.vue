@@ -19,13 +19,17 @@
         :items="users"
         @updateItems="onUpdateItems"
       >
-        <small class="app-explorer__table-name" style="margin-top: 30px">Opinion about {{ profile.name }}</small>
+        <small class="mutual-connections__inbound-toggle"
+               @click="isInboundToggle()"
+        >{{ isInbound ? `Opinion about ${profile.name}` : `${profile.name}'s opinion` }}:
+        </small>
+
         <ul class="user-item__list" style="margin-top: 0px">
           <li v-for="(user, index) in visibleItems"
               :key="user.id"
               class="user-item__container"
           >
-            <mutual-connection :index="index" :user="user"></mutual-connection>
+            <mutual-connection :index="index" :is-inbound="isInbound" :user="user"></mutual-connection>
           </li>
         </ul>
       </lazy-loading-items>
@@ -80,9 +84,14 @@ export default {
     profileIncomingRatings: {
       type: Array,
     },
+    profileOutboundConnections: {
+      type: Array,
+    }
   },
+
   data() {
     return {
+      isInbound: true,
       setDataCalled: false,
       isLoading: true,
       filterKey,
@@ -133,6 +142,9 @@ export default {
     }
   },
   methods: {
+    isInboundToggle() {
+      this.isInbound = !this.isInbound
+    },
     async getUserData() {
     },
     setUserData() {
@@ -140,6 +152,8 @@ export default {
       const ratedUsers = this.$store.getters['profile/ratedUsers']
       const profileIncomingConnections = this.profileIncomingConnections
       const profileIncomingRatings = this.profileIncomingRatings
+      const profileOutboundRatings = this.profileRatedUsers
+      const profileOutboundConnections = this.profileOutboundConnections
       this.startUsers = profileIncomingConnections.reduce((a, c) => {
         const mutualConnectionId = c.id
         const mutualConnectionFromOurConnectionsList = this.connections.find(cn => mutualConnectionId === cn.id)
@@ -150,12 +164,18 @@ export default {
         const incomingRatingDataToConnection = profileIncomingRatings.find(
           en => en.fromBrightId === mutualConnectionId
         )
+        const outgoingRatingToMutualConnection = profileOutboundRatings.find(
+          en => en.toBrightId === mutualConnectionId
+        )
         return a.concat({
           incomingConnectionLevel: c.level,
+          outboundConnectionLevel: profileOutboundConnections.find(cn => mutualConnectionId === cn.id).level,
           ratingData,
           rating: ratingData ? +ratingData.rating : undefined,
+
           incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined,
-          ...mutualConnectionFromOurConnectionsList,
+          outgoingRatingToMutualConnection: outgoingRatingToMutualConnection ? +outgoingRatingToMutualConnection.rating : undefined,
+          ...mutualConnectionFromOurConnectionsList
         })
       }, [])
       this.setInitialFilter()
@@ -164,3 +184,4 @@ export default {
   }
 }
 </script>
+

@@ -58,6 +58,7 @@
       :profile-inbound-energy="profileInboundEnergy"
       :profile-incoming-connections="profileIncomingConnections"
       :profile-incoming-ratings="profileIncomingRatings"
+      :profile-outbound-connections="profileOutboundConnections"
       :profile-rated-users="profileRatedUsers"
       :profile-transferred-energy="profileTransferredEnergy"/>
   </div>
@@ -115,6 +116,10 @@ export default {
       type: Boolean,
     },
     profileIncomingConnections: {
+      type: Array,
+      default: () => [],
+    },
+    profileOutboundConnections: {
       type: Array,
       default: () => [],
     },

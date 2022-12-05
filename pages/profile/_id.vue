@@ -73,6 +73,7 @@
           :profile-inbound-energy="profileInboundEnergy"
           :profile-incoming-connections="profileIncomingConnections"
           :profile-incoming-ratings="profileIncomingRatings"
+          :profile-outbound-connections="profileOutboundConnections"
           :profile-rated-users="profileRatedUsers"
           :profile-transferred-energy="profileTransferredEnergy"
           @afterSave="onAfterSave"
@@ -94,7 +95,12 @@
 import transition from '~/mixins/transition'
 import OthersProfile from '~/components/profile/OthersProfile.vue'
 import OwnProfile from '~/components/profile/OwnProfile.vue'
-import {getConnection, getIncomingConnections, getProfile} from '~/scripts/api/connections.service'
+import {
+  getConnection,
+  getIncomingConnections,
+  getOutboundConnections,
+  getProfile
+} from '~/scripts/api/connections.service'
 import {RATING_INBOUND_STAT, TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
@@ -126,6 +132,7 @@ export default {
       profileTransferredEnergy: null,
       profileRatedUsers: null,
       profileIncomingRatings: null,
+      profileOutboundConnections: null,
     }
   },
 
@@ -146,7 +153,7 @@ export default {
       return this.brightId
     },
     loadingProfileData() {
-      return this.profileCallsDone < 5
+      return this.profileCallsDone < 6
     },
     brightness() {
       return this.profile?.rating / 10
@@ -261,6 +268,9 @@ export default {
       }
       getIncomingConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
         this.profileIncomingConnections = connections
+      }).catch(onError).finally(onDone)
+      getOutboundConnections(this.$brightIdNodeApi, this.brightId).then(connections => {
+        this.profileOutboundConnections = connections
       }).catch(onError).finally(onDone)
     },
     onAfterSave() {

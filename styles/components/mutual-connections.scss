@@ -1,0 +1,13 @@
+.mutual-connections {
+  &__inbound-toggle {
+    font-size: 12px;
+    margin-left: auto;
+    margin-bottom: 12px;
+    width: fit-content;
+    display: block;
+    margin-top: 30px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+}
