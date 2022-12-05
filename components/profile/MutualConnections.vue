@@ -163,7 +163,7 @@ export default {
         )
         return a.concat({
           incomingConnectionLevel: c.level,
-          outboundConnectionLevel: profileOutboundConnections.find(cn => mutualConnectionId === cn.id).level,
+          outboundConnectionLevel: profileOutboundConnections.find(cn => mutualConnectionId === cn.id)?.level || '-',
           ratingData,
           rating: ratingData ? +ratingData.rating : undefined,
 
