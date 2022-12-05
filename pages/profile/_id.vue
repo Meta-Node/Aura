@@ -43,21 +43,6 @@
           :profile-rated-users="profileRatedUsers"
           :profile-transferred-energy="profileTransferredEnergy"
           :stat="stat"/>
-        <own-profile
-          v-else-if="isOwn"
-          ref="public"
-          :brightness="brightness"
-          :date="getDate"
-          :four-unrated="fourUnrated"
-          :is-loading-initial-data="isLoadingInitialData"
-          :profile="profile"
-          :profile-inbound-energy="profileInboundEnergy"
-          :profile-incoming-connections="profileIncomingConnections"
-          :profile-incoming-ratings="profileIncomingRatings"
-          :profile-rated-users="profileRatedUsers"
-          :profile-transferred-energy="profileTransferredEnergy"
-          @share="onShare"
-        />
         <others-profile
           v-else
           ref="private"
@@ -91,7 +76,6 @@
 <script>
 import transition from '~/mixins/transition'
 import OthersProfile from '~/components/profile/OthersProfile.vue'
-import OwnProfile from '~/components/profile/OwnProfile.vue'
 import {
   getConnection,
   getIncomingConnections,
@@ -114,7 +98,6 @@ export default {
     AuraStatistics,
     NicknamePopup,
     OthersProfile,
-    OwnProfile,
   },
   mixins: [transition, unsavedChanges, avatar],
 
