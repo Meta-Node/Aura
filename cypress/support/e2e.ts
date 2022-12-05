@@ -28,12 +28,9 @@ import {
   PROFILE_PICTURE,
   verificationsResponse,
 } from '../utils/data'
-import {
-  userIncomingRatingsResponse,
-  userRatingsResponse,
-} from '../utils/rating'
-import { CONNECTION_SEARCH_SEED } from '../../utils/constants'
-import { AURA_ENERGIES, AURA_INBOUND_ENERGIES } from '../utils/energy'
+import {userIncomingRatingsResponse, userRatingsResponse,} from '../utils/rating'
+import {CONNECTION_SEARCH_SEED} from '../../utils/constants'
+import {AURA_ENERGIES, AURA_INBOUND_ENERGIES} from '../utils/energy'
 
 Cypress.Commands.add('blockApiRequests', () => {
   cy.intercept(
@@ -139,7 +136,7 @@ Cypress.Commands.add('profileIntercepts', () => {
 })
 
 Cypress.Commands.add('setupProfile', () => {
-  localforage.config({ storeName: 'nuxtLocalForage', name: 'nuxtJS' })
+  localforage.config({storeName: 'nuxtLocalForage', name: 'nuxtJS'})
   localforage.setItem('profileData', LOCAL_FORAGE_DATA)
   cy.profileIntercepts()
   cy.on('window:before:load', _win => {
@@ -152,13 +149,17 @@ Cypress.Commands.add('setupProfile', () => {
 
 beforeEach(() => {
   cy.blockApiRequests()
-  cy.on('window:before:load', win => {
-    cy.spy(win.console, 'error').as('spyWinConsoleError')
-    cy.spy(win.console, 'warn').as('spyWinConsoleWarn')
-  })
+  if (Cypress.env("spy_on_console")) {
+    cy.on('window:before:load', win => {
+      cy.spy(win.console, 'error').as('spyWinConsoleError')
+      cy.spy(win.console, 'warn').as('spyWinConsoleWarn')
+    })
+  }
 })
 
 afterEach(() => {
-  cy.get('@spyWinConsoleError').should('have.callCount', 0)
-  cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
+  if (Cypress.env("spy_on_console")) {
+    cy.get('@spyWinConsoleError').should('have.callCount', 0)
+    cy.get('@spyWinConsoleWarn').should('have.callCount', 0)
+  }
 })
