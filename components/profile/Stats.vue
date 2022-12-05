@@ -23,13 +23,15 @@
         :items="users"
         @updateItems="onUpdateItems"
       >
-        <small class="app-explorer__table-name" style="margin-top: 30px">Opinion about {{ profile.name }}</small>
+        <small class="mutual-connections__inbound-toggle" @click="isInbound = !isInbound">{{
+            isInbound ? `Opinion about ${profile.name}` : `${profile.name}'s opinion`
+          }}</small>
         <ul class="user-item__list" style="margin-top: 0px">
           <li v-for="(user, index) in visibleItems"
               :key="user.id"
               class="user-item__container"
           >
-            <mutual-connection :index="index" :user="user"></mutual-connection>
+            <mutual-connection :index="index" :is-inbound="isInbound" :user="user"></mutual-connection>
           </li>
         </ul>
       </lazy-loading-items>
@@ -92,6 +94,7 @@ export default {
   },
   data() {
     return {
+      isInbound: true,
       filterKey,
       defaultFilter: 'MutualFirst',
       titles: {
@@ -188,9 +191,11 @@ export default {
         return a.concat({
           id: mutualConnectionId,
           incomingConnectionLevel: c.level,
+          outboundConnectionLevel: mutualConnectionFromOurConnectionsList.level,
           ratingData,
           rating: ratingData ? +ratingData.rating : undefined,
           incomingRatingToConnection: incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined,
+          outgoingRatingToMutualConnection: outboundRatingDataToConnection ? +outboundRatingDataToConnection.rating : undefined,
           ...(mutualConnectionFromOurConnectionsList || {
             name: mutualConnectionId,
           }),
