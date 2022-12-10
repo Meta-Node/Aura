@@ -1,5 +1,5 @@
 import {AURA_GENERAL_PROFILE, FAKE_BRIGHT_ID} from '../utils/data'
-import {getConnectionResponse} from '../utils/energy'
+import {AURA_ENERGIES, AURA_INBOUND_ENERGIES, getConnectionResponse} from '../utils/energy'
 import {oldRatings} from '../utils/rating'
 import {
   connectionIncomingConnections,
@@ -7,6 +7,7 @@ import {
   connectionIncomingConnectionsSortByConnectionLevelDescending,
   connectionIncomingConnectionsSortByTheirRatingDescending,
   connectionIncomingRatingsResponse,
+  connectionOutboundConnectionsResponse,
   connectionToVisit,
 } from '../utils/mutual-connections'
 import {BrightIdConnection} from '../../types'
@@ -45,11 +46,47 @@ describe('Mutual Connections', () => {
     )
     cy.intercept(
       {
+        url: `/node/v6/users/${connectionToVisit.id}/connections/outbound`,
+        method: 'GET',
+      },
+      {
+        body: connectionOutboundConnectionsResponse,
+      }
+    )
+    cy.intercept(
+      {
         url: `/v1/ratings/inbound/${connectionToVisit.id}`,
         method: 'GET',
       },
       {
         body: connectionIncomingRatingsResponse,
+      }
+    )
+    cy.intercept(
+      {
+        url: `/v1/ratings/${connectionToVisit.id}`,
+        method: 'GET',
+      },
+      {
+        body: connectionIncomingRatingsResponse,
+      }
+    )
+    cy.intercept(
+      {
+        url: `/v1/energy/${connectionToVisit.id}`,
+        method: 'GET',
+      },
+      {
+        body: AURA_ENERGIES,
+      }
+    )
+    cy.intercept(
+      {
+        url: `/v1/energy/inbound/${connectionToVisit.id}`,
+        method: 'GET',
+      },
+      {
+        body: AURA_INBOUND_ENERGIES,
       }
     )
   })

@@ -21,7 +21,7 @@ import {
 
 export const connectionToVisit = unratedConnection
 
-const toIncomingConnectionFormat = (
+const toConnectionFormat = (
   connection: Connection,
   level: ConnectionLevel
 ): BrightIdConnection => ({
@@ -32,18 +32,34 @@ const toIncomingConnectionFormat = (
 })
 
 export const connectionIncomingConnections: BrightIdConnection[] = [
-  toIncomingConnectionFormat(ratedConnection2, 'already known'),
-  toIncomingConnectionFormat(ratedConnection, 'suspicious'),
-  toIncomingConnectionFormat(ratedConnection3, 'just met'),
-  toIncomingConnectionFormat(ratedConnectionNegative, 'suspicious'),
-  toIncomingConnectionFormat(ratedConnectionWithoutEnergy, 'recovery'),
-  toIncomingConnectionFormat(justMet3, 'reported'),
+  toConnectionFormat(ratedConnection, 'suspicious'),
+  toConnectionFormat(ratedConnection2, 'already known'),
+  toConnectionFormat(ratedConnection3, 'just met'),
+  toConnectionFormat(ratedConnectionNegative, 'suspicious'),
+  toConnectionFormat(ratedConnectionWithoutEnergy, 'recovery'),
+  toConnectionFormat(justMet3, 'reported'),
+]
+
+export const connectionOutboundConnections: BrightIdConnection[] = [
+  toConnectionFormat(ratedConnection, 'recovery'),
+  toConnectionFormat(ratedConnection2, 'suspicious'),
+  toConnectionFormat(ratedConnection3, 'just met'),
+  toConnectionFormat(ratedConnectionNegative, 'suspicious'),
+  toConnectionFormat(ratedConnectionWithoutEnergy, 'already known'),
+  toConnectionFormat(justMet3, 'reported'),
 ]
 
 export const connectionIncomingConnectionsResponse: BrightIdConnectionsResponse =
   {
     data: {
       connections: connectionIncomingConnections,
+    },
+  }
+
+export const connectionOutboundConnectionsResponse: BrightIdConnectionsResponse =
+  {
+    data: {
+      connections: connectionOutboundConnections,
     },
   }
 

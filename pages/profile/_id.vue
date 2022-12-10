@@ -227,6 +227,7 @@ export default {
           this.loadingProfileData = false;
         }).catch(error => {
           if (!IS_PRODUCTION) {
+            console.log('getProfileError\n' + (error?.response?.data || error))
             alert('getProfileError\n' + (error?.response?.data || error))
           }
           console.log(error)
@@ -249,6 +250,7 @@ export default {
           this.loadingProfileData = false;
         }).catch(error => {
           if (!IS_PRODUCTION) {
+            console.log('getProfileError\n' + (error?.response?.data || error))
             alert('getProfileError\n' + (error?.response?.data || error))
           }
           console.log(error)
