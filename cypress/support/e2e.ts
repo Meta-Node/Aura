@@ -31,6 +31,10 @@ import {
 import {userIncomingRatingsResponse, userRatingsResponse,} from '../utils/rating'
 import {CONNECTION_SEARCH_SEED} from '../../utils/constants'
 import {AURA_ENERGIES, AURA_INBOUND_ENERGIES} from '../utils/energy'
+import {
+  connectionIncomingConnectionsResponse,
+  connectionOutboundConnectionsResponse
+} from "../utils/mutual-connections";
 
 Cypress.Commands.add('blockApiRequests', () => {
   cy.intercept(
@@ -131,6 +135,26 @@ Cypress.Commands.add('profileIntercepts', () => {
     },
     {
       body: verificationsResponse,
+    }
+  )
+
+  // nonsense response just for test to work
+  cy.intercept(
+    {
+      url: `/node/v6/users/${FAKE_BRIGHT_ID}/connections/inbound`,
+      method: 'GET',
+    },
+    {
+      body: connectionIncomingConnectionsResponse,
+    }
+  )
+  cy.intercept(
+    {
+      url: `/node/v6/users/${FAKE_BRIGHT_ID}/connections/outbound`,
+      method: 'GET',
+    },
+    {
+      body: connectionOutboundConnectionsResponse,
     }
   )
 })
