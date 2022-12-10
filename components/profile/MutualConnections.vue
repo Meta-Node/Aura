@@ -149,6 +149,7 @@ export default {
       const profileIncomingRatings = this.profileIncomingRatings
       const profileOutboundRatings = this.profileRatedUsers
       const profileOutboundConnections = this.profileOutboundConnections
+      const profileRating = +this.profile.previousRating || 0
       this.startUsers = profileIncomingConnections.reduce((a, c) => {
         const mutualConnectionId = c.id
         const mutualConnectionFromOurConnectionsList = this.connections.find(cn => mutualConnectionId === cn.id)
@@ -164,7 +165,7 @@ export default {
         )
         const rating = ratingData ? +ratingData.rating : undefined
         const incomingRatingToConnection = incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined
-        const alertDifference = (rating > 0 && incomingRatingToConnection < 0)
+        const alertDifference = (rating > 0 && (profileRating * incomingRatingToConnection < 0))
         return a.concat({
           incomingConnectionLevel: c.level,
           outboundConnectionLevel: profileOutboundConnections.find(cn => mutualConnectionId === cn.id)?.level || '-',

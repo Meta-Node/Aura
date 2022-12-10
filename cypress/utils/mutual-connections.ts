@@ -75,7 +75,7 @@ export const connectionProfile: AuraProfile = {
 export const connectionIncomingRatings: AuraRating[] = [
   {
     id: 5050,
-    toBrightId: unratedConnection.id,
+    toBrightId: connectionToVisit.id,
     fromBrightId: justMet3.id,
     rating: '-1',
     createdAt: '2021-07-10T20:59:03.036Z',
@@ -83,7 +83,7 @@ export const connectionIncomingRatings: AuraRating[] = [
   },
   {
     id: 5090,
-    toBrightId: unratedConnection.id,
+    toBrightId: connectionToVisit.id,
     fromBrightId: ratedConnection.id,
     rating: '-4',
     createdAt: '2021-07-10T20:59:03.036Z',
@@ -91,7 +91,7 @@ export const connectionIncomingRatings: AuraRating[] = [
   },
   {
     id: 3040,
-    toBrightId: unratedConnection.id,
+    toBrightId: connectionToVisit.id,
     fromBrightId: ratedConnectionWithoutEnergy.id,
     rating: '4',
     createdAt: '2021-07-13T20:59:03.036Z',
@@ -99,7 +99,7 @@ export const connectionIncomingRatings: AuraRating[] = [
   },
   {
     id: 6000,
-    toBrightId: unratedConnection.id,
+    toBrightId: connectionToVisit.id,
     fromBrightId: ratedConnectionNegative.id,
     rating: '-1',
     createdAt: '2021-07-11T20:59:03.036Z',
@@ -107,7 +107,7 @@ export const connectionIncomingRatings: AuraRating[] = [
   },
   {
     id: 6070,
-    toBrightId: unratedConnection.id,
+    toBrightId: connectionToVisit.id,
     fromBrightId: justMet2.id,
     rating: '-1',
     createdAt: '2021-07-11T20:59:03.036Z',
