@@ -21,7 +21,7 @@
       >
         <small class="mutual-connections__inbound-toggle"
                @click="isInboundToggle()"
-        >{{ isInbound ? `Opinion about ${profile.name}` : `${profile.name}'s opinion` }}:
+        >{{ isInbound ? `Opinion about ${profile.name || 'Unknown'}` : `${profile.name || 'Unknown'}'s opinion` }}:
         </small>
 
         <ul class="user-item__list" style="margin-top: 0px">
