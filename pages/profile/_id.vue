@@ -26,9 +26,12 @@
           @share="onShare"
         />
 
-        <nuxt-link v-if="isBlackhole && isOwn" to="/energy/">You are a BLACKHOLE /n You now have energy!
-          Please choose at least one person to pass energy to avoid destroying energy
+
+        <nuxt-link v-if="isBlackhole && isOwn" to="/energy/">
+          <BlackholeWarning/>
+
         </nuxt-link>
+
 
         <aura-statistics
           :profile-inbound-energy="profileInboundEnergy"
@@ -79,6 +82,7 @@
 </template>
 
 <script>
+import BlackholeWarning from "~/components/BlackholeWarning";
 import transition from '~/mixins/transition'
 import OthersProfile from '~/components/profile/OthersProfile.vue'
 import {
@@ -99,6 +103,7 @@ import Stats from "~/components/profile/Stats";
 
 export default {
   components: {
+    BlackholeWarning,
     Stats,
     AuraStatistics,
     NicknamePopup,
