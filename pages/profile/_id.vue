@@ -25,6 +25,11 @@
           @edit="onEdit"
           @share="onShare"
         />
+
+        <nuxt-link v-if="isBlackhole && isOwn" to="/energy/">You are a BLACKHOLE /n You now have energy!
+          Please choose at least one person to pass energy to avoid destroying energy
+        </nuxt-link>
+
         <aura-statistics
           :profile-inbound-energy="profileInboundEnergy"
           :profile-incoming-ratings="profileIncomingRatings"
@@ -123,6 +128,9 @@ export default {
   },
 
   computed: {
+    isBlackhole() {
+      return (this.profileTransferredEnergy?.length === 0 && this.profileInboundEnergy?.length !== 0)
+    },
     isOwn() {
       return process.client && this.brightId === localStorage.getItem('brightId')
     },
