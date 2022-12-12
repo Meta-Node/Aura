@@ -25,6 +25,14 @@
           @edit="onEdit"
           @share="onShare"
         />
+
+
+        <nuxt-link v-if="isBlackhole && isOwn" to="/energy/">
+          <BlackholeWarning/>
+
+        </nuxt-link>
+
+
         <aura-statistics
           :profile-inbound-energy="profileInboundEnergy"
           :profile-incoming-ratings="profileIncomingRatings"
@@ -74,6 +82,7 @@
 </template>
 
 <script>
+import BlackholeWarning from "~/components/BlackholeWarning";
 import transition from '~/mixins/transition'
 import OthersProfile from '~/components/profile/OthersProfile.vue'
 import {
@@ -94,6 +103,7 @@ import Stats from "~/components/profile/Stats";
 
 export default {
   components: {
+    BlackholeWarning,
     Stats,
     AuraStatistics,
     NicknamePopup,
@@ -123,6 +133,9 @@ export default {
   },
 
   computed: {
+    isBlackhole() {
+      return (this.profileTransferredEnergy?.length === 0 && this.profileInboundEnergy?.length !== 0)
+    },
     isOwn() {
       return process.client && this.brightId === localStorage.getItem('brightId')
     },

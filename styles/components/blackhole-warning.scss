@@ -1,0 +1,10 @@
+.blackhole-warning {
+  border: 1px dashed #e73737;
+  border-radius: 15px;
+  margin-top: 20px;
+  padding: 10px 15px;
+
+  &__warning {
+    color: #e73737
+  }
+}
