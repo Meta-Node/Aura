@@ -10,6 +10,7 @@
       <div v-else>
         <div class="explorer-energy">
           <h3 class="explorer-energy__indicator-text">Energy</h3>
+          <BlackholeWarning v-if="isBlackhole"/>
         </div>
         <div class="enegry__screens">
           <app-energy
@@ -33,10 +34,12 @@ import users from '~/mixins/users'
 import {TOAST_ERROR} from "~/utils/constants";
 import {toRoundedPercentage} from "~/utils/numbers";
 import unsavedChanges from "~/mixins/unsavedChanges";
+import BlackholeWarning from "~/components/BlackholeWarning";
 
 const filterKey = 'energyFilters'
 export default {
   components: {
+    BlackholeWarning,
     // EnergyIndicator,
     AppEnergy,
     AppSpinner,
@@ -90,6 +93,9 @@ export default {
     }
   },
   computed: {
+    isBlackhole() {
+      return (!this.$store.state.energy.prevTransferredEnergy?.filter(e => e.amount).length && this.$store.state.energy.inboundEnergy?.length)
+    },
     transferredEnergy() {
       return this.$store.state.energy.transferredEnergy
     },
