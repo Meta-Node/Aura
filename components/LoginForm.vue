@@ -135,7 +135,7 @@ export default {
   mounted() {
     this.openBrightIdUrl = 'brightid://local-server?run=true&next=' + window.location.href
     if (this.$store.getters["app/isFirstVisitedRoute"]) {
-      this.loginByLocalServer('http://localhost:9025').catch(_err => {
+      this.loginByLocalServer('http://127.0.0.1:9025').catch(_err => {
       })
     }
   },
