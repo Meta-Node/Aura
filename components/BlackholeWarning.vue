@@ -1,8 +1,8 @@
 <template>
   <div class="blackhole-warning">
-    <span class="blackhole-warning__warning">Warning!</span>
-    You are a BLACKHOLE. <br> You now have energy!
-    Please choose at least one person to pass energy to avoid destroying energy
+    <span class="blackhole-warning__bold"> Congratulations! </span> You now have energy!
+
+    Please send energy (back) to at least one person. Don't be a black hole!
   </div>
 </template>
 
