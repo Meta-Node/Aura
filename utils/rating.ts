@@ -1,3 +1,5 @@
+import {ConnectionLevel} from "~/types";
+
 export const stepsNames: {
   [key: string]: number[]
 } = {
@@ -46,3 +48,14 @@ export function getStepValue(step: string | number) {
 export function getStepName(percents: number) {
   return Object.keys(stepsNames).find(key => stepsNames[key].includes(percents))
 }
+
+export const goodConnectionLevels: ConnectionLevel[] = [
+  "just met",
+  "already known",
+  "recovery"
+]
+
+export const badConnectionLevels: ConnectionLevel[] = [
+  "reported",
+  "suspicious"
+]

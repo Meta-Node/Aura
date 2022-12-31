@@ -49,6 +49,7 @@ import loadItems from '~/mixins/loadItems'
 import LazyLoadingItems from '~/components/LazyLoadingItems.vue'
 import AppFilter from '~/components/filters/AppFilter.vue'
 import MutualConnection from '~/components/users/MutualConnection'
+import {badConnectionLevels, goodConnectionLevels} from "~/utils/rating";
 
 
 const filterKey = 'mutualConnectionFilters'
@@ -165,9 +166,17 @@ export default {
         )
         const rating = ratingData ? +ratingData.rating : undefined
         const incomingRatingToConnection = incomingRatingDataToConnection ? +incomingRatingDataToConnection.rating : undefined
-        const alertDifference = (rating > 0 && (profileRating * incomingRatingToConnection < 0))
+        const conflictInRating = profileRating * incomingRatingToConnection < 0
+
+        const incomingConnectionLevel = c.level
+        const connectionLevelConflict =
+          (badConnectionLevels.includes(mutualConnectionFromOurConnectionsList.level) && goodConnectionLevels.includes(incomingConnectionLevel))
+          || (badConnectionLevels.includes(incomingConnectionLevel) && goodConnectionLevels.includes(mutualConnectionFromOurConnectionsList.level))
+
+        const alertDifference = (rating > 0 && (connectionLevelConflict || conflictInRating))
+
         return a.concat({
-          incomingConnectionLevel: c.level,
+          incomingConnectionLevel,
           outboundConnectionLevel: profileOutboundConnections.find(cn => mutualConnectionId === cn.id)?.level || '-',
           ratingData,
           rating,
