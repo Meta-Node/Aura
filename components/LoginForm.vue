@@ -104,6 +104,7 @@ import axios from "axios"
 import AppInput from '~/components/AppInput.vue'
 import AppButton from '~/components/AppButton.vue'
 import {TOAST_ERROR} from '~/utils/constants'
+import {encryptData} from "~/scripts/utils/crypto";
 
 const LoginMethods = Object.freeze({
   localServer: 'WiFi Sharing',
@@ -130,6 +131,34 @@ export default {
         error: true,
       },
     }
+  },
+
+  mounted() {
+    window.onmessage = (message => {
+      let userInfo = null
+      try {
+        userInfo = JSON.parse(message.data)?.userInfo
+      } catch (e) {
+        console.log(e)
+      }
+      if (userInfo) {
+        const {
+          id: brightId,
+          password
+        } = userInfo
+        this.onInputValue({
+          id: 'explorer',
+          value: encryptData(brightId, password),
+          error: false,
+        })
+        this.onInputValue({
+          id: 'password',
+          value: password,
+          error: false,
+        })
+        this.loginByExplorerCode()
+      }
+    });
   },
 
   methods: {
@@ -210,6 +239,6 @@ export default {
     visitLink(link) {
       window.open(link, '_blank')
     },
-  },
+  }
 }
 </script>
