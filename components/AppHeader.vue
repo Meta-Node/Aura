@@ -53,13 +53,14 @@
           </span>
           <span class="nav-button__label">Energy</span>
         </nuxt-link>
-        <div
-          style="width: 30px; height: 30px; margin-left: 12px; border: 1px solid white; border-radius: 50%; padding: 6px;">
+        <nuxt-link v-if="activeDomain"
+                   style="width: 30px; height: 30px; margin-left: 12px; border: 1px solid white; border-radius: 50%; padding: 6px;"
+                   to="/domains/">
           <nuxt-img
-            :src="'/images/brightid.png'"
-            alt="brightid"
+            :alt="activeDomain.name"
+            :src="activeDomain.logo"
           />
-        </div>
+        </nuxt-link>
         <button
           :class="[isPopupOpen && 'nav-button--open']"
           aria-label="Navigation button"
@@ -154,6 +155,9 @@ export default {
     }
   },
   computed: {
+    activeDomain() {
+      return this.$store.getters['app/activeDomain']
+    },
     isAuth() {
       return this.$store.state.app.isAuth
     },

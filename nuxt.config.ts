@@ -1,9 +1,9 @@
-import {Configuration as WebpackConfiguration} from 'webpack'
-import {NuxtOptionsLoaders, NuxtWebpackEnv} from '@nuxt/types/config/build'
+import { Configuration as WebpackConfiguration } from 'webpack'
+import { NuxtOptionsLoaders, NuxtWebpackEnv } from '@nuxt/types/config/build'
 
 const DOTENV_PATH =
   process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
-require('dotenv').config({path: DOTENV_PATH})
+require('dotenv').config({ path: DOTENV_PATH })
 
 const title = 'Discover & grow your Aura...'
 const description = 'Your Aura represents power & influence upon the Auracle.'
@@ -21,15 +21,15 @@ export default {
   head: {
     title,
     meta: [
-      {charset: 'utf-8'},
-      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
         content: description,
       },
 
-      {name: 'twitter:card', content: 'summary_large_image'},
+      { name: 'twitter:card', content: 'summary_large_image' },
       {
         name: 'twitter:title',
         content: title,
@@ -61,10 +61,10 @@ export default {
         name: 'og:title',
         content: description,
       },
-      {hid: 'theme-color', name: 'theme-color', content: '#333333'},
+      { hid: 'theme-color', name: 'theme-color', content: '#333333' },
     ],
     link: [
-      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'dns-prefetch',
         href: 'https://fonts.gstatic.com/',
@@ -84,7 +84,13 @@ export default {
   css: ['@/styles/index.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/api'],
+  plugins: [
+    '~/plugins/api',
+    {
+      src: '~/plugins/initClient',
+      mode: 'client',
+    },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -101,7 +107,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/pwa
-    ['@nuxtjs/dotenv', {filename: DOTENV_PATH}],
+    ['@nuxtjs/dotenv', { filename: DOTENV_PATH }],
     '@nuxtjs/pwa',
     '@nuxtjs/axios',
     '@nuxtjs/date-fns',
@@ -116,7 +122,7 @@ export default {
     '/brightid': {
       target: 'https://recovery.brightid.org',
       changeOrigin: true,
-      pathRewrite: {'^/brightid': '/'},
+      pathRewrite: { '^/brightid': '/' },
     },
   },
 

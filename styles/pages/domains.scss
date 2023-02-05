@@ -1,14 +1,9 @@
-.contact-us {
-  .toggle-switch {
-    margin-right: 24px;
-  }
-
+.domains {
   &__body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 48px;
   }
 
   &__title {
@@ -21,10 +16,17 @@
     letter-spacing: -0.03em;
     color: var(--b-gray);
     padding-top: 10px;
-    margin-bottom: 48px;
+    margin-bottom: 12px;
   }
 
-  &__text {
+  &__domain {
+    &__header {
+      &__container {
+        display: flex;
+        align-items: center
+      }
+    }
+
     @include med;
     margin-top: 30px;
     font-size: 16px;
@@ -36,38 +38,10 @@
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
     text-align: start;
-    margin-bottom: 32px;
-  }
-
-  &__link-with-icon {
-    display: flex;
-    flex-direction: row;
-    text-align: left;
-    float: left;
-    align-self: flex-start;
-    align-items: flex-start;
-    justify-content: left;
-    column-gap: 0.5rem;
+    border: 1px solid #777777;
+    padding: 15px;
     cursor: pointer;
-
-    &__link {
-      @include med;
-      font-size: 16px;
-      line-height: 150%;
-      color: #dfdfdf;
-      display: flex;
-      column-gap: 0.3rem;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    &__icon {
-      width: 25px;
-      height: auto;
-    }
+    border-radius: 5px;
   }
 }

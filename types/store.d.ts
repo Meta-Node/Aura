@@ -8,6 +8,7 @@ import {
   InboundEnergyAllocationList,
   LocalForageBrightIdBackup,
 } from '~/types/index'
+import { DomainId } from '~/utils/constants'
 
 export type RootState = {}
 export type BrightIdData = any // TODO: determine the type
@@ -15,6 +16,7 @@ export type LoginState = {
   isAuth: boolean
 }
 export type AppState = {
+  activeDomainId: DomainId
   disableGlobalSearchResults: boolean
   searchValue: string
   hasUnsavedChanges: boolean
