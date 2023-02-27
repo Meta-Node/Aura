@@ -38,7 +38,11 @@ export default {
   methods: {
     setActiveDomainId(domainId) {
       this.$store.commit('app/setActiveDomainId', domainId)
-      this.$router.push('/connections/')
+      if (this.$store.getters["app/isFirstVisitedRoute"]) {
+        this.$router.push('/connections/')
+      } else {
+        this.$router.go(-1)
+      }
     }
   }
 }

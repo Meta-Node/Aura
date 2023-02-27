@@ -54,7 +54,7 @@
           <span class="nav-button__label">Energy</span>
         </nuxt-link>
         <nuxt-link v-if="activeDomain"
-                   style="width: 30px; height: 30px; margin-left: 12px; border: 1px solid white; border-radius: 50%; padding: 6px;"
+                   style="width: 30px; height: 30px; margin-left: 12px; padding: 6px;"
                    to="/domains/">
           <nuxt-img
             :alt="activeDomain.name"
