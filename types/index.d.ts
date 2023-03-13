@@ -1,5 +1,7 @@
 // TODO: add typescript eslint to fix linter problems
 // TODO: update values
+import { DomainId } from '~/utils/constants'
+
 export type ConnectionLevel =
   | 'reported'
   | 'suspicious'
@@ -148,4 +150,11 @@ export type BrightIdConnectionsResponse = {
   data: {
     connections: BrightIdConnection[]
   }
+}
+
+export type EnergyDomain = {
+  id: DomainId
+  name: string
+  logo: string
+  description: string
 }

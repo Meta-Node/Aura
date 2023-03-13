@@ -1,6 +1,6 @@
 <template>
   <section class="contact-us app-page">
-    <div class="container contact-us__wrapper">
+    <div class="container">
       <h3 class="contact-us__title">Contact Us</h3>
       <div class="contact-us__body">
         <div class="contact-us__link-with-icon">

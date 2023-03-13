@@ -1,7 +1,9 @@
-import {GetterTree, MutationTree} from 'vuex'
-import {AppState, RootState} from '~/types/store'
+import { GetterTree, MutationTree } from 'vuex'
+import { AppState, RootState } from '~/types/store'
+import { DomainId, DOMAINS } from '~/utils/constants'
 
 export const state = (): AppState => ({
+  activeDomainId: DomainId.BRIGHTID,
   hasUnsavedChanges: false,
   loading: false,
   isWebp: false,
@@ -14,10 +16,17 @@ export const state = (): AppState => ({
 export const getters: GetterTree<AppState, RootState> = {
   isFirstVisitedRoute: state => state.isFirstVisitedRoute,
   searchValue: state => state.searchValue,
-  disableGlobalSearchResults: state => state.disableGlobalSearchResults
+  activeDomain: state => DOMAINS.find(d => d.id === state.activeDomainId),
+  disableGlobalSearchResults: state => state.disableGlobalSearchResults,
 }
 
 export const mutations: MutationTree<AppState> = {
+  setActiveDomainId(state, value) {
+    state.activeDomainId = value
+    if (process.client) {
+      localStorage.setItem('activeDomainId', value)
+    }
+  },
   setHasUnsavedChanges(state, value) {
     state.hasUnsavedChanges = value
   },
