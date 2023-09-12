@@ -1,7 +1,7 @@
 {
   "name": "aura",
   "version": "1.0.6",
-  "private": true,
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
